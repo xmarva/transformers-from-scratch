@@ -37,8 +37,10 @@ extend-exclude = ["notebooks"]
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.ruff.lint.per-file-ignores]
-# lesson sources are notebooks: imports appear where they are first explained
-"lessons/**/*.py" = ["E402", "I001"]
+# lesson sources are notebooks: imports appear where they are first explained, names like SEED and SMOKE come from
+# the shared setup cell (undefined names are caught by running the lesson in CI), markdown cells hold long links,
+# and zip() over a sequence and its shifted copy is unequal by design
+"lessons/**/*.py" = ["E402", "I001", "F821", "E501", "B905"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

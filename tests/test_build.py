@@ -74,6 +74,6 @@ def test_check_mode_detects_stale_output(tmp_path):
 def test_ref_moves_images_and_helpers_to_the_same_branch(built):
     kaggle, _, _ = built
     text = "\n".join(sources(kaggle))
-    assert "transformers-from-scratch/v9.9.9/assets/figures/99/x-light.png" in text
-    assert "transformers-from-scratch/v9.9.9/assets/covers/99-en.png" in kaggle.cells[0].source
-    assert "/main/" not in text
+    assert f"{build.RAW}/v9.9.9/assets/figures/99/x-light.png" in text
+    assert f"{build.RAW}/v9.9.9/assets/covers/99-en.png" in kaggle.cells[0].source
+    assert f"{build.RAW}/main/" not in text  # the Colab badge may still point at main: Colab opens released notebooks

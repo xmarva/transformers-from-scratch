@@ -70,6 +70,7 @@ def png(svg: str, out: Path, width: int, height: int) -> None:
             [
                 chrome(),
                 "--headless=new",
+                f"--user-data-dir={Path(tmp) / 'profile'}",  # own profile: parallel or leftover Chromes can't block it
                 "--disable-gpu",
                 "--hide-scrollbars",
                 "--force-device-scale-factor=2",
@@ -81,6 +82,7 @@ def png(svg: str, out: Path, width: int, height: int) -> None:
             ],
             check=True,
             capture_output=True,
+            timeout=60,
         )
 
 
