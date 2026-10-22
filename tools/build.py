@@ -33,7 +33,7 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "xmarva/transformers-from-scratch"
-RAW = f"https://raw.githubusercontent.com/{REPO}/main"
+RAW = f"https://raw.githubusercontent.com/{REPO}"
 KAGGLE_USER = "qmarva"
 COURSE = "Transformers: from scratch to production"
 TOTAL_LESSONS = 9
@@ -57,7 +57,7 @@ def links(lesson: str, meta: dict) -> dict[str, str]:
     }
 
 
-def header_cell(lesson: str, meta: dict, target: str) -> nbformat.NotebookNode:
+def header_cell(lesson: str, meta: dict, target: str, ref: str) -> nbformat.NotebookNode:
     url = links(lesson, meta)
     badge = {
         "colab": f"[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)]({url['colab']})",
@@ -65,7 +65,7 @@ def header_cell(lesson: str, meta: dict, target: str) -> nbformat.NotebookNode:
     }
     other = "colab" if target == "kaggle" else "kaggle"
     lines = [
-        f"![{meta['cover_alt']}]({RAW}/assets/covers/{meta['number']:02d}-en.png)",
+        f"![{meta['cover_alt']}]({RAW}/{ref}/assets/covers/{meta['number']:02d}-en.png)",
         "",
         f"**{COURSE}** · Lesson {meta['number']} of {TOTAL_LESSONS} · [course on GitHub]({url['github']})",
         "",
@@ -102,7 +102,8 @@ def for_target(cells: list, target: str, ref: str) -> list:
             cell.metadata["tags"] = kept
         else:
             cell.metadata.pop("tags", None)
-        cell.source = cell.source.replace("{{TFS_REF}}", ref)
+        # helpers and images come from the same git ref: main for releases, a branch for drafts
+        cell.source = cell.source.replace("{{TFS_REF}}", ref).replace(f"{RAW}/main/", f"{RAW}/{ref}/")
         out.append(cell)
     return out
 
@@ -149,7 +150,7 @@ def build_lesson(lesson_dir: Path, out_dir: Path, ref: str) -> dict[Path, str]:
     cells = expand_includes(read_cells(lesson_dir / "lesson.py"), lesson_dir.parent / "_shared")
     files = {}
     for target in TARGETS:
-        nb = notebook([header_cell(lesson, meta, target), *for_target(cells, target, ref)], meta, target)
+        nb = notebook([header_cell(lesson, meta, target, ref), *for_target(cells, target, ref)], meta, target)
         text = nbformat.writes(nb) + "\n"
         if target == "colab":
             files[out_dir / "colab" / f"{lesson}.ipynb"] = text
@@ -165,7 +166,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("lessons", nargs="*", help="lesson folder prefixes, e.g. 01; default: all")
     parser.add_argument("--check", action="store_true", help="fail if committed notebooks differ from a fresh build")
-    parser.add_argument("--ref", default="main", help="git ref the notebooks install the tfs helpers from")
+    parser.add_argument("--ref", default="main", help="git ref for the tfs helpers and images (a branch for drafts)")
     parser.add_argument("--lessons-dir", type=Path, default=ROOT / "lessons")
     parser.add_argument("--out-dir", type=Path, default=ROOT / "notebooks")
     args = parser.parse_args(argv)

@@ -5,6 +5,8 @@
 #
 # $$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
 
+# ![figure](https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/99/x-light.png)
+
 # %% tags=["include:setup"]
 
 # %%
