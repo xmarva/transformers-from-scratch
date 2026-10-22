@@ -1,0 +1,4 @@
+number = 1
+short_title = "Tokenization"
+cover_alt = "Lesson 1 cover: Tokenization, from scratch. An English word split from characters into subword tokens"
+gpu = false
