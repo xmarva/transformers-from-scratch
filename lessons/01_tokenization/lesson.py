@@ -1539,7 +1539,8 @@ assert reloaded.encode(RU_EXAMPLE).ids == tokenizer.encode(RU_EXAMPLE).ids
 # environment variable `TFS_HUB_USER` to your Hugging Face username and add a write token as the `HF_TOKEN` secret
 # (Kaggle: *Add-ons → Secrets*; Colab: the key icon in the sidebar).
 #
-# A dataset on the Hub needs a card that says where the data comes from and how it was processed:
+# Every repository on the Hub needs a card that says what it holds, where it comes from and how it was made. The
+# dataset's card:
 
 # %%
 DATASET_CARD = f"""---
@@ -1567,6 +1568,38 @@ Sentences from [Tatoeba](https://tatoeba.org), CC BY 2.0 FR.
 | train | {len(train)} |
 | validation | {len(valid)} |
 | test | {len(test)} |
+"""
+
+# %% [markdown]
+# And the tokenizer's, with the three lines it takes to use it:
+
+# %%
+TOKENIZER_CARD = f"""---
+license: cc-by-2.0
+language: [en, ru]
+tags: [tokenizer, bpe]
+datasets: [xmarva/tfs-tatoeba-en-ru]
+---
+# BPE tokenizer for English and Russian, {tokenizer.get_vocab_size()} tokens
+
+Built in lesson 1 of the course "Transformers: from scratch to production":
+https://github.com/xmarva/transformers-from-scratch
+
+- byte-pair encoding over characters, trained with Hugging Face `tokenizers` on the training
+  split of xmarva/tfs-tatoeba-en-ru, both languages together
+- owns its normalization: NFKC, combining marks removed, straight quotes, one dash
+- words keep the space in front of them as `▁`
+- special tokens `<pad>`, `<unk>`, `<bos>`, `<eos>` with ids 0 to 3
+
+```python
+from huggingface_hub import hf_hub_download
+from tokenizers import Tokenizer
+
+path = hf_hub_download("xmarva/tfs-bpe-en-ru-16k", "tokenizer.json")
+tokenizer = Tokenizer.from_file(path)
+```
+
+Trained on sentences from [Tatoeba](https://tatoeba.org), CC BY 2.0 FR.
 """
 
 # %%
@@ -1599,6 +1632,11 @@ if HUB_USER and hf_token:
     api.upload_file(
         path_or_fileobj=str(TOKENIZER_PATH),
         path_in_repo="tokenizer.json",
+        repo_id=tokenizer_repo,
+    )
+    api.upload_file(
+        path_or_fileobj=TOKENIZER_CARD.encode(),
+        path_in_repo="README.md",
         repo_id=tokenizer_repo,
     )
     print("published", data_repo, "and", tokenizer_repo)
