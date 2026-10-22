@@ -13,7 +13,6 @@ from tools.figures import cover as cv
 from tools.figures.lib import MONO_ADVANCE, Figure
 
 LESSON = Path(__file__).with_name("lesson.py")
-ROOT = Path(__file__).resolve().parents[2]
 
 EN_EXAMPLE = "The researcher said she was exhausted."
 RU_EXAMPLE = "Исследовательница сказала, что вымоталась."
@@ -36,11 +35,7 @@ def _tokenizer():
     from huggingface_hub import hf_hub_download
     from tokenizers import Tokenizer
 
-    try:
-        path = hf_hub_download("xmarva/tfs-bpe-en-ru-16k", "tokenizer.json")
-    except Exception:  # before lesson 1's artifacts are published: the local run of lesson 1
-        path = ROOT / "build" / "executed" / "tfs" / "tokenizer.json"
-    return Tokenizer.from_file(str(path))
+    return Tokenizer.from_file(hf_hub_download("xmarva/tfs-bpe-en-ru-16k", "tokenizer.json"))
 
 
 # ---------------------------------------------------------------- hero: real models, to scale
