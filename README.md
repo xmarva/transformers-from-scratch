@@ -13,8 +13,8 @@ them on its own.
 
 | # | Lesson | You learn | Status |
 |---|---|---|---|
-| 1 | **Data & tokenization: BPE from scratch** | cleaning parallel data, leak-free splits, BPE by hand, Hugging Face `tokenizers` | in progress |
-| 2 | **The Transformer, built by hand** | embeddings, positional encoding, attention and masks, encoder–decoder | planned |
+| 1 | **How language models read: tokenization and BPE** | inside the tokenizers of GPT-4o and Llama 3, cleaning parallel data, leak-free splits, BPE by hand, Hugging Face `tokenizers` | in review |
+| 2 | **The Transformer, built by hand** | real models' blueprints, attention and why it divides by √d_k, masks, heads, positions, the encoder–decoder, checks against PyTorch | in review |
 | 3 | **Training & decoding** | teacher forcing, label smoothing, warm-up, mixed precision, greedy and beam search | planned |
 | 4 | **Evaluating translations** | sacreBLEU, chrF++, COMET, error analysis, experiment tracking with W&B | planned |
 | 5 | **Modern transformer improvements** | pre-norm, RMSNorm, RoPE, SwiGLU, fused attention, KV cache, ablations | planned |

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 700" width="760" height="700" role="img" aria-label="The encoder–decoder Transformer. The encoder (left, 3 layers) embeds the English tokens, adds positional encodings and applies self-attention and a feed-forward network, each followed by add &amp; norm. The decoder (right, 3 layers) embeds the Russian tokens shifted right and applies masked self-attention, cross-attention to the encoder&#x27;s output and a feed-forward network. The output is multiplied by the transposed embedding matrix and passed through softmax">
+<title>The encoder–decoder Transformer. The encoder (left, 3 layers) embeds the English tokens, adds positional encodings and applies self-attention and a feed-forward network, each followed by add &amp; norm. The decoder (right, 3 layers) embeds the Russian tokens shifted right and applies masked self-attention, cross-attention to the encoder&#x27;s output and a feed-forward network. The output is multiplied by the transposed embedding matrix and passed through softmax</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="700" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">The Transformer of 2017, at our size</text>
+<text x="14.0" y="682.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">d_model = 256 · h = 4 heads · d_ff = 1024 · N = 3 layers per stack</text>
+<rect x="144.0" y="616.0" width="101.9" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="195.0" y="635.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">English ids</text>
+<rect x="465.5" y="616.0" width="218.9" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="575.0" y="635.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">Russian ids, shifted right</text>
+<rect x="90.0" y="560.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="195.0" y="579.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">embedding · √d_model</text>
+<rect x="90.0" y="512.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="195.0" y="531.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">+ positional encoding</text>
+<polyline points="195.0,614.0 195.0,592.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,560.0 195.0,544.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="470.0" y="560.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="579.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">embedding · √d_model</text>
+<rect x="470.0" y="512.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="531.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">+ positional encoding</text>
+<polyline points="575.0,614.0 575.0,592.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,560.0 575.0,544.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="64.0" y="236.0" width="262.0" height="250.0" rx="12" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="68.0" y="256.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">× 3</text>
+<polyline points="195.0,512.0 195.0,446.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="90.0" y="414.0" width="210.0" height="30.0" rx="7" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="195.0" y="433.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">self-attention</text>
+<rect x="90.0" y="370.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="195.0" y="389.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">add &amp; norm</text>
+<rect x="90.0" y="312.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="195.0" y="331.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">feed-forward</text>
+<rect x="90.0" y="268.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="195.0" y="287.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">add &amp; norm</text>
+<polyline points="195.0,414.0 195.0,402.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,370.0 195.0,344.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,312.0 195.0,300.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,456.0 76.0,456.0 76.0,385.0 88.0,385.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,356.0 76.0,356.0 76.0,283.0 88.0,283.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="444.0" y="110.0" width="262.0" height="376.0" rx="12" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="702.0" y="130.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">× 3</text>
+<polyline points="575.0,512.0 575.0,446.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="470.0" y="414.0" width="210.0" height="30.0" rx="7" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="575.0" y="433.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">masked self-attention</text>
+<rect x="470.0" y="370.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="389.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">add &amp; norm</text>
+<rect x="470.0" y="312.0" width="210.0" height="30.0" rx="7" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="575.0" y="331.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">cross-attention</text>
+<rect x="470.0" y="268.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="287.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">add &amp; norm</text>
+<rect x="470.0" y="194.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="213.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">feed-forward</text>
+<rect x="470.0" y="150.0" width="210.0" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="575.0" y="169.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">add &amp; norm</text>
+<polyline points="575.0,414.0 575.0,402.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,370.0 575.0,344.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,312.0 575.0,300.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,268.0 575.0,226.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,194.0 575.0,182.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,456.0 456.0,456.0 456.0,385.0 468.0,385.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,356.0 456.0,356.0 456.0,283.0 468.0,283.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="575.0,238.0 456.0,238.0 456.0,165.0 468.0,165.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="195.0,268.0 195.0,200.0 370.0,200.0 370.0,327.0 468.0,327.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<text x="376.0" y="192.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">memory</text>
+<rect x="470.0" y="66.0" width="210.0" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="575.0" y="85.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">× Eᵀ: the same matrix E</text>
+<polyline points="575.0,110.0 575.0,98.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="575.0" y="46.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">softmax → probabilities of the next token</text>
+<polyline points="575.0,66.0 575.0,54.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+</svg>

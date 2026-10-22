@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 272" width="760" height="272" role="img" aria-label="Scaled dot-product attention: queries Q times transposed keys give a score for every pair of positions; the scores are divided by the square root of d_k, the mask is added, softmax turns every row into weights that sum to 1, and the weights mix the values V into the output">
+<title>Scaled dot-product attention: queries Q times transposed keys give a score for every pair of positions; the scores are divided by the square root of d_k, the mask is added, softmax turns every row into weights that sum to 1, and the weights mix the values V into the output</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="272" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Attention, step by step</text>
+<rect x="24.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="42.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="60.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="24.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="42.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="60.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="24.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="42.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="60.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="24.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="42.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="60.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<text x="50.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">Q</text>
+<text x="50.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">(T_q, d_k)</text>
+<text x="90.0" y="136.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">×</text>
+<rect x="110.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="128.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="146.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="164.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="110.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="128.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="146.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="164.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="110.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="128.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="146.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="164.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<text x="145.0" y="102.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">Kᵀ</text>
+<text x="145.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">(d_k, T_k)</text>
+<polyline points="190.0,132.0 220.0,132.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="230.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="248.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="266.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="284.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="230.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="248.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="266.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="284.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="230.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="248.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="266.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="284.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="230.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="248.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="266.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="284.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<text x="265.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">scores</text>
+<text x="265.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">(T_q, T_k)</text>
+<polyline points="310.0,132.0 410.0,132.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="360.0" y="120.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">÷ √d_k, + M</text>
+<text x="360.0" y="156.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">softmax</text>
+<rect x="420.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#6A55D8"/>
+<rect x="438.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="456.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="474.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="420.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="438.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#6A55D8"/>
+<rect x="456.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="474.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="420.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="438.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="456.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#6A55D8"/>
+<rect x="474.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="420.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="438.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#6A55D8"/>
+<rect x="456.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="474.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#6A55D8"/>
+<text x="455.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">weights</text>
+<text x="455.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">rows sum to 1</text>
+<text x="504.0" y="136.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">×</text>
+<rect x="524.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="542.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="560.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="524.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="542.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="560.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="524.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="542.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="560.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="524.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="542.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<rect x="560.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#ECE8FC"/>
+<text x="550.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">V</text>
+<text x="550.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">(T_k, d_v)</text>
+<polyline points="586.0,132.0 616.0,132.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="626.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="644.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="662.0" y="96.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="626.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="644.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="662.0" y="114.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="626.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="644.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="662.0" y="132.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="626.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="644.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<rect x="662.0" y="150.0" width="16.0" height="16.0" rx="2" fill="#FCF0DA"/>
+<text x="652.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#4B39B5">output</text>
+<text x="652.0" y="184.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">(T_q, d_v)</text>
+<text x="14.0" y="236.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Each row of the output is a mix of the rows of V. The weights say how much of each to take, and</text>
+<text x="14.0" y="256.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">they come from how well that position&#x27;s query matches every key.</text>
+</svg>
