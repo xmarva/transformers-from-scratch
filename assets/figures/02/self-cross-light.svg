@@ -245,6 +245,6 @@
 <text x="645.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 645.0 328.0)">.</text>
 <text x="659.0" y="108.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">keys →</text>
 <text x="659.0" y="126.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">queries ↓</text>
-<text x="14.0" y="408.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Each row is one query and the weights it will give to every key, the columns. A dark cell is one</text>
-<text x="14.0" y="428.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">query meeting one key: she and the first piece of researcher; сказала and she.</text>
+<text x="14.0" y="408.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Each row is one query and the weights it will give to every key, the columns. The solid cell</text>
+<text x="14.0" y="428.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">is one query meeting one key: she and the first piece of researcher; сказала and she.</text>
 </svg>

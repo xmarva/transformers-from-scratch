@@ -476,9 +476,10 @@ def self_cross() -> Figure:
             fig.text(gx + k * cell + 13, bottom + 4, token, kind="small", anchor="end", upright=True)
         fig.text(gx + len(cols) * cell + 8, top + 12, "keys →", kind="small")
         fig.text(gx + len(cols) * cell + 8, top + 30, "queries ↓", kind="small")
-    fig.text(14, 408, "Each row is one query and the weights it will give to every key, the columns. A dark cell is "
-             "one", kind="note")
-    fig.text(14, 428, "query meeting one key: she and the first piece of researcher; сказала and she.", kind="note")
+    fig.text(14, 408, "Each row is one query and the weights it will give to every key, the columns. The solid cell",
+             kind="note")
+    fig.text(14, 428, "is one query meeting one key: she and the first piece of researcher; сказала and she.",
+             kind="note")
     return fig
 
 
