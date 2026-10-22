@@ -1,27 +1,34 @@
 # %% [markdown]
-# # Lesson 1. Data and tokenization: BPE from scratch
+# # Lesson 1. How language models read: tokenization and BPE from scratch
 #
-# Here is one sentence in two languages:
+# Chatbots used to be famously bad at one question: *how many r's are in "strawberry"?* It looks like a test of
+# attention to detail. Mostly it tests something the model cannot see. Here is what GPT-4o actually receives
+# when you ask it:
 #
-# > The researcher said she was exhausted.
-# >
-# > Исследовательница сказала, что вымоталась.
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/hero-light.png" width="760" alt="The question as GPT-4o receives it: eight tokens, each an integer id; the word ' strawberry' with its leading space is a single token">
 #
-# A neural network reads neither. It reads integers, and before any model exists someone has to decide how text
-# turns into them. That decision fixes how long every input is, which words the model can represent at all, and how
-# much each sentence costs to process. GPT-2, for example, spends several times more integers on the Russian sentence
-# than on the English one; you will measure exactly how many in a minute.
+# Eight integers. The word ` strawberry`, together with the space in front of it, arrives as one of them, and its
+# letters are not in the input at all. Whatever the model knows about how that integer is spelled, it had to pick
+# up indirectly, from the rare places in its training text where someone spelled the word out.
 #
-# This course builds an English→Russian translator from scratch, so the decision is ours. In this lesson we make it.
+# The program that turns text into integers is the **tokenizer**. It is built before the model, from a large pile
+# of text, and then frozen: every model you have heard of reads the world through a fixed list of pieces chosen
+# that way. The choice of pieces decides what a request costs, which languages a model handles well, and, as you
+# just saw, what it can count.
 #
-# **What you'll build**
+# This course builds a Transformer that translates English into Russian, and in this lesson you build the
+# tokenizer it will read and write with. Russian is a good language to learn this on: as you are about to see,
+# tokenizers trained mostly on English handle it badly, and the reasons are instructive.
 #
-# 1. A clean English–Russian corpus with training, validation and test splits that do not leak into each other.
-# 2. A byte-pair encoding (BPE) tokenizer written from scratch, fast enough for half a million sentences.
-# 3. The tokenizer the rest of the course uses, trained with Hugging Face `tokenizers` and published with the data.
+# **What you'll do**
 #
-# **What you need**: Python and a little pandas. No previous lesson. A free CPU runtime is enough; the whole notebook
-# runs in about ten minutes.
+# 1. Take apart the tokenizers of GPT-2, GPT-4, Llama 3, DeepSeek-V3 and GPT-4o.
+# 2. Prepare an English–Russian corpus with training, validation and test splits that don't leak into each other.
+# 3. Write byte-pair encoding (BPE), the algorithm behind all of those tokenizers, from scratch.
+# 4. Train the course's tokenizer with Hugging Face `tokenizers` and put it next to GPT-4o's.
+#
+# **What you need**: Python and some pandas. No previous lessons. A free CPU runtime is enough; the notebook runs
+# in about ten minutes.
 
 # %% tags=["include:setup"]
 
@@ -38,78 +45,200 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
-from tokenizers import Regex, Tokenizer, decoders, models, normalizers, pre_tokenizers, trainers
+from tokenizers import Regex, Tokenizer, decoders, models, normalizers
+from tokenizers import pre_tokenizers, trainers
 
 # %% [markdown]
-# All the settings of the lesson live in one cell. `SMOKE` is switched on only by the course's automated tests, which
-# run the notebook on a small slice of data; for you it is `False`.
-
-# %%
-VAL_SHARE = 0.02  # share of the data held out for validation
-
-if SMOKE:
-    SAMPLE_SENTENCES, SAMPLE_MERGES = 2_000, 50
-    N_MERGES = 300
-    VOCAB_SIZES = [500, 1_000]
-    VOCAB_SIZE = 1_000
-else:
-    SAMPLE_SENTENCES, SAMPLE_MERGES = 40_000, 300  # the slow BPE trainer runs on a sample
-    N_MERGES = 8_000  # merges for our from-scratch tokenizer
-    VOCAB_SIZES = [2_000, 4_000, 8_000, 16_000, 32_000]  # sizes we compare
-    VOCAB_SIZE = 16_000  # the tokenizer the course keeps
-
-D_MODEL = 256  # width of the model in lesson 2, needed here to price the embedding table
-
-# %% [markdown]
-# ## 1. How many integers is a sentence?
+# ## 1. Inside the tokenizers of real models
 #
-# GPT-2's tokenizer is a good place to start, because it was built for English. Count how many tokens each version
-# of our sentence becomes.
+# OpenAI publishes its tokenizers in the `tiktoken` library. `Xenova/gpt-4o` on the Hugging Face Hub is a port of
+# GPT-4o's tokenizer to the `tokenizers` library, which this course uses throughout; it produces the same tokens.
+# Loading it downloads one JSON file of about 10 MB: the whole tokenizer, rules and vocabulary.
 
 # %%
-gpt2 = Tokenizer.from_pretrained("gpt2")
+gpt4o = Tokenizer.from_pretrained("Xenova/gpt-4o")
+
+question = "How many r's are in strawberry?"
+print(gpt4o.encode(question).ids)
+
+# %% [markdown]
+# The same eight numbers as in the picture above. Each one is a position in GPT-4o's vocabulary, and `decode`
+# turns positions back into text. Decoding the ids one at a time shows the piece behind each of them. The function
+# below does that for a few texts and draws the pieces as chips, with the id under each chip:
+
+
+# %%
+def show_tokens(tokenizer, texts):
+    rows, row_ids = [], []
+    for text in texts:
+        # add_special_tokens=False: some tokenizers (Llama's) add a "start of text" token
+        ids = tokenizer.encode(text, add_special_tokens=False).ids
+        rows.append([tokenizer.decode([token_id]) for token_id in ids])
+        row_ids.append(ids)
+    token_chips(rows, ids=row_ids, labels=[repr(text) for text in texts])
+    plt.show()
+
+
+spellings = ["strawberry", " strawberry", " Strawberry", " STRAWBERRY", " strawberries"]
+show_tokens(gpt4o, spellings)
+
+# %% [markdown]
+# Five spellings of one word, five unrelated sequences of numbers (`␣` marks a space inside a token). In the middle
+# of a sentence the word comes with a space in front of it and is a single token. At the very start of a message
+# there is no space, and the same word becomes three tokens, `st`, `raw` and `berry`. The capitalized word has a
+# token of its own, the word in capitals falls apart into four pieces, and the plural is yet another token.
+#
+# Nothing in these numbers says that they are the same word. The model works it out from how the tokens are
+# used, and it learns how each of them is spelled the same indirect way. Tokenizers keep the space attached to the
+# word that follows it because that saves a token per word; the price is that a word has a different token at
+# the start of a text than in the middle.
+
+# %% [markdown]
+# ### The same sentence in two languages
+#
+# API prices, context windows and the speed of generation are all measured in tokens. So, does a sentence cost
+# the same in every language? Take one sentence and its Russian translation:
+#
+# > The researcher said she was exhausted.
+# >
+# > Исследовательница сказала, что вымоталась.
+#
+# and count their tokens with the tokenizers of five models released between 2019 and 2024. All of them are on
+# the Hugging Face Hub. Meta's own Llama repositories require signing in, so Llama 3's tokenizer comes from a
+# public copy of Llama 3.2, which uses the same tokenizer.
+
+# %%
+LLM_TOKENIZERS = {
+    "GPT-2 (2019)": "openai-community/gpt2",
+    "GPT-4 (2023)": "Xenova/gpt-4",
+    "Llama 3 (2024)": "unsloth/Llama-3.2-1B",
+    "DeepSeek-V3 (2024)": "deepseek-ai/DeepSeek-V3",
+    "GPT-4o (2024)": "Xenova/gpt-4o",
+}
+
+llm_tokenizers = {}
+for name, repo in LLM_TOKENIZERS.items():
+    llm_tokenizers[name] = Tokenizer.from_pretrained(repo)
 
 EN_EXAMPLE = "The researcher said she was exhausted."
 RU_EXAMPLE = "Исследовательница сказала, что вымоталась."
 
-print("English:", len(gpt2.encode(EN_EXAMPLE).ids), "tokens")
-print("Russian:", len(gpt2.encode(RU_EXAMPLE).ids), "tokens")
+
+def count_tokens(tokenizer, text):
+    return len(tokenizer.encode(text, add_special_tokens=False).ids)
+
+
+rows = []
+for name, tokenizer in llm_tokenizers.items():
+    rows.append(
+        {
+            "model": name,
+            "vocabulary": tokenizer.get_vocab_size(),
+            "English": count_tokens(tokenizer, EN_EXAMPLE),
+            "Russian": count_tokens(tokenizer, RU_EXAMPLE),
+        }
+    )
+example_counts = pd.DataFrame(rows)
+table(example_counts)
 
 # %% [markdown]
-# The same meaning, a very different bill. Look at what the Russian tokens actually are:
+# The same numbers as a chart. We will draw this chart again at the end of the lesson, with one more tokenizer in
+# it, so it gets a function. English is teal and Russian is rose here and in every plot of the course: they are the
+# colors of the encoder, which reads English, and of the decoder, which writes Russian.
+
 
 # %%
-print(gpt2.encode(RU_EXAMPLE).tokens[:12])
-print("characters:", len(RU_EXAMPLE))
-print("bytes in UTF-8:", len(RU_EXAMPLE.encode("utf-8")))
+def plot_token_counts(counts, title):
+    fig, ax = plt.subplots(figsize=(6.4, 0.9 + 0.6 * len(counts)))
+    rows = np.arange(len(counts))
+    bar = 0.38
+    english = ax.barh(rows - 0.2, counts.English, bar, color=COLORS["enc"], label="English")
+    russian = ax.barh(rows + 0.2, counts.Russian, bar, color=COLORS["dec"], label="Russian")
+    ax.bar_label(english, fmt="{:.3g}", padding=4, fontsize=9, color=COLORS["muted"])
+    ax.bar_label(russian, fmt="{:.3g}", padding=4, fontsize=9, color=COLORS["muted"])
+
+    labels = []
+    for model, vocabulary in zip(counts.model, counts.vocabulary):
+        labels.append(f"{model} · {vocabulary // 1000}k")
+    ax.set_yticks(rows, labels)
+    ax.invert_yaxis()  # the first model on top
+
+    ax.grid(axis="y", visible=False)
+    ax.grid(axis="x", visible=True)
+    ax.set_xlabel("tokens")
+    ax.set_title(title)
+    ax.legend(loc="lower right")
+    plt.show()
+
+
+plot_token_counts(example_counts, "One sentence, two languages, five tokenizers")
 
 # %% [markdown]
-# Those are not letters. GPT-2 tokenizes **bytes**: it first writes the text in UTF-8 and shows each byte as a
-# printable stand-in character (`Ð`, `Ñ`). Every Cyrillic letter takes two bytes in UTF-8, and the merges GPT-2 learned
-# come from mostly English web text, so they rarely glue Russian bytes back into whole syllables. Russian pays a
-# "token tax": longer sequences, more compute, a smaller share of the context window per idea
-# ([Petrov et al., 2023](https://arxiv.org/abs/2305.15425) measure it across many languages).
+# Every tokenizer spends about the same on the English sentence. The Russian one costs several times more in
+# GPT-2, and the newer tokenizers narrow the gap. Note the vocabulary sizes next to the names: the gap closed as
+# the vocabularies grew from about fifty thousand pieces to two hundred thousand, enough room for frequent pieces
+# of many languages. Even in GPT-4o, though, the Russian sentence is more expensive than the English one. The extra
+# cost has a name, the **token tax**: [Petrov et al. (2023)](https://arxiv.org/abs/2305.15425) measured it across
+# hundreds of languages and found that the same text can take up to 15 times as many tokens as in English.
 #
-# A translator that writes Russian should not pay it. The fix is a tokenizer trained on our own data. First we need
-# that data, clean, and split so that our measurements later mean something.
+# Where does GPT-2's bill come from? Look at the pieces it cuts the first Russian word into:
+
+# %%
+show_tokens(llm_tokenizers["GPT-2 (2019)"], ["Исследовательница"])
+
+# %% [markdown]
+# Most letters are tokens of their own, and some, like the first one, are cut in half: each `�` is a fragment of a
+# letter that is not valid text on its own. That is not a display bug. GPT-2 tokenizes **bytes**. It writes text in
+# UTF-8, where every Cyrillic letter takes two bytes, and starts from the 256 possible bytes as its alphabet. GPT-2
+# was trained on WebText, a crawl from which, as the GPT-2 paper notes, OpenAI deliberately removed non-English
+# pages, and its merges rarely glue Russian bytes into anything longer than a letter.
+#
+# GPT-4o works on bytes too, but among its 200 000 pieces there are plenty of Russian letters, syllables and
+# words. Here is a word from the Russian sentence and one more:
+
+# %%
+show_tokens(gpt4o, [" вымоталась", " недопонимание"])
+
+# %% [markdown]
+# Fewer tokens, but look at where the cuts fall in the second word, *недопонимание*, "misunderstanding". It is
+# built as `недо` (under-) + `понима` (the stem of *понимать*, to understand) + `ние` (which turns a verb into a
+# noun), and GPT-4o's pieces cut across all three. That isn't a mistake: a tokenizer learns statistics, not grammar,
+# and it learns the statistics of the text it was built from.
+#
+# By the end of this lesson you will have a tokenizer of your own, trained in a couple of minutes on
+# English–Russian sentences, with sixteen thousand pieces instead of two hundred thousand. On the Russian sentences
+# of our data it will need fewer tokens than GPT-4o.
+#
+# Every tokenizer you've seen so far, and ours too, turns text into numbers in the same four stages:
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/pipeline-light.png" width="760" alt="Raw text is normalized, split into words, merged into subword tokens by BPE and mapped to integer ids that the model reads">
+#
+# We build them in this order. First, though, the tokenizer needs text to learn from.
 
 # %% [markdown]
 # ## 2. The data
 #
-# [Tatoeba](https://tatoeba.org) is a collection of sentences and their translations written by volunteers,
-# licensed under CC BY 2.0 FR. We use two pieces of it:
+# [Tatoeba](https://tatoeba.org) ("for example" in Japanese) is a collection of example sentences and their
+# translations, started by Trang Ho in 2006 and written by volunteers ever since. The sentences are short and
+# everyday, which is what a small translator can learn from, and they are licensed under CC BY 2.0 FR. We use two
+# pieces of it:
 #
 # - **training data**: the English–Russian pairs prepared by the sentence-transformers project;
-# - **test data**: the English–Russian test set of the [Tatoeba Translation Challenge](https://arxiv.org/abs/2010.06354)
-#   (Tiedemann, 2020), a public benchmark. In lesson 4 we compare our model with published systems on it.
+# - **test data**: the English–Russian test set of the
+#   [Tatoeba Translation Challenge](https://arxiv.org/abs/2010.06354) (Tiedemann, 2020), a public benchmark. In
+#   lesson 4 we compare our model with published systems on it.
 #
-# Both downloads are pinned to an exact revision, so the numbers in this notebook do not change when the sources do.
+# Both downloads are pinned to an exact revision, so the numbers in this notebook don't change when the sources
+# do.
 
 # %%
 TRAIN_REVISION = "cec1343ab5a7a8befe99af4a2d0ca847b6c84743"
 
 dataset = load_dataset(
-    "sentence-transformers/parallel-sentences-tatoeba", "en-ru", split="train", revision=TRAIN_REVISION
+    "sentence-transformers/parallel-sentences-tatoeba",
+    "en-ru",
+    split="train",
+    revision=TRAIN_REVISION,
 )
 train_raw = dataset.to_pandas()
 train_raw = train_raw.rename(columns={"english": "en", "non_english": "ru"})
@@ -128,26 +257,36 @@ test_raw = pd.read_csv(
     TEST_URL,
     sep="\t",
     names=["src_lang", "tgt_lang", "en", "ru"],
-    quoting=csv.QUOTE_NONE,  # quote marks are part of the sentences, not of the file format
+    quoting=csv.QUOTE_NONE,  # quote marks belong to the sentences, not to the file format
     dtype=str,
     keep_default_na=False,  # a sentence like "NA" must stay a sentence
 )
 test_raw = test_raw[["en", "ru"]]
 
-if SMOKE:
-    train_raw = train_raw.sample(20_000, random_state=SEED)
-    test_raw = test_raw.sample(2_000, random_state=SEED)
-
 print("training pairs:", len(train_raw))
 print("test pairs:", len(test_raw))
-train_raw.sample(5, random_state=SEED)
+table(train_raw.sample(6, random_state=SEED))
 
 # %% [markdown]
+# Before cleaning anything, read some data; every corpus has habits. Tatoeba's most famous one is a man called
+# Tom. Contributors use him (and Mary) as the default name in example sentences, and he is everywhere:
+
+# %%
+for name in ["Tom", "Mary"]:
+    share = train_raw.en.str.contains(rf"\b{name}\b").mean()
+    print(f"{name} appears in {share:.1%} of the English sentences")
+
+# %% [markdown]
+# This matters more than it seems. Russian declines names: Tom is *Том*, *Тома*, *Тому*, *Томом*, *о Томе*
+# depending on his role in the sentence, so our translator will get plenty of practice with Russian cases on
+# one name. It will also be much better at sentences about Tom than about anyone else. A model learns the
+# distribution of its data, quirks included.
+#
 # ### One sentence, many translations
 #
-# The data has a property that matters for everything that follows: one English sentence often comes with several
-# Russian translations, and one Russian sentence can translate several English ones. Count the translations of every
-# English sentence:
+# A second property of the data matters for everything that follows: one English sentence often comes with
+# several Russian translations, and one Russian sentence can translate several English ones. Count the
+# translations of every English sentence:
 
 # %%
 translations_per_sentence = train_raw.groupby("en").size()
@@ -160,15 +299,19 @@ print("translations per sentence, on average:", round(translations_per_sentence.
 
 # %%
 champion = translations_per_sentence.idxmax()
-its_translations = train_raw[train_raw.en == champion].ru
+its_translations = list(train_raw[train_raw.en == champion].ru)
+print(repr(champion), "has", len(its_translations), "translations")
 
-print(champion, "has", len(its_translations), "translations:")
-print(", ".join(its_translations))
+rows = []
+for start in range(0, len(its_translations), 5):
+    rows.append(its_translations[start : start + 5])
+token_chips(rows, role="dec", mark_spaces=False)
+plt.show()
 
 # %% [markdown]
-# Volunteers have been creative. None of these translations is wrong; they differ in register, imagery and rudeness.
-# Keep this in mind for lesson 4: a metric that compares the model's output with one reference translation punishes
-# perfectly good answers.
+# Volunteers have been creative. None of these translations is wrong; they differ in register, imagery and
+# rudeness. Keep this in mind for lesson 4: a metric that compares the model's output with a single reference
+# translation punishes perfectly good answers.
 #
 # For now the consequence is about splitting the data, and we come back to it after cleaning.
 
@@ -180,40 +323,51 @@ print(", ".join(its_translations))
 # %%
 char_counts = collections.Counter("".join(train_raw.en) + "".join(train_raw.ru))
 
+rows = []
 for char in "\"«»„“”'‘’-–—…":
     if char_counts[char] > 0:
-        print(repr(char), char_counts[char])
+        name = unicodedata.name(char)
+        rows.append({"character": char, "Unicode name": name, "count": char_counts[char]})
+table(pd.DataFrame(rows))
 
 # %% [markdown]
-# Some variants are a style choice (`«ёлочки»` versus `"straight quotes"`), others are invisible. The letter `й`, for
-# instance, can be stored as one code point, or as `и` followed by a combining breve (`̆`). Python considers the
-# two strings different, although every reader sees the same letter:
+# Some variants are a matter of style (`«ёлочки»` versus `"straight quotes"`). Others are invisible: the letter `й`
+# can be stored as one code point, or as `и` followed by a combining breve, a mark that the font draws on top of
+# the previous letter.
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/normalization-light.png" width="760" alt="The letter й stored two ways: one code point U+0439, or и U+0438 followed by a combining breve U+0306; NFKC turns the second into the first">
+#
+# Every reader sees the same letter. Python sees two different strings:
 
 # %%
-one_code_point = "й"
-two_code_points = "й"
+one_code_point = "\u0439"
+two_code_points = "\u0438\u0306"
 
+print(one_code_point, two_code_points)
 print(one_code_point == two_code_points)
 print(len(one_code_point), len(two_code_points))
 
 # %% [markdown]
-# Unicode defines **normal forms** for exactly this. Normal form **NFKC** composes letters with their accents, and
-# also maps "compatibility" characters to plain ones: subscript digits, non-breaking spaces, the one-character
-# ellipsis `…`.
+# A tokenizer that doesn't know this would learn two tokens for one letter, and the model would have to learn
+# twice that they mean the same. Unicode defines **normal forms** for exactly this. Normal form **NFKC** composes
+# letters with their accents, and also maps "compatibility" characters to plain ones: subscript digits,
+# non-breaking spaces, the one-character ellipsis `…`.
 
 # %%
 print(unicodedata.normalize("NFKC", two_code_points) == one_code_point)
 print(unicodedata.normalize("NFKC", "H₂O"))
-print(repr(unicodedata.normalize("NFKC", "two words")))  #   is a non-breaking space
+nbsp = "\u00a0"  # a non-breaking space
+print(repr(unicodedata.normalize("NFKC", "two" + nbsp + "words")))
 
 # %% [markdown]
-# On top of NFKC we make four choices of our own, and write them down because the model will inherit them:
+# On top of NFKC we make four choices of our own. They are written down because the model will inherit them:
+# whatever we erase here, it will never be able to read or write.
 #
-# 1. drop combining marks that survive NFKC: Tatoeba marks stress in some Russian sentences (`То́му`), which is a
-#    pronunciation hint, not spelling;
-# 2. use straight quotes and apostrophes, and one kind of dash, `—`;
-# 3. read a hyphen surrounded by spaces as a dash;
-# 4. collapse runs of whitespace into one space.
+# 1. Drop the combining marks that survive NFKC. Tatoeba marks stress in some Russian sentences (`То́му`), which
+#    is a pronunciation hint, not spelling.
+# 2. Use straight quotes and apostrophes, and one kind of dash, `—`.
+# 3. Read a hyphen surrounded by spaces as a dash.
+# 4. Collapse runs of whitespace into one space.
 
 # %%
 QUOTES = {"«": '"', "»": '"', "„": '"', "“": '"', "”": '"', "‘": "'", "’": "'", "–": "—"}
@@ -235,11 +389,20 @@ def normalize(text):
 
 
 # %% [markdown]
-# Try it on a few sentences before we trust it:
+# Try it on a few sentences before trusting it with half a million:
 
 # %%
-for before in ["Он сказал: «Я не знаю».", "То́му было нечего пить.", "Wait a second - what?", "It’s 5 o’clock…"]:
-    print(repr(before), "->", repr(normalize(before)))
+examples = [
+    "Он сказал: «Я не знаю».",
+    "То́му было нечего пить.",
+    "Wait a second - what?",
+    "It’s 5 o’clock…",
+]
+
+rows = []
+for before in examples:
+    rows.append({"before": before, "after": normalize(before)})
+table(pd.DataFrame(rows))
 
 # %% [markdown]
 # Now normalize both sides of both datasets, and count how many training sentences actually changed:
@@ -259,9 +422,9 @@ print("changed:", changed, "of", 2 * len(train), "training sentences")
 # %% [markdown]
 # ### Filters, and one we don't apply
 #
-# A pair is dropped when it is clearly broken: Cyrillic on the English side, no Cyrillic on the Russian side, or more
-# than 40 words, which in Tatoeba means a paragraph that slipped in among sentences. Each check gives a column of
-# `True`/`False`, one value per pair:
+# A pair is dropped when it is clearly broken: Cyrillic on the English side, no Cyrillic on the Russian side, or
+# more than 40 words, which in Tatoeba means a paragraph that slipped in among the sentences. Each check below gives
+# a column of `True`/`False`, one value per pair:
 
 # %%
 CYRILLIC = r"[а-яё]"
@@ -283,11 +446,13 @@ print("longer than 40 words:", too_long.sum())
 # What does Cyrillic on the English side look like?
 
 # %%
-train[cyrillic_in_english].head(3)
+table(train[cyrillic_in_english].head(2))
 
 # %% [markdown]
-# Mislabeled pairs. We drop all the broken ones, and then the duplicates: after normalization some pairs became
-# identical.
+# The first pair is Tatoeba's own interface text that slipped into the data: the icon `あ→а` ends in a Cyrillic
+# `а`. The second is a typo nobody can see: the `у` in `bу post` is the Cyrillic letter, which looks exactly like
+# the Latin `y`. A model would learn these lookalikes as different symbols, so we drop all the broken pairs, and
+# then the duplicates: after normalization some pairs became identical.
 
 # %%
 broken = cyrillic_in_english | no_cyrillic_in_russian | too_long
@@ -298,7 +463,7 @@ train = train.drop_duplicates()
 print("duplicates removed:", size_before - len(train))
 
 # %% [markdown]
-# Machine translation pipelines often also drop pairs whose lengths differ too much, on the theory that a translation
+# Translation pipelines often also drop pairs whose lengths differ too much, on the theory that a translation
 # three times longer than its source must be misaligned. Before applying a recipe, look at what it would remove:
 
 # %%
@@ -306,67 +471,77 @@ length_ratio = train.en.str.len() / train.ru.str.len()
 flagged = train[(length_ratio > 3) | (length_ratio < 1 / 3)]
 
 print("the length-ratio filter would remove", len(flagged), "pairs, for example:")
-flagged.sample(min(6, len(flagged)), random_state=SEED)
+table(flagged.sample(min(6, len(flagged)), random_state=SEED))
 
 # %% [markdown]
-# Most of them are good translations: idioms and compressed colloquial answers, exactly what makes a translator
-# sound human. The filter was designed for noisy web-crawled corpora; Tatoeba is written by people, so we keep these
-# pairs. The general rule: a cleaning step is a hypothesis about your data, and you test it by reading what it removes.
+# Most of them are good translations: idioms and terse colloquial answers, exactly what makes a translator sound
+# human. The filter was designed for noisy corpora crawled from the web; Tatoeba is written by people, so we keep
+# these pairs.
+#
+# > A cleaning step is a hypothesis about your data. Test it by reading what it removes.
 
 # %% [markdown]
 # ### The test set must stay unseen
 #
-# The Tatoeba test set was cut from the same pool of sentences as our training data. If a test sentence also appears
-# in training, the model can recite its answer and the test score stops measuring translation.
+# The Tatoeba test set was cut from the same pool of sentences as our training data. If a test sentence also
+# appears in training, the model can recite the answer and the test score stops measuring translation. This
+# problem, **contamination**, is one that large-model papers take seriously: the GPT-4 technical report has a
+# whole appendix of contamination checks for its benchmarks.
 #
-# Comparing exact strings is not enough: `Хватит!` and `хватит.` are the same sentence for our purposes. We compare
-# **fingerprints** instead: lowercase, without punctuation and spaces, and with `ё` read as `е` (Russian texts use them
-# interchangeably).
+# Comparing exact strings is not enough: `Хватит!` and `хватит.` are the same sentence for our purposes. We
+# compare **fingerprints** instead: lowercase, without punctuation and spaces, and with `ё` read as `е` (Russian
+# texts use the two letters interchangeably).
 
 
 # %%
 def fingerprint(text):
-    text = text.casefold().replace("ё", "е")  # casefold is lowercase that also handles special cases like ß
+    text = text.casefold()  # lowercase that also handles special cases like ß
+    text = text.replace("ё", "е")
     return re.sub(r"[\W_]+", "", text)  # drop everything that is not a letter or a digit
 
 
 print(fingerprint("Хватит!"), fingerprint("хватит."), fingerprint("Ты безнадёжна!"))
 
 # %% [markdown]
-# A training pair leaks when its English or its Russian sentence has the fingerprint of a test sentence. Compare the
-# two ways of checking:
+# A training pair leaks when its English or its Russian sentence has the fingerprint of a test sentence. Compare
+# the two ways of checking:
 
 # %%
-test_en_exact, test_ru_exact = set(test.en), set(test.ru)
-test_en_prints, test_ru_prints = set(test.en.map(fingerprint)), set(test.ru.map(fingerprint))
+test_en_prints = set(test.en.map(fingerprint))
+test_ru_prints = set(test.ru.map(fingerprint))
 
-leaks_exactly = train.en.isin(test_en_exact) | train.ru.isin(test_ru_exact)
-leaks_by_fingerprint = train.en.map(fingerprint).isin(test_en_prints) | train.ru.map(fingerprint).isin(test_ru_prints)
+exact_en = train.en.isin(set(test.en))
+exact_ru = train.ru.isin(set(test.ru))
+print("pairs that share a sentence with the test set")
+print("  exact strings:", (exact_en | exact_ru).sum())
 
-print("pairs sharing a sentence with the test set, exact strings:", leaks_exactly.sum())
-print("pairs sharing a sentence with the test set, fingerprints: ", leaks_by_fingerprint.sum())
+printed_en = train.en.map(fingerprint).isin(test_en_prints)
+printed_ru = train.ru.map(fingerprint).isin(test_ru_prints)
+leaks = printed_en | printed_ru
+print("  fingerprints:", leaks.sum())
 
-train = train[~leaks_by_fingerprint]
+train = train[~leaks]
 print("training pairs left:", len(train))
 
 # %% [markdown]
 # ### A validation split that doesn't leak
 #
-# We also need a validation set: data the model never trains on, used to choose settings and to stop training at the
-# right moment. The usual move is to hold out a random 2% of the pairs. Here that would be a mistake, and the picture
-# shows why.
+# We also need a validation set: data the model never trains on, used to choose settings and to stop training at
+# the right moment. The usual move is to hold out a random 2% of the pairs. Here that would be a mistake, and the
+# picture shows why.
 #
-# ![Random split versus split by connected component](https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/leakage-light.png)
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/leakage-light.png" width="760" alt="A random split puts the pair 'Cut it out!' / 'Прекрати!' into validation while both sentences also appear in training pairs; splitting by connected component keeps the whole group on one side">
 #
-# These are real pairs from our data. Think of every sentence as a node and every translation pair as an edge. A random
-# split cuts edges independently, so a validation pair like `Cut it out!` → `Прекрати!` still has both of its
-# sentences in training pairs. The model has seen the source and has learned to produce the target; validation would
-# reward memory.
+# These are real pairs from our data. Think of every sentence as a node and every translation pair as an edge. A
+# random split cuts edges independently, so a validation pair like `Cut it out!` → `Прекрати!` still has both of
+# its sentences in training pairs. The model has seen the source and has learned to produce the target, and
+# validation would reward memory.
 #
-# The fix is to split whole **connected components**: groups of sentences linked by translation, directly or through
-# each other. A classic structure finds them, **union–find**. Every sentence starts as its own group. Every pair says
-# "these two sentences belong together", and we merge their groups. To merge, each group needs a representative, its
-# *root*: every sentence keeps a link to a "parent" sentence, and following parents leads to the root.
+# The fix is to split whole **connected components**: groups of sentences linked by translation, directly or
+# through each other. A classic data structure finds them, **union–find**. Every sentence starts as a group of
+# its own. Every pair says "these two sentences belong together", and we merge their groups. To tell whether two
+# sentences are already in one group, each group has a representative, its *root*: every sentence keeps a link to
+# a "parent" sentence, and following the parents leads to the root.
 
 
 # %%
@@ -382,7 +557,7 @@ class UnionFind:
         while self.parent[root] != root:
             root = self.parent[root]
 
-        # path compression: point everything on the way straight at the root, so the next lookup is short
+        # path compression: point everything on the way straight at the root
         while self.parent[x] != root:
             next_x = self.parent[x]
             self.parent[x] = root
@@ -390,14 +565,21 @@ class UnionFind:
         return root
 
     def union(self, a, b):
-        root_a, root_b = self.find(a), self.find(b)
+        root_a = self.find(a)
+        root_b = self.find(b)
         if root_a != root_b:
             self.parent[root_a] = root_b  # the two groups become one
 
 
 # %% [markdown]
-# A sentence is stored together with its language, `("en", "Stop it.")`, because the same string can occur on both
-# sides (names, numbers). Try it on the eight pairs from the picture, plus one unrelated pair:
+# The second loop in `find` is what keeps it fast. Without it, a chain of parents can grow long, and every lookup
+# walks the whole chain. With it, a lookup shortens the chain for everyone after it:
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/union-find-light.png" width="820" alt="Path compression: find('Cut it out!') walks from Cut it out! through Перестань! and Прекрати! to the root Прекрати это!; afterwards both Cut it out! and Перестань! point at the root directly">
+#
+# That is the actual state of the structure halfway through the example below. A sentence is stored together
+# with its language, `("en", "Stop it.")`, because the same string can occur on both sides (names, numbers). Run
+# it on the pairs from the pictures, plus one unrelated pair:
 
 # %%
 example_pairs = [
@@ -416,16 +598,20 @@ groups = UnionFind()
 for en, ru in example_pairs:
     groups.union(("en", en), ("ru", ru))
 
+rows = []
 for en, ru in example_pairs:
-    print(en, "/", ru, "-> group", groups.find(("en", en)))
+    root_language, root_sentence = groups.find(("en", en))
+    rows.append({"English": en, "Russian": ru, "group (its root)": root_sentence})
+table(pd.DataFrame(rows))
 
 # %% [markdown]
-# All eight pairs from the picture end up in one group, named after its root, and the unrelated pair forms its own.
+# All eight pairs from the picture end up in one group, and the unrelated pair forms its own.
 #
-# With path compression alone, $m$ operations on $n$ sentences cost $O(m \log n)$ in the worst case; also attaching
-# the smaller group under the larger one (union by rank) gives the famous near-linear bound $O(m\,\alpha(n))$
-# ([Tarjan, 1975](https://doi.org/10.1145/321879.321884)). For our data compression alone is plenty. Now the real
-# thing: every training pair, and a group label for each.
+# With path compression alone, $m$ operations on $n$ sentences cost $O(m \log n)$ in the worst case. Also
+# attaching the smaller group under the larger one (union by rank) gives the famous near-linear bound
+# $O(m\,\alpha(n))$, where $\alpha$ is the inverse Ackermann function, which stays below 5 for any $n$ that fits
+# in our universe ([Tarjan, 1975](https://doi.org/10.1145/321879.321884)). For our data compression alone is
+# plenty. Now the real thing: every training pair, and a group label for each.
 
 # %%
 start = time.perf_counter()
@@ -434,9 +620,12 @@ groups = UnionFind()
 for en, ru in zip(train.en, train.ru):
     groups.union(("en", en), ("ru", ru))
 
-labels = [str(groups.find(("en", en))) for en in train.en]  # every pair is labeled with the root of its group
+labels = []
+for en in train.en:
+    root = groups.find(("en", en))
+    labels.append(str(root))  # a pair is labeled with the root of its group
 train = train.assign(group=labels)
-print(f"done in {time.perf_counter() - start:.1f}s")
+print("done in", round(time.perf_counter() - start, 1), "s")
 
 group_sizes = train.groupby("group").size()
 print("groups:", len(group_sizes))
@@ -444,16 +633,21 @@ print("groups with more than one pair:", (group_sizes > 1).sum())
 print("pairs in the largest group:", group_sizes.max())
 
 # %% [markdown]
-# The largest group is a whole family of ways to tell someone to stop, or to go away:
+# The largest group is a whole family of ways to tell someone to stop, or to go away. A few of its English and
+# Russian sentences:
 
 # %%
 largest = train[train.group == group_sizes.idxmax()]
-print(sorted(set(largest.en))[:12])
-print(sorted(set(largest.ru))[:12])
+some_english = sorted(set(largest.en))[:12]
+some_russian = sorted(set(largest.ru))[:12]
+
+token_chips([some_english], role="enc", mark_spaces=False)
+token_chips([some_russian], role="dec", mark_spaces=False)
+plt.show()
 
 # %% [markdown]
-# Now compare the two ways of splitting. `leak_rate` measures the share of validation pairs whose English or Russian
-# sentence also occurs somewhere in training:
+# Now compare the two ways of splitting. `leak_rate` measures the share of validation pairs whose English or
+# Russian sentence also occurs somewhere in training:
 
 
 # %%
@@ -468,30 +662,37 @@ def leak_rate(train_part, valid_part):
 # First the random split: every pair goes to validation with probability 2%.
 
 # %%
+VAL_SHARE = 0.02
 rng = np.random.default_rng(SEED)
 
 random_valid = rng.random(len(train)) < VAL_SHARE
-print(f"random split: {leak_rate(train[~random_valid], train[random_valid]):.1%} of validation pairs leak")
+random_leak = leak_rate(train[~random_valid], train[random_valid])
+print(f"random split: {random_leak:.1%} of validation pairs leak")
 
 # %% [markdown]
 # Then the split by groups: we pick 2% of the groups, and their pairs, all of them, go to validation.
 
 # %%
 all_groups = train.group.unique()
-valid_groups = rng.choice(all_groups, size=int(VAL_SHARE * len(all_groups)), replace=False)
+n_valid_groups = int(VAL_SHARE * len(all_groups))
+valid_groups = rng.choice(all_groups, size=n_valid_groups, replace=False)
 in_valid = train.group.isin(set(valid_groups))
 
 valid = train[in_valid].drop(columns="group")
 train = train[~in_valid].drop(columns="group")
 
-print(f"split by groups: {leak_rate(train, valid):.1%} of validation pairs leak")
-assert leak_rate(train, valid) == 0  # stops the notebook if a single pair leaks
+group_leak = leak_rate(train, valid)
+print(f"split by groups: {group_leak:.1%} of validation pairs leak")
+assert group_leak == 0  # stops the notebook if a single pair leaks
 
 print("train:", len(train), "validation:", len(valid), "test:", len(test))
 
 # %% [markdown]
-# The splits are final. We save them; at the end of the lesson they are published so that lesson 2 can start from
-# exactly these sentences.
+# > Split by whatever must not be shared. Here that's sentences, so we split by groups of linked sentences; for
+# > medical images it would be patients, for code it would be repositories.
+#
+# The splits are final. We save them; at the end of the lesson they are published, so that lesson 2 can start
+# from exactly these sentences.
 
 # %%
 DATA_DIR = WORK_DIR / "data"
@@ -506,9 +707,12 @@ print(sorted(path.name for path in DATA_DIR.iterdir()))
 # %% [markdown]
 # ## 3. Why not words, and why not characters
 #
-# The simplest tokenizer splits text into words and gives each distinct word an id. Its problem is that the number of
-# distinct words never stops growing. Watch it grow as we read through the training data, recording the number of
-# distinct words after every thousand words read:
+# Two designs come to mind before BPE does: one token per word, or one token per character. Both have been used,
+# and both fail in instructive ways.
+#
+# A word tokenizer gives each distinct word an id. Its problem is that the number of distinct words never stops
+# growing. Watch it grow as we read through the training data, recording the number of distinct words after every
+# thousand words read:
 
 # %%
 WORD = re.compile(r"\w+")  # a run of letters or digits
@@ -536,14 +740,13 @@ growth = {"en": vocabulary_growth(shuffled.en), "ru": vocabulary_growth(shuffled
 #
 # $$V(N) = K N^{\beta}, \qquad 0 < \beta < 1,$$
 #
-# where $N$ is the number of words read, $V(N)$ the number of distinct words among them, and $K$, $\beta$ constants
-# of the language and the text. $\beta$ is the interesting one: it says how fast new word forms keep appearing. With
-# $\beta = 0.5$, reading four times more text doubles the vocabulary.
+# where $N$ is the number of words read, $V(N)$ the number of distinct words among them, and $K$, $\beta$
+# constants of the language and the text. $\beta$ is the interesting one: it says how fast new word forms keep
+# appearing. With $\beta = 0.5$, reading four times more text doubles the vocabulary.
 #
-# Taking logarithms turns the law into a straight line, $\log V = \log K + \beta \log N$, so we can estimate $\beta$ as
-# the slope of a least-squares line through the points in log–log coordinates; `np.polyfit(x, y, 1)` returns the slope
-# and the intercept. In the plot, English is teal and Russian is rose, the colors of the encoder (which will read
-# English) and the decoder (which will write Russian) for the rest of the course.
+# Taking logarithms turns the law into a straight line, $\log V = \log K + \beta \log N$, so we can estimate
+# $\beta$ as the slope of a least-squares line through the points in log–log coordinates; `np.polyfit(x, y, 1)`
+# returns the slope and the intercept.
 
 # %%
 fig, ax = plt.subplots()
@@ -551,8 +754,10 @@ fig, ax = plt.subplots()
 for lang, color in [("en", COLORS["enc"]), ("ru", COLORS["dec"])]:
     n, v = growth[lang]
     beta, log_k = np.polyfit(np.log(n), np.log(v), 1)
-    ax.loglog(n, v, color=color, label=f"{lang}: β = {beta:.2f}, {v[-1]:,} distinct words")
-    ax.loglog(n, np.exp(log_k) * n**beta, color=color, linestyle=(0, (2, 3)), linewidth=1.2)  # the fitted law
+    label = f"{lang}: β = {beta:.2f}, {v[-1]:,} distinct words"
+    ax.loglog(n, v, color=color, label=label)
+    fitted = np.exp(log_k) * n**beta  # the fitted law, dashed
+    ax.loglog(n, fitted, color=color, linestyle=(0, (2, 3)), linewidth=1.2)
 
 ax.set_xlabel("words read, N")
 ax.set_ylabel("distinct words, V(N)")
@@ -561,32 +766,56 @@ ax.legend(loc="upper left")
 plt.show()
 
 # %% [markdown]
-# Russian grows faster and ends with several times more distinct words, although the Russian side has fewer words in
-# total. The reason is morphology: `понимать, понимаю, понимаешь, понимание, недопонимание, понимания, …` are all
-# different strings to a word tokenizer, while English mostly reuses `understand`.
+# Russian grows faster and ends with several times more distinct words, although the Russian side has fewer words
+# in total. The reason is morphology: `понимать, понимаю, понимаешь, понимание, недопонимание, понимания, …` are
+# all different strings to a word tokenizer, while English mostly reuses `understand`.
 #
-# A real vocabulary must stop somewhere. Keep the 30 000 most frequent training words and count how many validation
-# words fall outside, the **out-of-vocabulary (OOV)** rate:
+# The other side of the same coin is the long tail. Count how many distinct words occur exactly once in all of the
+# training data (linguists call them *hapax legomena*, "said once"):
+
+# %%
+word_freqs = {}
+for lang in ["en", "ru"]:
+    counts = collections.Counter()
+    for sentence in train[lang]:
+        counts.update(WORD.findall(sentence.lower()))
+    word_freqs[lang] = counts
+
+    seen_once = 0
+    for count in counts.values():
+        if count == 1:
+            seen_once += 1
+    print(f"{lang}: {seen_once / len(counts):.0%} of distinct words occur once")
+
+# %% [markdown]
+# A large share of the vocabulary is words the model would see once in all of training, too rarely to learn
+# anything about them. A real vocabulary has to stop somewhere anyway. Keep the 30 000 most frequent training
+# words and count how many validation words fall outside, the **out-of-vocabulary (OOV)** rate:
 
 
 # %%
-def oov_rate(train_sentences, valid_sentences, size=30_000):
-    counts = collections.Counter()
-    for sentence in train_sentences:
-        counts.update(WORD.findall(sentence.lower()))
-    vocabulary = {word for word, _ in counts.most_common(size)}
+def oov_rate(counts, valid_sentences, size=30_000):
+    vocabulary = set()
+    for word, _ in counts.most_common(size):
+        vocabulary.add(word)
 
-    valid_words = [word for sentence in valid_sentences for word in WORD.findall(sentence.lower())]
-    unknown = [word for word in valid_words if word not in vocabulary]
-    return len(unknown) / len(valid_words)
+    total, unknown = 0, 0
+    for sentence in valid_sentences:
+        for word in WORD.findall(sentence.lower()):
+            total += 1
+            if word not in vocabulary:
+                unknown += 1
+    return unknown / total
 
 
-print(f"English: {oov_rate(train.en, valid.en):.2%} of validation words are unknown")
-print(f"Russian: {oov_rate(train.ru, valid.ru):.2%} of validation words are unknown")
+for lang in ["en", "ru"]:
+    rate = oov_rate(word_freqs[lang], valid[lang])
+    print(f"{lang}: {rate:.2%} of validation words are unknown")
 
 # %% [markdown]
 # Every unknown word becomes the same placeholder, and the model can neither read nor write it. For Russian that
-# happens an order of magnitude more often than for English.
+# happens an order of magnitude more often than for English, and those are exactly the rare inflected forms a
+# translator must produce.
 #
 # The opposite extreme, one token per character, has no unknown words at all, but the sequences get long:
 
@@ -594,32 +823,41 @@ print(f"Russian: {oov_rate(train.ru, valid.ru):.2%} of validation words are unkn
 for lang in ["en", "ru"]:
     chars = valid[lang].str.len().mean()
     words = word_count(valid[lang]).mean()
-    print(f"{lang}: {chars:.1f} characters vs {words:.1f} words per sentence, {chars / words:.1f} times longer")
+    print(f"{lang}: {chars:.1f} characters, {words:.1f} words per sentence;")
+    print(f"    {chars / words:.1f} times longer in characters")
 
 # %% [markdown]
-# Length is expensive. In lesson 2 you will see that self-attention compares every position with every other, so its
-# cost grows with the square of the sequence length $T$:
+# Length is expensive. In lesson 2 you will see that self-attention compares every position with every other, so
+# its cost grows with the square of the sequence length $T$:
 #
 # $$\text{cost} \propto T^2 \quad\Rightarrow\quad \frac{\text{cost}_{\text{chars}}}{\text{cost}_{\text{words}}} =
 # \left(\frac{T_{\text{chars}}}{T_{\text{words}}}\right)^2.$$
 #
-# Sequences five to six times longer make attention twenty-five to thirty-six times more expensive, and the model has
-# to learn spelling before it can learn meaning.
+# Sequences $k$ times longer make attention $k^2$ times more expensive: with the ratios above, a character model
+# pays for attention dozens of times more than a word model, and it has to learn spelling before it can learn
+# meaning.
 #
-# **Subword** tokenization is the compromise: frequent words stay whole, rare words are split into frequent pieces,
-# and every string can still be written with the basic alphabet. Byte-pair encoding is the most widely used way to
-# find those pieces.
+# **Subword** tokenization is the compromise: frequent words stay whole, rare words are split into frequent
+# pieces, and every string can still be written with the basic alphabet. Byte-pair encoding is the most widely
+# used way to find those pieces.
 
 # %% [markdown]
 # ## 4. BPE from scratch
 #
-# BPE began as a compression algorithm (Gage, 1994) and was brought to machine translation by
-# [Sennrich et al. (2016)](https://arxiv.org/abs/1508.07909). The idea fits in one picture:
+# BPE was invented in 1994 by Philip Gage as a way to compress files: find the most common pair of adjacent bytes,
+# replace it everywhere with a byte value the file doesn't use, repeat. In 2016
+# [Sennrich, Haddow and Birch](https://arxiv.org/abs/1508.07909) noticed that the same procedure, run on the
+# letters of words, finds good subword units for translation. Today it builds the tokenizers of GPT-2, GPT-4o,
+# Llama 3 and DeepSeek-V3, all of which you took apart in section 1.
 #
-# ![The BPE training loop](https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/bpe-loop-light.png)
+# The idea fits in one picture:
 #
-# Start with every word spelled out as single characters. Then repeat: find the pair of adjacent symbols that occurs
-# most often in the corpus, merge it into one new symbol everywhere, and add that symbol to the vocabulary.
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/bpe-loop-light.png" width="560" alt="The BPE training loop: count adjacent symbol pairs, take the most frequent, merge it everywhere, add the new symbol to the vocabulary, repeat until the vocabulary is full">
+#
+# Start with every word spelled out as single characters. Then repeat: find the pair of adjacent symbols that
+# occurs most often in the corpus, merge it into one new symbol everywhere, and add that symbol to the vocabulary.
+# Frequent words end up as one symbol, because merging their pieces paid off again and again; rare words stay
+# split into pieces that other words share.
 #
 # Formally, let $f(w)$ be the frequency of word $w$ in the corpus and $n_{ab}(w)$ the number of times symbol $a$ is
 # immediately followed by symbol $b$ in the current spelling of $w$. The frequency of the pair is
@@ -630,8 +868,8 @@ for lang in ["en", "ru"]:
 #
 # $$(a^*, b^*) = \operatorname*{arg\,max}_{(a, b)} c(a, b).$$
 #
-# If two pairs are equally frequent we take the one that compares greater as a pair of Python strings, that is, by
-# Unicode code points. Any fixed rule works; what matters is that it is deterministic, so the same corpus always
+# If two pairs are equally frequent we take the one that compares greater as a pair of Python strings, that is,
+# by Unicode code points. Any fixed rule works; what matters is that it is deterministic, so the same corpus always
 # yields the same tokenizer. After $M$ merges the vocabulary holds the initial alphabet $\Sigma$ plus one symbol per
 # merge: $\lvert\mathcal{V}\rvert = \lvert\Sigma\rvert + M$.
 
@@ -639,9 +877,10 @@ for lang in ["en", "ru"]:
 # ### Pre-tokenization
 #
 # Merges never cross word boundaries, so we first split text into words and punctuation. A word keeps the space in
-# front of it, written as `▁` (the convention of SentencePiece, [Kudo and Richardson, 2018](https://arxiv.org/abs/1808.06226)).
-# With the spaces inside the tokens, decoding is just concatenation, and `▁` lets the model tell the beginning of a
-# word from the middle of one.
+# front of it, written as `▁` (the convention of SentencePiece,
+# [Kudo and Richardson, 2018](https://arxiv.org/abs/1808.06226)). It's the same trick you saw in GPT-4o's
+# `␣strawberry`: with the spaces inside the tokens, decoding is plain concatenation, and the model can tell the
+# beginning of a word from the middle of one.
 #
 # The regular expression has two alternatives: ` ?\w+` is an optional space followed by letters or digits, and
 # ` ?[^\w\s]+` is an optional space followed by punctuation (anything that is neither a word character nor
@@ -662,8 +901,8 @@ print(pretokenize("Let's go — now!"))
 # %% [markdown]
 # ### Counting pairs on a toy corpus
 #
-# Before touching half a million sentences, run every step on three Russian words whose counts you can check by hand.
-# A word is stored as a tuple of its symbols, with its frequency:
+# Before touching half a million sentences, run every step on three Russian words whose counts you can check by
+# hand. A word is stored as a tuple of its symbols, with its frequency:
 
 # %%
 toy = {
@@ -719,7 +958,9 @@ def merge_word(word, pair):
     return tuple(merged)
 
 
-token_chips([tuple("▁недопонимание"), merge_word(tuple("▁недопонимание"), ("н", "и"))], labels=["before", "after"])
+before = tuple("▁недопонимание")
+after = merge_word(before, ("н", "и"))
+token_chips([before, after], labels=["before", "after"])
 plt.show()
 
 # %% [markdown]
@@ -737,16 +978,20 @@ def train_bpe_simple(words, n_merges):
             break
         pair = most_frequent_pair(counts)
         merges.append(pair)
-        words = {merge_word(word, pair): freq for word, freq in words.items()}
+
+        merged_words = {}
+        for word, freq in words.items():
+            merged_words[merge_word(word, pair)] = freq
+        words = merged_words
     return merges
 
 
 train_bpe_simple(toy, 6)
 
 # %% [markdown]
-# Six merges on the toy corpus, each one built on the previous ones: `ни`, then `по`, then `по` + `ни` = `пони`, and so
-# on until the whole stem `▁понима`. Now a real sample: we count the words of 40 000 sentences, English and Russian
-# together.
+# Six merges on the toy corpus, each one built on the previous ones: `ни`, then `по`, then `по` + `ни` = `пони`,
+# and so on until the whole stem `▁понима`. Now a real sample: we count the words of 40 000 sentences, English and
+# Russian together, and run 300 merges.
 
 
 # %%
@@ -754,8 +999,15 @@ def word_counts(sentences):
     counts = collections.Counter()
     for sentence in sentences:
         counts.update(pretokenize(sentence))
-    return {tuple(word): freq for word, freq in counts.items()}
 
+    words = {}
+    for word, freq in counts.items():
+        words[tuple(word)] = freq
+    return words
+
+
+SAMPLE_SENTENCES = 40_000
+SAMPLE_MERGES = 300
 
 sample = pd.concat([train.en, train.ru]).sample(SAMPLE_SENTENCES, random_state=SEED)
 sample_words = word_counts(sample)
@@ -764,36 +1016,47 @@ print("distinct words in the sample:", len(sample_words))
 start = time.perf_counter()
 simple_merges = train_bpe_simple(sample_words, SAMPLE_MERGES)
 simple_seconds = time.perf_counter() - start
-print(f"{len(simple_merges)} merges in {simple_seconds:.1f}s")
+print(len(simple_merges), "merges in", round(simple_seconds, 1), "s")
 
 # %% [markdown]
 # The first merges are the most frequent pieces of both languages, interleaved:
 
 # %%
 first_30 = ["".join(pair) for pair in simple_merges[:30]]
-token_chips([first_30[0:10], first_30[10:20], first_30[20:30]], labels=["merges 1–10", "11–20", "21–30"])
+token_chips(
+    [first_30[0:10], first_30[10:20], first_30[20:30]],
+    labels=["merges 1–10", "11–20", "21–30"],
+)
 plt.show()
 
 # %% [markdown]
 # Word starts like `▁t`, `▁н`, `▁п` come first, then frequent syllables and whole short words. `▁T` seems to appear
-# twice in the second row: one is the Latin `T`, the other the Cyrillic `Т` that starts `Том`. They look identical and
-# are different characters, which is exactly why we never compare text by how it looks.
+# twice in the second row: one is the Latin `T`, the other the Cyrillic `Т` that starts `Том`. They look identical
+# and are different characters, which is why we never compare text by how it looks.
 #
-# The trainer is correct but slow. Every merge recounts all pairs in all words, so the cost is $O(M \cdot L)$, where
-# $L$ is the total number of symbols in all distinct words. Both factors grow for the real run: the full training set
-# has several times more distinct words than this sample, and we want thousands of merges, not hundreds.
+# The trainer is correct but slow. Every merge recounts all pairs in all words, so the cost is $O(M \cdot L)$,
+# where $L$ is the total number of symbols in all distinct words. Both factors grow for the real run: the full
+# training set has several times more distinct words than this sample, and we want thousands of merges, not
+# hundreds.
 
 # %% [markdown]
 # ### The incremental trainer
 #
-# A merge only changes the words that contain the merged pair; every other count stays the same. So instead of
-# recounting, we keep two tables between steps:
+# Most of that recounting is wasted, because a merge changes very little. Take one word of the toy corpus and
+# compare its pairs before and after merging `н` + `и`:
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/bpe-update-light.png" width="760" alt="Merging н + и in ▁понимать, which occurs 4 times: the pairs (о, н), (н, и), (и, м) lose 4 each, the new pairs (о, ни), (ни, м) gain 4 each, and all other pairs keep their counts">
+#
+# Only the pairs that touch the merge change, and only in words that contain the pair. So instead of recounting,
+# we keep two tables between steps:
 #
 # - `pair_freq`: how often each pair occurs in the corpus, $c(a, b)$;
 # - `words_with_pair`: for each pair, which words contain it.
 #
-# After a merge we visit only the affected words: take their old pairs out of the tables, rewrite the word, and put its
-# new pairs in.
+# After a merge we visit only the affected words. For each of them, `remove_pairs` takes all its pairs out of the
+# tables, the word is rewritten, and `add_pairs` puts its new pairs back. Removing and re-adding the whole word is
+# simpler than computing the exact difference, and the result is the same: the pairs that didn't change go out
+# and come back with the same count.
 
 
 # %%
@@ -801,7 +1064,7 @@ def train_bpe(word_freqs, n_merges):
     words = [list(word) for word in word_freqs]  # current spelling of every word
     freqs = list(word_freqs.values())
     pair_freq = collections.Counter()
-    words_with_pair = collections.defaultdict(set)  # pair -> indices of the words that contain it
+    words_with_pair = collections.defaultdict(set)  # pair -> indices of words with it
 
     def add_pairs(i):
         for pair in zip(words[i], words[i][1:]):
@@ -829,7 +1092,9 @@ def train_bpe(word_freqs, n_merges):
             words[i] = list(merge_word(words[i], pair))
             add_pairs(i)
 
-    final_spelling = {word: tuple(spelling) for word, spelling in zip(word_freqs, words)}
+    final_spelling = {}
+    for word, spelling in zip(word_freqs, words):
+        final_spelling[word] = tuple(spelling)
     return merges, final_spelling
 
 
@@ -842,34 +1107,43 @@ fast_merges, _ = train_bpe(sample_words, SAMPLE_MERGES)
 fast_seconds = time.perf_counter() - start
 
 assert fast_merges == simple_merges
-print(
-    f"identical merges, {simple_seconds:.1f}s -> {fast_seconds:.2f}s, {simple_seconds / fast_seconds:.0f} times faster"
-)
+print("identical merges")
+print("simple:", round(simple_seconds, 1), "s, incremental:", round(fast_seconds, 2), "s")
+print(round(simple_seconds / fast_seconds), "times faster")
 
 # %% [markdown]
-# Now the full training set, both languages together. One shared vocabulary for English and Russian lets the model
-# share one embedding table between encoder and decoder later on.
+# Now the full training set, both languages together, and 8 000 merges. One shared vocabulary for English and
+# Russian lets the model share one embedding table between encoder and decoder later on, and the two languages
+# have more in common than their alphabets suggest: digits, punctuation, names, borrowed words.
 
 # %%
+N_MERGES = 8_000
 all_words = word_counts(pd.concat([train.en, train.ru]))
 
 start = time.perf_counter()
 merges, segmentation = train_bpe(all_words, N_MERGES)
-print(f"{len(merges)} merges over {len(all_words)} distinct words in {time.perf_counter() - start:.0f}s")
+seconds = round(time.perf_counter() - start)
+print(len(merges), "merges over", len(all_words), "distinct words in", seconds, "s")
 
-alphabet = {symbol for word in all_words for symbol in word}
-print("vocabulary:", len(alphabet), "characters +", len(merges), "merges =", len(alphabet) + len(merges), "symbols")
+alphabet = set()
+for word in all_words:
+    alphabet.update(word)
+vocabulary_size = len(alphabet) + len(merges)
+print("vocabulary:", len(alphabet), "characters +", len(merges), "merges")
+print("          =", vocabulary_size, "symbols")
 
 # %% [markdown]
 # ### Encoding: replay the merges in order
 #
-# To tokenize new text we do not count anything. We apply the learned merges in the order they were learned: in each
-# word, find the adjacent pair that was merged earliest during training, its **rank**, merge it, and repeat until no
-# adjacent pair is in the merge table. Ranks matter because merges build on each other: `▁недо` exists only because
-# `▁н`, `▁не` and `до` were merged first.
+# To tokenize new text we don't count anything. We apply the learned merges in the order they were learned: in
+# each word, find the adjacent pair that was merged earliest during training, its **rank**, merge it, and repeat
+# until no adjacent pair is in the merge table. Ranks matter because merges build on each other: `▁недо` exists
+# only because `▁н`, `▁не` and `до` were merged first.
 
 # %%
-ranks = {pair: rank for rank, pair in enumerate(merges)}  # pair -> when it was merged: 0, 1, 2, ...
+ranks = {}
+for rank, pair in enumerate(merges):
+    ranks[pair] = rank  # pair -> when it was merged: 0, 1, 2, ...
 
 
 def encode_word(word, ranks, steps=None):
@@ -892,12 +1166,14 @@ def encode_word(word, ranks, steps=None):
 
 steps = []
 encode_word("▁недопонимание", ranks, steps)
-token_chips([symbols for symbols, _ in steps], strong=lambda row, col, _: col == steps[row][1], size=11)
+rows = [symbols for symbols, _ in steps]
+token_chips(rows, strong=lambda row, col, _: col == steps[row][1], size=11)
 plt.show()
 
 # %% [markdown]
-# Each row is one merge; the highlighted symbol is the one just created. Replaying merges by rank reproduces exactly
-# the segmentation that training arrived at. Rather than believe it, check it for every word in the training data:
+# Each row is one merge; the highlighted symbol is the one just created. Replaying merges by rank should reproduce
+# exactly the segmentation that training arrived at. Rather than believe it, check it for every word in the
+# training data:
 
 # %%
 mismatches = []
@@ -934,30 +1210,42 @@ print(encode(RU_EXAMPLE))
 # %% [markdown]
 # ### What the merges learned
 #
-# Nobody told BPE about prefixes or suffixes, yet some appear on their own, because a frequent morpheme is a frequent
-# string:
+# Nobody told BPE about prefixes or suffixes, yet some appear on their own, because a frequent morpheme is a
+# frequent string:
 
 # %%
-words = ["▁misunderstanding", "▁недопонимание", "▁исследовательница", "▁вымоталась", "▁researcher", "▁untranslatable"]
-token_chips([encode_word(word, ranks) for word in words], labels=[word[1:] for word in words], size=11)
+words = [
+    "▁misunderstanding",
+    "▁недопонимание",
+    "▁исследовательница",
+    "▁вымоталась",
+    "▁researcher",
+    "▁untranslatable",
+]
+segmented = [encode_word(word, ranks) for word in words]
+token_chips(segmented, labels=[word[1:] for word in words], size=11)
 plt.show()
 
 # %% [markdown]
-# Some splits look like a linguist's (`недо`, the feminine suffix `ница`), others don't (`st` + `and`). BPE optimizes
-# frequency, not meaning. The model will learn what the pieces mean from context; what we control is that frequent
-# things are short and every rare thing can still be spelled.
+# Some splits look like a linguist's: `недо`, or the feminine suffix `ница`, the piece that turns *исследователь*
+# (a researcher) into a woman researcher. Others don't (`st` + `and`). BPE optimizes frequency, not meaning. The
+# model will learn what the pieces mean from context; what the tokenizer controls is that frequent things are short
+# and every rare thing can still be spelled.
 
 # %% [markdown]
 # ## 5. The production tokenizer
 #
-# Our implementation is readable and correct, and it would also be slow at inference and easy to break: the
-# normalization lives in one function, the pre-tokenization in another, and nothing forces a server to call them the
-# same way as training did. Hugging Face [`tokenizers`](https://huggingface.co/docs/tokenizers) packages the whole
-# pipeline (normalizer, pre-tokenizer, model, decoder) into one object that is saved as a single file, implemented in
-# Rust.
+# Our implementation is readable and correct. It would also be slow at serving time and easy to break: the
+# normalization lives in one function, the pre-tokenization in another, and nothing forces a server to call them
+# the same way as training did. Hugging Face [`tokenizers`](https://huggingface.co/docs/tokenizers), written in
+# Rust, packs the whole pipeline into one object that is saved as one file:
 #
-# The rule we follow: **the tokenizer owns its normalization**. Then training, evaluation and the deployed service
-# cannot normalize differently, because there is no separate step to forget.
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/hf-tokenizer-light.png" width="760" alt="A Hugging Face tokenizer holds the normalizer, the pre-tokenizer and the BPE model for encoding, and the decoder for decoding; each stage replaces one function from the lesson, and all are saved in tokenizer.json">
+#
+# The tokenizers of section 1 are such files; you downloaded five of them. The rule we follow:
+#
+# > The tokenizer owns its normalization. Then training, evaluation and the deployed service can't normalize
+# > differently, because there is no separate step to forget.
 #
 # First the normalizer, rebuilt from the same choices as `normalize`, step for step:
 
@@ -976,20 +1264,24 @@ hf_normalizer = normalizers.Sequence(
 print(hf_normalizer.normalize_str("Он сказал:   «Я не знаю» - и ушёл…"))
 
 # %% [markdown]
-# "Rebuilt from the same choices" is a claim; check it on every raw sentence we have:
+# "Rebuilt from the same choices" is a claim, so check it on every raw sentence we have:
 
 # %%
 raw_sentences = pd.concat([train_raw.en, train_raw.ru, test_raw.en, test_raw.ru])
 
-different = [s for s in raw_sentences if hf_normalizer.normalize_str(s) != normalize(s)]
+different = []
+for sentence in raw_sentences:
+    if hf_normalizer.normalize_str(sentence) != normalize(sentence):
+        different.append(sentence)
+
 assert not different, different[:5]
 print("identical normalization on all", len(raw_sentences), "raw sentences")
 
 # %% [markdown]
-# Then the pre-tokenizer: the same regular expression splits words and punctuation, and `Metaspace` turns the spaces
-# into `▁`. Regular-expression engines don't always agree on what a "word character" is (Python's and the Rust
-# library's disagree on combining marks and subscript digits), which is one more reason the normalizer removed those
-# first. Check this one too:
+# Then the pre-tokenizer: the same regular expression splits words and punctuation, and `Metaspace` turns the
+# spaces into `▁`. Regular-expression engines don't always agree on what a "word character" is (Python's and the
+# Rust library's disagree on combining marks and subscript digits), which is one more reason the normalizer
+# removed those first. Check this one too:
 
 # %%
 hf_pre_tokenizer = pre_tokenizers.Sequence(
@@ -1001,19 +1293,23 @@ hf_pre_tokenizer = pre_tokenizers.Sequence(
 
 
 def hf_pretokenize(text):
-    pieces = hf_pre_tokenizer.pre_tokenize_str(" " + text)  # a list of (piece, position) pairs
+    pieces = hf_pre_tokenizer.pre_tokenize_str(" " + text)  # (piece, position) pairs
     return [piece for piece, _ in pieces]
 
 
 normalized_sentences = pd.concat([train.en, train.ru, valid.en, valid.ru, test.en, test.ru])
 for sentence in normalized_sentences:
     assert hf_pretokenize(sentence) == pretokenize(sentence), sentence
-print("identical pre-tokenization on all", len(normalized_sentences), "normalized sentences")
+print("identical pre-tokenization on all", len(normalized_sentences), "sentences")
 
 # %% [markdown]
 # The tokenizer needs four special tokens, which the model will use from lesson 2 on: `<pad>` fills shorter
-# sentences in a batch, `<unk>` stands for a character never seen in training, `<bos>` and `<eos>` mark the beginning
-# and end of a sentence. They take ids 0 to 3.
+# sentences in a batch, `<unk>` stands for a character never seen in training, `<bos>` and `<eos>` mark the
+# beginning and end of a sentence. They take ids 0 to 3.
+#
+# `<unk>` is the price of starting from characters rather than bytes, as GPT-2 does: a character that never
+# occurred in training (an emoji, a Chinese name) has no symbol. For a translator between two languages that is a
+# fair trade; the tokens stay readable, and no letter gets cut in half.
 
 # %%
 SPECIAL_TOKENS = ["<pad>", "<unk>", "<bos>", "<eos>"]
@@ -1023,7 +1319,9 @@ def build_tokenizer(vocab_size):
     tokenizer = Tokenizer(models.BPE(unk_token="<unk>"))
     tokenizer.normalizer = normalizers.Sequence([hf_normalizer, normalizers.Prepend(" ")])
     tokenizer.pre_tokenizer = hf_pre_tokenizer
-    tokenizer.decoder = decoders.Metaspace(replacement="▁", prepend_scheme="always", split=False)
+    tokenizer.decoder = decoders.Metaspace(
+        replacement="▁", prepend_scheme="always", split=False
+    )
 
     trainer = trainers.BpeTrainer(
         vocab_size=vocab_size,
@@ -1035,17 +1333,20 @@ def build_tokenizer(vocab_size):
     return tokenizer
 
 
+VOCAB_SIZE = 16_000
+
 start = time.perf_counter()
 tokenizer = build_tokenizer(VOCAB_SIZE)
-print(f"vocabulary of {tokenizer.get_vocab_size()} trained in {time.perf_counter() - start:.1f}s")
+seconds = round(time.perf_counter() - start, 1)
+print("vocabulary of", tokenizer.get_vocab_size(), "trained in", seconds, "s")
 print(tokenizer.encode(RU_EXAMPLE).tokens)
 
 # %% [markdown]
-# Compare the two timings: the Rust trainer builds twice as many symbols in a fraction of the time our Python one
-# needed for the same corpus. Both see exactly the same words, since we checked normalization and pre-tokenization, so
-# their merges should agree except where the two implementations make different choices: Hugging Face breaks ties
-# between equally frequent pairs differently and skips pairs seen only once (`min_frequency=2`). The saved tokenizer
-# lists its merges in order; compare the first thousand with ours:
+# Compare the timings: the Rust trainer builds twice as many symbols in a fraction of the time our Python one
+# needed for the same corpus. Both see exactly the same words, since we checked normalization and
+# pre-tokenization, so their merges should agree except where the two implementations make different choices:
+# Hugging Face breaks ties between equally frequent pairs differently, and skips pairs seen only once
+# (`min_frequency=2`). The saved tokenizer lists its merges in order; compare the first thousand with ours:
 
 # %%
 saved = json.loads(tokenizer.to_str())
@@ -1059,17 +1360,22 @@ for merge in saved["model"]["merges"]:
 shared = set(hf_merges[:1000]) & set(merges[:1000])
 print(len(shared), "of the first 1000 merges are the same in both")
 
-first_difference = next(k for k in range(len(merges)) if hf_merges[k] != merges[k])
+first_difference = 0
+while hf_merges[first_difference] == merges[first_difference]:
+    first_difference += 1
 print("the lists first differ at merge", first_difference + 1)
-print("Hugging Face merged", hf_merges[first_difference], "and we merged", merges[first_difference])
+print("Hugging Face merged", hf_merges[first_difference])
+print("and we merged", merges[first_difference])
 
 # %% [markdown]
-# Almost all of the first thousand merges are the same. Why does the first difference happen? Rebuild the corpus as
-# both trainers saw it at that moment: replaying the merges that came before it, with our `encode_word`, gives every
-# word's spelling at that step, and `pair_counts` gives the frequencies.
+# Almost all of the first thousand merges are the same. Why does the first difference happen? Rebuild the corpus
+# as both trainers saw it at that moment: replaying the merges that came before it, with our `encode_word`, gives
+# every word's spelling at that step, and `pair_counts` gives the frequencies.
 
 # %%
-earlier_ranks = {pair: rank for rank, pair in enumerate(merges[:first_difference])}
+earlier_ranks = {}
+for rank, pair in enumerate(merges[:first_difference]):
+    earlier_ranks[pair] = rank
 
 corpus_at_that_step = {}
 for word, freq in all_words.items():
@@ -1077,14 +1383,16 @@ for word, freq in all_words.items():
     corpus_at_that_step[spelling] = freq
 
 counts_then = pair_counts(corpus_at_that_step)
-print("Hugging Face's pair:", hf_merges[first_difference], counts_then[hf_merges[first_difference]])
-print("our pair:", merges[first_difference], counts_then[merges[first_difference]])
+theirs, ours = hf_merges[first_difference], merges[first_difference]
+print("Hugging Face's pair:", theirs, "occurred", counts_then[theirs], "times")
+print("our pair:", ours, "occurred", counts_then[ours], "times")
 
 # %% [markdown]
-# A tie: both pairs were equally frequent, and the two implementations break ties differently. Same algorithm, same
-# data, a different rule for a coin toss.
+# A tie: both pairs were equally frequent, and the two implementations break ties differently. Same algorithm,
+# same data, a different rule for a coin toss.
 #
-# The tokenizer is now self-contained. Feed it raw, unnormalized text, and decoding returns the normalized sentence:
+# The tokenizer is now self-contained. Feed it raw, unnormalized text, and decoding returns the normalized
+# sentence:
 
 # %%
 messy = "  Он сказал:   «Я не  знаю» - и ушёл…"
@@ -1096,47 +1404,67 @@ assert tokenizer.decode(ids) == normalize(messy)
 assert [tokenizer.token_to_id(token) for token in SPECIAL_TOKENS] == [0, 1, 2, 3]
 
 # %% [markdown]
-# ### Choosing the vocabulary size
+# ## 6. How many tokens?
 #
-# A bigger vocabulary makes sequences shorter, but it is not free. Each token needs a row in the embedding table, and
-# at every output position the model scores every token:
+# Why 16 000 symbols, and not 8 000 or the 200 000 of GPT-4o? A bigger vocabulary makes sequences shorter, but
+# it isn't free. The first layer of the model is an **embedding table**, one learned vector per token:
 #
-# $$\text{embedding parameters} = \lvert\mathcal{V}\rvert \cdot d_{\text{model}}.$$
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/01/embedding-light.png" width="760" alt="The embedding table has one row per token and d_model columns; a token's id selects its row, a vector of d_model learned numbers; the table holds |V| times d_model parameters">
 #
-# A rare token also gets few training examples, so its embedding is learned poorly. We measure both sides: the
-# average number of tokens per validation sentence for several vocabulary sizes, and the parameter count of the
-# embedding table for the model of lesson 2 ($d_{\text{model}} = 256$).
+# $$\text{embedding parameters} = \lvert\mathcal{V}\rvert \cdot d_{\text{model}},$$
+#
+# and the last layer is the same size again, because at every output position the model scores every token in
+# the vocabulary. Worse, a rare token gets few training examples, so its row is learned poorly. The most famous
+# case is ` SolidGoldMagikarp`: a Reddit username that was frequent enough in the text GPT-2's tokenizer was built
+# from to become a token of its own, but that, it seems, almost never occurred in the text the models were then
+# trained on. In 2023, [Rumbelow and Watkins](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation)
+# found that GPT-3 models, which share that tokenizer, couldn't even repeat the word back and answered with
+# unrelated ones. The token is still there:
+
+# %%
+show_tokens(llm_tokenizers["GPT-2 (2019)"], [" SolidGoldMagikarp"])
+
+# %% [markdown]
+# So we measure both sides: the average number of tokens per validation sentence for several vocabulary sizes,
+# and the size of the embedding table for the model of lesson 2, whose vectors have $d_{\text{model}} = 256$
+# numbers.
 
 
 # %%
 def tokens_per_sentence(tokenizer, sentences):
-    encodings = tokenizer.encode_batch(list(sentences))
-    return np.mean([len(encoding.ids) for encoding in encodings])
+    encodings = tokenizer.encode_batch(list(sentences), add_special_tokens=False)
+    lengths = [len(encoding.ids) for encoding in encodings]
+    return np.mean(lengths)
 
+
+D_MODEL = 256
+VOCAB_SIZES = [2_000, 4_000, 8_000, 16_000, 32_000]
 
 rows = []
 for size in VOCAB_SIZES:
     candidate = build_tokenizer(size)
     rows.append(
         {
-            "vocab_size": size,
-            "embedding_params": size * D_MODEL,
-            "en_tokens": tokens_per_sentence(candidate, valid.en),
-            "ru_tokens": tokens_per_sentence(candidate, valid.ru),
+            "vocabulary": size,
+            "embedding parameters": size * D_MODEL,
+            "English tokens": tokens_per_sentence(candidate, valid.en),
+            "Russian tokens": tokens_per_sentence(candidate, valid.ru),
         }
     )
 
-sweep = pd.DataFrame(rows).set_index("vocab_size")
-sweep.round(2)
+sweep = pd.DataFrame(rows)
+table(sweep)
 
 # %%
 fig, ax = plt.subplots()
-ax.plot(sweep.index, sweep.en_tokens, marker="o", color=COLORS["enc"], label="English")
-ax.plot(sweep.index, sweep.ru_tokens, marker="o", color=COLORS["dec"], label="Russian")
-ax.axvline(VOCAB_SIZE, color=COLORS["muted"], linestyle=(0, (3, 3)), linewidth=1)  # the size we keep
+sizes = sweep.vocabulary
+ax.plot(sizes, sweep["English tokens"], marker="o", color=COLORS["enc"], label="English")
+ax.plot(sizes, sweep["Russian tokens"], marker="o", color=COLORS["dec"], label="Russian")
+ax.axvline(VOCAB_SIZE, color=COLORS["muted"], linestyle=(0, (3, 3)), linewidth=1)
 
 ax.set_xscale("log", base=2)
-ax.set_xticks(sweep.index, [f"{size // 1000}k" if size >= 1000 else str(size) for size in sweep.index])
+tick_labels = [f"{size // 1000}k" for size in sweep.vocabulary]
+ax.set_xticks(sweep.vocabulary, tick_labels)
 ax.set_xlabel("vocabulary size")
 ax.set_ylabel("tokens per sentence")
 ax.set_title("Diminishing returns of a bigger vocabulary")
@@ -1145,32 +1473,56 @@ plt.show()
 
 # %% [markdown]
 # Each doubling of the vocabulary saves fewer tokens than the previous one, while the embedding table doubles every
-# time. We keep 16 000 symbols. Going to 32 000 would save about half a token per Russian sentence and a quarter of
-# one per English sentence, and double an embedding table that already holds four million parameters, a sizeable
-# share of a small translation model.
-#
-# ### The token tax, revisited
-#
-# Back to where we started. Here are both tokenizers on the whole validation set:
-
-# %%
-for lang in ["en", "ru"]:
-    ours = tokens_per_sentence(tokenizer, valid[lang])
-    theirs = tokens_per_sentence(gpt2, valid[lang])
-    print(f"{lang}: ours {ours:.1f} tokens per sentence, GPT-2 {theirs:.1f}, GPT-2 / ours = {theirs / ours:.2f}")
-
-print()
-print("English example:", len(tokenizer.encode(EN_EXAMPLE).ids), "tokens")
-print("Russian example:", len(tokenizer.encode(RU_EXAMPLE).ids), "tokens")
+# time. We keep 16 000 symbols. Compare the last two rows of the table: going to 32 000 would save less than a
+# token per sentence in either language, and double an embedding table that already holds millions of parameters,
+# a sizeable share of a small translation model. Models with billions of parameters can afford 200 000 tokens,
+# because next to the rest of the model even a huge embedding table is small. Ours can't.
 
 # %% [markdown]
-# On Russian our tokenizer needs a fraction of GPT-2's tokens. On English it is slightly worse, which is the honest
-# price of sharing 16 000 symbols between two languages, while GPT-2 spends 50 000 mostly on English. For a
-# translator that reads English and writes Russian, that is the right trade.
+# ### The token tax, revisited
 #
+# Back to where we started, with our tokenizer next to the five from section 1. This time we count tokens on the
+# whole validation set rather than on one sentence:
+
+# %%
+contenders = dict(llm_tokenizers)
+contenders["Ours (this lesson)"] = tokenizer
+
+rows = []
+for name, candidate in contenders.items():
+    rows.append(
+        {
+            "model": name,
+            "vocabulary": candidate.get_vocab_size(),
+            "English": tokens_per_sentence(candidate, valid.en),
+            "Russian": tokens_per_sentence(candidate, valid.ru),
+        }
+    )
+validation_counts = pd.DataFrame(rows)
+plot_token_counts(validation_counts, "Average tokens per validation sentence")
+
+# %% [markdown]
+# On Russian, our tokenizer needs fewer tokens than every model in the chart, GPT-4o included, with a vocabulary a
+# fraction of the size. That's not because we out-engineered OpenAI. Our tokenizer was trained on exactly this
+# kind of text in exactly these two languages; theirs has to serve code, math and dozens of languages at once. On
+# English we're slightly worse than all of them, which is the honest price of sharing 16 000 symbols between two
+# languages. A tokenizer is a decision about what to be good at, and for a translator that reads English and
+# writes Russian this one is right.
+#
+# And the word from section 1, cut by GPT-4o and by ours:
+
+# %%
+gpt4o_ids = gpt4o.encode(" недопонимание").ids
+gpt4o_pieces = [gpt4o.decode([token_id]) for token_id in gpt4o_ids]
+our_pieces = tokenizer.encode("недопонимание").tokens
+
+token_chips([gpt4o_pieces, our_pieces], labels=["GPT-4o", "ours"])
+plt.show()
+
+# %% [markdown]
 # ### Save and publish
 #
-# The tokenizer is one JSON file. Saving and loading it back must give the same tokens:
+# The tokenizer is one JSON file. Saving it and loading it back must give the same tokens:
 
 # %%
 TOKENIZER_PATH = WORK_DIR / "tokenizer.json"
@@ -1180,10 +1532,10 @@ reloaded = Tokenizer.from_file(str(TOKENIZER_PATH))
 assert reloaded.encode(RU_EXAMPLE).ids == tokenizer.encode(RU_EXAMPLE).ids
 
 # %% [markdown]
-# The next lessons download the tokenizer and the three splits from the Hugging Face Hub, so that every lesson can
-# start on its own. The course's copies are published from this notebook. To publish your own, set the environment
-# variable `TFS_HUB_USER` to your Hugging Face username and add a write token as the `HF_TOKEN` secret (Kaggle:
-# *Add-ons → Secrets*; Colab: the key icon in the sidebar).
+# The next lessons download the tokenizer and the three splits from the Hugging Face Hub, so that every lesson
+# can start on its own. The course's copies are published from this notebook. To publish your own, set the
+# environment variable `TFS_HUB_USER` to your Hugging Face username and add a write token as the `HF_TOKEN` secret
+# (Kaggle: *Add-ons → Secrets*; Colab: the key icon in the sidebar).
 #
 # A dataset on the Hub needs a card that says where the data comes from and how it was processed:
 
@@ -1195,13 +1547,16 @@ task_categories: [translation]
 ---
 # Tatoeba English–Russian, cleaned and split without leaks
 
-Built in lesson 1 of [Transformers: from scratch to production](https://github.com/xmarva/transformers-from-scratch).
+Built in lesson 1 of the course "Transformers: from scratch to production":
+https://github.com/xmarva/transformers-from-scratch
 
-- train and validation: sentence-transformers/parallel-sentences-tatoeba (en-ru), revision `{TRAIN_REVISION[:7]}`
+- train and validation: sentence-transformers/parallel-sentences-tatoeba (en-ru),
+  revision `{TRAIN_REVISION[:7]}`
 - test: Tatoeba Translation Challenge eng-rus test set (Tiedemann, 2020)
 - NFKC normalization, combining marks removed, straight quotes, one dash
 - training pairs sharing a sentence fingerprint with the test set removed
-- validation split by connected components of the translation graph, so no sentence occurs in both
+- validation split by connected components of the translation graph,
+  so no sentence occurs in both
 
 Sentences from [Tatoeba](https://tatoeba.org), CC BY 2.0 FR.
 
@@ -1216,7 +1571,7 @@ Sentences from [Tatoeba](https://tatoeba.org), CC BY 2.0 FR.
 HUB_USER = os.environ.get("TFS_HUB_USER")
 hf_token = env.secret("HF_TOKEN")
 
-if HUB_USER and hf_token and not SMOKE:
+if HUB_USER and hf_token:
     from huggingface_hub import HfApi
 
     api = HfApi(token=hf_token)
@@ -1232,26 +1587,35 @@ if HUB_USER and hf_token and not SMOKE:
             repo_type="dataset",
         )
     api.upload_file(
-        path_or_fileobj=DATASET_CARD.encode(), path_in_repo="README.md", repo_id=data_repo, repo_type="dataset"
+        path_or_fileobj=DATASET_CARD.encode(),
+        path_in_repo="README.md",
+        repo_id=data_repo,
+        repo_type="dataset",
     )
 
     api.create_repo(tokenizer_repo, exist_ok=True)
-    api.upload_file(path_or_fileobj=str(TOKENIZER_PATH), path_in_repo="tokenizer.json", repo_id=tokenizer_repo)
+    api.upload_file(
+        path_or_fileobj=str(TOKENIZER_PATH),
+        path_in_repo="tokenizer.json",
+        repo_id=tokenizer_repo,
+    )
     print("published", data_repo, "and", tokenizer_repo)
 else:
-    print(
-        "not publishing; lesson 2 downloads the course's copies from xmarva/tfs-tatoeba-en-ru and xmarva/tfs-bpe-en-ru-16k"
-    )
+    print("not publishing; lesson 2 downloads the course's copies:")
+    print("xmarva/tfs-tatoeba-en-ru and xmarva/tfs-bpe-en-ru-16k")
 
 # %% [markdown]
 # ## References
 #
 # - Gage, P. (1994). A new algorithm for data compression. *The C Users Journal*, 12(2).
 # - Sennrich, R., Haddow, B., Birch, A. (2016). [Neural Machine Translation of Rare Words with Subword Units](https://arxiv.org/abs/1508.07909). ACL.
+# - Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., Sutskever, I. (2019). [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). OpenAI. *GPT-2 and its byte-level BPE.*
 # - Kudo, T., Richardson, J. (2018). [SentencePiece: A simple and language independent subword tokenizer and detokenizer](https://arxiv.org/abs/1808.06226). EMNLP.
 # - Petrov, A., La Malfa, E., Torr, P., Bibi, A. (2023). [Language Model Tokenizers Introduce Unfairness Between Languages](https://arxiv.org/abs/2305.15425). NeurIPS.
+# - Rumbelow, J., Watkins, M. (2023). [SolidGoldMagikarp (plus, prompt generation)](https://www.lesswrong.com/posts/aPeJE8bSo6rAFoLqg/solidgoldmagikarp-plus-prompt-generation). LessWrong.
+# - OpenAI (2023). [GPT-4 Technical Report](https://arxiv.org/abs/2303.08774). *Appendix C on contamination.*
 # - Tiedemann, J. (2020). [The Tatoeba Translation Challenge](https://arxiv.org/abs/2010.06354). WMT.
 # - Heaps, H. S. (1978). *Information Retrieval: Computational and Theoretical Aspects*. Academic Press.
 # - Tarjan, R. E. (1975). [Efficiency of a good but not linear set union algorithm](https://doi.org/10.1145/321879.321884). *Journal of the ACM*, 22(2).
 # - [Unicode Standard Annex #15: Unicode Normalization Forms](https://unicode.org/reports/tr15/).
-# - [Hugging Face Tokenizers documentation](https://huggingface.co/docs/tokenizers).
+# - [tiktoken](https://github.com/openai/tiktoken), OpenAI's tokenizers, and the [Hugging Face Tokenizers documentation](https://huggingface.co/docs/tokenizers).

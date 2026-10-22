@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="The letter й stored two ways: as one code point, U+0439, or as и (U+0438) followed by a combining breve (U+0306). They look the same but are different strings; NFKC normalization turns the second into the first">
+<title>The letter й stored two ways: as one code point, U+0439, or as и (U+0438) followed by a combining breve (U+0306). They look the same but are different strings; NFKC normalization turns the second into the first</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">One letter, two strings</text>
+<rect x="14.0" y="46.0" width="352.0" height="186.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="34.0" y="76.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">one code point</text>
+<text x="38.0" y="150.0" text-anchor="start" font-family="IBM Plex Sans" font-size="46" font-weight="400" fill="#E7EAF0">й</text>
+<rect x="106.0" y="100.0" width="62.9" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="137.5" y="119.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">U+0439</text>
+<text x="106.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">cyrillic small</text>
+<text x="106.0" y="166.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">letter short i</text>
+<text x="34.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">UTF-8 bytes: D0 B9</text>
+<rect x="394.0" y="46.0" width="352.0" height="186.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="414.0" y="76.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">two code points</text>
+<text x="418.0" y="150.0" text-anchor="start" font-family="IBM Plex Sans" font-size="46" font-weight="400" fill="#E7EAF0">й</text>
+<rect x="486.0" y="100.0" width="62.9" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="517.5" y="119.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">U+0438</text>
+<text x="486.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">cyrillic small</text>
+<text x="486.0" y="166.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">letter i</text>
+<rect x="624.0" y="100.0" width="62.9" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="655.5" y="119.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">U+0306</text>
+<text x="624.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">combining breve</text>
+<text x="414.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">UTF-8 bytes: D0 B8 CC 86</text>
+<polyline points="570.0,236.0 570.0,262.0 190.0,262.0 190.0,240.0" fill="none" stroke="#F0B04A" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-data)"/>
+<text x="380.0" y="286.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">unicodedata.normalize(&quot;NFKC&quot;, text)</text>
+</svg>

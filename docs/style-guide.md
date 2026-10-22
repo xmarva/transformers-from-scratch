@@ -7,6 +7,12 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 - Talk to one reader, as "you". Short, direct sentences; one idea per paragraph.
 - Open each lesson and each major section with something concrete: a sentence the model gets wrong, a number
   that surprises, a question the reader can't answer yet. Then explain.
+- Start from what readers already care about, which is how today's large models behave (GPT-4o, Llama,
+  DeepSeek), and lead to the technical part step by step. Lesson 1 opens with what GPT-4o actually receives.
+- Explain what each step does *and why we do it*. Add the facts that make a topic memorable (where an algorithm
+  came from, a famous failure, a quirk of the data), checked and cited.
+- No stock phrases of generated text: "let's dive in", "crucial", "it's worth noting", "in this section we
+  will", "the magic of", aphorisms closing every paragraph, em dashes everywhere.
 - Be exact rather than impressive. No hype words ("revolutionary", "staggering", "game-changer", "delve",
   "it's worth noting"), no rhetorical drama. A dry joke now and then is welcome.
 - Define a term the first time it appears. State assumptions out loud ("we lowercase everything, which loses
@@ -56,7 +62,11 @@ The reader is a beginner who reads every line. Code that looks generated loses t
   `setdefault` tricks or long pandas chains. Name the intermediate results.
 - **No type hints, type aliases or docstrings** in lesson code: the text around the cell explains. Short comments
   say *why*, in plain words.
-- **Plain prints** (`print("train:", len(train))`), no alignment or format-spec tricks.
+- **Plain prints** (`print("train:", len(train))`), no alignment tricks. An f-string is fine for rounding and
+  percentages (`f"{share:.1%}"`).
+- **Code lines up to 92 characters**, so a Kaggle or Colab cell shows them without scrolling
+  (`tests/test_lessons.py` checks it).
+- Invisible characters (combining marks, non-breaking spaces) are written as `\u` escapes, never pasted.
 - One idea per cell, at most ~25 lines. Explain before the cell, interpret after it.
 - Checks are `assert`s introduced in the text ("rather than believe it, check it").
 - When the text needs a number the code computes, make the notebook print it right there and refer to the output.
@@ -64,6 +74,16 @@ The reader is a beginner who reads every line. Code that looks generated loses t
 - Reproducible: seeds from the setup cell, pinned dataset revisions, deterministic splits.
 - Everything runs on Kaggle and Colab with the free tier: CPU for lesson 1, one T4 for the rest, about an
   hour per lesson. `SMOKE` (set by CI) shrinks data and steps; it must not change what the code teaches.
+
+## Outputs
+
+A notebook is read as much as it is run, so every output is designed:
+
+- DataFrames are shown with `table(df)` (no index, wrapped text, numbers aligned), never as raw reprs.
+- Tokens, and short lists of sentences, are shown as chips with `token_chips` (with `ids=` when the ids
+  matter).
+- Setup is silent: `env.quiet()` hides progress bars and environment warnings. No stderr in a finished notebook.
+- Key rules are blockquotes (`> A cleaning step is a hypothesis about your data.`), at most a few per lesson.
 
 ## Figures
 
@@ -75,6 +95,8 @@ The reader is a beginner who reads every line. Code that looks generated loses t
   run time, with `use_course_style()` / `token_chips()`. Then the picture can't disagree with the code.
 - Color means a concept everywhere: amber data and tokens, teal encoder, rose decoder, violet attention.
 - Text in a figure is at least 12 px at the width of a Kaggle cell (about 900 px).
+- Static figures go into markdown as `<img src="…/NAME-light.png" width="W" alt="…">` with the figure's own
+  width, so a narrow diagram isn't blown up to the full cell.
 - Every image has alt text. External images only with a compatible license and a link; prefer redrawing
   them in our style with "adapted from".
 - Screenshots (W&B, Gradio, Grafana) are taken at one size, in one theme, with the same frame.

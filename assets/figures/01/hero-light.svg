@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 262" width="760" height="262" role="img" aria-label="The question &#x27;How many r&#x27;s are in strawberry?&#x27; as GPT-4o receives it: 8 tokens, each an integer id. The word &#x27; strawberry&#x27;, with its leading space, is a single token, id 101830, so its letters never reach the model">
+<title>The question &#x27;How many r&#x27;s are in strawberry?&#x27; as GPT-4o receives it: 8 tokens, each an integer id. The word &#x27; strawberry&#x27;, with its leading space, is a single token, id 101830, so its letters never reach the model</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="262" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">What GPT-4o receives</text>
+<text x="14.0" y="74.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">you type</text>
+<text x="150.0" y="75.0" text-anchor="start" font-family="IBM Plex Sans" font-size="18" font-weight="400" fill="#1D2430">How many r&#x27;s are in strawberry?</text>
+<text x="14.0" y="128.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">tokens</text>
+<rect x="150.0" y="108.0" width="45.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="172.8" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">How</text>
+<rect x="201.6" y="108.0" width="63.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="233.4" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">␣many</text>
+<rect x="271.2" y="108.0" width="36.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="289.5" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">␣r</text>
+<rect x="313.8" y="108.0" width="36.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="332.1" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">&#x27;s</text>
+<rect x="356.4" y="108.0" width="54.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="383.7" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">␣are</text>
+<rect x="417.0" y="108.0" width="45.6" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="439.8" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">␣in</text>
+<rect x="468.6" y="108.0" width="117.6" height="34.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="527.4" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#FFFFFF" xml:space="preserve">␣strawberry</text>
+<rect x="592.2" y="108.0" width="33.0" height="34.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="608.7" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" font-weight="500" fill="#8A5508" xml:space="preserve">?</text>
+<text x="14.0" y="180.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">token ids</text>
+<text x="172.8" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">5299</text>
+<text x="233.4" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1991</text>
+<text x="289.5" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">428</text>
+<text x="332.1" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">885</text>
+<text x="383.7" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">553</text>
+<text x="439.8" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">306</text>
+<text x="527.4" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">101830</text>
+<text x="608.7" y="180.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">30</text>
+<polyline points="527.4,190.0 527.4,214.0" fill="none" stroke="#C27A0E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="527.4" y="234.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">one token, one integer: the letters never reach the model</text>
+<text x="14.0" y="234.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">␣ marks a space</text>
+</svg>
