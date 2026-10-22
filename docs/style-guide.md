@@ -5,19 +5,24 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 ## Voice
 
 - Talk to one reader, as "you". Short, direct sentences; one idea per paragraph.
-- Open each lesson and each major section with something concrete: a sentence the model gets wrong, a number
-  that surprises, a question the reader can't answer yet. Then explain.
 - Start from what readers already care about, which is how today's large models behave (GPT-4o, Llama,
-  DeepSeek), and lead to the technical part step by step. Lesson 1 opens with what GPT-4o actually receives.
-- Explain what each step does *and why we do it*. Add the facts that make a topic memorable (where an algorithm
-  came from, a famous failure, a quirk of the data), checked and cited.
-- No stock phrases of generated text: "let's dive in", "crucial", "it's worth noting", "in this section we
-  will", "the magic of", aphorisms closing every paragraph, em dashes everywhere.
-- Be exact rather than impressive. No hype words ("revolutionary", "staggering", "game-changer", "delve",
-  "it's worth noting"), no rhetorical drama. A dry joke now and then is welcome.
-- Define a term the first time it appears. State assumptions out loud ("we lowercase everything, which loses
-  ...").
-- Every number in the text comes from an output the reader can see. Never type a number that the code computes.
+  DeepSeek), and lead to the technical part step by step. Lesson 1 opens with what GPT-4o actually receives
+  when you ask it about strawberries; only then come byte pairs and merge tables.
+- Open each major section with something concrete too: a sentence the model gets wrong, a number that
+  surprises, a question the reader can't answer yet. Then explain.
+- Explain what each step does *and why we do it*, including the choices we didn't make ("the length-ratio filter
+  would remove these pairs, and they are good translations").
+- Add the facts that make a topic memorable: where an algorithm came from, a famous failure, a quirk of the data
+  (Tom in 23% of Tatoeba's sentences, `SolidGoldMagikarp`). Every such fact is checked against a source and
+  linked where it first appears.
+- Be exact rather than impressive. No hype ("revolutionary", "game-changer"), no rhetorical drama, and none of
+  the stock phrases of generated text: "let's dive in", "delve", "crucial", "it's worth noting", "in this section
+  we will", "the magic of", an aphorism closing every paragraph, em dashes in every sentence. A dry joke now and
+  then is welcome.
+- Define a term the first time it appears, in bold. State assumptions out loud ("we lowercase everything, which
+  loses ...").
+- Every number in the text comes from an output the reader can see. Never type a number that the code computes;
+  describe it ("several times more", "less than a token per sentence") and let the output give the value.
 
 ## Examples
 
@@ -29,13 +34,22 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 
 ## Structure of a lesson
 
-1. Header (generated): cover, platform badges.
-2. Title and a hook paragraph.
-3. **What you'll build** and **what you need** (previous lesson's artifacts, CPU/GPU, expected run time).
-4. Setup (shared include).
-5. Sections, each: why it matters → idea (with a figure where a picture explains better than words) → math →
-   code → check → what the output tells us.
-6. **References**: papers and docs, with links.
+The arc that lesson 1 settled on:
+
+1. **Header** (generated): cover, one line with the course, the lesson number and the other platform's badge.
+2. **Title and hook**: a concrete scene with a real model, a hero figure of it, and why it matters; a few short
+   paragraphs, no more.
+3. **What you'll do** and **what you need** (previous lessons' artifacts, CPU/GPU, run time).
+4. **Setup** (shared include, silent).
+5. **Real models first.** Take apart the real thing in code (a tokenizer, a config file, a few megabytes, never
+   gigabytes of weights unless the lesson needs them) and let the reader see the phenomenon the lesson explains.
+6. **The plan**: one figure of what we are about to build, then build it.
+7. **Build sections**, each: why it matters → idea, with a figure → math → a tiny example → code → a check
+   (`assert`) → what the output tells us.
+8. **Payoff**: put what we built next to the real models from step 5, on the same measurement. Say honestly
+   where ours wins, where it loses and why.
+9. **Save and publish** what the next lesson downloads.
+10. **References**: papers, docs and the sources of every fact, with links.
 
 No "common mistakes", exercises or summary sections: the lesson ends with its last real step and the references.
 
@@ -71,9 +85,13 @@ The reader is a beginner who reads every line. Code that looks generated loses t
 - Checks are `assert`s introduced in the text ("rather than believe it, check it").
 - When the text needs a number the code computes, make the notebook print it right there and refer to the output.
   Numbers typed into the text go stale as soon as something upstream changes.
+- Settings live next to the code that uses them (`VOCAB_SIZE = 16_000` right before the tokenizer is trained), not
+  in one cell of constants at the top.
 - Reproducible: seeds from the setup cell, pinned dataset revisions, deterministic splits.
 - Everything runs on Kaggle and Colab with the free tier: CPU for lesson 1, one T4 for the rest, about an
-  hour per lesson. `SMOKE` (set by CI) shrinks data and steps; it must not change what the code teaches.
+  hour per lesson. A lesson that trains for long defines `SMOKE = env.smoke()` in its own settings cell; CI sets
+  it to shrink data and steps, and it must not change what the code teaches. A lesson that runs in minutes, like
+  lesson 1, has no smoke path at all.
 
 ## Outputs
 
@@ -84,13 +102,20 @@ A notebook is read as much as it is run, so every output is designed:
   matter).
 - Setup is silent: `env.quiet()` hides progress bars and environment warnings. No stderr in a finished notebook.
 - Key rules are blockquotes (`> A cleaning step is a hypothesis about your data.`), at most a few per lesson.
+- Plots use `use_course_style()`; two series that mean English and Russian are teal and rose, with a legend and
+  direct labels on bars.
 
 ## Figures
 
 - Draw a figure where a picture explains better than text: data flow, architecture, an algorithm step,
-  a metric's mechanics, a system diagram. Not as decoration.
+  a metric's mechanics, a system diagram. Not as decoration. In practice every section has at least one
+  picture; lesson 1 has nine static figures and a dozen run-time ones.
 - **Concept diagrams** are code in `lessons/NN/figures.py`, rendered by `tools/render.py` in light and dark.
-  `Figure.problems()` must be empty, and both themes are looked at before the PR.
+  `Figure.problems()` must be empty (nothing outside the canvas, no overlapping labels, no text crossing a box),
+  and both themes are looked at before the PR.
+- A static figure that shows facts about real systems or algorithms **computes them at render time**: the hero of
+  lesson 1 calls GPT-4o's tokenizer, the union–find figure runs the same algorithm as the notebook on the same
+  pairs, the BPE update figure counts the pairs.
 - **Anything that shows computed numbers** (merges, attention maps, curves) is drawn by the notebook itself at
   run time, with `use_course_style()` / `token_chips()`. Then the picture can't disagree with the code.
 - Color means a concept everywhere: amber data and tokens, teal encoder, rose decoder, violet attention.
@@ -108,3 +133,14 @@ A notebook is read as much as it is run, so every output is designed:
 - English covers use Latin script only (`check_latin` enforces it): English examples, or transliterated
   Russian when the point is Russian grammar. Russian covers may use Cyrillic.
 - Illustrative motifs are replaced by real outputs (our tokenizer, our model) once they exist.
+
+## Before the PR
+
+A lesson is reviewed the way a reader will meet it:
+
+1. Run it in full (`tools/run.py`): no errors, nothing on stderr.
+2. Dump the outputs and check every claim in the text against them, one by one.
+3. Render the executed notebook to HTML (`jupyter nbconvert --to html`) and look at every screen: nothing raw,
+   clipped, cramped or tiny.
+4. `ruff`, `pytest` (code line length included) and `build.py --check` pass.
+5. Push a private Kaggle draft built from the branch (`build.py --ref <branch>`) and let it run there.
