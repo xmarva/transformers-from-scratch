@@ -21,7 +21,7 @@
 # 3. The tokenizer the rest of the course uses, trained with Hugging Face `tokenizers` and published with the data.
 #
 # **What you need**: Python and a little pandas. No previous lesson. A CPU runtime is enough; the whole notebook runs
-# in a few minutes.
+# in about ten minutes on a free CPU runtime.
 
 # %% tags=["include:setup"]
 
@@ -810,8 +810,8 @@ print(f"vocabulary of {tokenizer.get_vocab_size():,} trained in {time.perf_count
 print(tokenizer.encode(RU_EXAMPLE).tokens)
 
 # %% [markdown]
-# The same corpus that took our Python trainer most of a minute takes the Rust one a few seconds, for twice as many
-# symbols. Both see exactly the same words, since we checked normalization and pre-tokenization, so their merges
+# Compare the two timings: the Rust trainer builds twice as many symbols in a fraction of the time our Python one
+# needed for the same corpus. Both see exactly the same words, since we checked normalization and pre-tokenization, so their merges
 # should agree except where the two implementations make different choices: Hugging Face breaks ties between equally
 # frequent pairs differently and skips pairs seen only once (`min_frequency=2`). Compare the first thousand merges:
 #
