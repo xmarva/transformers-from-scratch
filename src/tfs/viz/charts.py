@@ -25,6 +25,7 @@ def heatmap(
     annotate=False,
     fmt="{:.2f}",
     cell=0.3,
+    ax=None,
     theme="light",
 ):
     """Draw a matrix (attention weights, a mask) as a grid of cells, one hue from white to the concept color.
@@ -33,6 +34,7 @@ def heatmap(
     low         palette color of the lowest value: "card" (white) for weights, "grid" (grey) for a mask
     annotate    write every value in its cell
     cell        size of one cell in inches
+    ax          draw into this subplot instead of a new figure, e.g. to put several maps side by side
     """
     c = palette(theme)
     values = np.asarray(matrix, dtype=float)
@@ -41,7 +43,10 @@ def heatmap(
     label_room = 0.11 * max([len(str(label)) for label in (rows or [])] + [3])
     fig_w = cell * n_cols + label_room + 0.3
     fig_h = cell * n_rows + (0.11 * max([len(str(label)) for label in (cols or [])] + [3]) if cols else 0.2) + 0.5
-    fig, ax = plt.subplots(figsize=(fig_w, fig_h))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(fig_w, fig_h))
+    else:
+        fig = ax.figure
     ax.pcolormesh(values, cmap=colors, vmin=vmin, vmax=vmax, edgecolors=c["card"], linewidth=1.2)
     ax.invert_yaxis()  # the first row on top, like a printed matrix
     ax.set_aspect("equal")

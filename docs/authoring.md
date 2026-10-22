@@ -59,6 +59,16 @@ uv run --with nbconvert jupyter nbconvert --to html build/executed/01_tokenizati
 uv run pytest -q && uv run ruff check .
 ```
 
+Lessons that train need a GPU. Run them in full on Kaggle from a pushed branch; the executed notebook comes back to
+`build/executed/`, to check every claim of the text against it and to render it:
+
+```bash
+uv run python tools/kaggle_run.py 03_training --branch lesson-03
+```
+
+Write the text of a training lesson against the run you will publish: outputs change a little from run to run, so
+describe them in words that hold for any run, and check them again after the last run.
+
 Open a lesson in Jupyter while writing it: `uv run --with jupyterlab jupyter lab lessons/01_tokenization/lesson.py`
 (jupytext pairs the file with a notebook view).
 

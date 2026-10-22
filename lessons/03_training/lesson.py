@@ -15,7 +15,7 @@
 #
 # First the model has to have probabilities worth decoding. In lesson 2 our Transformer could only parrot the
 # token it had just read, or recite sixteen sentences it had learned by heart. In this lesson it trains on half a
-# million sentence pairs, on a free GPU, in about half an hour, with the recipe of the 2017 paper: batches built
+# million sentence pairs, on a free GPU, in about twenty minutes, with the recipe of the 2017 paper: batches built
 # from tokens, a smoothed loss, Adam with a warm-up, and half-precision arithmetic. Every piece is explained and
 # tested before it goes into the loop.
 #
@@ -481,8 +481,8 @@ for (name, losses), color in zip(curves.items(), [COLORS["dec"], COLORS["enc"]])
     ax.plot(smooth, color=color, label=name)
 ax.axhline(frequency_only, color=COLORS["muted"], linestyle=(0, (3, 3)), linewidth=1)
 label = "knows only the token frequencies"
-x, y = EXPERIMENT_STEPS * 0.98, frequency_only - 0.25  # under the line, between the curves
-ax.text(x, y, label, ha="right", va="top", fontsize=9)
+x, y = EXPERIMENT_STEPS * 0.98, frequency_only + 0.45  # above the line, clear of the curves
+ax.text(x, y, label, ha="right", va="bottom", fontsize=9)
 ax.set_xlabel("step")
 ax.set_ylabel("training loss (smoothed)")
 ax.set_title("The same peak learning rate, with and without warm-up")
@@ -680,8 +680,8 @@ table(progress[["epoch", *PROBES]])
 
 # %% [markdown]
 # In the first epoch the model strings frequent words together and repeats itself. Within a few epochs the
-# everyday sentences come out right and stay right. Our own sentence improves too, from nonsense to fluent Russian,
-# but never to the right translation: the researcher stays a man. Section 10 finds out why.
+# everyday sentences come out right and stay right. Our own sentence improves too, from nonsense to nearly correct
+# Russian, but never to the right translation: the researcher stays a man. Section 10 finds out why.
 
 # %% [markdown]
 # ## 8. Decoding by search
@@ -735,9 +735,10 @@ for sentence in MINIMAL_PAIRS:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# The second half of every sentence is right: *она устала*, *она занята* for *she*, a masculine *устал*, *занят*
-# for *he* (Russian often drops the pronoun there). The first half never changes with the pronoun: the person who
-# speaks is a man, or several people, whatever the English says. The sentences about the teacher, simple and
+# The pronoun and the verb after it follow the English: *она* with a feminine verb for *she*, a masculine *устал*,
+# *занят*, *измотан* for *he* (Russian often drops the pronoun there). Only the rare *exhausted* after *she* comes
+# out as a word that doesn't exist. The first half never changes with the pronoun: the person who speaks is a man,
+# or several people, whatever the English says. The sentences about the teacher, simple and
 # frequent in the data, get high scores, near 0; the one about the researcher, a rare word, much lower ones. Hold
 # these observations until section 10.
 #
@@ -834,7 +835,8 @@ print("beam search:", beam)
 # Every step keeps four partial translations, ranked by their total log-probability, which only goes down as they
 # grow. The runners-up are the alternatives the search weighs: a plural subject, a different verb form, sometimes a
 # word that doesn't exist, which falls behind and is dropped. Where one of them overtakes the leader later in the
-# sentence, the beam's translation differs from greedy's; compare the two lines under the table.
+# sentence, the beam's translation differs from greedy's. Here it happens at the last word: the beam replaces
+# greedy's invented *изнутана* with a real one.
 #
 # Compare the two decoders on validation sentences: how often beam search changes the translation, and whether the
 # translations it picks are more probable under the model, which is what it searches for.
@@ -972,9 +974,9 @@ table(pd.DataFrame(rows))
 #
 # Lesson 2 ended with a flat map: after memorizing sixteen pairs, the cross-attention of the last decoder layer
 # spread evenly over the English sentence. Here are the same maps for the trained model, one per decoder layer,
-# averaged over the four heads. The model reads the reference translation of our sentence, and each row is the step
-# at which it writes one Russian token: the row labelled *▁сказала* is where the model decides on *сказала*, and its
-# cells show which English tokens it looks at while doing so.
+# side by side, each averaged over the four heads. The model reads the reference translation of our sentence, and
+# each row is the step at which it writes one Russian token: the row labelled *▁сказала* is where the model decides
+# on *сказала*, and its cells show which English tokens it looks at while doing so.
 
 # %%
 RU_EXAMPLE = "Исследовательница сказала, что вымоталась."
@@ -987,17 +989,14 @@ with torch.no_grad():
 en_tokens = tokenizer.encode(EN_EXAMPLE).tokens
 written = tokenizer.encode(RU_EXAMPLE).tokens + ["<eos>"]  # row t writes token t
 
-for number, layer in enumerate(model.decoder, start=1):
+fig, axes = plt.subplots(1, len(model.decoder), figsize=(9, 4.6), sharey=True)
+for number, (layer, ax) in enumerate(zip(model.decoder, axes), start=1):
     weights = layer.cross_attention.weights[0].mean(dim=0).float().cpu()  # (T_ru, T_en)
-    heatmap(
-        weights,
-        rows=written,
-        cols=en_tokens,
-        vmax=1,
-        title=f"Cross-attention, decoder layer {number}",
-        xlabel="English (keys)",
-        ylabel="the Russian token being written",
-    )
+    title = f"decoder layer {number}"
+    heatmap(weights, rows=written, cols=en_tokens, vmax=1, ax=ax, title=title)
+axes[0].set_ylabel("the Russian token being written")
+axes[1].set_xlabel("English (keys)")
+plt.tight_layout()
 plt.show()
 
 # %% [markdown]
@@ -1014,11 +1013,12 @@ for t, token in enumerate(written):
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# The middle layer has learned an alignment: while writing the pieces of *Исследовательница* it looks at the pieces
-# of *researcher*, while writing *сказала* at *said*, while writing *вымоталась* at *exhausted*. Nobody told the
-# model which word translates which. Looking at the right English word made the next token easier to predict, and
-# training found that out on its own. The other layers spread their attention more widely; not every layer does
-# the same job.
+# The decoder has learned an alignment: while writing the stem *Исследо-ватель* it looks at the pieces of
+# *researcher*, while writing *сказала* at *said*, while writing *вымо-* at *exhausted*. Nobody told the model which
+# word translates which. Looking at the right English word made the next token easier to predict, and training
+# found that out on its own. The layers mostly agree, and the maps above show that the middle one points most
+# sharply; the others spread their attention more widely. Note the row *ница*: all three layers look at *said*
+# there.
 #
 # That answers the question lesson 2 left open: *сказала* doesn't look at *she*. It doesn't need to, as you are
 # about to see.
@@ -1040,7 +1040,7 @@ token_chips(
 plt.show()
 
 # %% [markdown]
-# The model is confident about the stem *Исследо-*, and gives the feminine suffix *ница* almost no chance. Once
+# The stem *Исследо-ватель* gets reasonable probabilities, and the feminine suffix *ница* almost none. Once
 # *ница* is in place (we supplied it), *сказала* becomes likely: agreement inside Russian, from one word to the
 # next, the model has learned. What it hasn't learned is to make the noun feminine because of a *she* that comes
 # three words later in the English. (The other filled tokens are a choice, not a mistake: the model would rather
@@ -1111,8 +1111,8 @@ masculine_noun = train.ru.str.contains("учител", case=False) & ~feminine_n
 table(train[teacher_and_she & masculine_noun].head(5))
 
 # %% [markdown]
-# Often *she* is someone else (*Her teacher advised her…*). And when the woman is the teacher, Russian still uses the
-# masculine noun: *Она наш учитель*. That's ordinary Russian, where the masculine names of professions describe
+# Often *she* is someone else (*Ann apologized to her teacher…*). And when the woman is the teacher, Russian still
+# uses the masculine noun: *Она наш учитель*, *Моя сестра решила стать учителем*. That's ordinary Russian, where the masculine names of professions describe
 # women too. So the data teaches the model, correctly, that *учитель* is the usual word, and only rarely shows it a
 # sentence where *she* forces *учительница* and a feminine verb. For *исследовательница* it never shows one at all.
 #
