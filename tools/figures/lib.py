@@ -99,6 +99,7 @@ class Text:
     kind: str = "label"
     role: str | None = None
     anchor: str = "start"
+    upright: bool = False  # turned 90° to read bottom to top, its end at (x, y): labels under a grid's columns
 
 
 @dataclass
@@ -140,13 +141,17 @@ class Figure:
     def line(self, *pts, role="muted", width=1.6, dash=False):
         self.els.append(Line(list(pts), role, width, dash))
 
-    def text(self, x, y, s, kind="label", role=None, anchor="start"):
-        self.els.append(Text(x, y, s, kind, role, anchor))
+    def text(self, x, y, s, kind="label", role=None, anchor="start", upright=False):
+        if upright and anchor != "end":
+            raise ValueError("upright text is anchored at its end")
+        self.els.append(Text(x, y, s, kind, role, anchor, upright))
 
     # ---- checking ----
     def _text_bbox(self, t: Text) -> tuple[float, float, float, float]:
         size, _, family, _ = TEXT_KINDS[t.kind]
         width = len(t.s) * size * (MONO_ADVANCE if family == MONO else SANS_ADVANCE)
+        if t.upright:  # the text runs down from (x, y), glyphs to the left of x
+            return t.x - size * 0.8, t.y, t.x + size * 0.25, t.y + width
         x0 = {"start": t.x, "middle": t.x - width / 2, "end": t.x - width}[t.anchor]
         return x0, t.y - size * 0.8, x0 + width, t.y + size * 0.25
 
@@ -237,9 +242,10 @@ class Figure:
             else:
                 size, weight, family, key = TEXT_KINDS[e.kind]
                 color = c[key] if key else c[ROLES[e.role or "neutral"][0]]
+                turn = f' transform="rotate(-90 {e.x:.1f} {e.y:.1f})"' if e.upright else ""
                 parts.append(
                     f'<text x="{e.x:.1f}" y="{e.y:.1f}" text-anchor="{e.anchor}" font-family="{family}" '
-                    f'font-size="{size}" font-weight="{weight}" fill="{color}">{escape(e.s)}</text>'
+                    f'font-size="{size}" font-weight="{weight}" fill="{color}"{turn}>{escape(e.s)}</text>'
                 )
         parts.append("</svg>")
         return "\n".join(parts)
