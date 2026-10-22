@@ -269,7 +269,9 @@ table(train_raw.sample(6, random_state=SEED))
 
 # %% [markdown]
 # Before cleaning anything, read some data; every corpus has habits. Tatoeba's most famous one is a man called
-# Tom. Contributors use him (and Mary) as the default name in example sentences, and he is everywhere:
+# Tom. Prolific contributors use him (and Mary) as the default name in example sentences, so often that in 2019
+# the project [discussed banning them](https://blog.tatoeba.org/2019/08/should-we-stop-sentences-with-tom-and.html)
+# and decided not to. He is everywhere:
 
 # %%
 for name in ["Tom", "Mary"]:
