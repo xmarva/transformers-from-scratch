@@ -1,6 +1,6 @@
 {
-  "id": "qmarva/transformers-from-scratch-03-training-and-decoding",
-  "title": "Transformers from Scratch · 03 Training and decoding",
+  "id": "qmarva/transformers-from-scratch-03-training-decoding",
+  "title": "Transformers from Scratch · 03 Training & decoding",
   "code_file": "notebook.ipynb",
   "language": "python",
   "kernel_type": "notebook",
