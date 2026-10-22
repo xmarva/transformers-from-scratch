@@ -29,10 +29,9 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 4. Setup (shared include).
 5. Sections, each: why it matters → idea (with a figure where a picture explains better than words) → math →
    code → check → what the output tells us.
-6. **Where this goes wrong**: the mistakes people actually make, and how to notice them.
-7. **Exercises**: two or three, one of them open-ended. Solutions in a collapsed `<details>` block.
-8. **Summary**: what you can do now, which artifacts the lesson published, what comes next.
-9. **References**: papers and docs, with links.
+6. **References**: papers and docs, with links.
+
+No "common mistakes", exercises or summary sections: the lesson ends with its last real step and the references.
 
 ## Math
 
@@ -49,12 +48,19 @@ isn't. Inline math uses `$...$`. Write shapes as $(B, T, d_{\text{model}})$.
 
 ## Code
 
+The reader is a beginner who reads every line. Code that looks generated loses them.
+
+- **Show before you scale.** Run every new function on a tiny example the reader can check by hand (three words, the
+  eight pairs from a figure), print the result, and only then run it on the real data.
+- **Plain loops and `if`s over clever one-liners.** No `max(..., key=lambda kv: (kv[1], kv[0]))`, tuple-swap tricks,
+  `setdefault` tricks or long pandas chains. Name the intermediate results.
+- **No type hints, type aliases or docstrings** in lesson code: the text around the cell explains. Short comments
+  say *why*, in plain words.
+- **Plain prints** (`print("train:", len(train))`), no alignment or format-spec tricks.
 - One idea per cell, at most ~25 lines. Explain before the cell, interpret after it.
-- Functions first; a class only when state really belongs together.
-- Type hints on functions the lesson defines. Names a reader can say out loud.
-- Check understanding with `assert`s and tiny examples, not with walls of prints. Print only what the text
-  discusses.
-- No defensive boilerplate (`try/except` that re-raises, retries, logging setup) unless it is the topic.
+- Checks are `assert`s introduced in the text ("rather than believe it, check it").
+- When the text needs a number the code computes, make the notebook print it right there and refer to the output.
+  Numbers typed into the text go stale as soon as something upstream changes.
 - Reproducible: seeds from the setup cell, pinned dataset revisions, deterministic splits.
 - Everything runs on Kaggle and Colab with the free tier: CPU for lesson 1, one T4 for the rest, about an
   hour per lesson. `SMOKE` (set by CI) shrinks data and steps; it must not change what the code teaches.
