@@ -58,6 +58,16 @@ class Arrow:
 
 
 @dataclass
+class Line:
+    """A plain connector without an arrowhead, e.g. an edge of a graph."""
+
+    pts: list[tuple[float, float]]
+    role: str = "muted"
+    width: float = 1.6
+    dash: bool = False
+
+
+@dataclass
 class Text:
     x: float
     y: float
@@ -99,6 +109,9 @@ class Figure:
     def arrow(self, *pts, role="muted"):
         self.els.append(Arrow(list(pts), role))
 
+    def line(self, *pts, role="muted", width=1.6, dash=False):
+        self.els.append(Line(list(pts), role, width, dash))
+
     def text(self, x, y, s, kind="label", role=None, anchor="start"):
         self.els.append(Text(x, y, s, kind, role, anchor))
 
@@ -114,7 +127,7 @@ class Figure:
         for e in self.els:
             if isinstance(e, Box):
                 x0, y0, x1, y1 = e.x, e.y, e.x + e.w, e.y + e.h
-            elif isinstance(e, Arrow):
+            elif isinstance(e, (Arrow, Line)):
                 xs, ys = [p[0] for p in e.pts], [p[1] for p in e.pts]
                 x0, y0, x1, y1 = min(xs), min(ys), max(xs), max(ys)
             else:
@@ -167,6 +180,14 @@ class Figure:
                 parts.append(
                     f'<polyline points="{pts}" fill="none" stroke="{c[key]}" stroke-width="1.6" '
                     f'stroke-linejoin="round" marker-end="url(#arrow-{key})"/>'
+                )
+            elif isinstance(e, Line):
+                color = c["muted"] if e.role == "muted" else c[ROLES[e.role][0]]
+                pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in e.pts)
+                dash = ' stroke-dasharray="5 4"' if e.dash else ""
+                parts.append(
+                    f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="{e.width}"{dash} '
+                    'stroke-linecap="round" stroke-linejoin="round"/>'
                 )
             else:
                 size, weight, family, key = TEXT_KINDS[e.kind]
