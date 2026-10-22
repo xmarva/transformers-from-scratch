@@ -337,6 +337,180 @@ def shift_right() -> Figure:
     return fig
 
 
+# ---------------------------------------------------------------- attention as a soft lookup
+
+LOOKUP_QUERY = [1.0, 2.0]  # the worked example of section 4: one query, three keys
+LOOKUP_KEYS = [[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]]
+
+
+def _softmax_weights(query, keys):
+    import math
+
+    d_k = len(query)
+    scores = [sum(q * k for q, k in zip(query, key)) / math.sqrt(d_k) for key in keys]
+    exps = [math.exp(score) for score in scores]
+    return scores, [e / sum(exps) for e in exps]
+
+
+def lookup() -> Figure:
+    scores, weights = _softmax_weights(LOOKUP_QUERY, LOOKUP_KEYS)
+    fig = Figure(
+        760,
+        330,
+        alt="A Python dictionary returns the value of the one key that matches the query exactly. Attention "
+        "compares the query with every key, turns the scores into weights "
+        + ", ".join(f"{w:.2f}" for w in weights)
+        + " and returns the weighted mix of all the values",
+    )
+    fig.text(14, 28, "A dictionary lookup, and attention", kind="title")
+    # left: a dict
+    fig.text(14, 62, "dict: one exact match, one value", kind="subtitle")
+    fig.text(14, 94, "query", kind="label")
+    fig.chip(80, 76, '"she"', role="att", strong=True)
+    keys = ['"researcher"', '"said"', '"she"']
+    fig.text(14, 136, "key", kind="label")
+    fig.text(200, 136, "value", kind="label")
+    for i, key in enumerate(keys):
+        y = 148 + i * 40
+        hit = i == 2
+        fig.chip(14, y, key, role="att" if hit else "plain", strong=False)
+        fig.chip(200, y, f"value {i + 1}", role="data" if hit else "plain")
+        fig.arrow((14 + Figure.chip_width(key) + 4, y + 15), (196, y + 15), role="att" if hit else "muted")
+    fig.text(14, 300, "result: value 3, and nothing else", kind="note")
+    # right: attention
+    x0 = 390
+    fig.text(x0, 62, "attention: every key matches a little", kind="subtitle")
+    fig.text(x0, 94, "query", kind="label")
+    fig.chip(x0 + 66, 76, "[1, 2]", role="att", strong=True)
+    fig.text(x0, 136, "key", kind="label")
+    fig.text(x0 + 86, 136, "q·k / √2", kind="label")
+    fig.text(x0 + 170, 136, "weight", kind="label")
+    fig.text(x0 + 300, 136, "value", kind="label")
+    for i, (key, score, weight) in enumerate(zip(LOOKUP_KEYS, scores, weights)):
+        y = 148 + i * 40
+        fig.chip(x0, y, f"[{key[0]:g}, {key[1]:g}]", role="plain")
+        fig.text(x0 + 86, y + 20, f"{score:.2f}", kind="count")
+        fig.rect(x0 + 170, y + 6, 110 * weight, 18, role="att", r=3)
+        fig.text(x0 + 176 + 110 * weight, y + 20, f"{weight:.2f}", kind="count")
+        fig.chip(x0 + 300, y, f"v{i + 1}", role="data")
+    mix = " + ".join(f"{w:.2f}·v{i + 1}" for i, w in enumerate(weights))
+    fig.text(x0, 300, f"result: {mix}", kind="note")
+    return fig
+
+
+# ---------------------------------------------------------------- queries, keys and values
+
+def _grid(fig, x, y, n_rows, n_cols, cell, role, hot_row=None, tint=True):
+    for r in range(n_rows):
+        for k in range(n_cols):
+            fig.rect(x + k * cell, y + r * cell, cell - 2, cell - 2, role=role, tint=tint and r != hot_row, r=2)
+    return x + n_cols * cell - 2, y + n_rows * cell - 2
+
+
+def qkv() -> Figure:
+    tokens = _tokenizer().encode(EN_EXAMPLE).tokens
+    she = tokens.index("▁she")
+    cell = 17
+    fig = Figure(
+        760,
+        350,
+        alt="Every token's vector x is multiplied by three learned matrices, W^Q, W^K and W^V, which gives its "
+        "query, its key and its value. For the whole sentence the rows of X become the rows of Q, K and V",
+    )
+    fig.text(14, 28, "Three roles for every token", kind="title")
+    top = 100
+    for r, token in enumerate(tokens):
+        fig.text(104, top + r * cell + 12, token, kind="small", anchor="end")
+    x_right, bottom = _grid(fig, 112, top, len(tokens), 8, cell, "data", hot_row=she)
+    fig.text(112, bottom + 22, "X: one row per token", kind="label")
+    columns = [("Q", "W^Q", "what she looks for"), ("K", "W^K", "how she can be found"), ("V", "W^V", "what she hands over")]
+    x_center = (112 + x_right) / 2
+    centers = []
+    for i, (name, matrix, role_text) in enumerate(columns):
+        gx = 330 + i * 140
+        gx_right, _ = _grid(fig, gx, top, len(tokens), 4, cell, "att", hot_row=she)
+        fig.text(gx, bottom + 22, f"{name} = X {matrix}", kind="mono_att")
+        fig.text(gx, bottom + 42, role_text, kind="small")
+        centers.append((gx + gx_right) / 2)
+    # one input, three projections: a bracket from X into Q, K and V
+    fig.line((x_center, top - 6), (x_center, 66), (centers[-1], 66), role="muted", width=1.4)
+    for cx in centers:
+        fig.arrow((cx, 66), (cx, top - 6))
+    fig.text(14, bottom + 74, "The same vector, three learned views of it. The highlighted row is the token she.",
+             kind="note")
+    return fig
+
+
+# ---------------------------------------------------------------- self-attention and cross-attention
+
+def self_cross() -> Figure:
+    tokenizer = _tokenizer()
+    en = tokenizer.encode(EN_EXAMPLE).tokens
+    ru = ["<bos>", *tokenizer.encode(RU_EXAMPLE).tokens[:-1]]  # what the decoder reads
+    she, said_ru = en.index("▁she"), ru.index("▁сказала")
+    cell = 19
+    fig = Figure(
+        760,
+        444,
+        alt="Two grids of attention weights. Self-attention in the encoder: every English token, as a query, "
+        "looks at every English token. Cross-attention in the decoder: every Russian token looks at every English "
+        "token; the cell where the query of ▁сказала meets the key of ▁she is highlighted",
+    )
+    fig.text(14, 28, "One mechanism, two uses", kind="title")
+    panels = [
+        (96, en, en, "self-attention, in the encoder", "English looks at English", she, en.index("▁rese")),
+        (480, ru, en, "cross-attention, in the decoder", "Russian looks at English", said_ru, she),
+    ]
+    for gx, rows, cols, title, subtitle, hot_row, hot_col in panels:
+        fig.text(gx - 82, 56, title, kind="subtitle")
+        fig.text(gx - 82, 76, subtitle, kind="note")
+        top = 96
+        for r, token in enumerate(rows):
+            fig.text(gx - 8, top + r * cell + 13, token, kind="small", anchor="end")
+            for k in range(len(cols)):
+                strong = r == hot_row and k == hot_col
+                role = "att" if r == hot_row else "neutral"
+                fig.rect(gx + k * cell, top + r * cell, cell - 2, cell - 2, role=role, tint=not strong, r=2)
+        bottom = top + len(rows) * cell
+        for k, token in enumerate(cols):
+            fig.text(gx + k * cell + 13, bottom + 4, token, kind="small", anchor="end", upright=True)
+        fig.text(gx + len(cols) * cell + 8, top + 12, "keys →", kind="small")
+        fig.text(gx + len(cols) * cell + 8, top + 30, "queries ↓", kind="small")
+    fig.text(14, 408, "Each row is one query and the weights it will give to every key, the columns. A dark cell is "
+             "one", kind="note")
+    fig.text(14, 428, "query meeting one key: she and the first piece of researcher; сказала and she.", kind="note")
+    return fig
+
+
+# ---------------------------------------------------------------- add & norm
+
+def add_norm() -> Figure:
+    fig = Figure(
+        760,
+        210,
+        alt="One sub-layer in the 2017 Transformer: the input x goes through the sub-layer (attention or the "
+        "feed-forward network) and dropout, is added back to x by the residual connection, and the sum is "
+        "normalized: LayerNorm(x + Dropout(Sublayer(x)))",
+    )
+    fig.text(14, 28, "Every sub-layer, wrapped the same way", kind="title")
+    y, h = 112, 34
+    fig.chip(20, y + 2, "x", role="data")
+    fig.arrow((52, y + h / 2), (96, y + h / 2))
+    fig.box(98, y, 200, h, role="att", label="sub-layer: attention or FFN", r=7)
+    fig.arrow((300, y + h / 2), (330, y + h / 2))
+    fig.box(332, y, 92, h, role="neutral", label="dropout", r=7)
+    fig.arrow((426, y + h / 2), (456, y + h / 2))
+    fig.box(458, y, 34, h, role="neutral", label="+", r=17)
+    fig.arrow((494, y + h / 2), (524, y + h / 2))
+    fig.box(526, y, 120, h, role="neutral", label="LayerNorm", r=7)
+    fig.arrow((648, y + h / 2), (684, y + h / 2))
+    fig.chip(686, y + 2, "out", role="data")
+    fig.arrow((36, y), (36, 70), (475, 70), (475, y - 2), role="enc", width=2)
+    fig.text(120, 62, "residual connection: x skips the sub-layer and is added back", kind="note")
+    fig.text(14, 188, "LayerNorm(x + Dropout(Sublayer(x)))", kind="mono")
+    return fig
+
+
 # ---------------------------------------------------------------- covers
 
 COVER = {
@@ -390,8 +564,12 @@ FIGURES = {
     "hero": hero,
     "architecture": architecture,
     "agreement": agreement,
+    "lookup": lookup,
+    "qkv": qkv,
     "attention": attention,
+    "self-cross": self_cross,
     "heads": heads,
+    "add-norm": add_norm,
     "shift-right": shift_right,
 }
 COVERS = {"en": lambda: _cover("en"), "ru": lambda: _cover("ru")}

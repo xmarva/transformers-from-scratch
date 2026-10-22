@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="A Python dictionary returns the value of the one key that matches the query exactly. Attention compares the query with every key, turns the scores into weights 0.14, 0.28, 0.58 and returns the weighted mix of all the values">
+<title>A Python dictionary returns the value of the one key that matches the query exactly. Attention compares the query with every key, turns the scores into weights 0.14, 0.28, 0.58 and returns the weighted mix of all the values</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="330" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">A dictionary lookup, and attention</text>
+<text x="14.0" y="62.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">dict: one exact match, one value</text>
+<text x="14.0" y="94.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">query</text>
+<rect x="80.0" y="76.0" width="55.1" height="30.0" rx="7" fill="#6A55D8" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="107.6" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">&quot;she&quot;</text>
+<text x="14.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">key</text>
+<text x="200.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">value</text>
+<rect x="14.0" y="148.0" width="109.7" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="68.9" y="167.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">&quot;researcher&quot;</text>
+<rect x="200.0" y="148.0" width="70.7" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="235.4" y="167.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">value 1</text>
+<polyline points="127.7,163.0 196.0,163.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="188.0" width="62.9" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="45.5" y="207.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">&quot;said&quot;</text>
+<rect x="200.0" y="188.0" width="70.7" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="235.4" y="207.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">value 2</text>
+<polyline points="80.9,203.0 196.0,203.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="228.0" width="55.1" height="30.0" rx="7" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="41.6" y="247.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">&quot;she&quot;</text>
+<rect x="200.0" y="228.0" width="70.7" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="235.4" y="247.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">value 3</text>
+<polyline points="73.1,243.0 196.0,243.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<text x="14.0" y="300.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">result: value 3, and nothing else</text>
+<text x="390.0" y="62.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">attention: every key matches a little</text>
+<text x="390.0" y="94.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">query</text>
+<rect x="456.0" y="76.0" width="62.9" height="30.0" rx="7" fill="#6A55D8" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="487.5" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">[1, 2]</text>
+<text x="390.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">key</text>
+<text x="476.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">q·k / √2</text>
+<text x="560.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">weight</text>
+<text x="690.0" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">value</text>
+<rect x="390.0" y="148.0" width="62.9" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="421.5" y="167.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">[1, 0]</text>
+<text x="476.0" y="168.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">0.71</text>
+<rect x="560.0" y="154.0" width="15.4" height="18.0" rx="3" fill="#6A55D8"/>
+<text x="581.4" y="168.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">0.14</text>
+<rect x="690.0" y="148.0" width="31.7" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="705.9" y="167.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">v1</text>
+<rect x="390.0" y="188.0" width="62.9" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="421.5" y="207.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">[0, 1]</text>
+<text x="476.0" y="208.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1.41</text>
+<rect x="560.0" y="194.0" width="31.2" height="18.0" rx="3" fill="#6A55D8"/>
+<text x="597.2" y="208.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">0.28</text>
+<rect x="690.0" y="188.0" width="31.7" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="705.9" y="207.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">v2</text>
+<rect x="390.0" y="228.0" width="62.9" height="30.0" rx="7" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="421.5" y="247.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">[1, 1]</text>
+<text x="476.0" y="248.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">2.12</text>
+<rect x="560.0" y="234.0" width="63.4" height="18.0" rx="3" fill="#6A55D8"/>
+<text x="629.4" y="248.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">0.58</text>
+<rect x="690.0" y="228.0" width="31.7" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="705.9" y="247.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">v3</text>
+<text x="390.0" y="300.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">result: 0.14·v1 + 0.28·v2 + 0.58·v3</text>
+</svg>

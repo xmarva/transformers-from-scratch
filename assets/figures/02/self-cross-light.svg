@@ -1,0 +1,250 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 444" width="760" height="444" role="img" aria-label="Two grids of attention weights. Self-attention in the encoder: every English token, as a query, looks at every English token. Cross-attention in the decoder: every Russian token looks at every English token; the cell where the query of ▁сказала meets the key of ▁she is highlighted">
+<title>Two grids of attention weights. Self-attention in the encoder: every English token, as a query, looks at every English token. Cross-attention in the decoder: every Russian token looks at every English token; the cell where the query of ▁сказала meets the key of ▁she is highlighted</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="444" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">One mechanism, two uses</text>
+<text x="14.0" y="56.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">self-attention, in the encoder</text>
+<text x="14.0" y="76.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">English looks at English</text>
+<text x="88.0" y="109.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁The</text>
+<rect x="96.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="128.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁rese</text>
+<rect x="96.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="147.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">ar</text>
+<rect x="96.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="166.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">cher</text>
+<rect x="96.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="185.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁said</text>
+<rect x="96.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="204.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁she</text>
+<rect x="96.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="115.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#6A55D8"/>
+<rect x="134.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="153.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="172.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="191.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="210.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="229.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="248.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<text x="88.0" y="223.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁was</text>
+<rect x="96.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="242.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁exhausted</text>
+<rect x="96.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="88.0" y="261.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">.</text>
+<rect x="96.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="115.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="134.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="153.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="172.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="191.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="210.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="229.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="248.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="109.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 109.0 271.0)">▁The</text>
+<text x="128.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 128.0 271.0)">▁rese</text>
+<text x="147.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 147.0 271.0)">ar</text>
+<text x="166.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 166.0 271.0)">cher</text>
+<text x="185.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 185.0 271.0)">▁said</text>
+<text x="204.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 204.0 271.0)">▁she</text>
+<text x="223.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 223.0 271.0)">▁was</text>
+<text x="242.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 242.0 271.0)">▁exhausted</text>
+<text x="261.0" y="271.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 261.0 271.0)">.</text>
+<text x="275.0" y="108.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">keys →</text>
+<text x="275.0" y="126.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">queries ↓</text>
+<text x="398.0" y="56.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">cross-attention, in the decoder</text>
+<text x="398.0" y="76.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Russian looks at English</text>
+<text x="472.0" y="109.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">&lt;bos&gt;</text>
+<rect x="480.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="96.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="128.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁И</text>
+<rect x="480.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="115.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="147.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">сс</text>
+<rect x="480.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="134.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="166.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">ледо</text>
+<rect x="480.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="153.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="185.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">ватель</text>
+<rect x="480.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="172.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="204.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">ница</text>
+<rect x="480.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="191.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="223.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁сказала</text>
+<rect x="480.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="499.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="518.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="537.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="556.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="575.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#6A55D8"/>
+<rect x="594.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="613.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<rect x="632.0" y="210.0" width="17.0" height="17.0" rx="2" fill="#ECE8FC"/>
+<text x="472.0" y="242.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">,</text>
+<rect x="480.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="229.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="261.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁что</text>
+<rect x="480.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="248.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="280.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">▁вы</text>
+<rect x="480.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="267.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="299.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">мот</text>
+<rect x="480.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="286.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="472.0" y="318.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">алась</text>
+<rect x="480.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="499.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="518.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="537.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="556.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="575.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="594.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="613.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<rect x="632.0" y="305.0" width="17.0" height="17.0" rx="2" fill="#F6F7F9"/>
+<text x="493.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 493.0 328.0)">▁The</text>
+<text x="512.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 512.0 328.0)">▁rese</text>
+<text x="531.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 531.0 328.0)">ar</text>
+<text x="550.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 550.0 328.0)">cher</text>
+<text x="569.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 569.0 328.0)">▁said</text>
+<text x="588.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 588.0 328.0)">▁she</text>
+<text x="607.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 607.0 328.0)">▁was</text>
+<text x="626.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 626.0 328.0)">▁exhausted</text>
+<text x="645.0" y="328.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 645.0 328.0)">.</text>
+<text x="659.0" y="108.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">keys →</text>
+<text x="659.0" y="126.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">queries ↓</text>
+<text x="14.0" y="408.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Each row is one query and the weights it will give to every key, the columns. A dark cell is one</text>
+<text x="14.0" y="428.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">query meeting one key: she and the first piece of researcher; сказала and she.</text>
+</svg>

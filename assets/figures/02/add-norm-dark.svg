@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 210" width="760" height="210" role="img" aria-label="One sub-layer in the 2017 Transformer: the input x goes through the sub-layer (attention or the feed-forward network) and dropout, is added back to x by the residual connection, and the sum is normalized: LayerNorm(x + Dropout(Sublayer(x)))">
+<title>One sub-layer in the 2017 Transformer: the input x goes through the sub-layer (attention or the feed-forward network) and dropout, is added back to x by the residual connection, and the sum is normalized: LayerNorm(x + Dropout(Sublayer(x)))</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="210" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Every sub-layer, wrapped the same way</text>
+<rect x="20.0" y="114.0" width="28.6" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="34.3" y="133.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">x</text>
+<polyline points="52.0,129.0 96.0,129.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="98.0" y="112.0" width="200.0" height="34.0" rx="7" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="198.0" y="133.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#C4B9FF" xml:space="preserve">sub-layer: attention or FFN</text>
+<polyline points="300.0,129.0 330.0,129.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="332.0" y="112.0" width="92.0" height="34.0" rx="7" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="378.0" y="133.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">dropout</text>
+<polyline points="426.0,129.0 456.0,129.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="458.0" y="112.0" width="34.0" height="34.0" rx="17" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="475.0" y="133.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">+</text>
+<polyline points="494.0,129.0 524.0,129.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="526.0" y="112.0" width="120.0" height="34.0" rx="7" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="586.0" y="133.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">LayerNorm</text>
+<polyline points="648.0,129.0 684.0,129.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="686.0" y="114.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="705.8" y="133.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">out</text>
+<polyline points="36.0,112.0 36.0,70.0 475.0,70.0 475.0,110.0" fill="none" stroke="#3CC2B0" stroke-width="2" stroke-linejoin="round" marker-end="url(#arrow-enc)"/>
+<text x="120.0" y="62.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">residual connection: x skips the sub-layer and is added back</text>
+<text x="14.0" y="188.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">LayerNorm(x + Dropout(Sublayer(x)))</text>
+</svg>
