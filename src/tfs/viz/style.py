@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -12,10 +13,15 @@ from .palette import palette
 FONTS_DIR = Path(__file__).parent / "fonts"
 SANS = "IBM Plex Sans"
 MONO = "IBM Plex Mono"
+# matplotlib takes a missing glyph (␣, �) from the next family in the list; DejaVu ships with matplotlib
+SANS_STACK = [SANS, "DejaVu Sans"]
+MONO_STACK = [MONO, "DejaVu Sans Mono"]
 
 
 def register_fonts() -> None:
     """Make the bundled IBM Plex fonts (Latin + Cyrillic) available to matplotlib."""
+    # a fallback font without a medium weight is fine; don't print a warning about it into every notebook
+    logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
     known = {f.fname for f in font_manager.fontManager.ttflist}
     for path in FONTS_DIR.glob("*.ttf"):
         if str(path) not in known:
@@ -31,7 +37,7 @@ def use_course_style(theme: str = "light") -> dict[str, str]:
             "figure.dpi": 110,
             "savefig.dpi": 220,
             "figure.figsize": (6.4, 3.8),
-            "font.family": SANS,
+            "font.family": SANS_STACK,
             "font.size": 11,
             "axes.titlesize": 12,
             "axes.titleweight": "semibold",
