@@ -76,6 +76,7 @@ def png(svg: str, out: Path, width: int, height: int) -> None:
                 "--force-device-scale-factor=2",
                 "--default-background-color=00000000",
                 "--virtual-time-budget=3000",
+                "--run-all-compositor-stages-before-draw",  # never screenshot a half-painted page
                 f"--window-size={width},{height}",
                 f"--screenshot={out}",
                 page.as_uri(),
