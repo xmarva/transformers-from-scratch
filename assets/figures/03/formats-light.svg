@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Bit layouts: float32 has 1 sign bit, 8 exponent bits and 23 mantissa bits; bfloat16 1, 8 and 7; float16 1, 5 and 10. float16 covers a much smaller range, so tiny gradients underflow to zero unless the loss is scaled up first">
+<title>Bit layouts: float32 has 1 sign bit, 8 exponent bits and 23 mantissa bits; bfloat16 1, 8 and 7; float16 1, 5 and 10. float16 covers a much smaller range, so tiny gradients underflow to zero unless the loss is scaled up first</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Three ways to store a number</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">sign · exponent (range) · mantissa (precision)</text>
+<text x="14.0" y="96.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">float32</text>
+<rect x="110.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#D23F57"/>
+<rect x="123.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="136.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="149.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="162.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="175.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="188.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="201.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="214.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="227.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="240.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="253.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="266.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="279.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="292.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="305.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="318.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="331.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="344.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="357.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="370.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="383.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="396.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="409.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="422.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="435.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="448.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="461.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="474.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="487.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="500.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="513.0" y="80.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<text x="110.0" y="120.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">largest 3.4e+38, smallest normal 1.2e-38</text>
+<text x="14.0" y="158.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">bfloat16</text>
+<rect x="110.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#D23F57"/>
+<rect x="123.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="136.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="149.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="162.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="175.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="188.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="201.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="214.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="227.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="240.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="253.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="266.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="279.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="292.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="305.0" y="142.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<text x="110.0" y="182.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">largest 3.39e+38, smallest normal 1.2e-38</text>
+<text x="14.0" y="220.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">float16</text>
+<rect x="110.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#D23F57"/>
+<rect x="123.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="136.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="149.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="162.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="175.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#6A55D8"/>
+<rect x="188.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="201.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="214.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="227.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="240.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="253.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="266.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="279.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="292.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<rect x="305.0" y="204.0" width="11.0" height="22.0" rx="2" fill="#FCF0DA"/>
+<text x="110.0" y="244.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">largest 6.55e+04, smallest normal 6.1e-05</text>
+<text x="14.0" y="280.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Free T4 and P100 GPUs are fast in float16, not in bfloat16: we take float16 and scale the loss.</text>
+</svg>

@@ -1,0 +1,4 @@
+number = 3
+short_title = "Training and decoding"
+cover_alt = "Lesson 3 cover: Training and decoding. A beam search keeps the two best partial translations at every step and finds the feminine form"
+gpu = true

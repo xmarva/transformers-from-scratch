@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Decoding settings shipped with real models: the translators opus-mt-en-ru and m2m100 search with beams, the chat models Llama 3.1 Instruct and Qwen 2.5 Instruct sample with a temperature">
+<title>Decoding settings shipped with real models: the translators opus-mt-en-ru and m2m100 search with beams, the chat models Llama 3.1 Instruct and Qwen 2.5 Instruct sample with a temperature</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Translators search, chat models sample</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the decoding settings each model ships with, from its generation_config.json</text>
+<text x="14.0" y="88.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">translators: beam search</text>
+<polyline points="304.0,82.0 330.0,68.0" fill="none" stroke="#F0B04A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="304.0,82.0 330.0,96.0" fill="none" stroke="#F0B04A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="330.0,68.0 354.0,62.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="330.0,68.0 354.0,74.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="330.0,96.0 354.0,90.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="330.0,96.0 354.0,102.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="301.0" y="79.0" width="6.0" height="6.0" rx="3" fill="#F0B04A"/>
+<rect x="14.0" y="112.0" width="352.0" height="74.0" rx="10" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="30.0" y="138.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">opus-mt-en-ru</text>
+<rect x="30.0" y="148.0" width="65.3" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="62.6" y="165.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">beams 4</text>
+<rect x="14.0" y="198.0" width="352.0" height="74.0" rx="10" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="30.0" y="224.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">m2m100 418M</text>
+<rect x="30.0" y="234.0" width="65.3" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="62.6" y="251.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">beams 5</text>
+<text x="394.0" y="88.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">chat models: sampling</text>
+<rect x="684.0" y="72.0" width="7.0" height="30.0" rx="1" fill="#362A14"/>
+<rect x="694.0" y="80.0" width="7.0" height="22.0" rx="1" fill="#F0B04A"/>
+<rect x="704.0" y="86.0" width="7.0" height="16.0" rx="1" fill="#362A14"/>
+<rect x="714.0" y="92.0" width="7.0" height="10.0" rx="1" fill="#362A14"/>
+<rect x="724.0" y="96.0" width="7.0" height="6.0" rx="1" fill="#362A14"/>
+<rect x="394.0" y="112.0" width="352.0" height="74.0" rx="10" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="410.0" y="138.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">Llama 3.1 8B Instruct</text>
+<rect x="410.0" y="148.0" width="122.9" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="471.4" y="165.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">temperature 0.6</text>
+<rect x="538.9" y="148.0" width="79.7" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="578.7" y="165.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">top-p 0.9</text>
+<rect x="394.0" y="198.0" width="352.0" height="74.0" rx="10" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="410.0" y="224.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">Qwen 2.5 7B Instruct</text>
+<rect x="410.0" y="234.0" width="122.9" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="471.4" y="251.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">temperature 0.7</text>
+<rect x="538.9" y="234.0" width="79.7" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="578.7" y="251.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">top-p 0.8</text>
+<rect x="624.6" y="234.0" width="72.5" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="660.8" y="251.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#F6C878" xml:space="preserve">top-k 20</text>
+</svg>
