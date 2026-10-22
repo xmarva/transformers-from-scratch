@@ -278,3 +278,55 @@ def exposure() -> Figure:
 
 
 FIGURES = {"hero": hero, "step": step, "formats": formats, "beam-toy": beam_toy, "exposure": exposure}
+
+# ---------------------------------------------------------------- covers: real outputs of the lesson's training run
+
+# Copied from the executed lesson (section 7): validation loss per epoch, and greedy translations of a probe.
+VALIDATION_LOSS = [4.497, 2.912, 2.137, 1.724, 1.55, 1.424, 1.292, 1.237, 1.189, 1.169, 1.157, 1.134, 1.114, 1.109,
+                   1.091, 1.075, 1.083, 1.084]
+PROBE = "Tom forgot to lock the door."
+PROGRESS = {1: "Том хотел дверь.", 2: "Том забыл, чтобы я забыл дверь.", 3: "Том забыл запереть дверь."}
+
+LATIN = dict(zip("абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+                 ["a", "b", "v", "g", "d", "e", "yo", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t",
+                  "u", "f", "kh", "ts", "ch", "sh", "shch", "", "y", "'", "e", "yu", "ya"]))
+
+
+def transliterate(text):
+    out = []
+    for char in text:
+        latin = LATIN.get(char.lower(), char)
+        out.append(latin.capitalize() if char.isupper() and latin else latin)
+    return "".join(out)
+
+
+def _cover(lang):
+    english = lang == "en"
+    out = [cv.label(cv.MOTIF_X0, 128, "VALIDATION LOSS, EPOCH BY EPOCH" if english else "ОШИБКА НА ВАЛИДАЦИИ")]
+    x0, x1, y0, y1 = cv.MOTIF_X0 + 4, cv.MOTIF_X1 - 8, 150, 300
+    top, bottom = max(VALIDATION_LOSS), min(VALIDATION_LOSS)
+    points = []
+    for k, loss in enumerate(VALIDATION_LOSS):
+        x = x0 + (x1 - x0) * k / (len(VALIDATION_LOSS) - 1)
+        y = y0 + (y1 - y0) * (top - loss) / (top - bottom)
+        points.append((x, y))
+    out.append(f'<line x1="{x0}" y1="{y1}" x2="{x1}" y2="{y1}" stroke="{cv.LINE}" stroke-width="1"/>')
+    path = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
+    out.append(f'<polyline points="{path}" fill="none" stroke="{cv.RED}" stroke-width="3" stroke-linejoin="round"/>')
+    for k, (x, y) in enumerate(points[:3]):
+        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6" fill="{cv.RED if k == 2 else cv.BG}" stroke="{cv.RED}" '
+                   'stroke-width="2"/>')
+    out.append(cv.label(cv.MOTIF_X0, 360, PROBE.upper() if english else "«TOM FORGOT TO LOCK THE DOOR.»"))
+    for row, (epoch, text) in enumerate(PROGRESS.items()):
+        y = 380 + row * 52
+        shown = transliterate(text) if english else text
+        out.append(cv.text(cv.MOTIF_X0, y + 26, f"{'epoch' if english else 'эпоха'} {epoch}", 15, cv.FAINT, cv.MONO))
+        chip, w = cv.chip(cv.MOTIF_X0 + 110, y, shown, size=17, kind="hot" if epoch == 3 else "plain")
+        cv.fits(cv.MOTIF_X0 + 110 + w)
+        out.append(chip)
+    title = ["Training and", "decoding"] if english else ["Обучение и", "декодирование"]
+    hook = ["From a parrot", "to a translator"] if english else ["От попугая", "к переводчику"]
+    return cv.frame("03_training.ipynb", title, hook, "".join(out))
+
+
+COVERS = {"en": lambda: _cover("en"), "ru": lambda: _cover("ru")}

@@ -15,7 +15,7 @@ them on its own.
 |---|---|---|---|
 | 1 | **How language models read: tokenization and BPE** | inside the tokenizers of GPT-4o and Llama 3, cleaning parallel data, leak-free splits, BPE by hand, Hugging Face `tokenizers` | in review |
 | 2 | **The Transformer, built by hand** | real models' blueprints, attention and why it divides by √d_k, masks, heads, positions, the encoder–decoder, checks against PyTorch | in review |
-| 3 | **Training & decoding** | teacher forcing, label smoothing, warm-up, mixed precision, greedy and beam search | planned |
+| 3 | **From parrot to translator: training and decoding** | token-based batches, label smoothing, warm-up (and what happens without it), mixed precision, greedy, beam search and sampling, attention after training | in review |
 | 4 | **Evaluating translations** | sacreBLEU, chrF++, COMET, error analysis, experiment tracking with W&B | planned |
 | 5 | **Modern transformer improvements** | pre-norm, RMSNorm, RoPE, SwiGLU, fused attention, KV cache, ablations | planned |
 | 6 | **Hyperparameter search** | W&B Sweeps, early stopping, spending a GPU budget well | planned |
