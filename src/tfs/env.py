@@ -53,6 +53,14 @@ def quiet() -> None:
     """
     os.environ["HF_HUB_DISABLE_PROGRESS_BARS"] = "1"
     os.environ["HF_DATASETS_DISABLE_PROGRESS_BARS"] = "1"
+    # the Hub answers anonymous downloads with a "please set HF_TOKEN" header, which the library logs as a warning
+    os.environ["HF_HUB_VERBOSITY"] = "error"
+    try:
+        from huggingface_hub.utils import logging as hub_logging
+
+        hub_logging.set_verbosity_error()  # in case the library was imported before quiet() ran
+    except ImportError:
+        pass
     os.environ["TOKENIZERS_PARALLELISM"] = "false"  # silences a warning when a notebook forks processes
     warnings.filterwarnings("ignore", message="IProgress not found")  # tqdm without ipywidgets
     warnings.filterwarnings("ignore", message=".*HF_TOKEN.*")  # Colab: public downloads need no token
