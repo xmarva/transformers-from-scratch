@@ -1,0 +1,407 @@
+{
+ "disease": "Disease::DOID:9352",
+ "nodes": {
+  "Disease::DOID:3393": {
+   "name": "coronary artery disease",
+   "kind": "Disease"
+  },
+  "Compound::DB01261": {
+   "name": "Sitagliptin",
+   "kind": "Compound"
+  },
+  "Disease::DOID:14221": {
+   "name": "metabolic syndrome X",
+   "kind": "Disease"
+  },
+  "Compound::DB00178": {
+   "name": "Ramipril",
+   "kind": "Compound"
+  },
+  "Disease::DOID:9744": {
+   "name": "type 1 diabetes mellitus",
+   "kind": "Disease"
+  },
+  "Compound::DB00731": {
+   "name": "Nateglinide",
+   "kind": "Compound"
+  },
+  "Symptom::D015430": {
+   "name": "Weight Gain",
+   "kind": "Symptom"
+  },
+  "Compound::DB08882": {
+   "name": "Linagliptin",
+   "kind": "Compound"
+  },
+  "Compound::DB00672": {
+   "name": "Chlorpropamide",
+   "kind": "Compound"
+  },
+  "Symptom::D015431": {
+   "name": "Weight Loss",
+   "kind": "Symptom"
+  },
+  "Symptom::D005483": {
+   "name": "Flushing",
+   "kind": "Symptom"
+  },
+  "Compound::DB00491": {
+   "name": "Miglitol",
+   "kind": "Compound"
+  },
+  "Compound::DB01067": {
+   "name": "Glipizide",
+   "kind": "Compound"
+  },
+  "Compound::DB01132": {
+   "name": "Pioglitazone",
+   "kind": "Compound"
+  },
+  "Symptom::D056128": {
+   "name": "Obesity, Abdominal",
+   "kind": "Symptom"
+  },
+  "Compound::DB00284": {
+   "name": "Acarbose",
+   "kind": "Compound"
+  },
+  "Disease::DOID:10763": {
+   "name": "hypertension",
+   "kind": "Disease"
+  },
+  "Disease::DOID:9970": {
+   "name": "obesity",
+   "kind": "Disease"
+  },
+  "Symptom::D000419": {
+   "name": "Albuminuria",
+   "kind": "Symptom"
+  },
+  "Symptom::D011507": {
+   "name": "Proteinuria",
+   "kind": "Symptom"
+  },
+  "Disease::DOID:11714": {
+   "name": "gestational diabetes",
+   "kind": "Disease"
+  },
+  "Disease::DOID:11612": {
+   "name": "polycystic ovary syndrome",
+   "kind": "Disease"
+  },
+  "Symptom::D001835": {
+   "name": "Body Weight",
+   "kind": "Symptom"
+  },
+  "Symptom::D054058": {
+   "name": "Acute Coronary Syndrome",
+   "kind": "Symptom"
+  },
+  "Symptom::D050177": {
+   "name": "Overweight",
+   "kind": "Symptom"
+  },
+  "Compound::DB01016": {
+   "name": "Glyburide",
+   "kind": "Compound"
+  },
+  "Disease::DOID:9352": {
+   "name": "type 2 diabetes mellitus",
+   "kind": "Disease"
+  },
+  "Compound::DB00177": {
+   "name": "Valsartan",
+   "kind": "Compound"
+  },
+  "Symptom::D001724": {
+   "name": "Birth Weight",
+   "kind": "Symptom"
+  },
+  "Symptom::D018589": {
+   "name": "Gastroparesis",
+   "kind": "Symptom"
+  },
+  "Compound::DB01120": {
+   "name": "Gliclazide",
+   "kind": "Compound"
+  },
+  "Symptom::D009765": {
+   "name": "Obesity",
+   "kind": "Symptom"
+  },
+  "Compound::DB01124": {
+   "name": "Tolbutamide",
+   "kind": "Compound"
+  },
+  "Symptom::D053201": {
+   "name": "Urinary Bladder, Overactive",
+   "kind": "Symptom"
+  },
+  "Disease::DOID:1936": {
+   "name": "atherosclerosis",
+   "kind": "Disease"
+  },
+  "Compound::DB00331": {
+   "name": "Metformin",
+   "kind": "Compound"
+  },
+  "Compound::DB00412": {
+   "name": "Rosiglitazone",
+   "kind": "Compound"
+  },
+  "Symptom::D017566": {
+   "name": "Microvascular Angina",
+   "kind": "Symptom"
+  },
+  "Compound::DB01029": {
+   "name": "Irbesartan",
+   "kind": "Compound"
+  },
+  "Compound::DB00912": {
+   "name": "Repaglinide",
+   "kind": "Compound"
+  },
+  "Compound::DB00222": {
+   "name": "Glimepiride",
+   "kind": "Compound"
+  },
+  "Compound::DB00678": {
+   "name": "Losartan",
+   "kind": "Compound"
+  },
+  "Compound::DB01083": {
+   "name": "Orlistat",
+   "kind": "Compound"
+  },
+  "Compound::DB01200": {
+   "name": "Bromocriptine",
+   "kind": "Compound"
+  },
+  "Compound::DB00839": {
+   "name": "Tolazamide",
+   "kind": "Compound"
+  }
+ },
+ "edges": [
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D005483"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D054058"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D000419"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D056128"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D053201"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D011507"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D018589"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D001724"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D017566"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D001835"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D009765"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D050177"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D015431"
+  ],
+  [
+   "Disease::DOID:9352",
+   "DpS",
+   "Symptom::D015430"
+  ],
+  [
+   "Compound::DB00222",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00491",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01120",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00331",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01261",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00839",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01124",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00672",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00178",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01200",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01132",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00177",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01029",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00678",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01016",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00284",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01067",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00412",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00731",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB08882",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB01083",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Compound::DB00912",
+   "CtD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:3393",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:9744",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:11714",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:11612",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:1936",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:10763",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:14221",
+   "DrD",
+   "Disease::DOID:9352"
+  ],
+  [
+   "Disease::DOID:9970",
+   "DrD",
+   "Disease::DOID:9352"
+  ]
+ ]
+}

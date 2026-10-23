@@ -1,0 +1,69 @@
+{
+ "drugs": {
+  "metformin": {
+   "trials": 1531,
+   "meta": 212
+  },
+  "sitagliptin": {
+   "trials": 295,
+   "meta": 77
+  },
+  "linagliptin": {
+   "trials": 87,
+   "meta": 26
+  },
+  "pioglitazone": {
+   "trials": 459,
+   "meta": 70
+  },
+  "glimepiride": {
+   "trials": 242,
+   "meta": 17
+  },
+  "gliclazide": {
+   "trials": 107,
+   "meta": 14
+  },
+  "acarbose": {
+   "trials": 162,
+   "meta": 13
+  }
+ },
+ "papers": [
+  {
+   "pmid": "30518693",
+   "title": "Metformin-induced glucagon-like peptide-1 secretion contributes to the actions of metformin in type 2 diabetes.",
+   "journal": "JCI Insight",
+   "date": "2018 Dec 6",
+   "types": [
+    "Journal Article",
+    "Randomized Controlled Trial",
+    "Research Support, Non-U.S. Gov't"
+   ]
+  },
+  {
+   "pmid": "30391333",
+   "title": "A phase 3 randomized placebo-controlled trial to assess the efficacy and safety of ipragliflozin as an add-on therapy to metformin in Russian patients with inadequately controlled type 2 diabetes mellitus.",
+   "journal": "Diabetes Res Clin Pract",
+   "date": "2018 Dec",
+   "types": [
+    "Clinical Trial, Phase II",
+    "Journal Article",
+    "Randomized Controlled Trial"
+   ]
+  },
+  {
+   "pmid": "30282699",
+   "title": "Impact of Gastric Banding Versus Metformin on \u03b2-Cell Function in Adults With Impaired Glucose Tolerance or Mild Type 2 Diabetes.",
+   "journal": "Diabetes Care",
+   "date": "2018 Dec",
+   "types": [
+    "Journal Article",
+    "Randomized Controlled Trial",
+    "Research Support, N.I.H., Extramural",
+    "Research Support, Non-U.S. Gov't",
+    "Research Support, U.S. Gov't, Non-P.H.S."
+   ]
+  }
+ ]
+}
