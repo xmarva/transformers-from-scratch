@@ -522,6 +522,65 @@ def chart_spectra(theme):
 SPECTRUM_EXAMPLE = "5.value"
 
 
+# ---------------------------------------------------------------- after training
+
+def _update(fig, x, y, side, role, thin=7):
+    """A low-rank update drawn as its factors: a column B, a row A and their product."""
+    fig.rect(x, y + thin + 4, thin, side, role=role, r=2)
+    fig.rect(x + thin + 4, y, side, thin, role=role, r=2)
+    fig.rect(x + thin + 4, y + thin + 4, side, side, role=role, tint=True, r=3)
+    return x + thin + 4 + side
+
+
+def merge() -> Figure:
+    fig = Figure(
+        760,
+        312,
+        alt="Two diagrams. Merge: the frozen matrix W0 plus the trained low-rank update gamma B A equals one matrix "
+        "W of the same shape, so the merged model costs nothing extra. Add: two updates B1 A1 and B2 A2 sum to one "
+        "product of B1 and B2 side by side with A1 and A2 stacked, an update of rank at most r1 plus r2",
+    )
+    fig.text(14, 28, "Merging an update, and adding two", kind="title")
+    fig.text(14, 50, "both are exact matrix algebra; whether two added updates still work together is another "
+             "question", kind="note")
+    side, y = 84, 108
+    fig.text(20, 88, "merge", kind="subtitle")
+    fig.rect(20, y + 11, side, side, role="neutral", r=3)
+    fig.text(20 + side / 2, y + 11 + side / 2 + 6, "W₀", kind="lead", anchor="middle")
+    fig.text(116, y + 11 + side / 2 + 6, "+", kind="lead")
+    right = _update(fig, 134, y, side, "dec")
+    fig.text(right - side / 2, y + 11 + side / 2 + 5, "γBA", kind="block", role="dec", anchor="middle")
+    fig.text(right + 10, y + 11 + side / 2 + 6, "=", kind="lead")
+    fig.rect(right + 30, y + 11, side, side, role="neutral", r=3)
+    fig.rect(right + 30, y + 11, side, side, role="dec", tint=True, r=3)
+    fig.text(right + 30 + side / 2, y + 11 + side / 2 + 5, "W", kind="block", role="dec", anchor="middle")
+    fig.text(62, y + side + 34, "frozen", kind="small", anchor="middle")
+    fig.text(right - side / 2, y + side + 34, "trained", kind="small", anchor="middle")
+    fig.text(right + 30 + side / 2, y + side + 34, "one matrix", kind="small", anchor="middle")
+    fig.text(20, y + side + 62, "no extra layer, no extra time", kind="note")
+
+    x0 = 410
+    fig.text(x0, 88, "add", kind="subtitle")
+    thin = 7
+    fig.rect(x0, y + 2 * thin + 8, thin, side, role="dec", r=2)  # B1
+    fig.rect(x0 + thin + 3, y + 2 * thin + 8, thin, side, role="att", r=2)  # B2, beside it
+    fig.rect(x0 + 2 * thin + 8, y, side, thin, role="dec", r=2)  # A1
+    fig.rect(x0 + 2 * thin + 8, y + thin + 3, side, thin, role="att", r=2)  # A2, under it
+    fig.rect(x0 + 2 * thin + 8, y + 2 * thin + 8, side, side, role="att", tint=True, r=3)
+    left_end = x0 + 2 * thin + 8 + side
+    fig.text(left_end + 12, y + 2 * thin + 8 + side / 2 + 6, "=", kind="lead")
+    a = _update(fig, left_end + 34, y + thin + 4, side - 22, "dec")
+    fig.text(a + 8, y + 2 * thin + 8 + side / 2 + 6, "+", kind="lead")
+    b = _update(fig, a + 26, y + thin + 4, side - 22, "att")
+    fig.text(x0 + 2 * thin + 8 + side / 2, y + side + 46, "[B₁ B₂] [A₁; A₂]", kind="small", anchor="middle")
+    fig.text(a - (side - 22) / 2, y + side + 46, "γB₁A₁", kind="small", anchor="middle")
+    fig.text(b - (side - 22) / 2, y + side + 46, "γB₂A₂", kind="small", anchor="middle")
+    fig.text(x0, y + side + 74, "one update of rank at most r₁ + r₂", kind="note")
+    fig.text(14, 298, "Kept apart, the factors are a small file per task that can be swapped in and out of one "
+             "base model.", kind="note")
+    return fig
+
+
 # ---------------------------------------------------------------- cover
 
 def _rank_one_svg(x, y, size, u, v, weight):
@@ -623,6 +682,7 @@ CHARTS = {
 
 FIGURES = {
     "lora-graph": lora_graph,
+    "merge": merge,
 }
 
 
