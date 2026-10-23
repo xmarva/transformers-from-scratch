@@ -635,8 +635,9 @@ total_steps = EPOCHS * len(train_batches)
 steps = np.arange(1, total_steps + 1)
 fig, ax = plt.subplots(figsize=(6.4, 3))
 ax.plot(steps, [learning_rate(s, warmup=WARMUP) for s in steps], color=COLORS["enc"])
-ax.axvspan(0, min(WARMUP, total_steps), color=COLORS["enc"], alpha=0.08)  # the warm-up
-ax.text(min(WARMUP, total_steps) / 2, 0.0001, "warm-up", ha="center", fontsize=9, color=COLORS["enc"])
+warmup_end = min(WARMUP, total_steps)
+ax.axvspan(0, warmup_end, color=COLORS["enc"], alpha=0.08)
+ax.text(warmup_end / 2, 0.0001, "warm-up", ha="center", fontsize=9, color=COLORS["enc"])
 for epoch in range(1, EPOCHS + 1):
     ax.axvline(epoch * len(train_batches), color=COLORS["line"], linewidth=0.6)
 ax.set_xlabel("step (thin lines: ends of epochs)")
