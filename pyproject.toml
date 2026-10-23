@@ -24,6 +24,8 @@ dev = [
     "torch>=2.4",
     "transformers>=4.45",
 ]
+# the posts in articles/ that draw brains: cortical surfaces and atlases
+articles = ["nilearn>=0.11", "nibabel>=5.2", "colour-science>=0.4.4"]
 
 [build-system]
 requires = ["hatchling"]

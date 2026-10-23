@@ -169,6 +169,11 @@ class Figure:
                 out.append(f"outside canvas: {e}")
         texts = [e for e in self.els if isinstance(e, Text)]
         boxes = [e for e in self.els if isinstance(e, Box)]
+        for b in boxes:  # exact for monospace; for Sans, lowercase labels run narrower than the average advance
+            if b.label:
+                width = len(b.label) * b.size * (MONO_ADVANCE if b.mono else 0.5)
+                if width > b.w - 4:
+                    out.append(f"label wider than its box: {b.label!r}")
         for t in texts:
             tx0, ty0, tx1, ty1 = self._text_bbox(t)
             for b in boxes:

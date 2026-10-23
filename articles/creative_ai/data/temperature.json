@@ -1,0 +1,75 @@
+{
+ "model": "Qwen/Qwen2.5-1.5B-Instruct",
+ "prompt": "Besides building walls, a brick can be used as a",
+ "rows": [
+  {
+   "temperature": 0.3,
+   "samples": [
+    " foundation stone for a house. If each house",
+    " decorative element in a room. If a room",
+    " decorative element in a room. If a room",
+    " decorative element in a wall. If each wall",
+    " decorative element in a wall. If a wall",
+    " decorative element in a room. If a room",
+    " door or a window. If a house has",
+    " door or window in a house. If a"
+   ],
+   "mean_logprob": [
+    -1.2050049304962158,
+    -0.8953981399536133,
+    -0.8953981399536133,
+    -1.0120282173156738,
+    -1.0368412733078003,
+    -0.8953981399536133,
+    -1.0550554990768433,
+    -1.2238688468933105
+   ]
+  },
+  {
+   "temperature": 1.0,
+   "samples": [
+    " foundation stone for a house. If each wall",
+    " decorative element on the exterior perimeter of a square",
+    " perimeter segment to enclose a two-dimensional shape",
+    " footstool, and he starts with ",
+    " toilet. Assuming Aisha has 10",
+    " corner stone in a building's foundation, which",
+    " door or window. Calculate the total number of",
+    " paving block to form a straight path across a"
+   ],
+   "mean_logprob": [
+    -1.3598768711090088,
+    -2.2779269218444824,
+    -2.7719545364379883,
+    -2.697287082672119,
+    -2.973595380783081,
+    -1.9476748704910278,
+    -1.2248069047927856,
+    -2.225574493408203
+   ]
+  },
+  {
+   "temperature": 1.8,
+   "samples": [
+    " logarithmic lined shield reader to verify platesသ",
+    " walkthrough surface between spaces perimeter diice heart",
+    " sterile barrier to keep animals confined thirty to fifty",
+    " leather conditionerer each bundle he takes with advocate",
+    " toiletนิยม spr המק unchecked.Drop chains..\nWhat",
+    " corner marker stepping-stone in laid bricks.,",
+    " door or headline. Marcel Needs to pave wings",
+    " battlerock providing secluded holding boxes magnilies"
+   ],
+   "mean_logprob": [
+    -10.16147518157959,
+    -9.090686798095703,
+    -5.8670525550842285,
+    -10.074835777282715,
+    -12.471630096435547,
+    -5.663034915924072,
+    -7.386980056762695,
+    -8.661215782165527
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1450 @@
+{
+ "source": "Koivisto & Grassini 2023, https://doi.org/10.1038/s41598-023-40858-3; data https://osf.io/qdz3n/",
+ "rows": [
+  {
+   "who": "Human",
+   "mean_rating": 2.5139,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9306,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0875,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7361,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4965,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8264,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1667,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1607,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7292,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1458,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2083,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5243,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3889,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9097,
+   "best_rating": 2.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9222,
+   "best_rating": 2.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.625,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4167,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3097,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5648,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7847,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0243,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6181,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.5208,
+   "best_rating": 2.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1042,
+   "best_rating": 2.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.875,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0208,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7482,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6875,
+   "best_rating": 3.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6125,
+   "best_rating": 3.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0382,
+   "best_rating": 2.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3229,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4264,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1944,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7917,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3194,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4667,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7014,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4525,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3264,
+   "best_rating": 3.1667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3785,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.6111,
+   "best_rating": 2.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9167,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.875,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5208,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2153,
+   "best_rating": 3.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9514,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2465,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1979,
+   "best_rating": 3.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2361,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8889,
+   "best_rating": 2.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5521,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.4792,
+   "best_rating": 4.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.6944,
+   "best_rating": 2.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.875,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1042,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3542,
+   "best_rating": 2.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6875,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.75,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9375,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1007,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.875,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6583,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1771,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9861,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9451,
+   "best_rating": 2.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2875,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8042,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7847,
+   "best_rating": 3.1667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9896,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8958,
+   "best_rating": 3.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7292,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5625,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7465,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6736,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3299,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7792,
+   "best_rating": 2.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.875,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9688,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9826,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7264,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8049,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3278,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8528,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2028,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3403,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.75,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0944,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2083,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7639,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0917,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7986,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6111,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1111,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1875,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2708,
+   "best_rating": 2.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3194,
+   "best_rating": 2.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6841,
+   "best_rating": 3.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.4861,
+   "best_rating": 1.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7431,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5938,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7917,
+   "best_rating": 2.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2569,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.3576,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0565,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0208,
+   "best_rating": 2.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.4757,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8958,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5556,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0729,
+   "best_rating": 2.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.6528,
+   "best_rating": 2.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4792,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1552,
+   "best_rating": 3.225
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3333,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1429,
+   "best_rating": 3.475
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5312,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5312,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8611,
+   "best_rating": 2.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7083,
+   "best_rating": 2.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2396,
+   "best_rating": 3.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7653,
+   "best_rating": 3.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3681,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6875,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1875,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4722,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4417,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7208,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.6764,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.325,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1458,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8229,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8194,
+   "best_rating": 2.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3361,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9896,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9167,
+   "best_rating": 3.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9306,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5833,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7708,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8333,
+   "best_rating": 3.4444
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9236,
+   "best_rating": 3.7222
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.75,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5521,
+   "best_rating": 3.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8542,
+   "best_rating": 2.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5181,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1104,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0417,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3368,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8125,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5486,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9958,
+   "best_rating": 4.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7083,
+   "best_rating": 1.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8333,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0997,
+   "best_rating": 3.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3333,
+   "best_rating": 2.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.65,
+   "best_rating": 2.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1042,
+   "best_rating": 3.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7743,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0486,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1146,
+   "best_rating": 3.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4812,
+   "best_rating": 3.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3646,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2708,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.2222,
+   "best_rating": 1.2222
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0931,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.0,
+   "best_rating": 1.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9306,
+   "best_rating": 2.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7056,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.3681,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6528,
+   "best_rating": 3.1667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4583,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5868,
+   "best_rating": 3.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4583,
+   "best_rating": 3.1667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9271,
+   "best_rating": 3.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2292,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1736,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2083,
+   "best_rating": 2.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9861,
+   "best_rating": 2.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4792,
+   "best_rating": 2.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4062,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8872,
+   "best_rating": 3.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.119,
+   "best_rating": 3.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3944,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1083,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9583,
+   "best_rating": 3.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7222,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8153,
+   "best_rating": 2.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8778,
+   "best_rating": 2.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.3715,
+   "best_rating": 4.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0208,
+   "best_rating": 4.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7917,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2014,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6389,
+   "best_rating": 3.5
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2896,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9188,
+   "best_rating": 3.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3438,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1528,
+   "best_rating": 2.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4062,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2222,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.4583,
+   "best_rating": 2.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3299,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0764,
+   "best_rating": 3.875
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8472,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8542,
+   "best_rating": 3.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.75,
+   "best_rating": 2.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9097,
+   "best_rating": 3.7083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5979,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9583,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.5625,
+   "best_rating": 3.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4653,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9875,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2083,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0333,
+   "best_rating": 3.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9896,
+   "best_rating": 3.5417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2222,
+   "best_rating": 2.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0833,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.7083,
+   "best_rating": 3.1667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8333,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3181,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9201,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4861,
+   "best_rating": 2.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6028,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5312,
+   "best_rating": 2.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2431,
+   "best_rating": 3.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8562,
+   "best_rating": 2.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1354,
+   "best_rating": 2.6667
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2292,
+   "best_rating": 2.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.7812,
+   "best_rating": 2.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9097,
+   "best_rating": 2.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.5382,
+   "best_rating": 2.9833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.2708,
+   "best_rating": 3.9583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1931,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9167,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2986,
+   "best_rating": 2.75
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1139,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1806,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.6389,
+   "best_rating": 1.9167
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.8819,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6139,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3854,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4271,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.4625,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0972,
+   "best_rating": 4.0
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.2049,
+   "best_rating": 3.3889
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9306,
+   "best_rating": 3.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.3333,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.0139,
+   "best_rating": 2.7917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.0972,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.1639,
+   "best_rating": 3.0833
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.9583,
+   "best_rating": 2.625
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.5556,
+   "best_rating": 4.25
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.9024,
+   "best_rating": 4.0417
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.8542,
+   "best_rating": 2.4583
+  },
+  {
+   "who": "Human",
+   "mean_rating": 2.6354,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Human",
+   "mean_rating": 1.1875,
+   "best_rating": 1.2917
+  },
+  {
+   "who": "Human",
+   "mean_rating": 3.1042,
+   "best_rating": 3.5
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.8333,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.6042,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.6458,
+   "best_rating": 3.4167
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.7222,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.5139,
+   "best_rating": 3.0417
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.9236,
+   "best_rating": 3.5833
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.7778,
+   "best_rating": 3.3333
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.7812,
+   "best_rating": 3.875
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.4896,
+   "best_rating": 3.3667
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.7167,
+   "best_rating": 4.0
+  },
+  {
+   "who": "ChatGPT3",
+   "mean_rating": 2.7014,
+   "best_rating": 3.8333
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.7083,
+   "best_rating": 2.7083
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 3.2708,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.7708,
+   "best_rating": 3.125
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.2083,
+   "best_rating": 2.8333
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.5417,
+   "best_rating": 3.2083
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.6667,
+   "best_rating": 3.625
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.5278,
+   "best_rating": 3.375
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.8438,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.3229,
+   "best_rating": 3.25
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.8854,
+   "best_rating": 3.75
+  },
+  {
+   "who": "Copy.Ai",
+   "mean_rating": 2.6597,
+   "best_rating": 3.875
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.6667,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.2292,
+   "best_rating": 4.0
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.2292,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.4028,
+   "best_rating": 4.1667
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.2083,
+   "best_rating": 3.9167
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.6111,
+   "best_rating": 4.3333
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.0139,
+   "best_rating": 3.6667
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.4167,
+   "best_rating": 4.2083
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.3333,
+   "best_rating": 4.0833
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.6917,
+   "best_rating": 4.625
+  },
+  {
+   "who": "ChatGPT4",
+   "mean_rating": 3.0729,
+   "best_rating": 3.7917
+  }
+ ]
+}
