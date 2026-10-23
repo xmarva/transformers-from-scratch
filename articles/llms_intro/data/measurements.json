@@ -1,0 +1,334 @@
+{
+ "next_token": {
+  "model": "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+  "prompt": "The capital of Australia is",
+  "top": [
+   [
+    " Can",
+    0.47895556688308716
+   ],
+   [
+    " Sydney",
+    0.10319322347640991
+   ],
+   [
+    " the",
+    0.03601479530334473
+   ],
+   [
+    " Melbourne",
+    0.03485194966197014
+   ],
+   [
+    " located",
+    0.03424026444554329
+   ],
+   [
+    "?",
+    0.02358187548816204
+   ],
+   [
+    " where",
+    0.016492202877998352
+   ],
+   [
+    ".",
+    0.015445650555193424
+   ],
+   [
+    ",",
+    0.013226114213466644
+   ],
+   [
+    " Br",
+    0.01319800317287445
+   ],
+   [
+    "\n",
+    0.011152139864861965
+   ],
+   [
+    " currently",
+    0.010005364194512367
+   ]
+  ],
+  "greedy": [
+   [
+    [
+     " Can",
+     0.47895556688308716
+    ],
+    [
+     " Sydney",
+     0.10319322347640991
+    ],
+    [
+     " the",
+     0.03601479530334473
+    ]
+   ],
+   [
+    [
+     "ber",
+     0.9994679093360901
+    ],
+    [
+     "ter",
+     0.00018368182645644993
+    ],
+    [
+     "c",
+     3.361644485266879e-05
+    ]
+   ],
+   [
+    [
+     "ra",
+     0.9960373640060425
+    ],
+    [
+     "...",
+     0.0011602382874116302
+    ],
+    [
+     "r",
+     0.0008126191096380353
+    ]
+   ],
+   [
+    [
+     ".",
+     0.4398908317089081
+    ],
+    [
+     ",",
+     0.17347446084022522
+    ],
+    [
+     "?",
+     0.08265319466590881
+    ]
+   ],
+   [
+    [
+     "\n",
+     0.23652641475200653
+    ],
+    [
+     " The",
+     0.1883869171142578
+    ],
+    [
+     " What",
+     0.05566221848130226
+    ]
+   ],
+   [
+    [
+     "The",
+     0.1320614516735077
+    ],
+    [
+     "What",
+     0.09049872308969498
+    ],
+    [
+     "1",
+     0.04838539659976959
+    ]
+   ],
+   [
+    [
+     " capital",
+     0.5043507218360901
+    ],
+    [
+     " Australian",
+     0.018514422699809074
+    ],
+    [
+     " first",
+     0.01815282367169857
+    ]
+   ],
+   [
+    [
+     " of",
+     0.9012977480888367
+    ],
+    [
+     " city",
+     0.06287726014852524
+    ],
+    [
+     " is",
+     0.013656839728355408
+    ]
+   ],
+   [
+    [
+     " Australia",
+     0.3950163424015045
+    ],
+    [
+     " Canada",
+     0.085983507335186
+    ],
+    [
+     " the",
+     0.06285607814788818
+    ]
+   ],
+   [
+    [
+     " is",
+     0.9638255834579468
+    ],
+    [
+     ",",
+     0.004411729983985424
+    ],
+    [
+     "\n",
+     0.0030543601606041193
+    ]
+   ],
+   [
+    [
+     " Can",
+     0.8288294672966003
+    ],
+    [
+     " Sydney",
+     0.039608608931303024
+    ],
+    [
+     " Melbourne",
+     0.02250039391219616
+    ]
+   ],
+   [
+    [
+     "ber",
+     0.9997833371162415
+    ],
+    [
+     "ter",
+     0.00013050343841314316
+    ],
+    [
+     "b",
+     1.2680862710112706e-05
+    ]
+   ],
+   [
+    [
+     "ra",
+     0.9958071708679199
+    ],
+    [
+     "...",
+     0.001309692277573049
+    ],
+    [
+     "\n",
+     0.0005605083424597979
+    ]
+   ],
+   [
+    [
+     ".",
+     0.95423823595047
+    ],
+    [
+     "\n",
+     0.011781582608819008
+    ],
+    [
+     ",",
+     0.009714556857943535
+    ]
+   ]
+  ],
+  "canberra": 0.4768038023976918
+ },
+ "made_up": {
+  "base_prompt": "Tom Cruise's mother is",
+  "base": "a former model and actress, Mary Kay Place.\nMary Kay Place was born on 19th June ",
+  "chat": [
+   {
+    "question": "Who is Tom Cruise's mother?",
+    "answer": "Tom Cruise's mother is Nicole Kidman."
+   },
+   {
+    "question": "Who is Mary Lee Pfeiffer's son?",
+    "answer": "Mary Lee Pfeiffer's son is named John Pfeiffer."
+   }
+  ]
+ },
+ "compression": {
+  "text_chars": 7235,
+  "text_bytes": 7322,
+  "classic": {
+   "gzip": 3.65224602626123,
+   "bzip2": 3.510711817553559,
+   "xz": 3.6754664823773324
+  },
+  "models": [
+   {
+    "model": "openai-community/gpt2",
+    "parameters": 124439808,
+    "tokens": 1804,
+    "bits_per_char": 1.1979957728705055
+   },
+   {
+    "model": "EleutherAI/pythia-70m",
+    "parameters": 70426624,
+    "tokens": 1702,
+    "bits_per_char": 1.2299873714383565
+   },
+   {
+    "model": "EleutherAI/pythia-160m",
+    "parameters": 162322944,
+    "tokens": 1702,
+    "bits_per_char": 1.0948102671487736
+   },
+   {
+    "model": "EleutherAI/pythia-410m",
+    "parameters": 405334016,
+    "tokens": 1702,
+    "bits_per_char": 0.973686297083836
+   },
+   {
+    "model": "EleutherAI/pythia-1.4b",
+    "parameters": 1414647808,
+    "tokens": 1702,
+    "bits_per_char": 0.9030425548946819
+   },
+   {
+    "model": "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+    "parameters": 1100048384,
+    "tokens": 1833,
+    "bits_per_char": 0.8583661268169092
+   }
+  ]
+ },
+ "chat": {
+  "base": "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+  "chat": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "rows": [
+   {
+    "question": "What is the capital of Australia?",
+    "base": "\nWhat is the capital of Australia?\nWhat is the capital of Australia? The capital of Australia is Canberra.\nWhat is the capital of Australia? The capital of Australia is Canberra.\nWhat is the capital of Australia? The capital of Australia is Canberra.\n",
+    "chat": "The capital of Australia is Canberra.",
+    "chat_prompt": "<|user|>\nWhat is the capital of Australia?</s>\n<|assistant|>\n"
+   },
+   {
+    "question": "Write a haiku about a cat.",
+    "base": "\nI'm not sure if I'm going to be able to do this, but I'm going to try.\nI'm going to try to write a haiku about a cat.\nI'm going to try to write a haiku about a cat.\nI",
+    "chat": "A feline's grace,\nA playful spirit,\nA cat's unconditional love.",
+    "chat_prompt": "<|user|>\nWrite a haiku about a cat.</s>\n<|assistant|>\n"
+   }
+  ]
+ }
+}

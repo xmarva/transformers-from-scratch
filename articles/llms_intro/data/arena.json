@@ -1,0 +1,717 @@
+{
+ "source": "https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset/resolve/main/text/full-00000-of-00001.parquet",
+ "date": "2024-04-22",
+ "rows": [
+  {
+   "model": "gpt-4-turbo-2024-04-09",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1258.9,
+   "low": 1253.8,
+   "high": 1263.0,
+   "votes": 23823
+  },
+  {
+   "model": "gpt-4-1106-preview",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1253.6,
+   "low": 1250.1,
+   "high": 1256.4,
+   "votes": 67933
+  },
+  {
+   "model": "claude-3-opus-20240229",
+   "organization": "anthropic",
+   "license": "Proprietary",
+   "rating": 1252.2,
+   "low": 1248.9,
+   "high": 1255.0,
+   "votes": 68656
+  },
+  {
+   "model": "gpt-4-0125-preview",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1248.6,
+   "low": 1245.3,
+   "high": 1251.6,
+   "votes": 56475
+  },
+  {
+   "model": "llama-3-70b-instruct",
+   "organization": "meta",
+   "license": "Llama 3 Community",
+   "rating": 1209.6,
+   "low": 1204.3,
+   "high": 1214.2,
+   "votes": 12719
+  },
+  {
+   "model": "claude-3-sonnet-20240229",
+   "organization": "anthropic",
+   "license": "Proprietary",
+   "rating": 1202.1,
+   "low": 1199.3,
+   "high": 1204.6,
+   "votes": 70952
+  },
+  {
+   "model": "command-r-plus",
+   "organization": "cohere",
+   "license": "CC-BY-NC-4.0",
+   "rating": 1192.0,
+   "low": 1188.3,
+   "high": 1195.1,
+   "votes": 39243
+  },
+  {
+   "model": "gpt-4-0314",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1188.5,
+   "low": 1185.1,
+   "high": 1191.5,
+   "votes": 46299
+  },
+  {
+   "model": "claude-3-haiku-20240307",
+   "organization": "anthropic",
+   "license": "Proprietary",
+   "rating": 1181.0,
+   "low": 1177.7,
+   "high": 1183.5,
+   "votes": 64106
+  },
+  {
+   "model": "gpt-4-0613",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1164.8,
+   "low": 1161.4,
+   "high": 1168.0,
+   "votes": 65048
+  },
+  {
+   "model": "mistral-large-2402",
+   "organization": "mistral",
+   "license": "Proprietary",
+   "rating": 1157.7,
+   "low": 1154.7,
+   "high": 1160.4,
+   "votes": 42206
+  },
+  {
+   "model": "qwen1.5-72b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1153.1,
+   "low": 1150.2,
+   "high": 1157.0,
+   "votes": 32032
+  },
+  {
+   "model": "reka-flash-21b-20240226-online",
+   "organization": "Reka AI",
+   "license": "Proprietary",
+   "rating": 1150.3,
+   "low": 1142.7,
+   "high": 1158.0,
+   "votes": 6668
+  },
+  {
+   "model": "command-r",
+   "organization": "cohere",
+   "license": "CC-BY-NC-4.0",
+   "rating": 1148.2,
+   "low": 1144.9,
+   "high": 1152.3,
+   "votes": 36452
+  },
+  {
+   "model": "reka-flash-21b-20240226",
+   "organization": "Reka AI",
+   "license": "Proprietary",
+   "rating": 1147.7,
+   "low": 1139.5,
+   "high": 1154.2,
+   "votes": 6975
+  },
+  {
+   "model": "mistral-medium",
+   "organization": "mistral",
+   "license": "Proprietary",
+   "rating": 1147.4,
+   "low": 1143.9,
+   "high": 1150.7,
+   "votes": 32248
+  },
+  {
+   "model": "mixtral-8x22b-instruct-v0.1",
+   "organization": "mistral",
+   "license": "Apache 2.0",
+   "rating": 1145.1,
+   "low": 1138.9,
+   "high": 1150.8,
+   "votes": 8458
+  },
+  {
+   "model": "llama-3-8b-instruct",
+   "organization": "meta",
+   "license": "Llama 3 Community",
+   "rating": 1144.2,
+   "low": 1139.3,
+   "high": 1149.3,
+   "votes": 11269
+  },
+  {
+   "model": "gemini-pro-dev-api",
+   "organization": "google",
+   "license": "Proprietary",
+   "rating": 1135.7,
+   "low": 1130.9,
+   "high": 1140.0,
+   "votes": 20170
+  },
+  {
+   "model": "qwen1.5-32b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1134.9,
+   "low": 1130.2,
+   "high": 1139.5,
+   "votes": 14632
+  },
+  {
+   "model": "zephyr-orpo-141b-A35b-v0.1",
+   "organization": "HuggingFace",
+   "license": "Apache 2.0",
+   "rating": 1126.6,
+   "low": 1116.3,
+   "high": 1135.9,
+   "votes": 3744
+  },
+  {
+   "model": "qwen1.5-14b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1119.0,
+   "low": 1114.7,
+   "high": 1122.4,
+   "votes": 19298
+  },
+  {
+   "model": "starling-lm-7b-beta",
+   "organization": "Nexusflow",
+   "license": "Apache-2.0",
+   "rating": 1118.8,
+   "low": 1114.0,
+   "high": 1123.1,
+   "votes": 16697
+  },
+  {
+   "model": "gemini-pro",
+   "organization": "google",
+   "license": "Proprietary",
+   "rating": 1114.3,
+   "low": 1107.7,
+   "high": 1120.8,
+   "votes": 6856
+  },
+  {
+   "model": "mixtral-8x7b-instruct-v0.1",
+   "organization": "mistral",
+   "license": "Apache 2.0",
+   "rating": 1114.0,
+   "low": 1114.0,
+   "high": 1114.0,
+   "votes": 58594
+  },
+  {
+   "model": "yi-34b-chat",
+   "organization": "01 AI",
+   "license": "Yi License",
+   "rating": 1108.8,
+   "low": 1102.5,
+   "high": 1113.4,
+   "votes": 11788
+  },
+  {
+   "model": "wizardlm-70b",
+   "organization": "microsoft",
+   "license": "Llama 2 Community",
+   "rating": 1107.8,
+   "low": 1100.2,
+   "high": 1113.9,
+   "votes": 8892
+  },
+  {
+   "model": "gpt-3.5-turbo-0125",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1105.4,
+   "low": 1102.0,
+   "high": 1108.6,
+   "votes": 43399
+  },
+  {
+   "model": "tulu-2-dpo-70b",
+   "organization": "AllenAI/UW",
+   "license": "AI2 ImpACT Low-risk",
+   "rating": 1102.6,
+   "low": 1096.1,
+   "high": 1109.8,
+   "votes": 6961
+  },
+  {
+   "model": "dbrx-instruct-preview",
+   "organization": "Databricks",
+   "license": "DBRX LICENSE",
+   "rating": 1101.9,
+   "low": 1098.5,
+   "high": 1105.4,
+   "votes": 26796
+  },
+  {
+   "model": "openchat-3.5-0106",
+   "organization": "OpenChat",
+   "license": "Apache-2.0",
+   "rating": 1098.3,
+   "low": 1093.1,
+   "high": 1103.3,
+   "votes": 14232
+  },
+  {
+   "model": "vicuna-33b",
+   "organization": "LMSYS",
+   "license": "Non-commercial",
+   "rating": 1093.3,
+   "low": 1088.6,
+   "high": 1097.4,
+   "votes": 23950
+  },
+  {
+   "model": "starling-lm-7b-alpha",
+   "organization": "UC Berkeley",
+   "license": "CC-BY-NC-4.0",
+   "rating": 1090.9,
+   "low": 1085.0,
+   "high": 1095.9,
+   "votes": 11007
+  },
+  {
+   "model": "llama-2-70b-chat",
+   "organization": "meta",
+   "license": "Llama 2 Community",
+   "rating": 1088.0,
+   "low": 1084.5,
+   "high": 1090.9,
+   "votes": 38253
+  },
+  {
+   "model": "gemma-1.1-7b-it",
+   "organization": "google",
+   "license": "Gemma license",
+   "rating": 1087.1,
+   "low": 1080.4,
+   "high": 1093.7,
+   "votes": 6928
+  },
+  {
+   "model": "nous-hermes-2-mixtral-8x7b-dpo",
+   "organization": "NousResearch",
+   "license": "Apache-2.0",
+   "rating": 1086.6,
+   "low": 1078.6,
+   "high": 1096.2,
+   "votes": 3991
+  },
+  {
+   "model": "llama2-70b-steerlm-chat",
+   "organization": "nvidia",
+   "license": "Llama 2 Community",
+   "rating": 1082.1,
+   "low": 1073.4,
+   "high": 1092.2,
+   "votes": 3768
+  },
+  {
+   "model": "deepseek-llm-67b-chat",
+   "organization": "deepseek",
+   "license": "DeepSeek License",
+   "rating": 1079.3,
+   "low": 1069.1,
+   "high": 1086.8,
+   "votes": 5191
+  },
+  {
+   "model": "openchat-3.5",
+   "organization": "OpenChat",
+   "license": "Apache-2.0",
+   "rating": 1077.8,
+   "low": 1072.8,
+   "high": 1084.1,
+   "votes": 8458
+  },
+  {
+   "model": "openhermes-2.5-mistral-7b",
+   "organization": "NousResearch",
+   "license": "Apache-2.0",
+   "rating": 1077.7,
+   "low": 1070.6,
+   "high": 1084.7,
+   "votes": 5289
+  },
+  {
+   "model": "mistral-7b-instruct-v0.2",
+   "organization": "mistral",
+   "license": "Apache-2.0",
+   "rating": 1073.3,
+   "low": 1067.8,
+   "high": 1078.4,
+   "votes": 18940
+  },
+  {
+   "model": "gpt-3.5-turbo-1106",
+   "organization": "openai",
+   "license": "Proprietary",
+   "rating": 1072.2,
+   "low": 1067.4,
+   "high": 1077.4,
+   "votes": 17861
+  },
+  {
+   "model": "qwen1.5-7b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1070.8,
+   "low": 1061.0,
+   "high": 1080.1,
+   "votes": 3515
+  },
+  {
+   "model": "solar-10.7b-instruct-v1.0",
+   "organization": "Upstage AI",
+   "license": "CC-BY-NC-4.0",
+   "rating": 1064.7,
+   "low": 1056.3,
+   "high": 1075.9,
+   "votes": 4492
+  },
+  {
+   "model": "dolphin-2.2.1-mistral-7b",
+   "organization": "Cognitive Computations",
+   "license": "Apache-2.0",
+   "rating": 1064.6,
+   "low": 1055.7,
+   "high": 1076.5,
+   "votes": 1783
+  },
+  {
+   "model": "wizardlm-13b",
+   "organization": "microsoft",
+   "license": "Llama 2 Community",
+   "rating": 1060.9,
+   "low": 1054.3,
+   "high": 1067.8,
+   "votes": 7631
+  },
+  {
+   "model": "llama-2-13b-chat",
+   "organization": "meta",
+   "license": "Llama 2 Community",
+   "rating": 1053.0,
+   "low": 1047.8,
+   "high": 1057.4,
+   "votes": 17103
+  },
+  {
+   "model": "zephyr-7b-beta",
+   "organization": "HuggingFace",
+   "license": "MIT",
+   "rating": 1052.9,
+   "low": 1047.4,
+   "high": 1057.7,
+   "votes": 11964
+  },
+  {
+   "model": "codellama-70b-instruct",
+   "organization": "meta",
+   "license": "Llama 2 Community",
+   "rating": 1047.7,
+   "low": 1034.6,
+   "high": 1064.8,
+   "votes": 1333
+  },
+  {
+   "model": "mpt-30b-chat",
+   "organization": "MosaicML",
+   "license": "CC-BY-NC-SA-4.0",
+   "rating": 1046.4,
+   "low": 1032.8,
+   "high": 1058.8,
+   "votes": 2797
+  },
+  {
+   "model": "codellama-34b-instruct",
+   "organization": "meta",
+   "license": "Llama 2 Community",
+   "rating": 1046.1,
+   "low": 1039.7,
+   "high": 1052.9,
+   "votes": 8061
+  },
+  {
+   "model": "vicuna-13b",
+   "organization": "LMSYS",
+   "license": "Llama 2 Community",
+   "rating": 1045.8,
+   "low": 1040.4,
+   "high": 1051.4,
+   "votes": 19238
+  },
+  {
+   "model": "gemma-7b-it",
+   "organization": "google",
+   "license": "Gemma license",
+   "rating": 1043.3,
+   "low": 1038.4,
+   "high": 1051.0,
+   "votes": 9897
+  },
+  {
+   "model": "zephyr-7b-alpha",
+   "organization": "HuggingFace",
+   "license": "MIT",
+   "rating": 1041.5,
+   "low": 1028.6,
+   "high": 1055.2,
+   "votes": 1904
+  },
+  {
+   "model": "llama-2-7b-chat",
+   "organization": "meta",
+   "license": "Llama 2 Community",
+   "rating": 1037.7,
+   "low": 1032.2,
+   "high": 1042.4,
+   "votes": 13964
+  },
+  {
+   "model": "qwen-14b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1037.2,
+   "low": 1031.3,
+   "high": 1045.1,
+   "votes": 5309
+  },
+  {
+   "model": "falcon-180b-chat",
+   "organization": "TII",
+   "license": "Falcon-180B TII License",
+   "rating": 1035.7,
+   "low": 1021.8,
+   "high": 1048.2,
+   "votes": 1399
+  },
+  {
+   "model": "guanaco-33b",
+   "organization": "UW",
+   "license": "Non-commercial",
+   "rating": 1033.3,
+   "low": 1023.1,
+   "high": 1042.9,
+   "votes": 3188
+  },
+  {
+   "model": "stripedhyena-nous-7b",
+   "organization": "Together AI",
+   "license": "Apache 2.0",
+   "rating": 1022.2,
+   "low": 1014.4,
+   "high": 1029.7,
+   "votes": 5531
+  },
+  {
+   "model": "olmo-7b-instruct",
+   "organization": "Ai2",
+   "license": "Apache-2.0",
+   "rating": 1020.7,
+   "low": 1013.9,
+   "high": 1027.1,
+   "votes": 7049
+  },
+  {
+   "model": "gemma-1.1-2b-it",
+   "organization": "google",
+   "license": "Gemma license",
+   "rating": 1011.2,
+   "low": 999.7,
+   "high": 1020.9,
+   "votes": 3263
+  },
+  {
+   "model": "mistral-7b-instruct",
+   "organization": "mistral",
+   "license": "Apache 2.0",
+   "rating": 1010.1,
+   "low": 1004.9,
+   "high": 1016.6,
+   "votes": 9646
+  },
+  {
+   "model": "palm-2",
+   "organization": "google",
+   "license": "Proprietary",
+   "rating": 1008.2,
+   "low": 1001.6,
+   "high": 1014.6,
+   "votes": 9250
+  },
+  {
+   "model": "vicuna-7b",
+   "organization": "LMSYS",
+   "license": "Llama 2 Community",
+   "rating": 1008.0,
+   "low": 1001.3,
+   "high": 1014.7,
+   "votes": 7383
+  },
+  {
+   "model": "qwen1.5-4b-chat",
+   "organization": "alibaba",
+   "license": "Qianwen LICENSE",
+   "rating": 1002.6,
+   "low": 997.7,
+   "high": 1010.0,
+   "votes": 8533
+  },
+  {
+   "model": "gemma-2b-it",
+   "organization": "google",
+   "license": "Gemma license",
+   "rating": 999.6,
+   "low": 991.0,
+   "high": 1005.9,
+   "votes": 5351
+  },
+  {
+   "model": "koala-13b",
+   "organization": "UC Berkeley",
+   "license": "Non-commercial",
+   "rating": 968.0,
+   "low": 959.1,
+   "high": 976.1,
+   "votes": 7322
+  },
+  {
+   "model": "chatglm3-6b",
+   "organization": "Tsinghua",
+   "license": "Apache-2.0",
+   "rating": 959.7,
+   "low": 952.2,
+   "high": 967.4,
+   "votes": 4956
+  },
+  {
+   "model": "gpt4all-13b-snoozy",
+   "organization": "Nomic AI",
+   "license": "Non-commercial",
+   "rating": 937.6,
+   "low": 923.1,
+   "high": 950.7,
+   "votes": 1911
+  },
+  {
+   "model": "mpt-7b-chat",
+   "organization": "MosaicML",
+   "license": "CC-BY-NC-SA-4.0",
+   "rating": 932.3,
+   "low": 921.6,
+   "high": 941.2,
+   "votes": 4196
+  },
+  {
+   "model": "chatglm2-6b",
+   "organization": "Tsinghua",
+   "license": "Apache-2.0",
+   "rating": 931.8,
+   "low": 918.9,
+   "high": 943.3,
+   "votes": 2885
+  },
+  {
+   "model": "RWKV-4-Raven-14B",
+   "organization": "RWKV",
+   "license": "Apache 2.0",
+   "rating": 927.0,
+   "low": 919.9,
+   "high": 934.3,
+   "votes": 5143
+  },
+  {
+   "model": "alpaca-13b",
+   "organization": "Stanford",
+   "license": "Non-commercial",
+   "rating": 906.6,
+   "low": 898.8,
+   "high": 914.1,
+   "votes": 6121
+  },
+  {
+   "model": "oasst-pythia-12b",
+   "organization": "OpenAssistant",
+   "license": "Apache 2.0",
+   "rating": 898.9,
+   "low": 889.9,
+   "high": 906.0,
+   "votes": 6628
+  },
+  {
+   "model": "chatglm-6b",
+   "organization": "Tsinghua",
+   "license": "Non-commercial",
+   "rating": 885.2,
+   "low": 874.0,
+   "high": 892.5,
+   "votes": 5206
+  },
+  {
+   "model": "fastchat-t5-3b",
+   "organization": "LMSYS",
+   "license": "Apache 2.0",
+   "rating": 875.5,
+   "low": 865.6,
+   "high": 883.6,
+   "votes": 4527
+  },
+  {
+   "model": "stablelm-tuned-alpha-7b",
+   "organization": "Stability AI",
+   "license": "CC-BY-NC-SA-4.0",
+   "rating": 847.4,
+   "low": 838.1,
+   "high": 856.0,
+   "votes": 3466
+  },
+  {
+   "model": "dolly-v2-12b",
+   "organization": "Databricks",
+   "license": "MIT",
+   "rating": 824.7,
+   "low": 814.6,
+   "high": 836.5,
+   "votes": 3672
+  },
+  {
+   "model": "llama-13b",
+   "organization": "meta",
+   "license": "Non-commercial",
+   "rating": 803.0,
+   "low": 791.8,
+   "high": 815.0,
+   "votes": 2543
+  }
+ ]
+}

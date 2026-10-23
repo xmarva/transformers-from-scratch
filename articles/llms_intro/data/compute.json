@@ -1,0 +1,1553 @@
+{
+ "source": "https://epoch.ai/data/notable_ai_models.csv",
+ "downloaded": "2026-10-23",
+ "rows": [
+  {
+   "model": "Pandemonium (morse)",
+   "organization": "Massachusetts Institute of Technology (MIT)",
+   "date": "1959-02-01",
+   "flop": 600000000.0,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Predictive Coding NN",
+   "organization": "Technical University of Munich",
+   "date": "1994-12-02",
+   "flop": 18621900000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "LSTM",
+   "organization": "Technical University of Munich",
+   "date": "1997-11-15",
+   "flop": 31512000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "RECONTRA-uncategorized",
+   "organization": NaN,
+   "date": "1999-06-02",
+   "flop": 3864000000000.0,
+   "confidence": "Likely"
+  },
+  {
+   "model": "RECONTRA-categorized",
+   "organization": NaN,
+   "date": "1999-06-02",
+   "flop": 8013600000000.0,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Neural LM",
+   "organization": "University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2000-11-28",
+   "flop": 6339000000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "NPLM (Brown)",
+   "organization": "University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2003-03-15",
+   "flop": 132076260000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "NPLM (AP News)",
+   "organization": "University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2003-03-15",
+   "flop": 1666869200000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Hierarchical LM",
+   "organization": NaN,
+   "date": "2005-01-06",
+   "flop": 115848000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "SB-LM",
+   "organization": "Google",
+   "date": "2007-06-22",
+   "flop": 1.4494464e+18,
+   "confidence": "Likely"
+  },
+  {
+   "model": "KN-LM",
+   "organization": "Google",
+   "date": "2007-06-22",
+   "flop": 7.7303808e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "RNN LM",
+   "organization": "Johns Hopkins University",
+   "date": "2010-09-26",
+   "flop": 5.396e+16,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "LSTM LM",
+   "organization": "RWTH Aachen University",
+   "date": "2012-09-09",
+   "flop": 1.66e+16,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "DistBelief NNLM",
+   "organization": "Google",
+   "date": "2013-01-16",
+   "flop": 2.612736e+18,
+   "confidence": "Likely"
+  },
+  {
+   "model": "RNTN",
+   "organization": "Stanford University",
+   "date": "2013-10-01",
+   "flop": 1.422e+16,
+   "confidence": "Likely"
+  },
+  {
+   "model": "RCTM",
+   "organization": "University of Oxford",
+   "date": "2013-10-01",
+   "flop": 9331200000000000.0,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Word2Vec (large)",
+   "organization": "Google",
+   "date": "2013-10-16",
+   "flop": 3.888e+16,
+   "confidence": "Likely"
+  },
+  {
+   "model": "TransE",
+   "organization": "Universite de Technologie de Compi\u00e8gne \u2013 CNRS,Google",
+   "date": "2013-12-05",
+   "flop": 1.340928e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "RNNsearch-50*",
+   "organization": "Jacobs University Bremen,University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2014-09-01",
+   "flop": 1.5552e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Seq2Seq LSTM",
+   "organization": "Google",
+   "date": "2014-09-10",
+   "flop": 5.6e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "SPN-4+KN5",
+   "organization": "Singapore University of Technology & Design,DSO National Laboratories",
+   "date": "2014-09-14",
+   "flop": 4.4e+16,
+   "confidence": "Likely"
+  },
+  {
+   "model": "SNM-skip",
+   "organization": "Google",
+   "date": "2014-12-03",
+   "flop": 2.97600000001e+20,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "genCNN + dyn eval",
+   "organization": "Chinese Academy of Sciences,Huawei Noah's Ark Lab,Dublin City University",
+   "date": "2015-03-17",
+   "flop": 3.4153451e+16,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Variational (untied weights, MC) LSTM (Large)",
+   "organization": "University of Cambridge",
+   "date": "2015-12-16",
+   "flop": 5886144000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Named Entity Recognition model",
+   "organization": "Carnegie Mellon University (CMU)",
+   "date": "2016-03-04",
+   "flop": 9.69408e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Pointer Sentinel-LSTM (medium)",
+   "organization": "MetaMind Inc,Salesforce",
+   "date": "2016-09-26",
+   "flop": 7490000000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GNMT",
+   "organization": "Google",
+   "date": "2016-09-26",
+   "flop": 6.620000000001e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "VD-LSTM+REAL Large",
+   "organization": "Salesforce Research,Stanford University",
+   "date": "2016-11-04",
+   "flop": 2.13e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "NAS with base 8 and shared embeddings",
+   "organization": "Google Brain",
+   "date": "2016-11-05",
+   "flop": 1.05e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "BIDAF",
+   "organization": "University of Washington,Allen Institute for AI",
+   "date": "2016-11-05",
+   "flop": 3.4686144e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "MoE-Multi",
+   "organization": "Jagiellonian University,Google Brain",
+   "date": "2017-01-23",
+   "flop": 9.393905664e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Transformer",
+   "organization": "Google Research,Google Brain",
+   "date": "2017-06-12",
+   "flop": 7.4245248e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ConvS2S (ensemble of 8 models)",
+   "organization": "Meta AI",
+   "date": "2017-07-25",
+   "flop": 5.64e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "AWD-LSTM - 3-layer LSTM (tied) + continuous cache pointer (WT2)",
+   "organization": "Salesforce Research",
+   "date": "2017-08-07",
+   "flop": 2.97e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "EI-REHN-1000D",
+   "organization": "Korea Advanced Institute of Science and Technology (KAIST)",
+   "date": "2017-08-14",
+   "flop": 1.06e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GL-LWGC-AWD-MoS-LSTM + dynamic evaluation (WT2)",
+   "organization": "Ben-Gurion University of the Negev",
+   "date": "2017-08-29",
+   "flop": 4.56e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ISS",
+   "organization": "Duke University,Microsoft",
+   "date": "2017-09-15",
+   "flop": 3400000000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "AWD-LSTM+WT+Cache+IOG (WT2)",
+   "organization": "NTT Communication Science Laboratories",
+   "date": "2017-09-26",
+   "flop": 3180000000000000.0,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Fraternal dropout + AWD-LSTM 3-layer (WT2)",
+   "organization": "Jagiellonian University,Mila - Quebec AI (originally Montreal Institute for Learning Algorithms),University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2017-10-31",
+   "flop": 3.06e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "AWD-LSTM-MoS + dynamic evaluation (WT2, 2017)",
+   "organization": "Carnegie Mellon University (CMU)",
+   "date": "2017-11-10",
+   "flop": 3.36e+18,
+   "confidence": "Likely"
+  },
+  {
+   "model": "QRNN",
+   "organization": "Salesforce Research",
+   "date": "2018-02-01",
+   "flop": 6.8866472e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "ELMo",
+   "organization": "University of Washington,Allen Institute for AI",
+   "date": "2018-02-01",
+   "flop": 3300100000000010.0,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "4 layer QRNN (h=2500)",
+   "organization": "Salesforce Research",
+   "date": "2018-03-22",
+   "flop": 5.9158815e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Dropout-LSTM+Noise(Bernoulli) (WT2)",
+   "organization": "Columbia University,New York University (NYU),Princeton University",
+   "date": "2018-05-03",
+   "flop": 1.27e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "aLSTM(depth-2)+RecurrentPolicy (WT2)",
+   "organization": "University of Manchester,Alan Turing Institute",
+   "date": "2018-05-22",
+   "flop": 7.296e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GPT-1",
+   "organization": "OpenAI",
+   "date": "2018-06-01",
+   "flop": 1.7578125e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Big Transformer for Back-Translation",
+   "organization": "Facebook AI Research,Google Brain",
+   "date": "2018-08-28",
+   "flop": 4.7808e+20,
+   "confidence": "Likely"
+  },
+  {
+   "model": "(ensemble): AWD-LSTM-DOC (fin) \u00d7 5 (WT2)",
+   "organization": "NTT Communication Science Laboratories,Tohoku University",
+   "date": "2018-08-30",
+   "flop": 6.66e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Transformer + Simple Recurrent Unit",
+   "organization": "ASAPP,Cornell University,Google,Princeton University",
+   "date": "2018-09-17",
+   "flop": 1.1e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "LSTM+NeuralCache",
+   "organization": "KU Leuven,ESAT - PSI,Apple",
+   "date": "2018-09-24",
+   "flop": 982800000000000.0,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Transformer (Adaptive Input Embeddings) WT103",
+   "organization": "Facebook AI Research",
+   "date": "2018-09-28",
+   "flop": 4.47e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "BERT-Large",
+   "organization": "Google",
+   "date": "2018-10-11",
+   "flop": 2.85e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "TrellisNet",
+   "organization": "Carnegie Mellon University (CMU),Bosch Center for Artificial Intelligence,Intel Labs",
+   "date": "2018-10-15",
+   "flop": 2.78e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Mesh-TensorFlow Transformer 4.9B (language)",
+   "organization": "Google Brain",
+   "date": "2018-11-05",
+   "flop": 1.617408e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Mesh-TensorFlow Transformer 2.9B (translation)",
+   "organization": "Google Brain",
+   "date": "2018-11-05",
+   "flop": 6.84288e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Fine-tuned-AWD-LSTM-DOC (fin)",
+   "organization": "Samsung R&D Institute Russia",
+   "date": "2018-11-12",
+   "flop": 5.188e+16,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Multi-cell LSTM",
+   "organization": "University of Hyderabad",
+   "date": "2018-11-15",
+   "flop": 2006640000000000.0,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Transformer-XL (257M)",
+   "organization": "Carnegie Mellon University (CMU),Google Brain",
+   "date": "2019-01-09",
+   "flop": 3.7832771e+20,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "GPT-2 (1.5B)",
+   "organization": "OpenAI",
+   "date": "2019-02-14",
+   "flop": 1.920000000001e+21,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "SciBERT",
+   "organization": "Allen Institute for AI",
+   "date": "2019-03-26",
+   "flop": 8.926848e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Cross-lingual alignment",
+   "organization": "Tel Aviv University,Massachusetts Institute of Technology (MIT)",
+   "date": "2019-04-04",
+   "flop": 2.56e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "WeNet (Penn Treebank)",
+   "organization": "Amazon",
+   "date": "2019-04-08",
+   "flop": 7.30000001e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "BERT-Large-CAS (PTB+WT2+WT103)",
+   "organization": "Amazon",
+   "date": "2019-04-20",
+   "flop": 1.5405e+20,
+   "confidence": "Likely"
+  },
+  {
+   "model": "AWD-LSTM-DRILL + dynamic evaluation\u2020 (WT2)",
+   "organization": "IDIAP",
+   "date": "2019-05-14",
+   "flop": 4.08e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "XLNet",
+   "organization": "Carnegie Mellon University (CMU),Google Brain",
+   "date": "2019-06-01",
+   "flop": 6.19e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Transformer-XL Large + Phrase Induction",
+   "organization": "Massachusetts Institute of Technology (MIT),University of Illinois Urbana-Champaign (UIUC)",
+   "date": "2019-06-04",
+   "flop": 3.7848651e+20,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "AWD-LSTM + MoS + Partial Shuffled",
+   "organization": "University of Texas at Austin",
+   "date": "2019-06-10",
+   "flop": 3.15e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "RoBERTa Large",
+   "organization": "Facebook,University of Washington",
+   "date": "2019-07-01",
+   "flop": 8.5067e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Megatron-LM (8.3B)",
+   "organization": "Nvidia",
+   "date": "2019-09-17",
+   "flop": 9.1e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Megatron-LM (1.2B)",
+   "organization": "Nvidia",
+   "date": "2019-09-17",
+   "flop": 1.1304e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Megatron-BERT",
+   "organization": "Nvidia",
+   "date": "2019-09-17",
+   "flop": 2.2e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "DistilBERT",
+   "organization": "Hugging Face",
+   "date": "2019-10-02",
+   "flop": 1.24416e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "T5-11B",
+   "organization": "Google",
+   "date": "2019-10-23",
+   "flop": 3.3e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "T5-3B",
+   "organization": "Google",
+   "date": "2019-10-23",
+   "flop": 9.0000000001e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Base LM + kNN LM + Continuous Cache",
+   "organization": "Stanford University,Facebook AI Research",
+   "date": "2019-11-01",
+   "flop": 3.05292e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "XLM-RoBERTa",
+   "organization": "Facebook AI",
+   "date": "2019-11-05",
+   "flop": 2.076e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Sandwich Transformer",
+   "organization": "Allen Institute for AI,Facebook AI Research",
+   "date": "2019-11-10",
+   "flop": 2.3504093e+19,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "CamemBERT",
+   "organization": "Facebook,INRIA,Sorbonne University",
+   "date": "2019-11-10",
+   "flop": 8.3e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Transformer-XL DeFINE (141M)",
+   "organization": "University of Washington,Allen Institute for AI",
+   "date": "2019-11-27",
+   "flop": 1.74276e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "MMLSTM (WT-2)",
+   "organization": "Beijing University of Posts and Telecommunications,University of West London",
+   "date": "2019-12-05",
+   "flop": 1.938e+17,
+   "confidence": "Likely"
+  },
+  {
+   "model": "MMLSTM (PTB)",
+   "organization": "Beijing University of Posts and Telecommunications,University of West London",
+   "date": "2019-12-05",
+   "flop": 5.8298782e+16,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Meena",
+   "organization": "Google Brain",
+   "date": "2020-01-28",
+   "flop": 1.12e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "TaLK Convolution",
+   "organization": "Carleton University",
+   "date": "2020-02-08",
+   "flop": 2.6990346e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "ALBERT-xxlarge",
+   "organization": "Toyota Technological Institute at Chicago,Google",
+   "date": "2020-02-09",
+   "flop": 2.39e+21,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Turing-NLG",
+   "organization": "Microsoft",
+   "date": "2020-02-13",
+   "flop": 1.57e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "FFN SwiGLU",
+   "organization": "Google",
+   "date": "2020-02-14",
+   "flop": 3.3687317e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Feedback Transformer",
+   "organization": "LORIA,University of Lorraine,Facebook AI Research",
+   "date": "2020-02-21",
+   "flop": 7.690547e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "TransformerXL + spectrum control",
+   "organization": "University of California Los Angeles (UCLA),JD.com",
+   "date": "2020-03-11",
+   "flop": 2.6289761e+19,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Tensor-Transformer(1core)+PN (WT103)",
+   "organization": "University of California (UC) Berkeley",
+   "date": "2020-03-17",
+   "flop": 1.58e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ELECTRA",
+   "organization": "Stanford University,Google,Google Brain",
+   "date": "2020-03-23",
+   "flop": 3.1e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "UnifiedQA",
+   "organization": "Allen Institute for AI,University of Washington",
+   "date": "2020-05-02",
+   "flop": 1.65e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GPT-3 175B (davinci)",
+   "organization": "OpenAI",
+   "date": "2020-05-28",
+   "flop": 3.14e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GShard (dense)",
+   "organization": "Google",
+   "date": "2020-06-30",
+   "flop": 4.765e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "DeLighT",
+   "organization": "University of Washington,Allen Institute for AI,Facebook AI Research",
+   "date": "2020-08-03",
+   "flop": 3.8016e+18,
+   "confidence": "Likely"
+  },
+  {
+   "model": "ERNIE-GEN (large)",
+   "organization": "Baidu",
+   "date": "2020-08-06",
+   "flop": 2e+20,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "LUKE",
+   "organization": "University of Washington,National Institute of Informatics",
+   "date": "2020-10-02",
+   "flop": 1.8144e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "mT5-XXL",
+   "organization": "Google,Google Research",
+   "date": "2020-10-20",
+   "flop": 8.2e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "German ELECTRA Large",
+   "organization": "deepset,Bayerische Staatsbibliothek Muenchen",
+   "date": "2020-10-21",
+   "flop": 1.42829568e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "KEPLER",
+   "organization": "Tsinghua University,Mila - Quebec AI (originally Montreal Institute for Learning Algorithms),HEC,CIFAR AI Research,Princeton University,University of Montreal / Universit\u00e9 de Montr\u00e9al",
+   "date": "2020-11-23",
+   "flop": 1.66e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "CPM-Large",
+   "organization": "Tsinghua University,Beijing Academy of Artificial Intelligence / BAAI",
+   "date": "2020-12-01",
+   "flop": 2.6052e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "DensePhrases",
+   "organization": "Korea University,Princeton University",
+   "date": "2020-12-23",
+   "flop": 2.09952e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "CT-MoS (WT2)",
+   "organization": "Google,National Tsing Hua University",
+   "date": "2020-12-25",
+   "flop": 5.4e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ERNIE-Doc (247M)",
+   "organization": "Baidu",
+   "date": "2020-12-31",
+   "flop": 3.0302798e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "CLIP (ViT L/14@336px)",
+   "organization": "OpenAI",
+   "date": "2021-01-05",
+   "flop": 1.05e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Switch",
+   "organization": "Google",
+   "date": "2021-01-11",
+   "flop": 8.22e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "SRU++ Large",
+   "organization": "ASAPP",
+   "date": "2021-02-24",
+   "flop": 2.1173704e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "M6-T",
+   "organization": "Alibaba",
+   "date": "2021-03-05",
+   "flop": 5.5e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Generative BST",
+   "organization": "Facebook AI Research",
+   "date": "2021-03-05",
+   "flop": 1.449e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "PLUG",
+   "organization": "Alibaba",
+   "date": "2021-04-19",
+   "flop": 3.5997696e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ByT5-XXL",
+   "organization": "Google,Google Research",
+   "date": "2021-05-28",
+   "flop": 8.1e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "EMDR",
+   "organization": "Mila - Quebec AI (originally Montreal Institute for Learning Algorithms),McGill University,DeepMind",
+   "date": "2021-06-09",
+   "flop": 1.91e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "DeBERTa",
+   "organization": "Microsoft",
+   "date": "2021-06-10",
+   "flop": 2.588e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ALIGN",
+   "organization": "Google Research",
+   "date": "2021-06-11",
+   "flop": 2.598670000001e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Adaptive Input Transformer + RD",
+   "organization": "Microsoft Research Asia,Soochow University",
+   "date": "2021-06-28",
+   "flop": 8.58e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "ERNIE 3.0",
+   "organization": "Baidu",
+   "date": "2021-07-05",
+   "flop": 2.25e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Codex",
+   "organization": "OpenAI",
+   "date": "2021-07-07",
+   "flop": 7.344e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Zidong Taichu",
+   "organization": "Chinese Academy of Sciences,Wuhan AI Computing Center",
+   "date": "2021-08-11",
+   "flop": 8.016e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Jurassic-1-Jumbo",
+   "organization": "AI21 Labs",
+   "date": "2021-08-11",
+   "flop": 3.7e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "XLMR-XXL",
+   "organization": "Facebook AI Research",
+   "date": "2021-08-17",
+   "flop": 3.366e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "FLAN 137B",
+   "organization": "Google Research",
+   "date": "2021-09-03",
+   "flop": 2.047e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "PermuteFormer",
+   "organization": "Peking University",
+   "date": "2021-09-06",
+   "flop": 2.775e+18,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "HyperCLOVA 204B",
+   "organization": "NAVER",
+   "date": "2021-09-10",
+   "flop": 2.0000000001e+23,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "PLATO-XL",
+   "organization": "Baidu",
+   "date": "2021-09-20",
+   "flop": 9.9e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Turing ULRv5",
+   "organization": "Microsoft",
+   "date": "2021-09-28",
+   "flop": 2.8983951e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Megatron-Turing NLG 530B",
+   "organization": "Microsoft,Nvidia",
+   "date": "2021-10-11",
+   "flop": 8.586e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Yuan 1.0",
+   "organization": "Inspur",
+   "date": "2021-10-12",
+   "flop": 3.5380000000001e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "base LM+GNN+kNN",
+   "organization": "Shannon.AI,Nanjing University,Nanyang Technological University,Zhejiang University (ZJU)",
+   "date": "2021-10-17",
+   "flop": 5.2587456e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "S4",
+   "organization": "Stanford University",
+   "date": "2021-10-31",
+   "flop": 7.8328627e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "CodeT5-base",
+   "organization": "Salesforce,Nanyang Technological University",
+   "date": "2021-11-01",
+   "flop": 1.56e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "N\u00dcWA",
+   "organization": "Microsoft Research,Peking University",
+   "date": "2021-11-24",
+   "flop": 7.24598784e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Gopher (280B)",
+   "organization": "DeepMind",
+   "date": "2021-12-08",
+   "flop": 6.31e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GLaM",
+   "organization": "Google",
+   "date": "2021-12-13",
+   "flop": 3.6363112434e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Contriever",
+   "organization": "Meta AI,University College London (UCL),PSL University,Universit\u00e9 Grenoble Alpes",
+   "date": "2021-12-16",
+   "flop": 1.57e+20,
+   "confidence": "Likely"
+  },
+  {
+   "model": "XGLM-7.5B",
+   "organization": "Meta AI,Facebook AI Research",
+   "date": "2021-12-20",
+   "flop": 2.25e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ERNIE 3.0 Titan",
+   "organization": "Baidu,Peng Cheng Laboratory",
+   "date": "2021-12-23",
+   "flop": 1.0421e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "InstructGPT 175B",
+   "organization": "OpenAI",
+   "date": "2022-01-27",
+   "flop": 3.19181e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "AlphaCode",
+   "organization": "DeepMind",
+   "date": "2022-02-02",
+   "flop": 2.38010000000001e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "RETRO-7B",
+   "organization": "DeepMind",
+   "date": "2022-02-07",
+   "flop": 1.68e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GPT-NeoX-20B",
+   "organization": "EleutherAI",
+   "date": "2022-02-09",
+   "flop": 9.31627008e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "LaMDA",
+   "organization": "Google",
+   "date": "2022-02-10",
+   "flop": 3.55e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ST-MoE",
+   "organization": "Google,Google Brain,Google Research",
+   "date": "2022-02-17",
+   "flop": 2.9e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "PolyCoder",
+   "organization": "Carnegie Mellon University (CMU)",
+   "date": "2022-02-26",
+   "flop": 1.1e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Statement Curriculum Learning",
+   "organization": "OpenAI",
+   "date": "2022-03-02",
+   "flop": 1.7901648e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "GPT-3.5 (davinci-002)",
+   "organization": "OpenAI",
+   "date": "2022-03-15",
+   "flop": 2.578e+24,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Segatron-XL large, M=384 + HCP",
+   "organization": "Microsoft Research,University of Waterloo",
+   "date": "2022-03-21",
+   "flop": 2.65e+19,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Chinchilla",
+   "organization": "DeepMind",
+   "date": "2022-03-29",
+   "flop": 5.76e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "PaLM (540B)",
+   "organization": "Google Research",
+   "date": "2022-04-04",
+   "flop": 2.5272e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Sparse all-MLP",
+   "organization": "Meta AI",
+   "date": "2022-04-14",
+   "flop": 5.32224e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Flamingo",
+   "organization": "DeepMind",
+   "date": "2022-04-29",
+   "flop": 2.18972000000001e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "OPT-175B",
+   "organization": "Meta AI",
+   "date": "2022-05-02",
+   "flop": 4.3e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "UL2",
+   "organization": "Google Research,Google Brain",
+   "date": "2022-05-10",
+   "flop": 1.2e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Gato",
+   "organization": "DeepMind",
+   "date": "2022-05-12",
+   "flop": 4.02e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GPT-2 Medium (FlashAttention)",
+   "organization": "Stanford University,University at Buffalo",
+   "date": "2022-05-27",
+   "flop": 8.9280922e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "DITTO",
+   "organization": "Tsinghua University,Apple,Westlake University,Chinese University of Hong Kong (CUHK)",
+   "date": "2022-06-06",
+   "flop": 3.31776e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Minerva (540B)",
+   "organization": "Google",
+   "date": "2022-06-29",
+   "flop": 2.7415e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "CodeT5-large",
+   "organization": "Salesforce",
+   "date": "2022-07-05",
+   "flop": 2.72e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "NLLB",
+   "organization": "Meta AI",
+   "date": "2022-07-06",
+   "flop": 1.751113728e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "BLOOM-176B",
+   "organization": "Hugging Face,BigScience",
+   "date": "2022-07-11",
+   "flop": 3.65664e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "AlexaTM 20B",
+   "organization": "Amazon",
+   "date": "2022-08-02",
+   "flop": 2.04374016e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GLM-130B",
+   "organization": "Tsinghua University",
+   "date": "2022-08-04",
+   "flop": 3.5490054945e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "BlenderBot 3",
+   "organization": "McGill University,Meta AI,Mila - Quebec AI (originally Montreal Institute for Learning Algorithms)",
+   "date": "2022-08-10",
+   "flop": 4.3e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "BEIT-3",
+   "organization": "Microsoft",
+   "date": "2022-08-22",
+   "flop": 7e+19,
+   "confidence": "Likely"
+  },
+  {
+   "model": "PaLI",
+   "organization": "Google",
+   "date": "2022-09-14",
+   "flop": 1.69e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "U-PaLM (540B)",
+   "organization": "Google",
+   "date": "2022-10-20",
+   "flop": 2.53e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Flan-PaLM 540B",
+   "organization": "Google",
+   "date": "2022-10-20",
+   "flop": 2.540000000001e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Mogrifier RLSTM (WT2)",
+   "organization": "DeepMind",
+   "date": "2022-11-03",
+   "flop": 1.4e+17,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Galactica",
+   "organization": "Meta AI",
+   "date": "2022-11-16",
+   "flop": 3.24e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Fusion in Encoder",
+   "organization": "Samsung",
+   "date": "2022-11-18",
+   "flop": 1.3e+20,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Vega v2",
+   "organization": "Wuhan University,JD Explore Academy,Shanghai AI Lab,Nanyang Technological University,Washington University in St Louis,Chongqing University of Posts and Telecommunications,University of Sydney",
+   "date": "2022-12-04",
+   "flop": 7.76e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Hybrid H3-2.7B",
+   "organization": "Stanford University,University at Buffalo",
+   "date": "2022-12-28",
+   "flop": 6.48e+21,
+   "confidence": "Likely"
+  },
+  {
+   "model": "BLIP-2 (Q-Former)",
+   "organization": "Salesforce Research",
+   "date": "2023-01-30",
+   "flop": 1.20000000001e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "LLaMA-65B",
+   "organization": "Meta AI",
+   "date": "2023-02-24",
+   "flop": 5.5e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GPT-4 (Mar 2023)",
+   "organization": "OpenAI",
+   "date": "2023-03-15",
+   "flop": 2.1e+25,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Falcon-40B",
+   "organization": "Technology Innovation Institute",
+   "date": "2023-03-15",
+   "flop": 2.4e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "PanGu-\u03a3",
+   "organization": "Huawei Noah's Ark Lab",
+   "date": "2023-03-20",
+   "flop": 4.67e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "BloombergGPT",
+   "organization": "Bloomberg,Johns Hopkins University",
+   "date": "2023-03-30",
+   "flop": 2.36e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Incoder-6.7B",
+   "organization": "Facebook AI Research,University of Washington,University of California (UC) Berkeley,Carnegie Mellon University (CMU),Toyota Technological Institute at Chicago",
+   "date": "2023-04-09",
+   "flop": 3.00001e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "LLaVA",
+   "organization": "University of Wisconsin Madison,Microsoft Research,Columbia University",
+   "date": "2023-04-17",
+   "flop": 7.8049e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "StarCoder",
+   "organization": "Hugging Face,ServiceNow,Northeastern University,Mila - Quebec AI (originally Montreal Institute for Learning Algorithms),Carnegie Mellon University (CMU),Johns Hopkins University,Leipzig University,ScaDS.AI,Queen Mary University of London,Roblox,Sea AI Lab,Technion - Israel Institute of Technology,Monash University,CSIRO,Data61,McGill University,Saama,University of British Columbia (UBC),Massachusetts Institute of Technology (MIT),Technical University of Munich,IBM,University of Vermont,UnfoldML,SAP,University of Notre Dame,Columbia University,New York University (NYU),University of Allahabad,Discover Dollar,Toloka,Telefonica,Stanford University,Weizmann Institute of Science,Alan Turing Institute,Wellesley College,EleutherAI,Forschungszentrum Julich",
+   "date": "2023-05-09",
+   "flop": 8.46e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "PaLM 2",
+   "organization": "Google",
+   "date": "2023-05-10",
+   "flop": 7.34e+24,
+   "confidence": "Likely"
+  },
+  {
+   "model": "InstructBLIP",
+   "organization": "Salesforce Research,Hong Kong University of Science and Technology (HKUST),Nanyang Technological University",
+   "date": "2023-05-11",
+   "flop": 1.94e+20,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ONE-PEACE",
+   "organization": "Alibaba,Huazhong University of Science and Technology",
+   "date": "2023-05-18",
+   "flop": 1.8e+20,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "PaLI-X",
+   "organization": "Google Research",
+   "date": "2023-05-29",
+   "flop": 5.6e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "GPT-4 (Jun 2023)",
+   "organization": "OpenAI",
+   "date": "2023-06-13",
+   "flop": 2.1e+25,
+   "confidence": "Likely"
+  },
+  {
+   "model": "InternLM",
+   "organization": "Shanghai AI Lab,SenseTime",
+   "date": "2023-07-06",
+   "flop": 9.984e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Claude 2",
+   "organization": "Anthropic",
+   "date": "2023-07-11",
+   "flop": 3.866e+24,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Llama 2-70B",
+   "organization": "Meta AI",
+   "date": "2023-07-18",
+   "flop": 8.1e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Llama 2-7B",
+   "organization": "Meta AI",
+   "date": "2023-07-18",
+   "flop": 8.4e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Jais",
+   "organization": "Cerebras Systems,Mohamed bin Zayed University of Artificial Intelligence (MBZUAI),Inception G42",
+   "date": "2023-08-29",
+   "flop": 4.8946763e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Falcon-180B",
+   "organization": "Technology Innovation Institute",
+   "date": "2023-09-06",
+   "flop": 3.76e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Amazon Titan",
+   "organization": "Amazon",
+   "date": "2023-09-28",
+   "flop": 4.8e+24,
+   "confidence": "Likely"
+  },
+  {
+   "model": "FinGPT-13B",
+   "organization": "University of California Los Angeles (UCLA),Columbia University,New York University (NYU)",
+   "date": "2023-10-07",
+   "flop": 1.6e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "CODEFUSION (Python)",
+   "organization": "Microsoft,Microsoft Research",
+   "date": "2023-10-26",
+   "flop": 7.92e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "ChatGLM3-6B",
+   "organization": "Z.ai (Zhipu AI)",
+   "date": "2023-10-27",
+   "flop": 5.04e+22,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Skywork-13B",
+   "organization": "Kunlun Inc.",
+   "date": "2023-10-30",
+   "flop": 2.5e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Yi-34B",
+   "organization": "01.AI",
+   "date": "2023-11-02",
+   "flop": 6.1e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Grok-1",
+   "organization": "xAI",
+   "date": "2023-11-04",
+   "flop": 2.90000000001e+24,
+   "confidence": "Likely"
+  },
+  {
+   "model": "LLaVA 1.5",
+   "organization": "University of Wisconsin Madison,Microsoft Research",
+   "date": "2023-11-05",
+   "flop": 7.807e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "CogVLM-17B",
+   "organization": "Tsinghua University,Z.ai (Zhipu AI),Beihang University",
+   "date": "2023-11-06",
+   "flop": 6.331e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "RoFormer",
+   "organization": "Zhuiyi Technology",
+   "date": "2023-11-08",
+   "flop": 2.162688e+18,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Volcano 13B",
+   "organization": "Korea University,Korea Advanced Institute of Science and Technology (KAIST),LG",
+   "date": "2023-11-13",
+   "flop": 4.56e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "SPHINX (Llama 2 13B)",
+   "organization": "Shanghai AI Lab,Chinese University of Hong Kong (CUHK),ShanghaiTech University",
+   "date": "2023-11-13",
+   "flop": 3.04e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Nemotron-3-8B",
+   "organization": "Nvidia",
+   "date": "2023-11-15",
+   "flop": 1.8e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Inflection-2",
+   "organization": "Inflection AI",
+   "date": "2023-11-22",
+   "flop": 1.001e+25,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Qwen-72B",
+   "organization": "Alibaba",
+   "date": "2023-11-30",
+   "flop": 1.3e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Gemini 1.0 Ultra",
+   "organization": "Google DeepMind",
+   "date": "2023-12-06",
+   "flop": 5.0000000001e+25,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Llama Guard",
+   "organization": "Meta AI",
+   "date": "2023-12-07",
+   "flop": 1.6e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Mixtral 8x7B",
+   "organization": "Mistral AI",
+   "date": "2023-12-11",
+   "flop": 7.74e+23,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "VILA-13B",
+   "organization": "Nvidia,Massachusetts Institute of Technology (MIT)",
+   "date": "2023-12-12",
+   "flop": 2.3003136e+21,
+   "confidence": "Confident"
+  },
+  {
+   "model": "FunSearch",
+   "organization": "Google DeepMind",
+   "date": "2023-12-14",
+   "flop": 3.87e+23,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "CogAgent",
+   "organization": "Tsinghua University,Z.ai (Zhipu AI)",
+   "date": "2023-12-14",
+   "flop": 6.707e+22,
+   "confidence": "Likely"
+  },
+  {
+   "model": "nekomata-14b",
+   "organization": "rinna",
+   "date": "2023-12-21",
+   "flop": 2.5562e+23,
+   "confidence": "Confident"
+  },
+  {
+   "model": "GQA-8-XXL",
+   "organization": "Google Research",
+   "date": "2023-12-23",
+   "flop": 3.4912896e+22,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Qwen1.5-72B",
+   "organization": "Alibaba",
+   "date": "2024-02-04",
+   "flop": 1.3e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "MegaScale (Production)",
+   "organization": "ByteDance,Peking University",
+   "date": "2024-02-23",
+   "flop": 3.9e+24,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Aramco Metabrain AI",
+   "organization": "Saudi Aramco",
+   "date": "2024-03-04",
+   "flop": 1.05e+25,
+   "confidence": "Likely"
+  },
+  {
+   "model": "Inflection-2.5",
+   "organization": "Inflection AI",
+   "date": "2024-03-07",
+   "flop": 8.000001e+24,
+   "confidence": "Likely"
+  },
+  {
+   "model": "MM1-30B",
+   "organization": "Apple",
+   "date": "2024-03-14",
+   "flop": 4.86e+23,
+   "confidence": "Likely"
+  },
+  {
+   "model": "DBRX",
+   "organization": "Databricks",
+   "date": "2024-03-27",
+   "flop": 2.6e+24,
+   "confidence": "Confident"
+  },
+  {
+   "model": "Reka Core",
+   "organization": "Reka AI",
+   "date": "2024-04-15",
+   "flop": 8.400010000000001e+24,
+   "confidence": "Speculative"
+  },
+  {
+   "model": "Llama 3-70B",
+   "organization": "Meta AI",
+   "date": "2024-04-18",
+   "flop": 7.861e+24,
+   "confidence": "Confident"
+  }
+ ]
+}
