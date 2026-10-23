@@ -100,6 +100,13 @@ def markdown_cell(source: str, assets: Path, web: str, first: bool) -> str:
     return inline_math(source)
 
 
+def fenced(code: str) -> str:
+    """A code block whose fence is longer than any run of backticks inside it (a model card quotes Python)."""
+    longest = max((len(run) for run in re.findall(r"`+", code)), default=0)
+    fence = "`" * max(3, longest + 1)
+    return f"{fence}python\n{code}\n{fence}"
+
+
 def alt_text(code: str) -> str:
     titles = TITLE.findall(code)
     return titles[0] if titles else "Output of the code above"
@@ -187,7 +194,7 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         elif cell.cell_type == "code" and cell.source.strip():
             if not cell.get("outputs") and cell.get("execution_count") is None:
                 raise SystemExit(f"{folder.name}: cell {index} was never run; export an executed notebook")
-            body.append("```python\n" + cell.source.rstrip() + "\n```")
+            body.append(fenced(cell.source.rstrip()))
             body.extend(output_blocks(cell, assets, web, counter))
 
     front = [
