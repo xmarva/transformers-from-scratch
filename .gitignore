@@ -5,6 +5,8 @@ __pycache__/
 .DS_Store
 build/
 data/
+# an article's measurements are small, and its figures are drawn from them
+!articles/*/data/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
