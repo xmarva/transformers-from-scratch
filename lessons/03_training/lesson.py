@@ -170,8 +170,8 @@ ru_lengths = [len(ids) for ids in train_tgt]
 
 fig, ax = plt.subplots(figsize=(6.4, 3))
 bins = np.arange(0, max(en_lengths + ru_lengths) + 2)
-ax.hist(en_lengths, bins=bins, color=COLORS["enc"], alpha=0.75, label="English")
-ax.hist(ru_lengths, bins=bins, color=COLORS["dec"], alpha=0.6, label="Russian")
+ax.hist(en_lengths, bins=bins, color=COLORS["enc"], alpha=0.6, label="English")
+ax.hist(ru_lengths, bins=bins, histtype="step", color=COLORS["dec"], label="Russian")
 ax.set_yscale("log")  # to see the rare long sentences next to the common short ones
 ax.set_xlabel("tokens per sentence")
 ax.set_ylabel("sentences")
@@ -834,11 +834,12 @@ raw = gradients.log10().numpy()
 scaled = (gradients * SCALE).log10().numpy()
 ax.hist(raw, bins=bins, color=COLORS["data"], alpha=0.85, label="gradients")
 ax.hist(scaled, bins=bins, histtype="step", color=COLORS["enc"], label="× 65 536")
-ax.axvline(math.log10(zero_in_float16), color=COLORS["dec"], label="float16: 0 to the left")
-dashed = (0, (3, 3))
-precision_label = "float16: imprecise to the left"
+below_legend = 0.68  # the lines stop under the legend
+zero = math.log10(zero_in_float16)
+ax.axvline(zero, ymax=below_legend, color=COLORS["dec"], label="float16: 0 to the left")
 imprecise = math.log10(imprecise_in_float16)
-ax.axvline(imprecise, color=COLORS["dec"], linestyle=dashed, label=precision_label)
+label = "float16: imprecise to the left"
+ax.axvline(imprecise, ymax=below_legend, color=COLORS["dec"], ls=(0, (3, 3)), label=label)
 ax.set_ylim(top=ax.get_ylim()[1] * 1.45)  # room for the legend above the bars
 ax.set_xlabel("log₁₀ |gradient|")
 ax.set_ylabel("weights")
@@ -994,7 +995,8 @@ training, validation = history_table["training loss"], history_table["validation
 ax.plot(epochs, training, marker="o", color=COLORS["enc"], label="training, smoothed")
 ax.plot(epochs, validation, marker="o", color=COLORS["dec"], label="validation, plain")
 ax.axhline(floor, color=COLORS["muted"], linestyle=(0, (3, 3)), linewidth=1)
-ax.text(epochs.max(), floor + 0.05, "floor of the smoothed loss", ha="right", fontsize=9)
+# the label goes under the line at the left, where no curve passes
+ax.text(1, floor - 0.08, "floor of the smoothed loss", va="top", fontsize=9)
 ax.set_xlabel("epoch")
 ax.set_ylabel("loss")
 ax.set_title("Training")
@@ -1005,7 +1007,8 @@ plt.show()
 # The validation loss falls fast for a few epochs and then flattens: most of what this model can learn from
 # Tatoeba, it learns early. The training curve lies *above* the validation one, which looks backwards and isn't:
 # it is measured with label smoothing, which can't go below the dashed floor, and with dropout switching off a
-# tenth of the model at every step. Only the validation curve is plain cross-entropy.
+# tenth of the model at every step. Only the validation curve is plain cross-entropy, so the floor doesn't apply to
+# it, and late in the run it passes below the line.
 #
 # > The loss you train on and the number you judge by are different numbers. Compare like with like.
 #
