@@ -31,10 +31,15 @@ ROLES = {
 
 TEXT_KINDS = {  # size px, weight, family, palette key for color (None: role color)
     "title": (16, 600, SANS, "ink"),
+    "subtitle": (14, 600, SANS, "ink"),
     "block": (15, 600, SANS, None),
     "label": (12, 400, MONO, "muted"),
     "note": (13, 400, SANS, "muted"),
+    "body": (13, 400, SANS, "ink"),
     "count": (13, 500, MONO, "muted"),
+    "count_hot": (13, 600, MONO, "data_ink"),
+    "lead": (18, 400, SANS, "ink"),
+    "glyph": (46, 400, SANS, "ink"),
 }
 
 
@@ -49,12 +54,14 @@ class Box:
     mono: bool = False
     strong: bool = False
     r: float = 9
+    size: float = 13
 
 
 @dataclass
 class Arrow:
     pts: list[tuple[float, float]]
     role: str = "muted"
+    width: float = 1.6
 
 
 @dataclass
@@ -86,19 +93,20 @@ class Figure:
 
     # ---- building ----
     @staticmethod
-    def chip_width(s: str, size: float = 13, pad: float = 8) -> float:
-        return max(28.0, len(s) * MONO_ADVANCE * size + 2 * pad)
+    def chip_width(s: str, size: float = 13, pad: float | None = None) -> float:
+        pad = 0.62 * size if pad is None else pad
+        return max(2.2 * size, len(s) * MONO_ADVANCE * size + 2 * pad)
 
-    def chip(self, x, y, s, role="data", strong=False, h=30) -> float:
-        w = self.chip_width(s)
-        self.els.append(Box(x, y, w, h, role, s, mono=True, strong=strong, r=7))
+    def chip(self, x, y, s, role="data", strong=False, h=30, size=13) -> float:
+        w = self.chip_width(s, size)
+        self.els.append(Box(x, y, w, h, role, s, mono=True, strong=strong, r=7, size=size))
         return w
 
-    def row(self, tokens, x, y, role="data", strong=lambda i, t: False, gap=5) -> list[tuple[float, float]]:
+    def row(self, tokens, x, y, role="data", strong=lambda i, t: False, gap=5, h=30, size=13):
         """Chips side by side; returns (x, width) of each chip."""
         spans = []
         for i, t in enumerate(tokens):
-            w = self.chip(x, y, t, role, strong(i, t))
+            w = self.chip(x, y, t, role, strong(i, t), h=h, size=size)
             spans.append((x, w))
             x += w + gap
         return spans
@@ -106,8 +114,8 @@ class Figure:
     def box(self, x, y, w, h, role="neutral", label=None, r=9):
         self.els.append(Box(x, y, w, h, role, label, r=r))
 
-    def arrow(self, *pts, role="muted"):
-        self.els.append(Arrow(list(pts), role))
+    def arrow(self, *pts, role="muted", width=1.6):
+        self.els.append(Arrow(list(pts), role, width))
 
     def line(self, *pts, role="muted", width=1.6, dash=False):
         self.els.append(Line(list(pts), role, width, dash))
@@ -135,6 +143,14 @@ class Figure:
             if x0 < margin or y0 < margin or x1 > self.w - margin or y1 > self.h - margin:
                 out.append(f"outside canvas: {e}")
         texts = [e for e in self.els if isinstance(e, Text)]
+        boxes = [e for e in self.els if isinstance(e, Box)]
+        for t in texts:
+            tx0, ty0, tx1, ty1 = self._text_bbox(t)
+            for b in boxes:
+                bx0, by0, bx1, by1 = b.x, b.y, b.x + b.w, b.y + b.h
+                inside = bx0 <= tx0 and tx1 <= bx1 and by0 <= ty0 and ty1 <= by1
+                if not inside and tx0 < bx1 and bx0 < tx1 and ty0 < by1 and by0 < ty1:
+                    out.append(f"text crosses a box: {t.s!r} and {b.label or 'a box'!r}")
         for i, a in enumerate(texts):
             ax0, ay0, ax1, ay1 = self._text_bbox(a)
             for b in texts[i + 1 :]:
@@ -152,7 +168,7 @@ class Figure:
             f"<title>{escape(self.alt)}</title>",
             "<defs>",
         ]
-        for name, key in (("muted", "muted"), ("att", "att")):
+        for name, key in (("muted", "muted"), ("data", "data"), ("enc", "enc"), ("dec", "dec"), ("att", "att")):
             parts.append(
                 f'<marker id="arrow-{name}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" '
                 f'orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="{c[key]}"/></marker>'
@@ -171,14 +187,15 @@ class Figure:
                 if e.label:
                     family = MONO if e.mono else SANS
                     parts.append(
-                        f'<text x="{e.x + e.w / 2:.1f}" y="{e.y + e.h / 2 + 4.5:.1f}" text-anchor="middle" '
-                        f'font-family="{family}" font-size="13" font-weight="500" fill="{ink}">{escape(e.label)}</text>'
+                        f'<text x="{e.x + e.w / 2:.1f}" y="{e.y + e.h / 2 + 0.35 * e.size:.1f}" '
+                        f'text-anchor="middle" font-family="{family}" font-size="{e.size}" font-weight="500" '
+                        f'fill="{ink}" xml:space="preserve">{escape(e.label)}</text>'
                     )
             elif isinstance(e, Arrow):
-                key = "att" if e.role == "att" else "muted"
+                key = e.role if e.role in ("data", "enc", "dec", "att") else "muted"
                 pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in e.pts)
                 parts.append(
-                    f'<polyline points="{pts}" fill="none" stroke="{c[key]}" stroke-width="1.6" '
+                    f'<polyline points="{pts}" fill="none" stroke="{c[key]}" stroke-width="{e.width}" '
                     f'stroke-linejoin="round" marker-end="url(#arrow-{key})"/>'
                 )
             elif isinstance(e, Line):

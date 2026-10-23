@@ -67,9 +67,8 @@ def header_cell(lesson: str, meta: dict, target: str, ref: str) -> nbformat.Note
     lines = [
         f"![{meta['cover_alt']}]({RAW}/{ref}/assets/covers/{meta['number']:02d}-en.png)",
         "",
-        f"**{COURSE}** · Lesson {meta['number']} of {TOTAL_LESSONS} · [course on GitHub]({url['github']})",
-        "",
-        f"Prefer the other platform? {badge[other]}",
+        f"**{COURSE}** · Lesson {meta['number']} of {TOTAL_LESSONS} · [all lessons and code]({url['github']}) "
+        f"&nbsp; {badge[other]}",
     ]
     return nbformat.v4.new_markdown_cell("\n".join(lines))
 
