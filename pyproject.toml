@@ -19,6 +19,7 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.6",
     "tokenizers>=0.19",
+    "torch>=2.4",
 ]
 
 [build-system]
@@ -46,3 +47,12 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+# CI runs on Linux without a GPU: take PyTorch's CPU wheels there instead of gigabytes of CUDA libraries
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

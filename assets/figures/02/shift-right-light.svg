@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 236" width="760" height="236" role="img" aria-label="Teacher forcing: the decoder reads &lt;bos&gt; and the Russian tokens, and at every position it is trained to predict the next token, so the target is the same sequence shifted left by one, ending with &lt;eos&gt;">
+<title>Teacher forcing: the decoder reads &lt;bos&gt; and the Russian tokens, and at every position it is trained to predict the next token, so the target is the same sequence shifted left by one, ending with &lt;eos&gt;</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="236" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">The decoder reads the translation shifted right</text>
+<text x="14.0" y="58.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">decoder reads</text>
+<text x="14.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">and predicts</text>
+<rect x="14.0" y="66.0" width="50.9" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="39.4" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">&lt;bos&gt;</text>
+<rect x="14.0" y="154.0" width="50.9" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="39.4" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">▁И</text>
+<polyline points="39.4,96.0 39.4,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="68.9" y="66.0" width="29.3" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="83.5" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">▁И</text>
+<rect x="68.9" y="154.0" width="29.3" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="83.5" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">сс</text>
+<polyline points="83.5,96.0 83.5,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="102.2" y="66.0" width="43.7" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="124.0" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">сс</text>
+<rect x="102.2" y="154.0" width="43.7" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="124.0" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">ледо</text>
+<polyline points="124.0,96.0 124.0,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="149.8" y="66.0" width="58.1" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="178.9" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">ледо</text>
+<rect x="149.8" y="154.0" width="58.1" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="178.9" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">ватель</text>
+<polyline points="178.9,96.0 178.9,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="211.9" y="66.0" width="58.1" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="241.0" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">ватель</text>
+<rect x="211.9" y="154.0" width="58.1" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="241.0" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">ница</text>
+<polyline points="241.0,96.0 241.0,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="274.0" y="66.0" width="72.5" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="310.2" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">ница</text>
+<rect x="274.0" y="154.0" width="72.5" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="310.2" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">▁сказала</text>
+<polyline points="310.2,96.0 310.2,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="350.5" y="66.0" width="72.5" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="386.7" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">▁сказала</text>
+<rect x="350.5" y="154.0" width="72.5" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="386.7" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<polyline points="386.7,96.0 386.7,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="427.0" y="66.0" width="43.7" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="448.8" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">,</text>
+<rect x="427.0" y="154.0" width="43.7" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="448.8" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">▁что</text>
+<polyline points="448.8,96.0 448.8,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="474.6" y="66.0" width="43.7" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="496.5" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">▁что</text>
+<rect x="474.6" y="154.0" width="43.7" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="496.5" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">▁вы</text>
+<polyline points="496.5,96.0 496.5,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="522.3" y="66.0" width="36.5" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="540.6" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">▁вы</text>
+<rect x="522.3" y="154.0" width="36.5" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="540.6" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">мот</text>
+<polyline points="540.6,96.0 540.6,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="562.8" y="66.0" width="50.9" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="588.2" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">мот</text>
+<rect x="562.8" y="154.0" width="50.9" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="588.2" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">алась</text>
+<polyline points="588.2,96.0 588.2,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="617.7" y="66.0" width="50.9" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="643.1" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">алась</text>
+<rect x="617.7" y="154.0" width="50.9" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="643.1" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">.</text>
+<polyline points="643.1,96.0 643.1,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="672.6" y="66.0" width="50.9" height="28.0" rx="6" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="698.0" y="84.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">.</text>
+<rect x="672.6" y="154.0" width="50.9" height="28.0" rx="6" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="698.0" y="172.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">&lt;eos&gt;</text>
+<polyline points="698.0,96.0 698.0,128.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="14.0" y="216.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">At every position the decoder sees the tokens up to that point and must predict the next one.</text>
+</svg>

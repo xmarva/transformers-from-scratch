@@ -40,6 +40,10 @@ TEXT_KINDS = {  # size px, weight, family, palette key for color (None: role col
     "count_hot": (13, 600, MONO, "data_ink"),
     "lead": (18, 400, SANS, "ink"),
     "glyph": (46, 400, SANS, "ink"),
+    "mono": (13, 500, MONO, "ink"),
+    "mono_dec": (13, 600, MONO, "dec_ink"),
+    "mono_att": (13, 600, MONO, "att_ink"),
+    "small": (11, 400, MONO, "muted"),
 }
 
 
@@ -75,6 +79,19 @@ class Line:
 
 
 @dataclass
+class Rect:
+    """A filled rectangle without a border, in a concept color or its tint."""
+
+    x: float
+    y: float
+    w: float
+    h: float
+    role: str
+    tint: bool = False
+    r: float = 1
+
+
+@dataclass
 class Text:
     x: float
     y: float
@@ -82,6 +99,7 @@ class Text:
     kind: str = "label"
     role: str | None = None
     anchor: str = "start"
+    upright: bool = False  # turned 90° to read bottom to top, its end at (x, y): labels under a grid's columns
 
 
 @dataclass
@@ -114,26 +132,33 @@ class Figure:
     def box(self, x, y, w, h, role="neutral", label=None, r=9):
         self.els.append(Box(x, y, w, h, role, label, r=r))
 
+    def rect(self, x, y, w, h, role="data", tint=False, r=1):
+        self.els.append(Rect(x, y, w, h, role, tint, r))
+
     def arrow(self, *pts, role="muted", width=1.6):
         self.els.append(Arrow(list(pts), role, width))
 
     def line(self, *pts, role="muted", width=1.6, dash=False):
         self.els.append(Line(list(pts), role, width, dash))
 
-    def text(self, x, y, s, kind="label", role=None, anchor="start"):
-        self.els.append(Text(x, y, s, kind, role, anchor))
+    def text(self, x, y, s, kind="label", role=None, anchor="start", upright=False):
+        if upright and anchor != "end":
+            raise ValueError("upright text is anchored at its end")
+        self.els.append(Text(x, y, s, kind, role, anchor, upright))
 
     # ---- checking ----
     def _text_bbox(self, t: Text) -> tuple[float, float, float, float]:
         size, _, family, _ = TEXT_KINDS[t.kind]
         width = len(t.s) * size * (MONO_ADVANCE if family == MONO else SANS_ADVANCE)
+        if t.upright:  # the text runs down from (x, y), glyphs to the left of x
+            return t.x - size * 0.8, t.y, t.x + size * 0.25, t.y + width
         x0 = {"start": t.x, "middle": t.x - width / 2, "end": t.x - width}[t.anchor]
         return x0, t.y - size * 0.8, x0 + width, t.y + size * 0.25
 
     def problems(self, margin: float = 4) -> list[str]:
         out = []
         for e in self.els:
-            if isinstance(e, Box):
+            if isinstance(e, (Box, Rect)):
                 x0, y0, x1, y1 = e.x, e.y, e.x + e.w, e.y + e.h
             elif isinstance(e, (Arrow, Line)):
                 xs, ys = [p[0] for p in e.pts], [p[1] for p in e.pts]
@@ -155,7 +180,8 @@ class Figure:
             ax0, ay0, ax1, ay1 = self._text_bbox(a)
             for b in texts[i + 1 :]:
                 bx0, by0, bx1, by1 = self._text_bbox(b)
-                if ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1:
+                tol = 0.5  # pieces of one word set side by side touch exactly; rounding must not flag them
+                if ax0 < bx1 - tol and bx0 < ax1 - tol and ay0 < by1 and by0 < ay1:
                     out.append(f"text overlap: {a.s!r} and {b.s!r}")
         return out
 
@@ -191,6 +217,13 @@ class Figure:
                         f'text-anchor="middle" font-family="{family}" font-size="{e.size}" font-weight="500" '
                         f'fill="{ink}" xml:space="preserve">{escape(e.label)}</text>'
                     )
+            elif isinstance(e, Rect):
+                stroke, fill, _ = ROLES[e.role]
+                color = c[fill] if e.tint else c[stroke]
+                parts.append(
+                    f'<rect x="{e.x:.1f}" y="{e.y:.1f}" width="{e.w:.1f}" height="{e.h:.1f}" rx="{e.r}" '
+                    f'fill="{color}"/>'
+                )
             elif isinstance(e, Arrow):
                 key = e.role if e.role in ("data", "enc", "dec", "att") else "muted"
                 pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in e.pts)
@@ -209,9 +242,10 @@ class Figure:
             else:
                 size, weight, family, key = TEXT_KINDS[e.kind]
                 color = c[key] if key else c[ROLES[e.role or "neutral"][0]]
+                turn = f' transform="rotate(-90 {e.x:.1f} {e.y:.1f})"' if e.upright else ""
                 parts.append(
                     f'<text x="{e.x:.1f}" y="{e.y:.1f}" text-anchor="{e.anchor}" font-family="{family}" '
-                    f'font-size="{size}" font-weight="{weight}" fill="{color}">{escape(e.s)}</text>'
+                    f'font-size="{size}" font-weight="{weight}" fill="{color}"{turn}>{escape(e.s)}</text>'
                 )
         parts.append("</svg>")
         return "\n".join(parts)

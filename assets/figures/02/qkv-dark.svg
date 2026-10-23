@@ -1,0 +1,213 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350" role="img" aria-label="Every token&#x27;s vector x is multiplied by three learned matrices, W^Q, W^K and W^V, which gives its query, its key and its value. For the whole sentence the rows of X become the rows of Q, K and V">
+<title>Every token&#x27;s vector x is multiplied by three learned matrices, W^Q, W^K and W^V, which gives its query, its key and its value. For the whole sentence the rows of X become the rows of Q, K and V</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="350" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Three roles for every token</text>
+<text x="104.0" y="112.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁The</text>
+<text x="104.0" y="129.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁rese</text>
+<text x="104.0" y="146.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">ar</text>
+<text x="104.0" y="163.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">cher</text>
+<text x="104.0" y="180.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁said</text>
+<text x="104.0" y="197.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁she</text>
+<text x="104.0" y="214.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁was</text>
+<text x="104.0" y="231.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">▁exhausted</text>
+<text x="104.0" y="248.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">.</text>
+<rect x="112.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="129.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="146.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="163.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="180.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="197.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="214.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="231.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#F0B04A"/>
+<rect x="112.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="112.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="129.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="146.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="163.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="180.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="197.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="214.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<rect x="231.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#362A14"/>
+<text x="112.0" y="273.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">X: one row per token</text>
+<rect x="330.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="347.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="364.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="381.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="330.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="330.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="347.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="364.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="381.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<text x="330.0" y="273.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#C4B9FF">Q = X W^Q</text>
+<text x="330.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">what she looks for</text>
+<rect x="470.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="487.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="504.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="521.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="470.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="470.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="487.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="504.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="521.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<text x="470.0" y="273.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#C4B9FF">K = X W^K</text>
+<text x="470.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">how she can be found</text>
+<rect x="610.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="100.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="117.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="134.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="151.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="168.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="627.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="644.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="661.0" y="185.0" width="15.0" height="15.0" rx="2" fill="#9C8CF5"/>
+<rect x="610.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="202.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="219.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="610.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="627.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="644.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<rect x="661.0" y="236.0" width="15.0" height="15.0" rx="2" fill="#272144"/>
+<text x="610.0" y="273.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#C4B9FF">V = X W^V</text>
+<text x="610.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">what she hands over</text>
+<polyline points="179.0,94.0 179.0,66.0 643.0,66.0" fill="none" stroke="#9AA3B2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="363.0,66.0 363.0,94.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="503.0,66.0 503.0,94.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="643.0,66.0 643.0,94.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="14.0" y="325.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">The same vector, three learned views of it. The highlighted row is the token she.</text>
+</svg>
