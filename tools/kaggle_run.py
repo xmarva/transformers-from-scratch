@@ -43,6 +43,9 @@ try:
     resources = {{"metadata": {{"path": "/kaggle/working"}}}}
     NotebookClient(nb, timeout=3600, kernel_name="python3", resources=resources).execute()
 finally:
+    for cell in nb.cells:  # the executed copy reads like the published notebook again
+        cell.source = cell.source.replace(f"{{REPO}}@{{BRANCH}}", f"{{REPO}}@main")
+        cell.source = cell.source.replace(f"{{REPO}}/{{BRANCH}}/", f"{{REPO}}/main/")
     nbformat.write(nb, "/kaggle/working/executed.ipynb")
     print(f"ran in {{(time.time() - start) / 60:.1f}} min", flush=True)
 '''
