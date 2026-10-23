@@ -11,8 +11,16 @@ Outputs (committed, the notebooks link to them on GitHub):
 PNGs are rendered at 2x by headless Chrome with the bundled IBM Plex fonts. Set CHROME=/path/to/chrome if it
 isn't found automatically.
 
+An article (articles/<name>/figures.py) can also define
+    CHARTS = {"name": function(theme) returning a matplotlib figure drawn from measured data}
+    COVER = function returning the cover SVG
+and is rendered straight into the site, since nothing else links to its pictures:
+    <out>/<name>-light.png, <name>-dark.png, cover.png
+
 Usage:
     uv run python tools/render.py 01
+    uv run python tools/render.py --article inference_optimization \
+        --out ../../websites/xmarva.github.io/assets/posts/inference-optimization
 """
 
 from __future__ import annotations
@@ -123,10 +131,55 @@ def render_lesson(lesson_dir: Path, assets: Path) -> list[Path]:
     return written
 
 
+def render_article(article_dir: Path, out: Path, only: list[str] | None = None) -> list[Path]:
+    import matplotlib.pyplot as plt
+
+    module = load(article_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    written = []
+    for name, make in getattr(module, "FIGURES", {}).items():
+        if only and name not in only:
+            continue
+        fig = make()
+        problems = fig.problems()
+        if problems:
+            raise SystemExit(f"{article_dir.name}/{name}:\n  " + "\n  ".join(problems))
+        for theme in ("light", "dark"):
+            path = out / f"{name}-{theme}.png"
+            png(fig.to_svg(theme), path, fig.w, fig.h)
+            written.append(path)
+    for name, make in getattr(module, "CHARTS", {}).items():
+        if only and name not in only:
+            continue
+        for theme in ("light", "dark"):
+            chart = make(theme)
+            path = out / f"{name}-{theme}.png"
+            chart.savefig(path)
+            plt.close(chart)
+            written.append(path)
+    cover = getattr(module, "COVER", None)
+    if cover and (not only or "cover" in only):
+        svg = cover()
+        check_latin(svg)
+        png(svg, out / "cover.png", COVER_W, COVER_H)
+        written.append(out / "cover.png")
+    return written
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("lessons", nargs="+", help="lesson folder prefixes, e.g. 01")
+    parser.add_argument("lessons", nargs="*", help="lesson folder prefixes, e.g. 01; or, with --article, figure names")
+    parser.add_argument("--article", help="folder name under articles/")
+    parser.add_argument("--out", type=Path, help="where an article's pictures go")
     args = parser.parse_args(argv)
+    if args.article:
+        if not args.out:
+            parser.error("--article needs --out")
+        for path in render_article(ROOT / "articles" / args.article, args.out, args.lessons):
+            print(f"rendered {path}")
+        return 0
+    if not args.lessons:
+        parser.error("name the lessons to render")
     for d in sorted((ROOT / "lessons").iterdir()):
         if (d / "figures.py").exists() and any(d.name.startswith(p) for p in args.lessons):
             for path in render_lesson(d, ROOT / "assets"):

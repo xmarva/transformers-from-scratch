@@ -129,8 +129,8 @@ class Figure:
             x += w + gap
         return spans
 
-    def box(self, x, y, w, h, role="neutral", label=None, r=9):
-        self.els.append(Box(x, y, w, h, role, label, r=r))
+    def box(self, x, y, w, h, role="neutral", label=None, r=9, strong=False):
+        self.els.append(Box(x, y, w, h, role, label, strong=strong, r=r))
 
     def rect(self, x, y, w, h, role="data", tint=False, r=1):
         self.els.append(Rect(x, y, w, h, role, tint, r))
