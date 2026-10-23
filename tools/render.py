@@ -14,6 +14,7 @@ isn't found automatically.
 An article (articles/<name>/figures.py) can also define
     CHARTS = {"name": function(theme) returning a matplotlib figure drawn from measured data}
     COVER = function returning the cover SVG
+    IMAGES = {"name": (function returning an SVG, width, height)} for other pictures, e.g. a thumbnail
 and is rendered straight into the site, since nothing else links to its pictures:
     <out>/<name>-light.png, <name>-dark.png, cover.png
 
@@ -163,6 +164,11 @@ def render_article(article_dir: Path, out: Path, only: list[str] | None = None) 
         check_latin(svg)
         png(svg, out / "cover.png", COVER_W, COVER_H)
         written.append(out / "cover.png")
+    for name, (make, width, height) in getattr(module, "IMAGES", {}).items():  # other one-off pictures, any size
+        if only and name not in only:
+            continue
+        png(make(), out / f"{name}.png", width, height)
+        written.append(out / f"{name}.png")
     return written
 
 
