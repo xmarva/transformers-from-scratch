@@ -33,11 +33,23 @@ html[data-theme="dark"] .tfs-output {
 }
 
 /* what a cell printed, set apart from the code that printed it */
-.language-output .highlight,
-.language-output pre {
-  background: transparent !important;
+pre.tfs-printed {
+  background: transparent;
+  border: none;
   border-left: 3px solid var(--global-divider-color);
   border-radius: 0;
+  margin: -0.25rem 0 1.25rem;
+  padding: 0.35rem 0 0.35rem 1rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+pre.tfs-printed code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
 }
 
 /* tables the notebook printed take the site's colours */

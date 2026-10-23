@@ -39,7 +39,8 @@ SITE_URL = "https://xmarva.github.io"
 COURSE_PAGE = "/teaching/"
 FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)-light\.png"([^>]*)>')
 ATTRIBUTE = re.compile(r'(\w+)="([^"]*)"')
-MATH = re.compile(r"(```.*?```|`[^`\n]*`|\$\$.*?\$\$|\$[^$\n]+?\$)", re.S)
+# code blocks, code spans, display math, and inline math, which may wrap onto the next line but not past a paragraph
+MATH = re.compile(r"(```.*?```|`[^`\n]*`|\$\$.*?\$\$|\$(?:[^$\n]|\n(?!\n))+?\$)", re.S)
 TITLE = re.compile(r"""(?:set_title|title=|title\s*=)\(?\s*f?["']([^"'{}]+)["']""")
 
 
@@ -62,11 +63,19 @@ def post_url(folder: Path, meta: dict) -> str:
 
 
 def inline_math(text: str) -> str:
-    """$x$ -> $$x$$, leaving code spans, code blocks and display math alone."""
+    """$x$ -> $$x$$, leaving code spans, code blocks and display math alone.
+
+    A code span that starts or ends with a space (` strawberry`) is not code to kramdown; it becomes <code> with
+    non-breaking spaces, which keeps the space visible."""
 
     def convert(match: re.Match) -> str:
         piece = match.group(0)
-        if piece.startswith("`") or piece.startswith("$$"):
+        if piece.startswith("```") or piece.startswith("$$"):
+            return piece
+        if piece.startswith("`"):
+            inner = piece[1:-1]
+            if inner != inner.strip():
+                return '<code markdown="0">' + html.escape(inner).replace(" ", "&nbsp;") + "</code>"
             return piece
         return "$" + piece + "$"
 
@@ -101,7 +110,8 @@ def output_blocks(cell, assets: Path, web: str, counter: list[int]) -> list[str]
 
     def flush():
         if text:
-            blocks.append("```output\n" + "".join(text).rstrip("\n") + "\n```")
+            printed = html.escape("".join(text).rstrip("\n"))
+            blocks.append(f'<pre class="tfs-printed" markdown="0"><code>{printed}</code></pre>')
             text.clear()
 
     for output in cell.get("outputs", []):
