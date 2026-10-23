@@ -277,7 +277,95 @@ def exposure() -> Figure:
     return fig
 
 
-FIGURES = {"hero": hero, "step": step, "formats": formats, "beam-toy": beam_toy, "exposure": exposure}
+
+# ---------------------------------------------------------------- a translation, one token at a time
+
+def opus_steps(sentence, n_top=4):
+    """Run opus-mt-en-ru greedily; for every step: the prefix written so far and its top candidates."""
+    import torch
+    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+
+    name = "Helsinki-NLP/opus-mt-en-ru"
+    tokenizer = AutoTokenizer.from_pretrained(name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(name).eval()
+    encoded = tokenizer([sentence], return_tensors="pt")
+    written = [model.config.decoder_start_token_id]
+    steps = []
+    with torch.no_grad():
+        memory = model.get_encoder()(**encoded)
+        while written[-1] != model.config.eos_token_id and len(written) < 40:
+            output = model(encoder_outputs=memory, attention_mask=encoded["attention_mask"],
+                           decoder_input_ids=torch.tensor([written]))
+            top = output.logits[0, -1].softmax(dim=-1).topk(n_top)
+            candidates = [(tokenizer.convert_ids_to_tokens(i), p) for p, i in zip(top.values.tolist(), top.indices.tolist())]
+            steps.append((tokenizer.decode(written[1:], skip_special_tokens=True), candidates))
+            written.append(top.indices[0].item())
+    return steps, tokenizer.decode(written[1:], skip_special_tokens=True)
+
+
+SHOWN_STEPS = [0, 1, 2, 6]  # the first word, its second piece, the verb, and the last word
+
+
+def decode_steps() -> Figure:
+    steps, result = opus_steps(EN_EXAMPLE)
+    verb_step = steps[2][1]
+    fig = Figure(
+        760,
+        420,
+        alt="opus-mt-en-ru translating 'The researcher said she was exhausted.' one token at a time. At every "
+        "step the model gives a probability to every possible next token; four steps are shown with their top "
+        f"four candidates. At the verb, {verb_step[0][0]} gets {verb_step[0][1]:.2f} and {verb_step[1][0]} "
+        f"{verb_step[1][1]:.2f}. The decoder takes the most probable token each time and writes: {result}",
+    )
+    fig.text(14, 28, "A translation is written one token at a time", kind="title")
+    fig.text(14, 50, f"opus-mt-en-ru translating «{EN_EXAMPLE}»", kind="note")
+    fig.text(14, 84, "written so far", kind="label")
+    fig.text(330, 84, "next token, probability", kind="label")
+    y = 100
+    for index in SHOWN_STEPS:
+        prefix, candidates = steps[index]
+        fig.text(14, y + 20, f"step {index + 1}", kind="small")
+        fig.text(80, y + 20, prefix if prefix else "(nothing yet)", kind="mono")
+        for k, (token, p) in enumerate(candidates):
+            row_y = y + k * 16
+            shown = token.replace("▁", "␣")
+            fig.text(330, row_y + 12, shown, kind="mono_dec" if k == 0 else "mono")
+            fig.rect(450, row_y + 3, max(2, 230 * p), 11, role="data", tint=k != 0, r=2)
+            fig.text(456 + 230 * p, row_y + 13, f"{p:.2f}", kind="small")
+        y += 74
+    fig.text(14, y + 14, f"Taking the most probable token every time gives: {result}", kind="body")
+    return fig
+
+
+# ---------------------------------------------------------------- Adam's update, per weight
+
+def adam_update() -> Figure:
+    fig = Figure(
+        760,
+        300,
+        alt="Adam's update for one weight: the gradient g feeds two running averages, m of the gradient (its "
+        "direction, smoothed) and v of its square (its typical size); both are corrected for starting at zero, "
+        "and the weight moves by the learning rate times m-hat divided by the square root of v-hat",
+    )
+    fig.text(14, 28, "Adam, for every weight separately", kind="title")
+    w, h = 210, 44
+    fig.box(14, 120, 110, h, role="data", label="gradient g")
+    fig.box(190, 70, w, h, role="neutral", label="m ← β₁m + (1−β₁) g")
+    fig.box(190, 170, w, h, role="neutral", label="v ← β₂v + (1−β₂) g²")
+    fig.box(460, 120, 150, h, role="att", label="step = η m̂ / √v̂")
+    fig.box(650, 120, 96, h, role="data", label="θ ← θ − step")
+    fig.arrow((126, 136), (186, 94))
+    fig.arrow((126, 148), (186, 190))
+    fig.arrow((402, 92), (456, 136))
+    fig.arrow((402, 192), (456, 150))
+    fig.arrow((612, 142), (646, 142))
+    fig.text(190, 62, "direction: the gradient, averaged over recent steps", kind="label")
+    fig.text(190, 234, "size: √v is the gradient's typical magnitude", kind="label")
+    fig.text(460, 186, "m̂, v̂: corrected for starting at 0", kind="label")
+    fig.text(14, 274, "Dividing by √v̂ makes every weight's step at most about η, whether its gradients are large or tiny.",
+             kind="note")
+    return fig
+
 
 # ---------------------------------------------------------------- covers: real outputs of the lesson's training run
 
@@ -330,4 +418,13 @@ def _cover(lang):
     return cv.frame("03_training.ipynb", title, hook, "".join(out))
 
 
+FIGURES = {
+    "decode-steps": decode_steps,
+    "hero": hero,
+    "step": step,
+    "adam": adam_update,
+    "formats": formats,
+    "beam-toy": beam_toy,
+    "exposure": exposure,
+}
 COVERS = {"en": lambda: _cover("en"), "ru": lambda: _cover("ru")}

@@ -81,6 +81,19 @@ print("train:", len(train), "validation:", len(valid), "test:", len(test))
 # %% [markdown]
 # ## 1. How real models turn probabilities into text
 #
+# A model like ours never outputs a sentence. At every step it outputs one probability for each token of its
+# vocabulary, given the source sentence and everything written so far. Here is opus-mt-en-ru, the translator we will
+# compete with in lesson 4, writing our sentence:
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/03/decode-steps-light.png" width="760" alt="opus-mt-en-ru translating 'The researcher said she was exhausted.' one token at a time: four of its steps with the four most probable next tokens each. At the verb, сказал gets 0.52, сказала 0.20 and the suffix ница 0.03; taking the most probable token every time gives Исследователь сказал, что она устала.">
+#
+# Some steps are easy: after *Ис*, the continuation *следователь* gets almost all of the probability. Others are
+# real choices. At the verb, the model gives the masculine *сказал* about half of it and the feminine *сказала* a
+# fifth; it even keeps a small chance for *ница*, the suffix that would make the researcher a woman. The model
+# itself doesn't choose; it hands these numbers on. Which token gets written is decided by a separate procedure,
+# **decoding**, and the picture used the simplest one: take the most probable token at every step. That's how the
+# masculine translation of section 8 comes about.
+#
 # A model on the Hugging Face Hub can come with a `generation_config.json`: the decoding settings its authors
 # recommend. Read four of them, two translators and two chat models:
 
@@ -278,44 +291,105 @@ del unsorted  # only needed for the comparison
 #
 # ## 4. The loss, smoothed
 #
-# The loss is the cross-entropy of lesson 2: for every position, $-\log$ of the probability the model gives the
-# right token. Written as a sum over the vocabulary, it compares the model's distribution $p$ with a target
-# distribution $q$ that puts all its mass on the right token $y$:
+# The loss is the cross-entropy of lesson 2. At every position the model turns its scores $\mathbf{z}$ into
+# probabilities with softmax, $p_j = e^{z_j} / \sum_k e^{z_k}$, and pays $-\log p_y$, where $y$ is the right token:
+#
+# $$\mathcal{L} = -\log p_y.$$
+#
+# Read $-\log p$ as surprise. A model that gave the right token probability 1 isn't surprised at all and pays 0; one
+# that gave it 0.5 pays 0.69; one that was confident in something else and gave the right token 0.01 pays 4.6, and
+# the price grows without bound as $p_y \to 0$. Averaged over all target tokens of a batch, this is the number
+# training brings down.
+#
+# Written as a sum over the vocabulary, the same loss compares the model's distribution $p$ with a target
+# distribution $q$ that puts all its mass on the right token:
 #
 # $$\mathcal{L} = -\sum_{j=1}^{\lvert\mathcal{V}\rvert} q_j \log p_j, \qquad q_j = \begin{cases} 1 & j = y \\ 0 &
 # \text{otherwise.} \end{cases}$$
 #
-# That target is a demand for certainty, and the model can only approach it by pushing the right token's score
-# ever higher above the others. On data like ours, where *He's stupid.* has two dozen correct translations
-# (lesson 1), total certainty is wrong anyway. **Label smoothing** ([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)), used
-# in the 2017 paper with $\varepsilon = 0.1$, softens the target: it keeps $1 - \varepsilon$ of the mass on the
-# right token and spreads $\varepsilon$ evenly over the whole vocabulary,
+# That target is a demand for certainty. On data like ours, where *He's stupid.* has two dozen correct translations
+# (lesson 1), total certainty is wrong anyway. **Label smoothing**
+# ([Szegedy et al., 2016](https://arxiv.org/abs/1512.00567)), used in the 2017 paper with $\varepsilon = 0.1$,
+# softens the target: it keeps $1 - \varepsilon$ of the mass on the right token and spreads $\varepsilon$ evenly
+# over the whole vocabulary,
 #
 # $$q_j = (1 - \varepsilon)\,[j = y] + \frac{\varepsilon}{\lvert\mathcal{V}\rvert}.$$
 #
-# The model is then rewarded for being *mostly* sure. The paper reports that this hurts perplexity, the model's
-# confidence in the right tokens, but improves the translations. Check the formula against PyTorch on a vocabulary
-# of five tokens, small enough to follow:
+# Both ideas in one picture: the price of a probability, and the two targets, drawn here for a vocabulary of eight
+# tokens so that the spread part is visible (in ours, each of sixteen thousand tokens gets $\varepsilon / 16\,000$):
 
 # %%
 EPSILON = 0.1
 
-scores = torch.tensor([[2.0, 0.5, -1.0, 0.0, 1.0]])  # one position, five tokens
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.4), gridspec_kw={"width_ratios": [1.3, 1]})
+
+ax = axes[0]
+p_right = np.linspace(0.005, 1, 400)
+ax.plot(p_right, -np.log(p_right), color=COLORS["data"])
+for p_value in [0.9, 0.5, 0.1, 0.01]:
+    surprise = -math.log(p_value)
+    ax.plot(p_value, surprise, "o", color=COLORS["data"])
+    ax.annotate(f"p = {p_value}: {surprise:.2f}", (p_value, surprise), xytext=(8, 4),
+                textcoords="offset points", fontsize=9)
+ax.set_xlabel("probability the model gives the right token")
+ax.set_ylabel("loss, −log p")
+ax.set_title("The price of a probability")
+
+ax = axes[1]
+tokens = np.arange(8)
+one_hot = np.zeros(8)
+one_hot[2] = 1  # token 2 is the right one
+smoothed = (1 - EPSILON) * one_hot + EPSILON / 8
+ax.bar(tokens - 0.2, one_hot, width=0.38, color=COLORS["muted"], label="plain target")
+label = f"smoothed, ε = {EPSILON}"
+ax.bar(tokens + 0.2, smoothed, width=0.38, color=COLORS["data"], label=label)
+ax.set_axisbelow(True)  # grid lines behind the bars
+ax.set_xticks(tokens, [f"t{k}" for k in tokens])
+ax.set_xlabel("token (a vocabulary of 8)")
+ax.set_title("Two targets")
+ax.legend(fontsize=9)
+plt.tight_layout()
+plt.show()
+
+# %% [markdown]
+# Why does the target matter so much? Because of the gradient. Differentiate the loss with respect to the scores and
+# almost everything cancels:
+#
+# $$\frac{\partial \mathcal{L}}{\partial z_j} = p_j - q_j.$$
+#
+# Training moves every score in proportion to how far the model's probability is from the target: the right token's
+# score goes up by $1 - p_y$ at most, every other score goes down by its own probability. With the plain target the
+# push on the right token only stops at $p_y = 1$, which needs its score infinitely far above the rest. With the
+# smoothed target the push stops at $p = q$: the model is rewarded for being *mostly* sure. The paper reports that
+# this hurts perplexity, since the model learns to be less sure, but improves the translations.
+#
+# Check both formulas, the loss and its gradient, against PyTorch on five tokens, small enough to follow:
+
+# %%
+scores = torch.tensor([[2.0, 0.5, -1.0, 0.0, 1.0]], requires_grad=True)  # one position
 right = torch.tensor([0])  # the right token is token 0
-p = scores.softmax(dim=-1)
 
 q = torch.full((1, 5), EPSILON / 5)  # spread epsilon evenly...
 q[0, 0] += 1 - EPSILON  # ...and keep the rest on the right token
-ours = -(q * p.log()).sum()
 
+p = scores.softmax(dim=-1)
+ours = -(q * p.log()).sum()
 theirs = F.cross_entropy(scores, right, label_smoothing=EPSILON)
 assert torch.allclose(ours, theirs)
-print("smoothed target q:", q)
+
+theirs.backward()  # the gradient of PyTorch's loss with respect to the scores
+assert torch.allclose(scores.grad, p - q)
+
+print("target q:      ", q)
+print("probabilities: ", p.detach().round(decimals=4))
+print("gradient p - q:", scores.grad.round(decimals=4))
 print("loss:", round(ours.item(), 4), "= PyTorch's", round(theirs.item(), 4))
 
 # %% [markdown]
-# A consequence to remember when reading the training curves: with a smoothed target the loss can't reach zero. Its
-# minimum is reached when $p = q$, and then it equals the entropy of $q$ itself:
+# The right token's gradient is negative, so training raises its score; the four others are positive and go down.
+#
+# One consequence to remember when reading the training curves: with a smoothed target the loss can't reach zero.
+# Its minimum is reached when $p = q$, and then it equals the entropy of $q$ itself:
 
 # %%
 q_right = 1 - EPSILON + EPSILON / VOCAB_SIZE
@@ -329,24 +403,224 @@ print("lowest possible smoothed loss:", round(floor, 3))
 #
 # ## 5. The optimizer and the learning rate
 #
-# The optimizer is **Adam** ([Kingma and Ba, 2015](https://arxiv.org/abs/1412.6980)). Plain gradient descent moves
-# every weight by the learning rate times its gradient. Adam keeps two running averages per weight, of the gradient
-# $g$ and of its square, and moves each weight by the first divided by the square root of the second:
+# ### Gradient descent, and what the learning rate does
 #
-# $$m_t = \beta_1 m_{t-1} + (1 - \beta_1)\, g_t, \qquad v_t = \beta_2 v_{t-1} + (1 - \beta_2)\, g_t^2, \qquad
-# \theta_t = \theta_{t-1} - \eta_t \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}.$$
+# The gradient $\nabla \mathcal{L}(\theta)$ points in the direction in which the loss grows fastest. **Gradient
+# descent** takes a step the other way, of a size set by the **learning rate** $\eta$:
 #
-# The average $m$ smooths out the noise of individual batches (it acts as momentum); dividing by $\sqrt{v}$ gives
-# every weight a step of a similar size, whether its gradients are large or tiny. The hats mark a correction for the
-# averages starting at zero. The paper uses $\beta_1 = 0.9$, $\beta_2 = 0.98$, $\epsilon = 10^{-9}$.
+# $$\theta \leftarrow \theta - \eta\, \nabla \mathcal{L}(\theta).$$
 #
-# The learning rate $\eta_t$ follows a schedule from the paper:
+# How large can $\eta$ be? The simplest loss already answers it. Take one weight and a parabola,
+# $\mathcal{L}(\theta) = \tfrac{\lambda}{2}\theta^2$, whose curvature $\lambda$ says how steep it is. Its gradient
+# is $\lambda\theta$, so one step gives
+#
+# $$\theta_{t+1} = \theta_t - \eta\lambda\theta_t = (1 - \eta\lambda)\,\theta_t.$$
+#
+# Every step multiplies the distance to the minimum by $1 - \eta\lambda$. If $0 < \eta\lambda < 1$ the weight
+# creeps towards the minimum from one side; between 1 and 2 it jumps over it and back, closer each time; at
+# $\eta\lambda > 2$ every jump overshoots by more than the last, and training diverges. Four learning rates on a
+# parabola with $\lambda = 1$:
+
+# %%
+def descend(eta, curvature=1.0, start=3.0, n_steps=8):
+    theta = start
+    path = [theta]
+    for _ in range(n_steps):
+        gradient = curvature * theta
+        theta = theta - eta * gradient
+        path.append(theta)
+    return np.array(path)
+
+
+grid = np.linspace(-5, 5, 200)
+fig, axes = plt.subplots(1, 4, figsize=(11, 2.8), sharey=True)
+for ax, eta in zip(axes, [0.1, 0.6, 1.6, 2.1]):
+    path = descend(eta)
+    shown = path[np.abs(path) <= 5]  # a diverging path leaves the picture: draw what fits
+    ax.plot(grid, grid**2 / 2, color=COLORS["grid"], linewidth=3)
+    ax.plot(shown, shown**2 / 2, "-o", color=COLORS["enc"], markersize=4, linewidth=1.2)
+    factor = 1 - eta  # 1 - eta * curvature, with curvature 1
+    shown_factor = f"{factor:.1f}".replace("-", "−")  # a typographic minus
+    if factor < 0:
+        shown_factor = f"({shown_factor})"
+    verdict = "diverges" if abs(factor) > 1 else "converges"
+    ax.set_title(f"η = {eta}: ×{shown_factor} per step, {verdict}", fontsize=10)
+    ax.set_xticks([])
+axes[0].set_ylabel("loss")
+plt.tight_layout()
+plt.show()
+
+for eta in [0.1, 0.6, 1.6, 2.1]:
+    distance = abs(descend(eta)[-1])
+    print(f"η = {eta}: {distance:.2f} from the minimum after 8 steps, starting from 3")
+
+# %% [markdown]
+# A real loss has millions of directions, each with its own curvature, and one learning rate for all of them. The
+# steepest direction caps it: beyond $\eta = 2 / \lambda_{\max}$ that direction diverges. The flattest direction then
+# moves by only a factor $1 - \eta\lambda_{\min}$ per step, which is barely below 1 when the two curvatures are far
+# apart. Here is a valley 100 times steeper across than along, $\mathcal{L}(\theta) = \tfrac12(100\,\theta_1^2 +
+# \theta_2^2)$, where any $\eta$ above $2/100 = 0.02$ diverges.
+#
+# ### Adam
+#
+# The optimizer of the 2017 paper, and of nearly every Transformer since, is **Adam**
+# ([Kingma and Ba, 2015](https://arxiv.org/abs/1412.6980)). It gives every weight its own effective step size. For
+# each weight it keeps two running averages, of the gradient and of its square:
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/03/adam-light.png" width="760" alt="Adam's update for one weight: the gradient feeds a running average m of the gradient and a running average v of its square; after a correction for starting at zero, the weight moves by eta times m-hat over the square root of v-hat">
+#
+# $$m_t = \beta_1 m_{t-1} + (1 - \beta_1)\, g_t, \qquad v_t = \beta_2 v_{t-1} + (1 - \beta_2)\, g_t^2,$$
+#
+# $$\hat m_t = \frac{m_t}{1 - \beta_1^t}, \qquad \hat v_t = \frac{v_t}{1 - \beta_2^t}, \qquad
+# \theta_t = \theta_{t-1} - \eta\, \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}.$$
+#
+# - $g_t$: the gradient of this weight at step $t$.
+# - $m_t$: its average over roughly the last $1 / (1 - \beta_1)$ steps. Noise from batch to batch cancels out, and
+#   a direction that persists builds up: momentum.
+# - $v_t$: the average of its square, so $\sqrt{v_t}$ is the gradient's typical magnitude.
+# - $\hat m_t, \hat v_t$: both averages start at 0 and would be too small for the first steps; dividing by
+#   $1 - \beta^t$ corrects that, and the correction fades as $\beta^t \to 0$.
+# - $\hat m_t / \sqrt{\hat v_t}$: a gradient measured in units of its own typical size, close to $\pm 1$ when the
+#   gradient is consistent and smaller when it is noisy. So every weight moves by at most about $\eta$, whether its
+#   raw gradients are large or tiny, and the steep and flat directions of the valley move at similar speeds.
+# - $\epsilon$: prevents division by zero.
+#
+# The paper uses $\beta_1 = 0.9$, $\beta_2 = 0.98$, $\epsilon = 10^{-9}$. The update in code, applied to a tensor of
+# weights, is the formula line by line:
+
+
+# %%
+def adam_step(theta, gradient, state, step, eta, beta1=0.9, beta2=0.98, eps=1e-9):
+    state["m"] = beta1 * state["m"] + (1 - beta1) * gradient
+    state["v"] = beta2 * state["v"] + (1 - beta2) * gradient**2
+    m_hat = state["m"] / (1 - beta1**step)
+    v_hat = state["v"] / (1 - beta2**step)
+    return theta - eta * m_hat / (v_hat.sqrt() + eps)
+
+
+# %% [markdown]
+# Run it on the valley next to plain gradient descent, and next to PyTorch's own `torch.optim.Adam` with the same
+# settings, which must land on exactly the same point:
+
+# %%
+curvatures = torch.tensor([100.0, 1.0])  # steep across, flat along
+
+
+def valley_loss(theta):
+    return 0.5 * (curvatures * theta**2).sum()
+
+
+start = torch.tensor([-1.0, 4.0])
+n_steps = 60
+
+gradient_descent = [start]
+theta = start
+for _ in range(n_steps):
+    gradient = curvatures * theta  # the gradient of the valley
+    theta = theta - 0.019 * gradient  # just below the limit of 0.02
+    gradient_descent.append(theta)
+
+adam_path = [start]
+theta = start
+state = {"m": torch.zeros(2), "v": torch.zeros(2)}
+for step in range(1, n_steps + 1):
+    theta = adam_step(theta, curvatures * theta, state, step, eta=0.1)
+    adam_path.append(theta)
+
+weights = start.clone().requires_grad_()
+reference = torch.optim.Adam([weights], lr=0.1, betas=(0.9, 0.98), eps=1e-9)
+for _ in range(n_steps):
+    reference.zero_grad()
+    valley_loss(weights).backward()
+    reference.step()
+assert torch.allclose(adam_path[-1], weights.detach(), atol=1e-6)
+print("adam_step lands where torch.optim.Adam does:", adam_path[-1].tolist())
+
+# %%
+x_grid, y_grid = np.meshgrid(np.linspace(-1.4, 1.4, 200), np.linspace(-1, 4.5, 200))
+landscape = 0.5 * (100 * x_grid**2 + y_grid**2)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.8), sharey=True)
+paths = [("gradient descent, η = 0.019", gradient_descent), ("Adam, η = 0.1", adam_path)]
+for ax, (title, path) in zip(axes, paths):
+    path = torch.stack(path).numpy()
+    levels = np.geomspace(0.05, 100, 12)  # contour lines of the loss
+    ax.contour(x_grid, y_grid, landscape, levels=levels, colors=COLORS["grid"])
+    ax.plot(path[:, 0], path[:, 1], "-o", color=COLORS["enc"], markersize=3, linewidth=1.2)
+    ax.plot(0, 0, "*", color=COLORS["dec"], markersize=12)  # the minimum
+    final_loss = valley_loss(torch.tensor(path[-1]))
+    ax.set_title(f"{title}: loss {final_loss:.3f} after {n_steps} steps", fontsize=10)
+    ax.set_xlabel("θ₁, steep")
+    ax.grid(False)
+axes[0].set_ylabel("θ₂, flat")
+plt.tight_layout()
+plt.show()
+
+# %% [markdown]
+# Gradient descent runs at the largest learning rate the steep direction allows. It zigzags across the valley and
+# creeps along it: after sixty steps it is still far up the valley floor. Adam's steps have about the same length
+# in both directions, so it heads down the valley; its momentum carries it past the minimum and back, in shrinking
+# loops.
+#
+# The difference grows with the shape of the valley. Make it 25, 100 and 400 times steeper across than along, give
+# gradient descent its best learning rate each time, just below $2/\lambda_{\max}$, and keep Adam's $\eta$ fixed:
+
+
+# %%
+def final_point_gradient_descent(curvatures, eta, n_steps=60):
+    theta = start
+    for _ in range(n_steps):
+        theta = theta - eta * curvatures * theta
+    return theta
+
+
+def final_point_adam(curvatures, eta, n_steps=60):
+    theta = start
+    state = {"m": torch.zeros(2), "v": torch.zeros(2)}
+    for step in range(1, n_steps + 1):
+        theta = adam_step(theta, curvatures * theta, state, step, eta)
+    return theta
+
+
+rows, adam_points = [], []
+for ratio in [25, 100, 400]:
+    valley = torch.tensor([float(ratio), 1.0])
+    best_eta = 0.95 * 2 / ratio  # 95% of the limit
+    descent_point = final_point_gradient_descent(valley, best_eta)
+    adam_point = final_point_adam(valley, 0.1)
+    adam_points.append(adam_point)
+    rows.append(
+        {
+            "steep / flat": ratio,
+            "gradient descent: η": best_eta,
+            "loss after 60 steps": 0.5 * (valley * descent_point**2).sum().item(),
+            "Adam: loss after 60 steps": 0.5 * (valley * adam_point**2).sum().item(),
+        }
+    )
+table(pd.DataFrame(rows), digits=4)
+
+# %%
+same_path = all(torch.allclose(point, adam_points[0], atol=1e-5) for point in adam_points)
+print("Adam ends at the same point in all three valleys:", same_path)
+
+# %% [markdown]
+# On a mildly uneven valley a well-tuned gradient descent is even ahead. But it falls behind fast as the valley
+# gets more uneven, while Adam ends at exactly the same point in all three. Each
+# coordinate's gradient is divided by its own typical size, so stretching one direction of the landscape changes
+# nothing for Adam. The loss of a Transformer has millions of directions whose curvatures differ by orders of
+# magnitude, and that is why Adam, not plain gradient descent, trains it.
+#
+# ### The learning-rate schedule
+#
+# The learning rate $\eta_t$ isn't constant either. The paper changes it with every step:
 #
 # $$\eta_t = d_{\text{model}}^{-0.5} \cdot \min\!\big(t^{-0.5},\ t \cdot t_{\text{warm}}^{-1.5}\big).$$
 #
 # For the first $t_{\text{warm}}$ steps the second term is the smaller one, and the rate grows linearly from zero:
-# the **warm-up**. After that the first term takes over and the rate decays like $1/\sqrt{t}$. The factor
-# $d_{\text{model}}^{-0.5}$ makes wider models take smaller steps.
+# the **warm-up**. After that the first term takes over and the rate decays like $1/\sqrt{t}$, so the steps get
+# shorter as the model approaches a good solution. The two terms meet at $t = t_{\text{warm}}$, the peak, and the
+# factor $d_{\text{model}}^{-0.5}$ makes wider models take smaller steps. Our run lasts `EPOCHS` passes over the
+# data, one epoch every `len(train_batches)` steps:
 
 
 # %%
@@ -356,17 +630,23 @@ def learning_rate(step, d_model=256, warmup=4_000):
 
 
 WARMUP = 4_000
-steps = np.arange(1, 30_000)
+EPOCHS = 20 if not SMOKE else 1  # the length of the training run in section 7
+total_steps = EPOCHS * len(train_batches)
+
+steps = np.arange(1, total_steps + 1)
 fig, ax = plt.subplots(figsize=(6.4, 3))
 ax.plot(steps, [learning_rate(s, warmup=WARMUP) for s in steps], color=COLORS["enc"])
-ax.axvline(WARMUP, color=COLORS["muted"], linestyle=(0, (3, 3)), linewidth=1)
-ax.set_xlabel("step")
+ax.axvspan(0, min(WARMUP, total_steps), color=COLORS["enc"], alpha=0.08)  # the warm-up
+for epoch in range(1, EPOCHS + 1):
+    ax.axvline(epoch * len(train_batches), color=COLORS["grid"], linewidth=0.8)
+ax.set_xlabel("step (thin lines: ends of epochs)")
 ax.set_ylabel("learning rate")
 ax.set_title("Warm up, then decay")
 plt.show()
 
 peak = learning_rate(WARMUP, warmup=WARMUP)
 print("peak learning rate:", f"{peak:.2e}", "at step", WARMUP)
+print("warm-up lasts", round(WARMUP / len(train_batches), 1), "epochs of", EPOCHS)
 
 # %% [markdown]
 # Why start slowly? At the beginning, Adam's running average $v$ has seen only a few gradients, so its estimate of
@@ -376,7 +656,7 @@ print("peak learning rate:", f"{peak:.2e}", "at step", WARMUP)
 # throw the weights somewhere training never recovers from.
 #
 # Rather than take this on trust, train two copies of the model for a few hundred steps with the same peak learning
-# rate, one with a warm-up and one without:
+# rate, one with a warm-up and one without. First the pieces of the training step, which section 7 reuses:
 
 
 # %%
@@ -400,27 +680,39 @@ def adam(model):
     return torch.optim.Adam(model.parameters(), lr=1.0, betas=(0.9, 0.98), eps=1e-9)
 
 
+# %% [markdown]
+# The loss of one batch, as in section 4, averaged over all its real target tokens:
+
+
+# %%
+def batch_loss(model, batch):
+    src_ids, tgt_in, tgt_out = (t.to(device) for t in batch)
+    logits = model(src_ids, tgt_in).float()  # the loss in float32 (section 6)
+    flat_logits = logits.reshape(-1, VOCAB_SIZE)
+    targets = tgt_out.reshape(-1)
+    return F.cross_entropy(flat_logits, targets, ignore_index=PAD, label_smoothing=EPSILON)
+
+
+# %% [markdown]
+# And the training loop itself: `n_steps` steps over the batches in shuffled order, each one the picture of section
+# 2. It returns the loss of every step.
+
+
+# %%
 def train_steps(model, optimizer, schedule, n_steps, first_step=1, use_amp=True, clip=1.0):
-    """Train for n_steps on shuffled batches; returns the smoothed loss of every step."""
     use_amp = use_amp and device == "cuda"
     scaler = torch.amp.GradScaler(device, enabled=use_amp)
     model.train()
     losses = []
     while len(losses) < n_steps:
-        order = random.sample(range(len(train_batches)), len(train_batches))  # every pass
+        order = list(range(len(train_batches)))
+        random.shuffle(order)  # a new order on every pass over the data
         for index in order:
-            src_ids, tgt_in, tgt_out = (t.to(device) for t in train_batches[index])
             for group in optimizer.param_groups:
                 group["lr"] = schedule(first_step + len(losses))
 
             with torch.autocast(device, dtype=torch.float16, enabled=use_amp):
-                logits = model(src_ids, tgt_in)
-                loss = F.cross_entropy(
-                    logits.reshape(-1, VOCAB_SIZE).float(),
-                    tgt_out.reshape(-1),
-                    ignore_index=PAD,
-                    label_smoothing=EPSILON,
-                )
+                loss = batch_loss(model, train_batches[index])
 
             optimizer.zero_grad()
             scaler.scale(loss).backward()  # gradients of the scaled loss (section 6)
@@ -436,8 +728,7 @@ def train_steps(model, optimizer, schedule, n_steps, first_step=1, use_amp=True,
 
 
 # %% [markdown]
-# `train_steps` is the whole loop of the picture in section 2; the rest of this section and the next explain its
-# last few lines.
+# `train_steps` is the loop of the picture in section 2; section 6 explains its lines with `autocast` and `scaler`.
 #
 # One reference point helps to read the experiment: the loss of a model that ignores the sentence altogether and
 # always predicts the same distribution, how often each token occurs in the training targets. A model that has
@@ -493,15 +784,16 @@ plt.show()
 # Same model, same data, same peak learning rate; only the first thousand steps differ. With the warm-up, the loss
 # falls steadily. Without it, the first steps at full speed throw the weights somewhere the model doesn't recover
 # from: the loss sticks near the dashed line, where a model knows little more than which tokens are frequent. In
-# the real run below the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
+# the real run the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
 #
 # The last protection is **gradient clipping**, the `clip_grad_norm_` line: if the length of the whole gradient
 # vector, over all the model's weights, exceeds a limit $c$, the vector is scaled down to that length,
 #
 # $$g \leftarrow g \cdot \min\!\left(1, \frac{c}{\lVert g \rVert}\right).$$
 #
-# The direction stays, only an occasional huge step is cut short ([Pascanu et al., 2013](https://arxiv.org/abs/1211.5063)).
-# The 2017 paper doesn't mention it; nearly every recipe since uses it, with $c = 1$.
+# The direction stays, only an occasional huge step is cut short
+# ([Pascanu et al., 2013](https://arxiv.org/abs/1211.5063)). The 2017 paper doesn't mention it; it has become a
+# standard part of training recipes since, and $c = 1$ is a common choice.
 #
 # ## 6. Half precision
 #
@@ -511,8 +803,8 @@ plt.show()
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/03/formats-light.png" width="760" alt="Bit layouts of float32, bfloat16 and float16, with their largest values and smallest normal values; float16 has only 5 exponent bits and covers a much smaller range">
 #
 # float16 keeps 10 bits of precision, plenty for activations and weights in a matrix product, but only 5 bits of
-# exponent: nothing above 65 504, precision fading below $6 \cdot 10^{-5}$, and below about $6 \cdot 10^{-8}$
-# nothing but zero. Gradients are often that small, and a gradient rounded to zero teaches nothing:
+# exponent: nothing above 65 504, precision fading below $2^{-14} \approx 6 \cdot 10^{-5}$, and below
+# $2^{-24} \approx 6 \cdot 10^{-8}$ nothing but zero. A gradient rounded to zero teaches nothing:
 
 # %%
 tiny_gradient = torch.tensor(1e-8)
@@ -520,12 +812,58 @@ print("in float16:", tiny_gradient.half().item())
 print("times 65 536, in float16:", (tiny_gradient * 65_536).half().item())
 
 # %% [markdown]
-# Hence **mixed precision** ([Micikevicius et al., 2018](https://arxiv.org/abs/1710.03740)): matrix products run in
-# float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in
-# float32. And **loss scaling**: multiply the loss by a large factor before backpropagation, so every gradient is
-# multiplied by it too and stays representable, then divide the gradients back before the optimizer uses them.
-# `GradScaler` does both and picks the factor itself: it raises it while all goes well and lowers it, skipping that
-# step, whenever a gradient overflows. In `train_steps` these are the lines with `autocast` and `scaler`.
+# Are real gradients that small? Take the model of the warm-up experiment, after its 1 500 steps, compute the
+# gradients of all its weights on one batch in full float32 precision, and see where they fall on float16's scale:
+
+# %%
+model.train()
+model.zero_grad()
+batch_loss(model, train_batches[0]).backward()
+gradients = torch.cat([w.grad.flatten() for w in model.parameters()]).abs().cpu()
+gradients = gradients[gradients > 0]  # the logarithm needs positive numbers
+
+SCALE = 2**16
+zero_in_float16 = 2.0**-24  # below this, float16 rounds to 0
+imprecise_in_float16 = 2.0**-14  # below this, float16 loses precision
+
+# %%
+fig, ax = plt.subplots(figsize=(6.4, 3.2))
+bins = np.linspace(-12, 4, 100)
+raw = gradients.log10().numpy()
+scaled = (gradients * SCALE).log10().numpy()
+ax.hist(raw, bins=bins, color=COLORS["data"], alpha=0.85, label="gradients")
+ax.hist(scaled, bins=bins, histtype="step", color=COLORS["enc"], label="× 65 536")
+ax.axvline(math.log10(zero_in_float16), color=COLORS["dec"], label="float16: 0 to the left")
+dashed = (0, (3, 3))
+precision_label = "float16: imprecise to the left"
+imprecise = math.log10(imprecise_in_float16)
+ax.axvline(imprecise, color=COLORS["dec"], linestyle=dashed, label=precision_label)
+ax.set_axisbelow(True)  # grid lines behind the bars
+ax.set_xlabel("log₁₀ |gradient|")
+ax.set_ylabel("weights")
+ax.set_title("Gradients on float16's scale")
+ax.legend(fontsize=8, loc="upper left")
+plt.show()
+
+# %%
+below_zero = (gradients < zero_in_float16).float().mean().item()
+below_precise = (gradients < imprecise_in_float16).float().mean().item()
+after_scaling = (gradients * SCALE < zero_in_float16).float().mean().item()
+print(f"gradients float16 would round to 0:    {below_zero:.2%}")
+print(f"gradients where float16 loses precision: {below_precise:.1%}")
+print(f"rounded to 0 after scaling by 65 536:  {after_scaling:.4%}")
+
+# %% [markdown]
+# A share of the gradients would vanish outright, and many more would lose most of their precision. Multiplying the
+# loss by $2^{16}$ multiplies every gradient by the same factor (the chain rule is linear), shifts the whole
+# histogram to the right and brings almost all of them into range.
+#
+# That is **mixed precision** ([Micikevicius et al., 2018](https://arxiv.org/abs/1710.03740)): matrix products run
+# in float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in
+# float32; and **loss scaling**: multiply the loss by a large factor before backpropagation, then divide the
+# gradients back before the optimizer uses them. `GradScaler` does both and picks the factor itself: it raises it
+# while all goes well and lowers it, skipping that step, whenever a gradient overflows. In `train_steps` these are
+# the lines with `autocast` and `scaler`.
 #
 # What does it buy? Time a few steps each way:
 
@@ -599,7 +937,6 @@ PROBES = [EN_EXAMPLE, "Tom forgot to lock the door.", "I can't believe you did t
 # prints one line per epoch, with the minutes since the start; this is the long cell of the lesson.
 
 # %%
-EPOCHS = 20 if not SMOKE else 1
 CHECKPOINT = WORK_DIR / "transformer.pt"
 
 torch.manual_seed(SEED)
@@ -695,7 +1032,8 @@ table(progress[["epoch", *PROBES]])
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/03/exposure-light.png" width="760" alt="In training the decoder reads the reference translation; when translating it reads its own words. opus-mt-en-ru writes Исследователь сказал, что она устала: a masculine first word, and the verb agrees with the mistake">
 #
 # The first word came out masculine, and the verb, written after it, agrees with it. The sentence is good Russian,
-# and it says something else: a man said that some woman was tired. Two people where the English had one.
+# and it says something else: a man said that some woman was tired. The English most naturally means one person;
+# the Russian can only mean two.
 #
 # Start from the best model of the training run, and from greedy decoding, the simplest procedure: at every step
 # take the single most probable token. Next to each translation, print its **score**, the log-probability the model
@@ -709,13 +1047,14 @@ model.eval()
 
 @torch.no_grad()
 def sentence_score(model, sentence, translation):
-    """log P(translation | sentence): the sum over its tokens, <eos> included."""
     src_ids = torch.tensor([tokenizer.encode(sentence).ids], device=device)
     ids = tokenizer.encode(translation).ids
     tgt_in = torch.tensor([[BOS] + ids], device=device)
     tgt_out = torch.tensor([ids + [EOS]], device=device)
-    log_probs = model(src_ids, tgt_in).float().log_softmax(dim=-1)  # (1, T, |V|)
-    return log_probs[0, torch.arange(len(ids) + 1), tgt_out[0]].sum().item()
+    log_probs = model(src_ids, tgt_in).float().log_softmax(dim=-1)[0]  # (T, |V|)
+    positions = torch.arange(len(ids) + 1)
+    # at every position, the log-probability of the token that comes next; <eos> included
+    return log_probs[positions, tgt_out[0]].sum().item()
 
 
 MINIMAL_PAIRS = [
@@ -769,6 +1108,12 @@ def length_penalty(length, alpha=0.6):
     return ((5 + length) / 6) ** alpha
 
 
+# %% [markdown]
+# The search keeps a list of beams, each a list of tokens with its total log-probability, and a list of finished
+# translations. Every step feeds all beams to the decoder as one batch:
+
+
+# %%
 @torch.no_grad()
 def beam_search(model, sentence, beam_size=4, alpha=0.6, max_tokens=60, trace=None):
     model.eval()
@@ -812,20 +1157,27 @@ def beam_search(model, sentence, beam_size=4, alpha=0.6, max_tokens=60, trace=No
 
 
 # %% [markdown]
-# Watch the four beams grow on our sentence, step by step, each with its total log-probability:
+# Watch the four beams grow on our sentence: the first steps and the last ones, each partial translation with its
+# total log-probability under it, the leader of every step filled.
 
 # %%
 trace = []
 beam = beam_search(model, EN_EXAMPLE, trace=trace)
-rows = []
-for step, beams in enumerate(trace):
-    for rank, (text, total) in enumerate(beams):
-        row = {"step": step + 1, "beam": rank + 1, "partial translation": text}
-        row["log-probability"] = total
-        rows.append(row)
-    if step >= 5:
-        break
-table(pd.DataFrame(rows))
+
+first_six, last_three = set(range(6)), set(range(len(trace) - 3, len(trace)))
+shown_steps = sorted(first_six | last_three)
+rows, totals, labels = [], [], []
+for step in shown_steps:
+    rows.append([text for text, _ in trace[step]])
+    totals.append([f"{total:.2f}" for _, total in trace[step]])
+    labels.append(f"step {step + 1}")
+
+def is_leader(row, col, text):
+    return col == 0  # the best partial translation of each step
+
+
+token_chips(rows, ids=totals, labels=labels, strong=is_leader, mark_spaces=False, size=10)
+plt.show()
 
 # %%
 print("greedy:     ", translate_greedy(model, EN_EXAMPLE))
@@ -951,6 +1303,11 @@ def translate_sampling(model, sentence, temperature=1.0, top_p=1.0, max_tokens=6
     return tokenizer.decode(written[1:])
 
 
+# %% [markdown]
+# Three draws each, at three settings: the model's own distribution, the chat models' setting of section 1, and a
+# hot one.
+
+# %%
 torch.manual_seed(SEED)
 rows = []
 for name, settings in [
