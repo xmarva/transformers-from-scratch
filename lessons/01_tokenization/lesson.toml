@@ -2,3 +2,7 @@ number = 1
 short_title = "Tokenization"
 cover_alt = "Lesson 1 cover: Tokenization, from scratch. An English word split from characters into subword tokens"
 gpu = false
+published = true
+published_on = 2026-10-23
+description = "What GPT-4o actually receives when you type, why Russian costs more tokens than English, and byte-pair encoding written from scratch."
+tags = "tokenization, bpe, nlp, llm"

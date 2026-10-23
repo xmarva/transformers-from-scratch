@@ -1542,6 +1542,7 @@ assert beam_search(reloaded, EN_EXAMPLE) == beam_search(model, EN_EXAMPLE)
 print("saved and reloaded:", sorted(path.name for path in MODEL_DIR.iterdir()))
 
 # %%
+layers = f'{CONFIG["n_layers"]} + {CONFIG["n_layers"]} layers, {CONFIG["n_heads"]} heads'
 MODEL_CARD = f"""---
 license: cc-by-2.0
 language: [en, ru]
@@ -1553,13 +1554,28 @@ datasets: [xmarva/tfs-tatoeba-en-ru]
 Built in lesson 3 of the course "Transformers: from scratch to production":
 https://github.com/xmarva/transformers-from-scratch
 
-- the encoder-decoder Transformer of Vaswani et al. (2017) at half its base size:
-  {CONFIG["n_layers"]} + {CONFIG["n_layers"]} layers, d_model {CONFIG["d_model"]},
-  {CONFIG["n_heads"]} heads
+- the encoder-decoder Transformer of Vaswani et al. (2017) at half its base size
+- {layers}, d_model {CONFIG["d_model"]}
 - trained on xmarva/tfs-tatoeba-en-ru with the tokenizer xmarva/tfs-bpe-en-ru-16k
 - best validation cross-entropy: {best:.3f}
 
-The model class is `tfs.model.Transformer` from the course repository.
+The model class is `tfs.model.Transformer` from the course repository:
+
+```python
+# pip install git+https://github.com/xmarva/transformers-from-scratch
+import json
+
+from huggingface_hub import hf_hub_download
+from safetensors.torch import load_file
+from tfs.model import Transformer
+
+repo = "xmarva/tfs-transformer-en-ru"
+with open(hf_hub_download(repo, "config.json")) as f:
+    model = Transformer(**json.load(f))
+model.load_state_dict(load_file(hf_hub_download(repo, "model.safetensors")))
+```
+
+Lesson 3 shows how to translate with it, greedily or with beam search.
 """
 
 HUB_USER = os.environ.get("TFS_HUB_USER")

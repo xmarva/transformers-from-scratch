@@ -2,3 +2,7 @@ number = 2
 short_title = "The Transformer"
 cover_alt = "Lesson 2 cover: The Transformer, built by hand. In the Russian translation of 'The researcher said she was exhausted', the English word 'she' decides the feminine forms of three Russian words"
 gpu = false
+published = true
+published_on = 2026-10-23
+description = "Attention, masks, heads, positions and the full encoder-decoder of the 2017 paper, written line by line in PyTorch and checked against real models."
+tags = "attention, pytorch, nlp, deep-learning"

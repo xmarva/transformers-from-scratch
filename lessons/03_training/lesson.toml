@@ -1,4 +1,8 @@
 number = 3
 short_title = "Training & decoding"
-cover_alt = "Lesson 3 cover: Training and decoding. A beam search keeps the two best partial translations at every step and finds the feminine form"
+cover_alt = "Lesson 3 cover: Training and decoding. The validation loss falls epoch by epoch, and the translation of 'Tom forgot to lock the door.' is right by the third epoch"
 gpu = true
+published = true
+published_on = 2026-10-23
+description = "Train a Transformer on half a million sentence pairs on a free GPU, then decode it with greedy search, beam search and sampling."
+tags = "training, decoding, beam-search, pytorch"
