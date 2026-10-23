@@ -343,7 +343,6 @@ smoothed = (1 - EPSILON) * one_hot + EPSILON / 8
 ax.bar(tokens - 0.2, one_hot, width=0.38, color=COLORS["muted"], label="plain target")
 label = f"smoothed, ε = {EPSILON}"
 ax.bar(tokens + 0.2, smoothed, width=0.38, color=COLORS["data"], label=label)
-ax.set_axisbelow(True)  # grid lines behind the bars
 ax.set_xticks(tokens, [f"t{k}" for k in tokens])
 ax.set_xlabel("token (a vocabulary of 8)")
 ax.set_title("Two targets")
@@ -637,8 +636,9 @@ steps = np.arange(1, total_steps + 1)
 fig, ax = plt.subplots(figsize=(6.4, 3))
 ax.plot(steps, [learning_rate(s, warmup=WARMUP) for s in steps], color=COLORS["enc"])
 ax.axvspan(0, min(WARMUP, total_steps), color=COLORS["enc"], alpha=0.08)  # the warm-up
+ax.text(min(WARMUP, total_steps) / 2, 0.0001, "warm-up", ha="center", fontsize=9, color=COLORS["enc"])
 for epoch in range(1, EPOCHS + 1):
-    ax.axvline(epoch * len(train_batches), color=COLORS["grid"], linewidth=0.8)
+    ax.axvline(epoch * len(train_batches), color=COLORS["line"], linewidth=0.6)
 ax.set_xlabel("step (thin lines: ends of epochs)")
 ax.set_ylabel("learning rate")
 ax.set_title("Warm up, then decay")
@@ -838,11 +838,11 @@ dashed = (0, (3, 3))
 precision_label = "float16: imprecise to the left"
 imprecise = math.log10(imprecise_in_float16)
 ax.axvline(imprecise, color=COLORS["dec"], linestyle=dashed, label=precision_label)
-ax.set_axisbelow(True)  # grid lines behind the bars
+ax.set_ylim(top=ax.get_ylim()[1] * 1.45)  # room for the legend above the bars
 ax.set_xlabel("log₁₀ |gradient|")
 ax.set_ylabel("weights")
 ax.set_title("Gradients on float16's scale")
-ax.legend(fontsize=8, loc="upper left")
+ax.legend(fontsize=8, loc="upper center", ncol=2)
 plt.show()
 
 # %%
@@ -854,7 +854,7 @@ print(f"gradients where float16 loses precision: {below_precise:.1%}")
 print(f"rounded to 0 after scaling by 65 536:  {after_scaling:.4%}")
 
 # %% [markdown]
-# A share of the gradients would vanish outright, and many more would lose most of their precision. Multiplying the
+# A few percent of the gradients would vanish outright, and most of them would lose precision. Multiplying the
 # loss by $2^{16}$ multiplies every gradient by the same factor (the chain rule is linear), shifts the whole
 # histogram to the right and brings almost all of them into range.
 #
@@ -1018,7 +1018,7 @@ table(progress[["epoch", *PROBES]])
 # %% [markdown]
 # In the first epoch the model strings frequent words together and repeats itself. Within a few epochs the
 # everyday sentences come out right and stay right. Our own sentence improves too, from nonsense to nearly correct
-# Russian, but never to the right translation: the researcher stays a man. Section 10 finds out why.
+# Russian, but never to the right translation: the researcher never becomes a woman. Section 10 finds out why.
 
 # %% [markdown]
 # ## 8. Decoding by search
@@ -1074,12 +1074,11 @@ for sentence in MINIMAL_PAIRS:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# The pronoun and the verb after it follow the English: *она* with a feminine verb for *she*, a masculine *устал*,
-# *занят*, *измотан* for *he* (Russian often drops the pronoun there). Only the rare *exhausted* after *she* comes
-# out as a word that doesn't exist. The first half never changes with the pronoun: the person who speaks is a man,
-# or several people, whatever the English says. The sentences about the teacher, simple and
-# frequent in the data, get high scores, near 0; the one about the researcher, a rare word, much lower ones. Hold
-# these observations until section 10.
+# The pronoun and the words after it follow the English: *она* with a feminine form for *she*, *он* or a masculine
+# *занят* for *he* (Russian often drops the pronoun there). The first half never changes with the pronoun: the
+# person who speaks is a man, or several people, whatever the English says. The sentences about the teacher and
+# the neighbour, simple and frequent in the data, get scores much closer to 0 than those about the researcher, a
+# rare word. Hold these observations until section 10.
 #
 # Greedy decoding commits to every token for good. The most probable next token, though, isn't always the start of
 # the most probable sentence:
@@ -1157,17 +1156,15 @@ def beam_search(model, sentence, beam_size=4, alpha=0.6, max_tokens=60, trace=No
 
 
 # %% [markdown]
-# Watch the four beams grow on our sentence: the first steps and the last ones, each partial translation with its
-# total log-probability under it, the leader of every step filled.
+# Watch the four beams grow on our sentence during the first steps, each partial translation with its total
+# log-probability under it, the leader of every step filled.
 
 # %%
 trace = []
 beam = beam_search(model, EN_EXAMPLE, trace=trace)
 
-first_six, last_three = set(range(6)), set(range(len(trace) - 3, len(trace)))
-shown_steps = sorted(first_six | last_three)
 rows, totals, labels = [], [], []
-for step in shown_steps:
+for step in range(min(7, len(trace))):
     rows.append([text for text, _ in trace[step]])
     totals.append([f"{total:.2f}" for _, total in trace[step]])
     labels.append(f"step {step + 1}")
@@ -1186,9 +1183,10 @@ print("beam search:", beam)
 # %% [markdown]
 # Every step keeps four partial translations, ranked by their total log-probability, which only goes down as they
 # grow. The runners-up are the alternatives the search weighs: a plural subject, a different verb form, sometimes a
-# word that doesn't exist, which falls behind and is dropped. Where one of them overtakes the leader later in the
-# sentence, the beam's translation differs from greedy's. Here it happens at the last word: the beam replaces
-# greedy's invented *изнутана* with a real one.
+# word that doesn't exist, which falls behind and is dropped. The plural *Исследователи* takes the lead early and
+# keeps it, so for this sentence beam search ends where greedy decoding does; the singular *Исследователь* stays
+# in the beam as a runner-up. On other sentences an alternative overtakes the leader, as the comparison below
+# shows.
 #
 # Compare the two decoders on validation sentences: how often beam search changes the translation, and whether the
 # translations it picks are more probable under the model, which is what it searches for.
@@ -1323,9 +1321,9 @@ table(pd.DataFrame(rows))
 # %% [markdown]
 # At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the
 # tail includes English tokens, because lesson 1 built one vocabulary for both languages. At 1.5 the output falls
-# apart. A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays fluent and still
-# varies from draw to draw. For a translation that variety is no virtue: we want the one best reading, and that's
-# why translators search.
+# apart. A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the
+# greedy translation and varies a little from draw to draw. For a translation that variety is no virtue: we want
+# the one best reading, and that's why translators search.
 #
 # ## 10. Inside the trained model
 #
@@ -1371,11 +1369,10 @@ table(pd.DataFrame(rows))
 
 # %% [markdown]
 # The decoder has learned an alignment: while writing the stem *Исследо-ватель* it looks at the pieces of
-# *researcher*, while writing *сказала* at *said*, while writing *вымо-* at *exhausted*. Nobody told the model which
-# word translates which. Looking at the right English word made the next token easier to predict, and training
-# found that out on its own. The layers mostly agree, and the maps above show that the middle one points most
-# sharply; the others spread their attention more widely. Note the row *ница*: all three layers look at *said*
-# there.
+# *researcher*, while writing *сказала* at *said*, while writing *-мот-* at *exhausted*, and while writing *что*, the
+# start of the clause about her, at *she*. Nobody told the model which word translates which. Looking at the right
+# English word made the next token easier to predict, and training found that out on its own. The maps above show
+# that the middle layer points most sharply; the others spread their attention more widely.
 #
 # That answers the question lesson 2 left open: *сказала* doesn't look at *she*. It doesn't need to, as you are
 # about to see.
@@ -1397,11 +1394,12 @@ token_chips(
 plt.show()
 
 # %% [markdown]
-# The stem *Исследо-ватель* gets reasonable probabilities, and the feminine suffix *ница* almost none. Once
+# The model is sure of *Исследо-*, much less sure of *-ватель*, and gives the feminine suffix *ница* almost nothing.
+# Once
 # *ница* is in place (we supplied it), *сказала* becomes likely: agreement inside Russian, from one word to the
 # next, the model has learned. What it hasn't learned is to make the noun feminine because of a *she* that comes
-# three words later in the English. (The other filled tokens are a choice, not a mistake: the model would rather
-# continue *что она* than *что вы-*, a paraphrase it finds more probable.)
+# three words later in the English. (The other filled tokens are choices, not grammar: the model would rather
+# continue *что она* than *что вы-*, and after the rare *вымоталась* it doesn't expect the sentence to end.)
 #
 # And while it writes that suffix, does it look at *she* at all? Every head of every layer, at that one step:
 
@@ -1422,10 +1420,12 @@ she = en_tokens.index("▁she")
 print("the most any head gives to ▁she here:", round(at_suffix[:, she].max().item(), 2))
 
 # %% [markdown]
-# At the one step where *she* matters, the heads look at *said* and at the end of *researcher*. None of them gives
-# *she* more than a small share: the model never learned that this step depends on it.
+# Most heads look at *said* and at the end of *researcher*. But one head of the first layer gives most of its
+# attention to *she*: the information does reach the step that decides the suffix. And still the model writes
+# *ница* with a probability near zero. Looking at the right word is not enough; the layers above must also have
+# learned what *she* should do to a noun, and for that they need examples.
 #
-# Why not? Look at what the training data says. For a few English nouns of people, count the training pairs, and
+# How many examples did they get? Look at what the training data says. For a few English nouns of people, count the training pairs, and
 # how their Russian translations render the noun: with the masculine form or the feminine one. The patterns are
 # word stems, so that every case form counts (*учителем*, *учительницы*). Then the same counts for the pairs whose
 # English also contains *she* or *her*:
@@ -1509,12 +1509,12 @@ table(pd.DataFrame(rows))
 # %% [markdown]
 # opus-mt-en-ru gets the teacher and the neighbour right, noun and verb. It was trained on
 # [OPUS](https://opus.nlpl.eu), a collection of translated texts of every kind, of which Tatoeba is one small part,
-# and saw the feminine forms far more often than ours did. On the researcher it fails exactly like ours,
-# *Исследователь сказал*: even that much data didn't teach it this word. The architecture is the same, number for
+# and has most likely seen many more sentences like these. On the researcher it fails too, *Исследователь сказал*: even that
+# much data didn't teach it this word. The architecture is the same, number for
 # number, as lesson 2 showed; what differs is what each model has seen.
 #
-# On the sentences from the test set, ours holds up well for a model trained in twenty minutes, and some of its
-# translations match opus-mt-en-ru's word for word. That's an impression from a dozen sentences; lesson 4 replaces
+# On the sentences from the test set ours is uneven for a model trained in twenty minutes: some translations match
+# opus-mt-en-ru's word for word, others fall apart. That's an impression from a dozen sentences; lesson 4 replaces
 # it with measurements on the whole test set, with BLEU, chrF and COMET, and with an analysis of where each model
 # goes wrong.
 #

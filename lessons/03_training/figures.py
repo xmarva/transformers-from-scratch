@@ -371,10 +371,10 @@ def adam_update() -> Figure:
 
 # Copied from the executed lesson (section 7, the run published with it): validation loss per epoch, and greedy
 # translations of a probe sentence after the first three epochs.
-VALIDATION_LOSS = [4.373, 2.946, 2.117, 1.717, 1.565, 1.459, 1.305, 1.245, 1.217, 1.17, 1.145, 1.138, 1.101, 1.102,
-                   1.087, 1.077, 1.073, 1.059, 1.064, 1.056]
+VALIDATION_LOSS = [4.497, 2.912, 2.137, 1.724, 1.55, 1.424, 1.292, 1.237, 1.189, 1.169, 1.157, 1.134, 1.114, 1.109,
+                   1.091, 1.075, 1.083, 1.084, 1.067, 1.063]
 PROBE = "Tom forgot to lock the door."
-PROGRESS = {1: "Том хотел, чтобы я его его.", 2: "Том забыл дверь.", 3: "Том забыл запереть дверь."}
+PROGRESS = {1: "Том хотел дверь.", 2: "Том забыл, чтобы я забыл дверь.", 3: "Том забыл запереть дверь."}
 
 LATIN = dict(zip("абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
                  ["a", "b", "v", "g", "d", "e", "yo", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t",

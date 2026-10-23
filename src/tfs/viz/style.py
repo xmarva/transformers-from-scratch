@@ -49,6 +49,7 @@ def use_course_style(theme: str = "light") -> dict[str, str]:
             "axes.spines.top": False,
             "axes.spines.right": False,
             "axes.grid": True,
+            "axes.axisbelow": True,  # grid lines behind bars and lines
             "axes.grid.axis": "y",
             "grid.color": c["grid"],
             "grid.linewidth": 1,

@@ -81,7 +81,10 @@ The reader is a beginner who reads every line. Code that looks generated loses t
 - **Code lines up to 92 characters**, so a Kaggle or Colab cell shows them without scrolling
   (`tests/test_lessons.py` checks it).
 - Invisible characters (combining marks, non-breaking spaces) are written as `\u` escapes, never pasted.
-- One idea per cell, at most ~25 lines. Explain before the cell, interpret after it.
+- One idea per cell, at most ~25 lines; a longer function gets a cell of its own with a sentence before it. Explain
+  before the cell, interpret after it.
+- When a lesson writes an algorithm that a library also provides (attention, LayerNorm, Adam), check the two
+  against each other with an `assert`.
 - Checks are `assert`s introduced in the text ("rather than believe it, check it").
 - When the text needs a number the code computes, make the notebook print it right there and refer to the output.
   Numbers typed into the text go stale as soon as something upstream changes.
@@ -113,6 +116,10 @@ A notebook is read as much as it is run, so every output is designed:
 - **Concept diagrams** are code in `lessons/NN/figures.py`, rendered by `tools/render.py` in light and dark.
   `Figure.problems()` must be empty (nothing outside the canvas, no overlapping labels, no text crossing a box),
   and both themes are looked at before the PR.
+- Every key concept of a lesson gets a picture, not only the architecture: the loss, the optimizer, the learning
+  rate, a number format, a decoding step. A formula and its picture go together.
+- A picture must show what the text claims, checked on its numbers. A toy example is tuned honestly: if the simple
+  method wins somewhere (gradient descent on a mildly uneven valley), the lesson says so and shows where it loses.
 - A static figure that shows facts about real systems or algorithms **computes them at render time**: the hero of
   lesson 1 calls GPT-4o's tokenizer, the union–find figure runs the same algorithm as the notebook on the same
   pairs, the BPE update figure counts the pairs.
