@@ -116,7 +116,7 @@ def chart_warp(theme):
         axes[2].plot(pts[:, 0], pts[:, 1], color=c["att"], linewidth=0.6, alpha=0.8)
     axes[2].set_xlim(0, PANEL)
     axes[2].set_ylim(image.shape[0], 0)
-    _caption(fig, "Placing a garment by warping it",
+    _caption(fig, "A thin-plate spline warp of a product photo",
              f"{len(PERSON)} matched points (rose) define a thin-plate spline; violet: the photo's grid as it bends",
              c)
     return fig
@@ -133,7 +133,7 @@ ROUTES = [  # role, title, steps (two lines each), what the route is good and ba
         ("a person's photo", "or measurements"), ("fit a body model", "SMPL-X: shape, pose"),
         ("3D garment", "from its pattern"), ("simulate cloth", "drape on that body"),
         ("render", "into the photo"),
-    ], ["+ real sizes and fit, any pose and view", "− needs a 3D file of every garment"]),
+    ], ["+ real sizes and fit; garments that exist only as 3D models", "− needs a 3D model of every garment"]),
 ]
 
 
@@ -148,7 +148,7 @@ def routes() -> Figure:
         "sewing pattern on that body with a cloth simulation and renders it into the photo: it knows sizes and fit "
         "but needs a 3D file for every garment",
     )
-    fig.text(14, 28, "Two ways to put a garment on a photo", kind="title")
+    fig.text(14, 28, "Image-based and 3D try-on", kind="title")
     fig.text(14, 50, "the image route edits pixels; the 3D route rebuilds the body and simulates the fabric",
              kind="note")
     w, gap, h = 132, 18, 52
@@ -168,6 +168,400 @@ def routes() -> Figure:
                 fig.arrow((x + w + 2, top + h / 2), (x + w + gap - 2, top + h / 2), width=1.3)
         for j, line in enumerate(verdict):
             fig.text(14, top + h + 26 + j * 19, line, kind="note")
+    return fig
+
+
+# ---------------------------------------------------------------- reading the pose: BlazePose keypoints (pose.py)
+
+BONES = [(11, 12), (11, 13), (13, 15), (12, 14), (14, 16), (11, 23), (12, 24), (23, 24), (23, 25), (25, 27),
+         (24, 26), (26, 28), (27, 29), (29, 31), (27, 31), (28, 30), (30, 32), (28, 32), (15, 17), (15, 19), (17, 19),
+         (16, 18), (16, 20), (18, 20), (9, 10)]
+# the joint each limb point hangs from; a bone can point towards the camera or away from it and look the same
+PARENT = {13: 11, 15: 13, 17: 15, 19: 15, 21: 15, 14: 12, 16: 14, 18: 16, 20: 16, 22: 16,
+          25: 23, 27: 25, 29: 27, 31: 27, 26: 24, 28: 26, 30: 28, 32: 28}
+HIDDEN = 0.8  # below this visibility BlazePose doubts the point is in sight
+BONE_NAMES = {13: "left upper arm", 14: "right upper arm", 15: "left forearm", 16: "right forearm",
+              25: "left thigh", 26: "right thigh", 27: "left shin", 28: "right shin"}
+
+
+@cache
+def keypoints():
+    import json
+
+    data = json.loads((DATA / "keypoints.json").read_text())
+    return {name: {k: np.array(v, dtype=float) for k, v in item.items()} for name, item in data.items()}
+
+
+@cache
+def crouch():
+    from PIL import Image
+
+    return np.asarray(Image.open(DATA / "crouch.png").convert("RGB")).astype(float) / 255
+
+
+MAIN = [0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]  # nose, shoulders, elbows, wrists, hips, knees, ankles
+
+
+def _skeleton(ax, points, c, width=1.6, style="-", colours=None, size=3.2, hollow=(), bones=BONES, marks=MAIN,
+              hidden_fill=None):
+    """Bones of the left side (odd BlazePose numbers) teal, of the right side rose, the rest ink."""
+    for a, b in bones:
+        side = "enc" if a % 2 and b % 2 else "dec" if not a % 2 and not b % 2 else "ink"
+        colour = (colours or {}).get(side, c[side])
+        ax.plot(points[[a, b], 0], points[[a, b], 1], style, color=colour, linewidth=width, solid_capstyle="round")
+    if not size:
+        return
+    shown = [k for k in marks if k not in hollow]
+    hidden = [k for k in marks if k in hollow]
+    ax.plot(points[shown, 0], points[shown, 1], "o", color=c["card"], markeredgecolor=c["ink"],
+            markersize=size, markeredgewidth=0.8, linestyle="none")
+    if hidden and hidden_fill:  # points the model is unsure about, filled with a colour of their own
+        ax.plot(points[hidden, 0], points[hidden, 1], "o", color=hidden_fill, markeredgecolor=c["card"],
+                markersize=size + 2.5, markeredgewidth=1.0, linestyle="none")
+    elif hidden:
+        ax.plot(points[hidden, 0], points[hidden, 1], "o", color="none", markeredgecolor=c["muted"],
+                markersize=size + 1.5, markeredgewidth=1.0, linestyle="none")
+
+
+def _subtree(joint):
+    out = [joint]
+    for child, parent in PARENT.items():
+        if parent == joint:
+            out += _subtree(child)
+    return out
+
+
+def flipped(world, joint):
+    """The same keypoints with one bone turned to the other side of the camera's line of sight: the bone ending at
+    `joint` keeps its length and its picture, and everything hanging from it moves along."""
+    out = world.copy()
+    out[_subtree(joint), 2] += -2 * (world[joint, 2] - world[PARENT[joint], 2])
+    return out
+
+
+def flips(world, count=3):
+    """The bones whose flip changes the pose the most."""
+    moved = {j: np.abs(flipped(world, j)[:, 2] - world[:, 2]).sum() for j in (13, 14, 15, 16, 25, 26, 27, 28)}
+    return sorted(moved, key=moved.get, reverse=True)[:count]
+
+
+def chart_pose(theme):
+    import matplotlib.pyplot as plt
+
+    c = _style(theme)
+    points = keypoints()
+    fig, axes = plt.subplots(1, 3, figsize=(7.6, 4.0), gridspec_kw={"width_ratios": [0.67, 0.78, 1.0]})
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.8, bottom=0.03, wspace=0.08)
+    standing, crouching = points["standing"], points["crouching"]
+    for ax, picture, item, title in ((axes[0], example()[:, :PANEL], standing, "standing: 33 keypoints"),
+                                     (axes[1], crouch(), crouching, "crouching: amber = likely hidden")):
+        ax.imshow(picture)
+        hidden = [k for k in range(33) if item["image"][k, 2] < HIDDEN]
+        _skeleton(ax, item["image"][:, :2], c, width=1.4, hollow=hidden, hidden_fill=c["data"])
+        ax.set_title(title, loc="center", fontsize=10, pad=4)
+        ax.axis("off")
+    world = crouching["world"].copy()
+    limbs = [bone for bone in BONES if bone[0] in MAIN and bone[1] in MAIN] + [(0, 11), (0, 12)]
+    ax = axes[2]
+    turned = flips(world)
+    for joint in turned:
+        _skeleton(ax, flipped(world, joint)[:, [2, 1]], c, width=1.2, style="--", size=0, bones=limbs,
+                  colours={"enc": c["att"], "dec": c["att"], "ink": c["att"]})
+    _skeleton(ax, world[:, [2, 1]], c, width=2.0, size=3.4, bones=limbs)
+    ax.text(0.5, -0.02, "turned: " + ", ".join(BONE_NAMES[j] for j in turned), transform=ax.transAxes,
+            ha="center", va="top", fontsize=8.5, color=c["att_ink"])
+    ax.set_xlim(-0.62, 0.48)
+    ax.set_ylim(0.45, -0.62)
+    ax.set_aspect("equal")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.grid(False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    ax.annotate("camera", xy=(-0.6, -0.56), xytext=(-0.36, -0.56), fontsize=8.5, color=c["muted"], va="center",
+                arrowprops={"arrowstyle": "->", "color": c["muted"], "linewidth": 0.8})
+    ax.set_title("the crouch in 3D, from the side", loc="center", fontsize=10, pad=4)
+    for each in axes:
+        each.set_anchor("N")
+    _caption(fig, "Keypoints in the photo and the 3D pose behind them",
+             "BlazePose on two photos from the project; violet: the same photo with one bone turned the other way",
+             c)
+    return fig
+
+
+# ---------------------------------------------------------------- photos that do not work: crops
+
+FRAMES = [  # name, (left, top, right, bottom) in the person's panel
+    ("full length", (0, 0, 342, 512)),
+    ("cut at the thighs", (0, 0, 342, 330)),
+    ("waist up", (40, 40, 300, 250)),
+    ("a selfie", (95, 70, 245, 190)),
+]
+
+
+def in_frame(name):
+    left, top, right, bottom = dict(FRAMES)[name]
+    points = keypoints()["standing"]["image"]
+    return (points[:, 0] >= left) & (points[:, 0] < right) & (points[:, 1] >= top) & (points[:, 1] < bottom)
+
+
+def chart_crops(theme):
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+
+    c = _style(theme)
+    person = example()[:, :PANEL]
+    points = keypoints()["standing"]["image"][:, :2]
+    fig, axes = plt.subplots(1, 4, figsize=(7.6, 3.6))
+    fig.subplots_adjust(left=0.005, right=0.995, top=0.78, bottom=0.1, wspace=0.05)
+    for ax, (name, (left, top, right, bottom)) in zip(axes, FRAMES, strict=True):
+        dimmed = person * 0.3 + (0.7 if theme == "light" else 0.08)
+        dimmed[top:bottom, left:right] = person[top:bottom, left:right]
+        ax.imshow(dimmed)
+        ax.add_patch(Rectangle((left, top), right - left - 1, bottom - top - 1, fill=False, edgecolor=c["dec"],
+                               linewidth=1.6))
+        inside = in_frame(name)
+        _skeleton(ax, points, c, width=1.0, size=2.4, hollow=[k for k in range(33) if not inside[k]])
+        ax.set_title(name, loc="center", fontsize=10, pad=4)
+        ax.text(0.5, -0.04, f"{inside.sum()} of 33 keypoints in frame", transform=ax.transAxes, ha="center",
+                va="top", fontsize=9, color=c["muted"])
+        ax.axis("off")
+    _caption(fig, "How much of the body a crop leaves",
+             "BlazePose keypoints of the example; hollow: outside the frame, so a model has to guess them", c)
+    return fig
+
+
+# ---------------------------------------------------------------- inpainting: masks and the latent grid
+
+@cache
+def dress_masks():
+    """The old dress (white pixels near the outline of the fourteen points) and a clothing-agnostic mask: the
+    outline grown by 18 px, plus both arms from shoulder to wrist, as VITON-HD masks them."""
+    from matplotlib.path import Path as Outline
+    from scipy.ndimage import binary_closing, binary_dilation, binary_opening
+
+    person = example()[:, :PANEL]
+    height, width = person.shape[:2]
+    order = [0, 4, 6, 5, 2, 3, 10, 12, 13, 11, 9, 1]  # around the dress through the fourteen points
+    ys, xs = np.mgrid[0:height, 0:width]
+    pixels = np.stack([xs.ravel(), ys.ravel()], 1).astype(float)
+    inside = Outline(PERSON[order]).contains_points(pixels).reshape(height, width)
+    white = person.min(axis=-1) > 0.72
+    tight = binary_opening(binary_closing(binary_dilation(inside, iterations=10) & white, iterations=2))
+    agnostic = binary_dilation(inside, iterations=18)
+    points = keypoints()["standing"]["image"][:, :2]
+    for a, b in ((11, 13), (13, 15), (12, 14), (14, 16)):
+        p, q = points[a], points[b]
+        t = np.clip(((pixels - p) @ (q - p)) / ((q - p) @ (q - p)), 0, 1)
+        agnostic |= (np.linalg.norm(pixels - (p + t[:, None] * (q - p)), axis=1) < 15).reshape(height, width)
+    return tight, agnostic
+
+
+def chart_masks(theme):
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import to_rgb
+
+    c = _style(theme)
+    person = example()[:, :PANEL]
+    tight, agnostic = dress_masks()
+    rose, grey = np.array(to_rgb(c["dec"])), np.array(to_rgb(c["line"]))
+    fig, axes = plt.subplots(1, 4, figsize=(7.6, 3.5))
+    fig.subplots_adjust(left=0.005, right=0.995, top=0.78, bottom=0.03, wspace=0.05)
+    panels = []
+    for mask, title in ((tight, "mask of the old dress"), (agnostic, "clothing-agnostic mask")):
+        shown = person.copy()
+        shown[mask] = 0.45 * shown[mask] + 0.55 * rose
+        panels.append((shown, title))
+    shown = person.copy()
+    shown[agnostic] = grey
+    panels.append((shown, "what the generator keeps"))
+    for ax, (picture, title) in zip(axes[:3], panels, strict=True):
+        ax.imshow(picture)
+        ax.set_title(title, loc="center", fontsize=10, pad=4)
+        ax.axis("off")
+    _skeleton(axes[2], keypoints()["standing"]["image"][:, :2], c, width=1.0, size=2.2)
+    # the new dress at the scale a 512-pixel Stable Diffusion sees it: a latent cell covers 8 by 8 pixels
+    result = example()[:, 2 * PANEL - 2:]
+    left, top, size = 120, 170, 80
+    ax = axes[3]
+    ax.imshow(result[top:top + size, left:left + size], extent=(0, size, size, 0), interpolation="nearest")
+    for v in range(0, size + 1, 8):
+        ax.axhline(v, color=c["card"], linewidth=0.6, alpha=0.9)
+        ax.axvline(v, color=c["card"], linewidth=0.6, alpha=0.9)
+    ax.set_xlim(0, size)
+    ax.set_ylim(size, 0)
+    ax.set_title("the print, 8×8 px per latent", loc="center", fontsize=10, pad=4)
+    ax.axis("off")
+    _caption(fig, "What an inpainting model is given",
+             "rose: the region it repaints; right: the new dress under the grid of the autoencoder's latents",
+             c)
+    return fig
+
+
+# ---------------------------------------------------------------- combining the routes: what 3D hands to 2D
+
+def chart_maps(theme):
+    import matplotlib.pyplot as plt
+    from matplotlib.collections import PolyCollection
+    from matplotlib.colors import to_rgb
+
+    c = _style(theme)
+    faces, builds = bodies()
+    body = builds["full"]
+    cloth, cloth_quads = drape("full", "silk")
+    quads = np.concatenate([_view(body)[faces], _view(cloth)[cloth_quads]])
+    is_cloth = np.r_[np.zeros(len(faces), bool), np.ones(len(cloth_quads), bool)]
+    depth = quads[..., 2].mean(1)
+    depth[is_cloth] += 0.6
+    order = np.argsort(depth)
+    normals = np.cross(quads[:, 2] - quads[:, 0], quads[:, 3] - quads[:, 1])
+    normals /= np.linalg.norm(normals, axis=1, keepdims=True) + 1e-12
+    normals *= np.sign(normals[:, 2:3] + 1e-9)  # every face turned towards the viewer
+    skin = to_rgb("#D9DDE3") if theme == "light" else to_rgb("#AEB6C2")
+    shaded = np.where(is_cloth[:, None], _shaded(quads, to_rgb(c["dec"])), _shaded(quads, skin))
+    near, far = np.percentile(depth, [2, 98])
+    grey = (1 - np.clip((depth - near) / (far - near), 0, 1))[:, None] * np.ones(3)
+    maps = [  # what each map shows, and the colour behind it
+        (shaded, "rendered garment", None),
+        (np.where(is_cloth[:, None], 1.0, 0.0) * np.ones(3), "garment mask", "black"),
+        ((normals + 1) / 2, "normal map", "#8080FF"),
+        (grey, "depth map", "black"),
+    ]
+    fig, axes = plt.subplots(1, 4, figsize=(7.6, 3.9))
+    fig.subplots_adjust(left=0.0, right=1.0, top=0.8, bottom=0.02, wspace=0.02)
+    for ax, (colours, title, background) in zip(axes, maps, strict=True):
+        if background:
+            ax.add_patch(plt.Rectangle((-60, -90), 120, 180, color=background, zorder=0))
+        ax.add_collection(PolyCollection(quads[order][..., :2], facecolors=colours[order],
+                                         edgecolors=colours[order], linewidths=0.2))
+        ax.set_xlim(-48, 48)
+        ax.set_ylim(-84, 84)
+        ax.set_aspect("equal")
+        ax.axis("off")
+        ax.set_title(title, loc="center", fontsize=10, pad=2)
+    _caption(fig, "What a 3D render can pass to an image generator",
+             "the silk skirt on the full body, drawn four ways; ControlNet had models for depth and normal maps", c)
+    return fig
+
+
+HYBRID = [  # row title, colour role, steps
+    ("3D: geometry and fit", "att", [
+        ("a person's photo", "+ the garment in 3D"), ("fit a body", "SMPL-X: shape, pose"),
+        ("drape the garment", "cloth simulation"), ("render maps", "mask, depth, normals"),
+    ]),
+    ("2D: the photograph", "enc", [
+        ("a person's photo", ""), ("mask the clothes", "keep face, hands"), ("inpaint", "conditioned on maps"),
+        ("new photo", ""),
+    ]),
+]
+
+
+def hybrid() -> Figure:
+    fig = Figure(
+        760,
+        312,
+        alt="An experimental pipeline that combines the two routes. In the 3D part, a body model, SMPL-X, is fitted "
+        "to the person's photo, the 3D garment is draped on it by a cloth simulation, and the result is rendered "
+        "as a garment mask, a depth map and a normal map. In the 2D part, the clothes in the photo are masked, "
+        "keeping the face and hands, and a diffusion model inpaints the region conditioned on those maps, giving "
+        "the new photo",
+    )
+    fig.text(14, 28, "Combining 3D and image generation", kind="title")
+    fig.text(14, 50, "the 3D part gives the garment's shape and fit, the image model the light and texture of a photo",
+             kind="note")
+    w, gap, h = 160, 32, 52
+    tops = [96, 236]
+    for row, (title, role, steps) in enumerate(HYBRID):
+        top = tops[row]
+        fig.text(14, top - 10, title, kind="subtitle")
+        for k, (first, second) in enumerate(steps):
+            x = 14 + k * (w + gap)
+            ends = (row == 0 and k == 0) or (row == 1 and k in (0, 3))
+            fig.box(x, top, w, h, role="data" if ends else role, r=8)
+            if second:
+                fig.text(x + w / 2, top + 22, first, kind="body", role=role, anchor="middle")
+                fig.text(x + w / 2, top + 40, second, kind="small", anchor="middle")
+            else:
+                fig.text(x + w / 2, top + 31, first, kind="body", role=role, anchor="middle")
+            if k < len(steps) - 1:
+                fig.arrow((x + w + 3, top + h / 2), (x + w + gap - 3, top + h / 2), width=1.3)
+    # the render's maps go down into the inpainting step
+    x_maps = 14 + 3 * (w + gap) + w / 2
+    x_inpaint = 14 + 2 * (w + gap) + w
+    fig.arrow((x_maps, tops[0] + h + 3), (x_inpaint - 12, tops[1] - 4), width=1.3)
+    return fig
+
+
+# ---------------------------------------------------------------- the system around the models
+
+SYSTEM_LANES = ["on the phone", "on the server", "on GPU workers"]
+SYSTEM_BOXES = {  # (lane, column): (title, detail, colour role)
+    (0, 0): ("take a photo", "or pick one", "data"),
+    (0, 1): ("check it", "a small pose model", "enc"),
+    (0, 2): ("upload", "a resized photo", "data"),
+    (0, 4): ("show the result", "push or poll", "data"),
+    (1, 2): ("API", "accounts, limits", "enc"),
+    (1, 3): ("job queue", "one job per pair", "enc"),
+    (1, 4): ("results", "storage and CDN", "enc"),
+    (2, 2): ("body analysis", "once per photo", "att"),
+    (2, 3): ("generation", "once per pair", "att"),
+    (2, 4): ("garment prep", "once per product", "att"),
+}
+
+
+def system() -> Figure:
+    fig = Figure(
+        760,
+        420,
+        alt="The system around the models, in three lanes. On the phone: take or pick a photo, check it with a small "
+        "pose model, upload it resized and compressed, and later show the result by push notification or polling. "
+        "On the server: an API with accounts and limits, a job queue with one job per pair of photo and garment, "
+        "and results in storage behind a CDN. On GPU workers: body analysis once per photo, garment preparation "
+        "once per product, and generation once per pair, which uses both and writes to the results",
+    )
+    fig.text(14, 28, "The system around the models", kind="title")
+    fig.text(14, 50, "work is cached by what it depends on: the photo, the garment, or the pair", kind="note")
+    w, gap, h = 132, 18, 52
+    lane_top = {0: 96, 1: 214, 2: 332}
+
+    def at(lane, col):
+        return 14 + col * (w + gap), lane_top[lane]
+
+    for lane, title in enumerate(SYSTEM_LANES):
+        fig.text(14, lane_top[lane] - 10, title, kind="subtitle")
+    for (lane, col), (first, second, role) in SYSTEM_BOXES.items():
+        x, y = at(lane, col)
+        fig.box(x, y, w, h, role=role, r=8)
+        fig.text(x + w / 2, y + 22, first, kind="body", role=role, anchor="middle")
+        fig.text(x + w / 2, y + 40, second, kind="small", anchor="middle")
+
+    def across(lane, a, b):  # from column a to column b in one lane
+        (xa, y), (xb, _) = at(lane, a), at(lane, b)
+        if b > a:
+            fig.arrow((xa + w + 3, y + h / 2), (xb - 3, y + h / 2), width=1.3)
+        else:
+            fig.arrow((xa - 3, y + h / 2), (xb + w + 3, y + h / 2), width=1.3)
+
+    def between(col, a, b):  # from lane a to lane b in one column
+        x, ya = at(a, col)
+        _, yb = at(b, col)
+        if b > a:
+            fig.arrow((x + w / 2, ya + h + 3), (x + w / 2, yb - 4), width=1.3)
+        else:
+            fig.arrow((x + w / 2, ya - 3), (x + w / 2, yb + h + 4), width=1.3)
+
+    across(0, 0, 1)
+    across(0, 1, 2)
+    between(2, 0, 1)
+    across(1, 2, 3)
+    between(2, 1, 2)
+    between(3, 1, 2)
+    across(2, 2, 3)
+    across(2, 4, 3)
+    x, y = at(2, 3)
+    xr, yr = at(1, 4)
+    fig.arrow((x + w - 10, y - 3), (xr + 10, yr + h + 4), width=1.3)
+    between(4, 1, 0)
     return fig
 
 
@@ -197,7 +591,7 @@ def pairs() -> Figure:
         "the shop photo of a different shirt B, and there is no photo to compare with. If the mask lets the "
         "outline of shirt A through, shirt B comes out in the shape of A",
     )
-    fig.text(14, 28, "One photo, two jobs", kind="title")
+    fig.text(14, 28, "How image try-on models are trained and used", kind="title")
     fig.text(14, 50, "nobody has the same person in the same pose in two shirts, so models learn to repair a photo",
              kind="note")
     w, gap, h = 132, 18, 52
@@ -361,7 +755,7 @@ def chart_bodies(theme):
     ax.set_xlim(-62, 2 * spacing + 80)
     ax.set_ylim(-100, 85)
     ax.axis("off")
-    _caption(fig, "Measuring a body that only exists as a mesh",
+    _caption(fig, "Bust, waist and hips measured on a mesh",
              "MakeHuman's open body at three builds; rose: horizontal cuts, read like a tape measure (cm)", c)
     return fig
 
@@ -479,7 +873,7 @@ def chart_drape(theme):
         ax.set_aspect("equal")
         ax.axis("off")
         ax.set_title(f"{build} body, {fabric}", loc="center", fontsize=10, pad=2)
-    _caption(fig, "One skirt, two bodies, two fabrics",
+    _caption(fig, "An A-line skirt simulated on two bodies in two fabrics",
              "an A-line skirt pinned at each body's waist and dropped; XPBD cloth, 1.5 s of simulated time", c)
     return fig
 
@@ -514,7 +908,7 @@ def chart_shape(theme):
     bar = fig.colorbar(ScalarMappable(norm=norm, cmap=cmap), ax=axes, fraction=0.03, pad=0.02)
     bar.set_label("moves by, cm", color=c["muted"])
     bar.outline.set_visible(False)
-    _caption(fig, "Where a body changes when it changes build",
+    _caption(fig, "How far each point moves between a thin and a full body",
              "distance each vertex moves from the thin to the full body: one direction in the space of body shapes",
              c)
     return fig
@@ -598,7 +992,7 @@ def chart_timeline(theme):
     ax.grid(axis="y", visible=False)
     ax.spines["left"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
-    _caption(fig, "The field around the project",
+    _caption(fig, "Try-on, image generation, 3D bodies and digital fashion, 2017–2023",
              "dates of arXiv first versions and announcements; shaded: January 2021 to June 2023", c, top=0.975)
     return fig
 
@@ -666,7 +1060,7 @@ def cover():
     chips, _, chips_right = cv.chip_row(["DensePose", "Stable Diffusion", "SMPL-X"], cv.MOTIF_X0, 498, size=15)
     cv.fits(chips_right)
     return cv.frame("portfolio / computer vision", ["AI Fashion", "App"],
-                    ["Digital clothes on real", "people, 2021 to 2023"], motif + chips,
+                    ["Digital clothes", "on real people"], motif + chips,
                     footer="Virtual try-on, in 2D and in 3D")
 
 
@@ -691,11 +1085,17 @@ CHARTS = {
     "drape": chart_drape,
     "shape": chart_shape,
     "timeline": chart_timeline,
+    "pose": chart_pose,
+    "crops": chart_crops,
+    "masks": chart_masks,
+    "maps": chart_maps,
 }
 
 FIGURES = {
     "routes": routes,
     "pairs": pairs,
+    "hybrid": hybrid,
+    "system": system,
 }
 
 
@@ -704,7 +1104,17 @@ def most_moved():
     return float(np.percentile(np.linalg.norm(builds["full"] - builds["thin"], axis=1), 99.5))
 
 
+JOINT_NAMES = {0: "nose", 11: "left shoulder", 12: "right shoulder", 13: "left elbow", 14: "right elbow",
+               15: "left wrist", 16: "right wrist", 23: "left hip", 24: "right hip", 25: "left knee", 26: "right knee",
+               27: "left ankle", 28: "right ankle"}
+
+
+def _either(names):
+    return ", the ".join(names[:-1]) + " or the " + names[-1] if len(names) > 1 else names[0]
+
+
 def chart_alts():
+    crouching = keypoints()["crouching"]
     girths = {name: {part: round(length) for part, (_, length, _) in measurements(name).items()} for name in BUILDS}
     return {
         "bodies": "Three versions of the same open 3D body, thin, average and full, with tape-measure loops drawn "
@@ -722,6 +1132,21 @@ def chart_alts():
         "dress bent onto her by a thin-plate spline, with the old white sleeves and skirt still showing around it "
         "and the fabric as flat as on the product photo; and the project's trained model, which replaces the old "
         "dress, shapes the puffed sleeves to the arms and matches the light of the scene",
+        "pose": "Three panels. The standing person of the try-on example with BlazePose's 33 keypoints joined into a "
+        "skeleton; a woman in a pink tracksuit crouching, with her skeleton and the "
+        + " and the ".join(JOINT_NAMES[k] for k in MAIN if crouching["image"][k, 2] < HIDDEN)
+        + " marked as likely hidden; and the crouch's 3D keypoints seen from the side, with dashed alternatives in "
+        "which the " + _either([BONE_NAMES[j] for j in flips(crouching["world"])])
+        + " is turned the other way along the camera's line of sight: each of them projects onto the same photo",
+        "crops": "Four crops of the standing example with its keypoints, those outside the frame drawn hollow: "
+        + "; ".join(f"{name}, {int(in_frame(name).sum())} of 33 keypoints in frame" for name, _ in FRAMES),
+        "masks": "Four panels. The person with her white dress masked tightly, so the mask keeps the dress's outline; "
+        "a larger clothing-agnostic mask that also covers both arms; the photo with that region grey and the "
+        "skeleton on top, which is what the generator keeps; and a close-up of the generated floral dress under a "
+        "grid of 8 by 8 pixel cells, in which a flower of the print spans one or two cells",
+        "maps": "The silk skirt on the full body drawn four ways: shaded, as a white garment mask on black, as a "
+        "normal map in which colour encodes the direction of the surface, and as a depth map in which nearer is "
+        "lighter",
         "timeline": "A timeline from late 2017 to mid-2023 in four lanes, with the project, January 2021 to June "
         "2023, shaded. " + " ".join(
             f"{lane[0].upper() + lane[1:]}: "
