@@ -62,9 +62,11 @@ def quiet() -> None:
     except ImportError:
         pass
     os.environ["TOKENIZERS_PARALLELISM"] = "false"  # silences a warning when a notebook forks processes
+    os.environ["TRANSFORMERS_VERBOSITY"] = "error"  # the transformers library logs its advice to stderr
     warnings.filterwarnings("ignore", message="IProgress not found")  # tqdm without ipywidgets
     warnings.filterwarnings("ignore", message=".*HF_TOKEN.*")  # Colab: public downloads need no token
     warnings.filterwarnings("ignore", message=".*Colab secrets.*")
+    warnings.filterwarnings("ignore", message=".*sacremoses.*")  # Marian's tokenizer works without it
 
 
 def smoke() -> bool:

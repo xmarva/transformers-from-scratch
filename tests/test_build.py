@@ -77,3 +77,11 @@ def test_ref_moves_images_and_helpers_to_the_same_branch(built):
     assert f"{build.RAW}/v9.9.9/assets/figures/99/x-light.png" in text
     assert f"{build.RAW}/v9.9.9/assets/covers/99-en.png" in kaggle.cells[0].source
     assert f"{build.RAW}/main/" not in text  # the Colab badge may still point at main: Colab opens released notebooks
+
+
+def test_kaggle_titles_fit_kaggles_limit():
+    for toml in sorted((Path(__file__).resolve().parents[1] / "lessons").glob("*/lesson.toml")):
+        meta = build.tomllib.loads(toml.read_text(encoding="utf-8"))
+        assert len(build.kaggle_title(meta)) <= build.KAGGLE_TITLE_MAX
+    with pytest.raises(ValueError, match="at most 50"):
+        build.kaggle_title({"number": 3, "short_title": "A title far too long for a Kaggle notebook"})

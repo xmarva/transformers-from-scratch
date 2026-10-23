@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="In training the decoder reads the reference translation, Исследовательница сказала, что вымоталась. When translating, it reads its own previous words. opus-mt-en-ru writes: Исследователь сказал, что она устала. Its first word is masculine, and the next word agrees with that mistake">
+<title>In training the decoder reads the reference translation, Исследовательница сказала, что вымоталась. When translating, it reads its own previous words. opus-mt-en-ru writes: Исследователь сказал, что она устала. Its first word is masculine, and the next word agrees with that mistake</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Training reads the answer; translating reads its own guesses</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">English: The researcher said she was exhausted.</text>
+<text x="14.0" y="98.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">training reads</text>
+<rect x="190.0" y="78.0" width="55.1" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="217.6" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">&lt;bos&gt;</text>
+<rect x="251.1" y="78.0" width="148.7" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="325.5" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">Исследовательница</text>
+<rect x="405.8" y="78.0" width="70.7" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="441.2" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">сказала</text>
+<rect x="482.6" y="78.0" width="28.6" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="496.9" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">,</text>
+<rect x="517.2" y="78.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="536.9" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">что</text>
+<rect x="562.7" y="78.0" width="94.1" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="609.7" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">вымоталась</text>
+<rect x="662.8" y="78.0" width="28.6" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="677.1" y="97.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">.</text>
+<text x="190.0" y="132.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">the reference, word by word: every next prediction starts from the right history</text>
+<text x="14.0" y="196.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">translating reads</text>
+<rect x="190.0" y="176.0" width="55.1" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="217.6" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">&lt;bos&gt;</text>
+<rect x="251.1" y="176.0" width="117.5" height="30.0" rx="7" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="309.9" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">Исследователь</text>
+<rect x="374.6" y="176.0" width="62.9" height="30.0" rx="7" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="406.1" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">сказал</text>
+<rect x="443.6" y="176.0" width="28.6" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="457.9" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">,</text>
+<rect x="478.2" y="176.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="497.9" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">что</text>
+<rect x="523.7" y="176.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="543.4" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">она</text>
+<rect x="569.2" y="176.0" width="62.9" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="600.7" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">устала</text>
+<rect x="638.1" y="176.0" width="28.6" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="652.4" y="195.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">.</text>
+<text x="190.0" y="232.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">its own output: a masculine first word, and the verb agrees with the mistake</text>
+<text x="14.0" y="282.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">Real output of opus-mt-en-ru, our lesson 4 baseline: Исследователь сказал, что она устала.</text>
+</svg>

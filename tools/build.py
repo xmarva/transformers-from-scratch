@@ -41,8 +41,14 @@ TARGETS = ("kaggle", "colab")
 BUILD_TAGS = ("only-kaggle", "only-colab")
 
 
+KAGGLE_TITLE_MAX = 50  # Kaggle refuses longer notebook titles
+
+
 def kaggle_title(meta: dict) -> str:
-    return f"Transformers from Scratch · {meta['number']:02d} {meta['short_title']}"
+    title = f"Transformers from Scratch · {meta['number']:02d} {meta['short_title']}"
+    if len(title) > KAGGLE_TITLE_MAX:
+        raise ValueError(f"Kaggle title {title!r} has {len(title)} characters, at most {KAGGLE_TITLE_MAX} allowed")
+    return title
 
 
 def kaggle_slug(title: str) -> str:
