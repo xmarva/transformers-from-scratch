@@ -87,7 +87,8 @@ def fits(right_edge: float) -> None:
         raise ValueError(f"motif reaches x={right_edge:.0f}, beyond the right margin {MOTIF_X1}")
 
 
-def frame(tab: str, title_lines: list[str], hook_lines: list[str], motif: str) -> str:
+def frame(tab: str, title_lines: list[str], hook_lines: list[str], motif: str, footer: str = COURSE) -> str:
+    """The cover around a motif; `footer` names the series, the course by default."""
     s = [
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">',
         '<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">'
@@ -108,7 +109,7 @@ def frame(tab: str, title_lines: list[str], hook_lines: list[str], motif: str) -
         s.append(text(72, y, line, 26, MUTED))
         y += 36
     s.append(f'<rect x="72" y="548" width="28" height="3" fill="{RED}"/>')
-    s.append(text(72, 580, COURSE, 17, FAINT, MONO))
+    s.append(text(72, 580, footer, 17, FAINT, MONO))
     s.append(motif)
     s.append("</svg>")
     return "\n".join(s)

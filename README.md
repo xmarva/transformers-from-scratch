@@ -35,6 +35,7 @@ notebooks/    generated notebooks for Colab and Kaggle
 assets/       rendered figures and covers
 src/tfs/      small helper package the notebooks install (environment, plot style, token drawing)
 tools/        build notebooks, render figures, run lessons
+articles/     posts for xmarva.github.io outside the course: text, measurements, figures
 docs/         style guide, notation, how to write a lesson
 ```
 
