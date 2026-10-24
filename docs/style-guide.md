@@ -4,7 +4,17 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 
 ## Voice
 
-- Talk to one reader, as "you". Short, direct sentences; one idea per paragraph.
+The course has an author, and it should sound like one: clear, a little sharp, sometimes ironic or sarcastic,
+witty when the material allows it. A reader should be able to tell a paragraph of this course from a paragraph of
+a generated tutorial.
+
+- Talk to one reader, as "you". Short, direct sentences; one idea per paragraph, one to three sentences long.
+- Have opinions and say them. If a common practice is wasteful, say so and show why; if a famous result is
+  oversold, say that too, with the evidence. Irony goes to methods, hype and our own model's failures, never to the
+  reader.
+- Don't over-polish. A text written by a person has rough edges: an aside, a sentence that starts with "And", a
+  joke that only half lands. Smoothing every sentence into the same even tone is what makes text read as
+  generated.
 - Start from what readers already care about, which is how today's large models behave (GPT-4o, Llama,
   DeepSeek), and lead to the technical part step by step. Lesson 1 opens with what GPT-4o actually receives
   when you ask it about strawberries; only then come byte pairs and merge tables.
@@ -15,14 +25,39 @@ The acceptance criteria for every lesson, figure and cover. A lesson is ready wh
 - Add the facts that make a topic memorable: where an algorithm came from, a famous failure, a quirk of the data
   (Tom in 23% of Tatoeba's sentences, `SolidGoldMagikarp`). Every such fact is checked against a source and
   linked where it first appears.
-- Be exact rather than impressive. No hype ("revolutionary", "game-changer"), no rhetorical drama, and none of
-  the stock phrases of generated text: "let's dive in", "delve", "crucial", "it's worth noting", "in this section
-  we will", "the magic of", an aphorism closing every paragraph, em dashes in every sentence. A dry joke now and
-  then is welcome.
+- Be exact rather than impressive. Sharp is not loud: no hype ("revolutionary", "game-changer"), no rhetorical
+  drama.
 - Define a term the first time it appears, in bold. State assumptions out loud ("we lowercase everything, which
   loses ...").
 - Every number in the text comes from an output the reader can see. Never type a number that the code computes;
   describe it ("several times more", "less than a token per sentence") and let the output give the value.
+
+**Phrasing that reads as generated**, in titles and in text alike. None of it goes into a lesson:
+
+- A noun with a tacked-on participle or adverb as a pseudo-title: "improvements, measured", "the Transformer,
+  revisited", "attention, explained".
+- Two clipped clauses joined by "then": "deploy, then watch it", "train, then trust".
+- Vague "from X to Y" and "X: a Y and a Z" headings that name no technique: "from notebook to package", "serving:
+  an API and a demo".
+- An aphorism closing every paragraph; a pair of short contrasting sentences ("It isn't magic. It's math.");
+  rhetorical questions answered in the next word; a clickbait question as a title ("Is BLEU lying?").
+- Stock phrases: "let's dive in", "delve", "crucial", "it's worth noting", "in this section we will", "the magic
+  of", "a testament to", "game-changer", "in today's fast-paced world"; em dashes in every sentence.
+
+## Titles
+
+A lesson's title is what a search engine shows and what decides whether anyone clicks. It must be:
+
+- **clear**: a reader knows from the title alone what the lesson teaches;
+- **findable**: it contains the words people search for (the technique, the library, the task: "BLEU", "RoPE",
+  "FastAPI", "machine translation");
+- **intriguing** through content, not tricks: a concrete detail the reader didn't expect ("What Llama changed in
+  the Transformer"). No clickbait questions ("Is BLEU lying?") or teasers: they are how generated titles sound;
+- **specific**: it names techniques, not categories. "Serving a Transformer with FastAPI and Gradio" says more than
+  "Serving: an API and a demo".
+
+About 50–70 characters, with the main keyword early. The same rules hold for section headings: plain and
+descriptive, no slogans.
 
 ## Examples
 
@@ -110,9 +145,10 @@ A notebook is read as much as it is run, so every output is designed:
 
 ## Figures
 
-- Draw a figure where a picture explains better than text: data flow, architecture, an algorithm step,
-  a metric's mechanics, a system diagram. Not as decoration. In practice every section has at least one
-  picture; lesson 1 has nine static figures and a dozen run-time ones.
+- Draw a lot. Every important concept gets its own picture: data flow, architecture, an algorithm step, a
+  metric's mechanics, a system diagram, a number format, a failure case. A section without a picture needs a
+  reason. Pictures explain; they are never decoration. Lesson 1 has nine static figures and a dozen run-time ones,
+  and later lessons should have at least as many.
 - **Concept diagrams** are code in `lessons/NN/figures.py`, rendered by `tools/render.py` in light and dark.
   `Figure.problems()` must be empty (nothing outside the canvas, no overlapping labels, no text crossing a box),
   and both themes are looked at before the PR.
