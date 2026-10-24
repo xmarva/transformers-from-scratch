@@ -1366,6 +1366,7 @@ for ax, metric in zip(axes, METRICS):
     differences = all_differences[("ours, beam", "ours, greedy", metric)]
     ax.hist(differences, bins=40, color=COLORS["enc"])
     ax.axvline(0, color=COLORS["dec"], linewidth=1)
+    ax.xaxis.set_major_locator(plt.MaxNLocator(4))  # a few readable ticks
     ax.set_title(f"{metric}: beam − greedy", fontsize=10)
     ax.set_yticks([])
 axes[0].set_ylabel("draws")
@@ -1392,10 +1393,10 @@ for size in [100, 300, 1_000, 3_000]:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# On a few hundred sentences COMET is already all but certain that beam search is better. BLEU, measuring the same
-# translations, is not, and on a thousand it can still hesitate: it judges a sentence by a handful of n-gram
-# matches, which makes each sentence's contribution noisy, and noise takes more sentences to average out. A
-# difference of a point of BLEU on a test set of a thousand sentences may be nothing at all.
+# On a hundred sentences COMET is already all but certain that beam search is better, while BLEU, measuring the
+# same translations, is not much surer than a coin toss. It takes BLEU a few hundred sentences more to catch up. A
+# sentence gives BLEU a handful of n-gram matches, a noisy signal, and noise takes more sentences to average out.
+# With a small test set, the metric decides what you can see at all.
 #
 # > Report a difference with its bootstrap interval, or don't report it.
 
