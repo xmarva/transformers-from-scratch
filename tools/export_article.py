@@ -23,10 +23,11 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import citations  # noqa: E402
 import export_post  # noqa: E402
-import paragraphs  # noqa: E402
 import render  # noqa: E402
+
+import citations  # noqa: E402
+import paragraphs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PLACEHOLDER = re.compile(r"^\[\[([\w-]+)\]\]$", re.M)
