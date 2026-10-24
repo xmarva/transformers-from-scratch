@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="How a W&amp;B sweep runs: the sweep controller on W&amp;B&#x27;s servers holds the search space and the method; agents on one or more machines ask it for a configuration, train with it, and log the metric back; the controller uses the results to choose the next configuration and can stop runs that fall behind">
+<title>How a W&amp;B sweep runs: the sweep controller on W&amp;B&#x27;s servers holds the search space and the method; agents on one or more machines ask it for a configuration, train with it, and log the metric back; the controller uses the results to choose the next configuration and can stop runs that fall behind</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">A W&amp;B sweep: one controller, any number of agents</text>
+<rect x="14.0" y="110.0" width="230.0" height="90.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="129.0" y="140.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="15" font-weight="600" fill="#6A55D8">sweep controller</text>
+<text x="129.0" y="162.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">on W&amp;B&#x27;s servers</text>
+<text x="129.0" y="182.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">space · method · stopping</text>
+<rect x="470.0" y="70.0" width="276.0" height="44.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="608.0" y="96.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">agent: your Kaggle GPU</text>
+<polyline points="248.0,140.0 466.0,84.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="466.0,100.0 248.0,160.0" fill="none" stroke="#C27A0E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-data)"/>
+<rect x="470.0" y="142.0" width="276.0" height="44.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="608.0" y="168.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">agent: your Colab GPU</text>
+<polyline points="248.0,146.0 466.0,156.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="466.0,172.0 248.0,166.0" fill="none" stroke="#C27A0E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-data)"/>
+<rect x="470.0" y="214.0" width="276.0" height="44.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="608.0" y="240.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">agent: any machine</text>
+<polyline points="248.0,152.0 466.0,228.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="466.0,244.0 248.0,172.0" fill="none" stroke="#C27A0E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-data)"/>
+<text x="300.0" y="104.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">a configuration</text>
+<text x="300.0" y="226.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">the metric, every epoch</text>
+<text x="14.0" y="286.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Agents can join and leave at any time; the controller decides what each one trains next.</text>
+</svg>

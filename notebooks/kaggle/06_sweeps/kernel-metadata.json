@@ -1,0 +1,14 @@
+{
+  "id": "qmarva/transformers-from-scratch-06-w-b-sweeps-tuning",
+  "title": "Transformers from Scratch · 06 W&B Sweeps tuning",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="Successive halving with 18 configurations: all train for 0.5 epoch, the best third continues to 1.5 epochs, the best third of those to 4.5, and the winner to 20. The search costs 36 epochs instead of 360 for training every configuration to the end">
+<title>Successive halving with 18 configurations: all train for 0.5 epoch, the best third continues to 1.5 epochs, the best third of those to 4.5, and the winner to 20. The search costs 36 epochs instead of 360 for training every configuration to the end</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="330" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Successive halving: everyone starts, the best third goes on</text>
+<text x="14.0" y="90.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">18 models</text>
+<text x="120.0" y="90.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">to 0.5 epochs</text>
+<rect x="260.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="286.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="312.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="338.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="364.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="390.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="416.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="442.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="468.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="494.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="520.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="546.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="572.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="598.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="624.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="650.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="676.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="702.0" y="74.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<text x="14.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">6 models</text>
+<text x="120.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">to 1.5 epochs</text>
+<rect x="260.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="286.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="312.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="338.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="364.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<rect x="390.0" y="130.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<text x="14.0" y="202.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">2 models</text>
+<text x="120.0" y="202.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">to 4.5 epochs</text>
+<rect x="260.0" y="186.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<rect x="286.0" y="186.0" width="20.0" height="22.0" rx="3" fill="#362A14"/>
+<text x="14.0" y="258.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">1 model</text>
+<text x="120.0" y="258.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">to 20 epochs</text>
+<rect x="260.0" y="242.0" width="20.0" height="22.0" rx="3" fill="#9C8CF5"/>
+<text x="14.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">cost: 36 epochs of training, against 360 to train all 18 to the end</text>
+</svg>
