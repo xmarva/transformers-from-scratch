@@ -1,0 +1,8 @@
+number = 5
+short_title = "What Llama changed"
+cover_alt = "Lesson 5 cover: What Llama changed. Four design details of the 2017 Transformer next to their replacements in Llama 3.1: LayerNorm after each block becomes RMSNorm before it, ReLU becomes SwiGLU, added sinusoids become rotary position embeddings, and the biases go"
+gpu = true
+published = true
+published_on = 2026-10-24
+description = "Pre-norm, RMSNorm, SwiGLU and RoPE: the changes Llama made to the 2017 Transformer, written in PyTorch, added to our translator one at a time and measured against what a new random seed does alone, with fused attention and a KV cache."
+tags = "llama, rope, transformer, pytorch"

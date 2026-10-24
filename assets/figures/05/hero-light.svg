@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 424" width="760" height="424" role="img" aria-label="Our 2017-style Transformer next to Llama 3.1 8B, from their config files: Llama is far bigger, and five design details differ: grouped key/value heads, RMSNorm before each block instead of LayerNorm after it, SwiGLU instead of ReLU, rotary position embeddings instead of added sinusoids, and no biases">
+<title>Our 2017-style Transformer next to Llama 3.1 8B, from their config files: Llama is far bigger, and five design details differ: grouped key/value heads, RMSNorm before each block instead of LayerNorm after it, SwiGLU instead of ReLU, rotary position embeddings instead of added sinusoids, and no biases</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="424" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Our Transformer and Llama 3.1 8B, read from their config files</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">highlighted: what changed in design, not in size</text>
+<text x="180.0" y="82.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">ours (the 2017 design)</text>
+<text x="430.0" y="82.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">Llama 3.1 8B (2024)</text>
+<text x="14.0" y="116.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">layers</text>
+<rect x="180.0" y="96.0" width="236.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="115.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">3 + 3</text>
+<rect x="430.0" y="96.0" width="316.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="440.0" y="115.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">32</text>
+<text x="14.0" y="152.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">width</text>
+<rect x="180.0" y="132.0" width="236.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="151.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">256</text>
+<rect x="430.0" y="132.0" width="316.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="440.0" y="151.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">4,096</text>
+<text x="14.0" y="188.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">attention heads</text>
+<rect x="180.0" y="168.0" width="236.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="187.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">4</text>
+<rect x="430.0" y="168.0" width="316.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="440.0" y="187.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">32, sharing 8 key/value heads</text>
+<text x="14.0" y="224.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">normalization</text>
+<rect x="180.0" y="204.0" width="236.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="223.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">LayerNorm, after each block</text>
+<rect x="430.0" y="204.0" width="316.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="440.0" y="223.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">RMSNorm, before each block</text>
+<text x="14.0" y="260.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">feed-forward</text>
+<rect x="180.0" y="240.0" width="236.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">ReLU, 1,024 wide</text>
+<rect x="430.0" y="240.0" width="316.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="440.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">SwiGLU, 14,336 wide</text>
+<text x="14.0" y="296.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">positions</text>
+<rect x="180.0" y="276.0" width="236.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="295.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">sinusoids added to the input</text>
+<rect x="430.0" y="276.0" width="316.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="440.0" y="295.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">RoPE, rotation by position, base 500,000</text>
+<text x="14.0" y="332.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">biases</text>
+<rect x="180.0" y="312.0" width="236.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="331.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">in every layer</text>
+<rect x="430.0" y="312.0" width="316.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="440.0" y="331.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">none</text>
+<text x="14.0" y="368.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">vocabulary</text>
+<rect x="180.0" y="348.0" width="236.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="190.0" y="367.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">16,000</text>
+<rect x="430.0" y="348.0" width="316.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="440.0" y="367.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">128,256</text>
+<text x="14.0" y="406.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Llama keeps only the decoder; we keep the encoder too, and change both.</text>
+</svg>
