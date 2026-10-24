@@ -25,13 +25,15 @@
 # 1. Track every training run with Weights & Biases, with or without an account.
 # 2. Find the range of learning rates that work, for the 2017 design and for lesson 5's, in a minute each.
 # 3. Write random search and successive halving from scratch and spend a fixed GPU budget on them.
-# 4. Run the same kind of search as a W&B Sweep, with Bayesian optimization and early stopping.
-# 5. Train the winner to the end, check it against lesson 5's model with the bootstrap, and publish it.
+# 4. Train the winner to the end and check it against lesson 5's model, with the bootstrap and with lesson 5's seed
+#    runs.
+# 5. Run the same kind of search as a W&B Sweep, with Bayesian optimization and early stopping, and publish the
+#    tuned model.
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. A free [Weights & Biases](https://wandb.ai) account is optional: add your API key as the secret
 # `WANDB_API_KEY` (Kaggle: *Add-ons → Secrets*; Colab: the key icon on the left) to see the runs online and run
-# the sweep of section 7. Without it everything else runs the same, and the runs are kept on disk. The notebook
+# the sweep of section 8. Without it everything else runs the same, and the runs are kept on disk. The notebook
 # runs in about RUNTIME.
 
 # %% tags=["include:setup"]
@@ -429,88 +431,7 @@ table(pd.DataFrame({"hyperparameter": names,
 # nothing to overfit. These correlations describe the first minutes of training, not its end, which is the same
 # bias as above, in numbers.
 #
-# ## 7. The same search as a W&B Sweep
-#
-# Our search ran in one notebook, one trial after another. **W&B Sweeps** moves the controller to a server: it holds
-# the search space and the method, hands configurations out to **agents**, and stops runs that fall behind. Any
-# number of agents on any machines can work on one sweep, and that is how the same search goes from a free T4 to a
-# cluster.
-#
-# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/sweep-light.png" width="760" alt="How a W&B sweep runs: the sweep controller on W&B's servers holds the search space and the method; agents on one or more machines ask it for a configuration, train with it, and log the metric back; the controller uses the results to choose the next configuration and can stop runs that fall behind">
-#
-# It can also search less blindly than at random. With `method: bayes` the controller fits a model of the loss as
-# a function of the settings, a Gaussian process ([Snoek et al., 2012](https://arxiv.org/abs/1206.2944)), and
-# picks the next configuration where it expects the most improvement: where the predicted loss is low, or where
-# the model is still unsure.
-#
-# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/bayes-light.png" width="760" alt="Bayesian optimization in one dimension: after four trials, a Gaussian process gives a mean estimate of the loss and a band of uncertainty; expected improvement is highest where the estimate is low or the uncertainty large, and the next trial goes there">
-#
-# The search space in W&B's terms is a dictionary, the same space as section 4:
-
-# %%
-SWEEP = {
-    "method": "bayes",
-    "metric": {"name": "validation loss", "goal": "minimize"},
-    "parameters": {
-        "peak_lr": {"distribution": "log_uniform_values", "min": 2e-4, "max": 1e-2},
-        "warmup": {"distribution": "q_log_uniform_values", "min": 200, "max": 4_000,
-                   "q": 1},
-        "dropout": {"distribution": "uniform", "min": 0.0, "max": 0.3},
-        "label_smoothing": {"distribution": "uniform", "min": 0.0, "max": 0.2},
-        "batch_tokens": {"values": BATCH_TOKENS},
-    },
-    "early_terminate": {"type": "hyperband", "min_iter": 1, "eta": 3},
-}
-
-# %% [markdown]
-# Each run of the sweep is a function the agent calls: it reads its configuration from W&B, trains for up to three
-# half-epochs, and logs the validation loss after each, which is what the early stopping watches.
-
-# %%
-def sweep_run():
-    with wandb.init() as run:  # the agent filled run.config with the controller's choice
-        trial = Trial(0, dict(run.config), run=run)
-        try:
-            for _ in range(3):
-                trial.train(1)
-        except Exception as error:
-            if type(error) is not Exception:  # a real error, not the controller's stop
-                raise
-            # early stopping: the agent stops a run by raising a bare Exception inside it
-            print(f"{run.name}: stopped by the controller after {trial.epochs} epochs")
-
-
-# the agent shuts W&B down when it finishes, and a run left open can't log any more:
-# the search's runs end here, and the winner gets a new one in section 8
-for trial in trials:
-    trial.run.finish()
-
-SWEEP_RUNS = 6
-if WANDB_MODE == "online":
-    sweep_id = wandb.sweep(SWEEP, project=PROJECT)
-    wandb.agent(sweep_id, function=sweep_run, count=SWEEP_RUNS)
-    swept = wandb.Api().sweep(f"{wandb.Api().default_entity}/{PROJECT}/{sweep_id}")
-    rows = []
-    for swept_run in swept.runs:
-        rows.append({"run": swept_run.name, "state": swept_run.state,
-                     "validation loss": swept_run.summary.get("validation loss"),
-                     **{k: swept_run.config.get(k) for k in SWEEP["parameters"]}})
-    print("the sweep:", swept.url)
-    display(table(pd.DataFrame(rows).sort_values("validation loss"), digits=4))
-else:
-    print("no W&B key: the sweep needs W&B's servers, so this cell does nothing offline")
-
-# %% [markdown]
-# Six runs give a Gaussian process little to model; Bayesian optimization pays off over dozens of trials, not a
-# handful. Two details from W&B's own source are worth knowing. The model is a Gaussian process with a Matérn
-# kernel, choosing by expected improvement. And the "hyperband" of the configuration is a simpler rule than the
-# paper's: when a run reports its metric for the $n$-th time, it is stopped if it is worse than the best third of
-# the runs that got that far. The controller checks every few minutes, so runs this short can finish before it
-# looks.
-#
-# What this section shows is the machinery: a search space in one dictionary, and as many GPUs as you can find.
-#
-# ## 8. The winner, trained to the end
+# ## 7. The winner, trained to the end
 #
 # The winner of section 5 has trained for four and a half epochs. Successive halving's last step is to let the
 # survivor finish: one epoch at a time, to the twenty epochs of lessons 3 and 5, keeping the best weights.
@@ -520,18 +441,13 @@ FINAL_EPOCHS = 20 if not SMOKE else 1
 CHECKPOINT = WORK_DIR / "tuned.safetensors"
 best = winner.history[-1]["validation loss"]  # where the search left it
 save_file(winner.model.state_dict(), CHECKPOINT)
-for variable in ["WANDB_SWEEP_ID", "WANDB_SWEEP_PARAM_PATH", "WANDB_RUN_ID"]:
-    os.environ.pop(variable, None)  # older agents leave these set: the run would join the sweep
-winner.run = wandb.init(project=PROJECT, mode=WANDB_MODE,
-                        group="lesson 6: successive halving",
-                        name=f"trial {winner.number}, to the end",
-                        config=winner.config, reinit="create_new")
 while winner.epochs < FINAL_EPOCHS:
     loss = winner.train(2)  # one more epoch
     if loss < best:
         best = loss
         save_file(winner.model.state_dict(), CHECKPOINT)
-winner.run.finish()
+for trial in trials:  # the search is over: its runs end here
+    trial.run.finish()
 tuned = winner.model
 tuned.load_state_dict(load_file(CHECKPOINT, device=device))
 tuned.eval()
@@ -634,6 +550,85 @@ table(pd.DataFrame(rows), digits=4)
 # On short sentences the two models mostly write the same words, and the gain is a rounding error. Past fifteen
 # tokens they almost never agree, and that's where the gain is: the same shape as lesson 5's, where the
 # architecture helped the long sentences too. Long sentences are rare in Tatoeba, so the average hides most of it.
+#
+# ## 8. The same search as a W&B Sweep
+#
+# Our search ran in one notebook, one trial after another. **W&B Sweeps** moves the controller to a server: it holds
+# the search space and the method, hands configurations out to **agents**, and stops runs that fall behind. Any
+# number of agents on any machines can work on one sweep, and that is how the same search goes from a free T4 to a
+# cluster.
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/sweep-light.png" width="760" alt="How a W&B sweep runs: the sweep controller on W&B's servers holds the search space and the method; agents on one or more machines ask it for a configuration, train with it, and log the metric back; the controller uses the results to choose the next configuration and can stop runs that fall behind">
+#
+# It can also search less blindly than at random. With `method: bayes` the controller fits a model of the loss as
+# a function of the settings, a Gaussian process ([Snoek et al., 2012](https://arxiv.org/abs/1206.2944)), and
+# picks the next configuration where it expects the most improvement: where the predicted loss is low, or where
+# the model is still unsure.
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/bayes-light.png" width="760" alt="Bayesian optimization in one dimension: after four trials, a Gaussian process gives a mean estimate of the loss and a band of uncertainty; expected improvement is highest where the estimate is low or the uncertainty large, and the next trial goes there">
+#
+# The search space in W&B's terms is a dictionary, the same space as section 4:
+
+# %%
+SWEEP = {
+    "method": "bayes",
+    "metric": {"name": "validation loss", "goal": "minimize"},
+    "parameters": {
+        "peak_lr": {"distribution": "log_uniform_values", "min": 2e-4, "max": 1e-2},
+        "warmup": {"distribution": "q_log_uniform_values", "min": 200, "max": 4_000,
+                   "q": 1},
+        "dropout": {"distribution": "uniform", "min": 0.0, "max": 0.3},
+        "label_smoothing": {"distribution": "uniform", "min": 0.0, "max": 0.2},
+        "batch_tokens": {"values": BATCH_TOKENS},
+    },
+    "early_terminate": {"type": "hyperband", "min_iter": 1, "eta": 3},
+}
+
+# %% [markdown]
+# Each run of the sweep is a function the agent calls: it reads its configuration from W&B, trains for up to three
+# half-epochs, and logs the validation loss after each, which is what the early stopping watches.
+
+# %%
+def sweep_run():
+    with wandb.init() as run:  # the agent filled run.config with the controller's choice
+        trial = Trial(0, dict(run.config), run=run)
+        try:
+            for _ in range(3):
+                trial.train(1)
+        except Exception as error:
+            if type(error) is not Exception:  # a real error, not the controller's stop
+                raise
+            # early stopping: the agent stops a run by raising a bare Exception inside it
+            print(f"{run.name}: stopped by the controller after {trial.epochs} epochs")
+
+
+SWEEP_RUNS = 6
+if WANDB_MODE == "online":
+    sweep_id = wandb.sweep(SWEEP, project=PROJECT)
+    wandb.agent(sweep_id, function=sweep_run, count=SWEEP_RUNS)
+    swept = wandb.Api().sweep(f"{wandb.Api().default_entity}/{PROJECT}/{sweep_id}")
+    rows = []
+    for swept_run in swept.runs:
+        rows.append({"run": swept_run.name, "state": swept_run.state,
+                     "validation loss": swept_run.summary.get("validation loss"),
+                     **{k: swept_run.config.get(k) for k in SWEEP["parameters"]}})
+    print("the sweep:", swept.url)
+    display(table(pd.DataFrame(rows).sort_values("validation loss"), digits=4))
+else:
+    print("no W&B key: the sweep needs W&B's servers, so this cell does nothing offline")
+
+# %% [markdown]
+# Six runs give a Gaussian process little to model; Bayesian optimization pays off over dozens of trials, not a
+# handful. Two details from W&B's own source are worth knowing. The model is a Gaussian process with a Matérn
+# kernel, choosing by expected improvement. And the "hyperband" of the configuration is a simpler rule than the
+# paper's: when a run reports its metric for the $n$-th time, it is stopped if it is worse than the best third of
+# the runs that got that far. The lines above the table are that rule at work: the controller stopped the runs it
+# judged hopeless after a report or two, and their GPU time went to the next configuration.
+#
+# One thing here is not reproducible. W&B's controller has no seed, so the sweep proposes other configurations
+# every time the notebook runs, and its table changes with them; everything else in the lesson comes out the same.
+#
+# What this section shows is the machinery: a search space in one dictionary, and as many GPUs as you can find.
 #
 # ## 9. Save and publish
 
