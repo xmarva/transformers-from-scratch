@@ -414,7 +414,7 @@ def _cover(lang):
         cv.fits(cv.MOTIF_X0 + 110 + w)
         out.append(chip)
     title = ["Training and", "decoding"] if english else ["Обучение и", "декодирование"]
-    hook = ["From a parrot", "to a translator"] if english else ["От попугая", "к переводчику"]
+    hook = ["Why translators search", "and chatbots sample"] if english else ["Почему переводчики ищут,", "а чат-боты сэмплируют"]
     return cv.frame("03_training.ipynb", title, hook, "".join(out))
 
 

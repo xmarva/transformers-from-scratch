@@ -1,5 +1,5 @@
 # %% [markdown]
-# # Lesson 3. From parrot to translator: training and decoding
+# # Lesson 3. Training a Transformer: warm-up, label smoothing, beam search, sampling
 #
 # Ask a chatbot the same question twice and you may get two different answers. Ask a translation model twice and
 # you get the same translation both times. The networks inside are close relatives, so the difference isn't in the
@@ -24,7 +24,7 @@
 # 1. Turn half a million pairs into batches that waste little on padding.
 # 2. Build the training step: label smoothing, Adam with the paper's learning-rate schedule, gradient clipping,
 #    mixed precision. See what warm-up is for by training without it.
-# 3. Train the lesson 2 Transformer and watch it go from parrot to translator, epoch by epoch.
+# 3. Train the lesson 2 Transformer and read its translations epoch by epoch.
 # 4. Decode three ways: greedy, beam search and sampling.
 # 5. Look inside: does *сказала* now look at *she*? And put our model next to opus-mt-en-ru.
 #
