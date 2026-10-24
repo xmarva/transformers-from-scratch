@@ -1,7 +1,24 @@
 # %% [markdown]
 # # Lesson 6. Hyperparameter tuning on a free GPU with W&B Sweeps
 #
-# HOOK
+# Meta trained Llama 3 405B on up to sixteen thousand H100 GPUs; its model card counts 30.84 million GPU hours.
+# Nobody tunes a run like that by trying things out. The paper's learning rate, $8 \times 10^{-5}$ with 8,000
+# steps of warm-up, and the size of the model itself were chosen on much smaller models and extrapolated
+# ([Llama Team, 2024](https://arxiv.org/abs/2407.21783)). OpenAI said the same of GPT-4: "for very large training
+# runs like GPT-4, it is not feasible to do extensive model-specific tuning"
+# ([OpenAI, 2023](https://arxiv.org/abs/2303.08774)).
+#
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/hero-light.png" width="760" alt="Peak learning rates against model size: the eight GPT-3 models fall from 6e-4 at 125 million parameters to 6e-5 at 175 billion; Llama 3 405B uses 8e-5; our ten-million-parameter model trained at about 1e-3. Bigger models take smaller learning rates">
+#
+# Each GPT-3 model got a learning rate of its own, larger the smaller the model, and ours sits roughly on the
+# extension of that line. It got there by accident: its learning rate came from a formula in the 2017 paper,
+# written for a model several times its size, and nobody has checked it since lesson 3.
+#
+# That matters more than it sounds. In 2018 Melis et al. retuned the language models of the day with thousands of
+# automatic trials and found that "LSTMs outperform the more recent models, contra the published claims": a good
+# part of the published progress had been tuning ([Melis et al., 2018](https://arxiv.org/abs/1707.05589)). Lesson 5
+# compared architectures at one learning rate. This lesson asks what the settings themselves are worth, and
+# spends an hour of a free GPU finding out.
 #
 # **What you'll do**
 #
@@ -54,13 +71,18 @@ if WANDB_KEY:
     os.environ["WANDB_API_KEY"] = WANDB_KEY
 WANDB_MODE = "online" if WANDB_KEY and not SMOKE else "offline"
 os.environ["WANDB_SILENT"] = "true"  # wandb's own messages stay out of the outputs
-PROJECT = "tfs-lesson-6"
+PROJECT = "transformers-from-scratch"  # one W&B project for the whole course
 print("W&B:", WANDB_MODE)
 
 # %% [markdown]
 # ## 1. What we tune, and what we can spend
 #
-# BUDGET_TEXT
+# Five knobs: the peak learning rate and the warm-up of the schedule, dropout, label smoothing, and the size of a
+# batch in tokens. Lesson 3 took all five from the 2017 paper.
+#
+# The budget: Kaggle gives a free account about 30 hours of GPU a week, and Colab promises nothing at all. An epoch
+# of our model takes about a minute on a T4 (lesson 5), so an hour buys some sixty epochs, three trainings of the
+# length of lesson 3's. Tuning on a budget is mostly deciding what *not* to train.
 #
 # The data, the tokenizer and the batches, as in lesson 5. Since the batch size is one of the things we tune,
 # the training pairs are cut into batches of three sizes, once:
@@ -123,10 +145,18 @@ def new_model(setup=LLAMA_STYLE, dropout=0.1, seed=SEED):
 # %% [markdown]
 # ## 2. Tracking runs with Weights & Biases
 #
-# TRACKING_TEXT
+# Lessons 3 to 5 kept their results in print statements: a validation loss per epoch, scrolled past and gone.
+# With two dozen runs ahead that stops working. **Weights & Biases** (W&B) is an experiment tracker: every run
+# records its configuration, everything you log, the load on the machine and the version of the code, and shows
+# the runs side by side.
+#
+# Four calls are all it takes: `wandb.init` starts a run with its configuration, `run.log` adds a row of numbers,
+# `run.summary` keeps the final ones, `run.finish` closes the run. Without a key the same calls write to disk
+# (`mode="offline"`), and `wandb sync` uploads them later. One epoch of lesson 5's recipe, measured after each
+# half:
 
 # %%
-run = wandb.init(project=PROJECT, mode=WANDB_MODE, name="lesson-5 recipe, one epoch",
+run = wandb.init(project=PROJECT, mode=WANDB_MODE, name="lesson 6: lesson 5's recipe, one epoch",
                  config={"peak_lr": 1e-3, "warmup": 1_000, "dropout": 0.1,
                          "label_smoothing": 0.1, "batch_tokens": 6_000})
 config = run.config  # the hyperparameters, stored with the run
@@ -165,16 +195,22 @@ print("stored in:", run.url if WANDB_MODE == "online" else run.dir)
 run.finish()
 
 # %% [markdown]
-# RUN_PAGE_TEXT
+# With a key, the run is a page in your W&B project: the curves, the configuration, the table of translations. The
+# runs this notebook made when it was published are in a public project of the course,
+# [ml-samurai/transformers-from-scratch](https://wandb.ai/ml-samurai/transformers-from-scratch), to compare with
+# yours.
 #
 # ## 3. The learning rate first
 #
-# LR_INTRO
+# Of all the settings, the learning rate matters most, and it comes with the most quoted sentence of the field's
+# folklore: "This is often the single most important hyper-parameter and one should always make sure that it has
+# been tuned" ([Bengio, 2012](https://arxiv.org/abs/1206.5533)). Before searching for it, find out where to search.
 #
-# A **learning-rate range test** ([Smith, 2017](https://arxiv.org/abs/1506.01186)) finds that range in one short
-# run: start with a tiny learning rate and multiply it by the same factor at every step, so that it sweeps several
-# orders of magnitude, and watch the loss. While the rate is too small, nothing happens; in the useful range the
-# loss falls fast; beyond it, training breaks down.
+# A **learning-rate range test** finds the range in one short run. [Smith (2017)](https://arxiv.org/abs/1506.01186)
+# raised the learning rate linearly and watched the accuracy; the version most people use, from the fastai
+# library, multiplies it by the same factor at every step, so that it sweeps several orders of magnitude, and
+# watches the loss. While the rate is too small, nothing happens; in the useful range the loss falls fast; beyond
+# it, training breaks down.
 
 # %%
 def range_test(setup, start=1e-6, end=1.0, n_steps=600):
@@ -216,15 +252,25 @@ for name, (rates, losses) in ranges.items():
     print(f"{name}: lowest loss at a learning rate of {best_rate:.1e}")
 
 # %% [markdown]
-# RANGE_TEXT
+# Both models learn fastest around the same learning rate, a few times $10^{-3}$, well above lesson 3's peak. The
+# difference is where they break. The 2017 design falls apart at a learning rate many times lower than lesson 5's
+# design does. That is pre-norm's gift, which lesson 5's ablation couldn't see: not a better model, a wider range
+# of learning rates that work, which makes a model easier to tune and harder to break. At Llama's scale, where a
+# diverged run costs millions, that is the point.
 #
 # ## 4. Random search
 #
-# RANDOM_TEXT
+# Five knobs, each with a range. The obvious search is a grid: three values of each, every combination, $3^5 = 243$
+# runs, four days of our GPU. **Random search** draws every setting at random instead, and
+# [Bergstra and Bengio (2012)](https://www.jmlr.org/papers/v13/bergstra12a.html) showed it is the better use of
+# the same number of trials. Usually only a few knobs matter, and a grid spends its trials repeating the same few
+# values of exactly those:
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/grid-random-light.png" width="760" alt="Nine trials of grid search and nine of random search on a toy problem where only the horizontal hyperparameter matters. The grid tries only three distinct values of it; random search tries nine different values and usually lands closer to the minimum">
 #
-# SPACE_TEXT
+# The ranges. The learning rate and the warm-up are drawn on a logarithmic scale, since going from $10^{-4}$ to
+# $2 \cdot 10^{-4}$ is as big a step as from $10^{-3}$ to $2 \cdot 10^{-3}$; dropout and label smoothing on a
+# linear one; the batch from three sizes. Eighteen configurations, the first six of them:
 
 # %%
 search_rng = random.Random(SEED)
@@ -251,7 +297,12 @@ table(pd.DataFrame(configs).head(6), digits=4)
 # %% [markdown]
 # ## 5. Successive halving
 #
-# HALVING_TEXT
+# Eighteen configurations trained to the end would be eighteen trainings. But most configurations show early that
+# they are no good: a learning rate that diverges does so in the first minutes. **Successive halving**
+# ([Jamieson and Talwalkar, 2016](https://proceedings.mlr.press/v51/jamieson16.html)) uses that: train every
+# configuration a little, keep the best third, train those three times longer, keep the best third again.
+# **Hyperband** ([Li et al., 2018](https://jmlr.org/papers/v18/16-558.html)) runs several such brackets, from many
+# short trials to a few long ones, because nobody knows in advance how early the good ones show; we run one.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/halving-light.png" width="760" alt="Successive halving with 18 configurations: all train for half an epoch, the best third continues to 1.5 epochs, the best third of those to 4.5, and the winner to 20. The search costs 36 epochs instead of 360 for training every configuration to the end">
 #
@@ -266,7 +317,7 @@ class Trial:
         self.optimizer = training.adam(self.model)
         self.steps, self.epochs, self.history = 0, 0.0, []
         if run is None:  # every trial is a W&B run of its own, all of them open at once
-            run = wandb.init(project=PROJECT, mode=WANDB_MODE, group="successive halving",
+            run = wandb.init(project=PROJECT, mode=WANDB_MODE, group="lesson 6: successive halving",
                              name=f"trial {number}", config=config, reinit="create_new")
         self.run = run
 
@@ -340,11 +391,16 @@ for trial in sorted(trials, key=furthest_first)[:6]:
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# HALVING_RESULT
+# Watch the order change between rungs. After half an epoch the leaders are the fast starters: high learning
+# rates, short warm-ups, small batches, which get more steps into the same half epoch. The configuration that
+# wins at the end needn't be among them. Decisions made on short runs favour whatever pays off early; the problem
+# has a name, short-horizon bias ([Wu et al., 2018](https://arxiv.org/abs/1803.02021)), and it is the price of
+# stopping early. Keeping a third at every rung rather than a tenth is our insurance against it.
 #
 # ## 6. What mattered
 #
-# MATTERED_INTRO
+# Every configuration ran at least half an epoch, so the first rung is a small random-search dataset: eighteen
+# settings and their losses. Each knob against the loss:
 
 # %%
 first_rung = pd.DataFrame([{**trial.config, "loss": trial.history[0]["validation loss"]}
@@ -366,15 +422,24 @@ table(pd.DataFrame({"hyperparameter": names,
                    "rank correlation with the loss": correlations.values}), digits=2)
 
 # %% [markdown]
-# MATTERED_TEXT
+# After half an epoch the learning rate and the warm-up dominate: higher peaks and shorter warm-ups mean a lower
+# loss, the fast starters again. Dropout barely matters yet. It fights overfitting, and half an epoch in there is
+# nothing to overfit. These correlations describe the first minutes of training, not its end, which is the same
+# bias as above, in numbers.
 #
 # ## 7. The same search as a W&B Sweep
 #
-# SWEEP_INTRO
+# Our search ran in one notebook, one trial after another. **W&B Sweeps** moves the controller to a server: it holds
+# the search space and the method, hands configurations out to **agents**, and stops runs that fall behind. Any
+# number of agents on any machines can work on one sweep, and that is how the same search goes from a free T4 to a
+# cluster.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/sweep-light.png" width="760" alt="How a W&B sweep runs: the sweep controller on W&B's servers holds the search space and the method; agents on one or more machines ask it for a configuration, train with it, and log the metric back; the controller uses the results to choose the next configuration and can stop runs that fall behind">
 #
-# BAYES_TEXT
+# It can also search less blindly than at random. With `method: bayes` the controller fits a model of the loss as
+# a function of the settings, a Gaussian process ([Snoek et al., 2012](https://arxiv.org/abs/1206.2944)), and
+# picks the next configuration where it expects the most improvement: where the predicted loss is low, or where
+# the model is still unsure.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/06/bayes-light.png" width="760" alt="Bayesian optimization in one dimension: after four trials, a Gaussian process gives a mean estimate of the loss and a band of uncertainty; expected improvement is highest where the estimate is low or the uncertainty large, and the next trial goes there">
 #
@@ -423,11 +488,19 @@ else:
     print("no W&B key: the sweep needs W&B's servers, so this cell does nothing offline")
 
 # %% [markdown]
-# SWEEP_TEXT
+# Six runs give a Gaussian process little to model; Bayesian optimization pays off over dozens of trials, not a
+# handful. Two details from W&B's own source are worth knowing. The model is a Gaussian process with a Matérn
+# kernel, choosing by expected improvement. And the "hyperband" of the configuration is a simpler rule than the
+# paper's: when a run reports its metric for the $n$-th time, it is stopped if it is worse than the best third of
+# the runs that got that far. The controller checks every few minutes, so runs this short can finish before it
+# looks.
+#
+# What this section shows is the machinery: a search space in one dictionary, and as many GPUs as you can find.
 #
 # ## 8. The winner, trained to the end
 #
-# WINNER_INTRO
+# The winner of section 5 has trained for four and a half epochs. Successive halving's last step is to let the
+# survivor finish: one epoch at a time, to the twenty epochs of lessons 3 and 5, keeping the best weights.
 
 # %%
 FINAL_EPOCHS = 20 if not SMOKE else 1
@@ -533,4 +606,16 @@ else:
 # %% [markdown]
 # ## References
 #
-# REFERENCES
+# - Llama Team, AI @ Meta (2024). [The Llama 3 Herd of Models](https://arxiv.org/abs/2407.21783). *Scaling laws for choosing the model size; the 405B learning rate.*
+# - OpenAI (2023). [GPT-4 Technical Report](https://arxiv.org/abs/2303.08774). *Predictable scaling.*
+# - Brown, T. et al. (2020). [Language Models are Few-Shot Learners](https://arxiv.org/abs/2005.14165). NeurIPS. *Table 2.1: GPT-3's learning rates.*
+# - Melis, G., Dyer, C., Blunsom, P. (2018). [On the State of the Art of Evaluation in Neural Language Models](https://arxiv.org/abs/1707.05589). ICLR.
+# - Bengio, Y. (2012). [Practical Recommendations for Gradient-Based Training of Deep Architectures](https://arxiv.org/abs/1206.5533).
+# - Smith, L. N. (2017). [Cyclical Learning Rates for Training Neural Networks](https://arxiv.org/abs/1506.01186). WACV. *The learning-rate range test.*
+# - Bergstra, J., Bengio, Y. (2012). [Random Search for Hyper-Parameter Optimization](https://www.jmlr.org/papers/v13/bergstra12a.html). JMLR.
+# - Jamieson, K., Talwalkar, A. (2016). [Non-stochastic Best Arm Identification and Hyperparameter Optimization](https://proceedings.mlr.press/v51/jamieson16.html). AISTATS. *Successive halving.*
+# - Li, L. et al. (2018). [Hyperband: A Novel Bandit-Based Approach to Hyperparameter Optimization](https://jmlr.org/papers/v18/16-558.html). JMLR.
+# - Wu, Y., Ren, M., Liao, R., Grosse, R. (2018). [Understanding Short-Horizon Bias in Stochastic Meta-Optimization](https://arxiv.org/abs/1803.02021). ICLR.
+# - Snoek, J., Larochelle, H., Adams, R. P. (2012). [Practical Bayesian Optimization of Machine Learning Algorithms](https://arxiv.org/abs/1206.2944). NeurIPS.
+# - Yang, G. et al. (2022). [Tensor Programs V: Tuning Large Neural Networks via Zero-Shot Hyperparameter Transfer](https://arxiv.org/abs/2203.03466). *Tuning a small proxy instead of the large model.*
+# - [W&B Sweeps documentation](https://docs.wandb.ai/guides/sweeps/) and the [sweeps source](https://github.com/wandb/sweeps).

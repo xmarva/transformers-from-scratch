@@ -11,6 +11,70 @@ import random
 from tools.figures import cover as cv
 from tools.figures.lib import Figure
 
+# ---------------------------------------------------------------- hero: learning rates of real models
+
+GPT3 = [  # Brown et al. (2020), Table 2.1: parameters and learning rate of the eight GPT-3 models
+    ("125M", 125e6, 6.0e-4), ("350M", 350e6, 3.0e-4), ("760M", 760e6, 2.5e-4), ("1.3B", 1.3e9, 2.0e-4),
+    ("2.7B", 2.7e9, 1.6e-4), ("6.7B", 6.7e9, 1.2e-4), ("13B", 13.0e9, 1.0e-4), ("175B", 175e9, 0.6e-4),
+]
+LLAMA3_405B = (405e9, 8e-5)  # Llama Team (2024), §3.4.1: the peak learning rate of the 405B model
+
+
+def hero() -> Figure:
+    import json
+
+    from huggingface_hub import hf_hub_download
+    from safetensors import safe_open
+
+    repo = "xmarva/tfs-transformer-en-ru"
+    with open(hf_hub_download(repo, "config.json"), encoding="utf-8") as f:
+        ours = json.load(f)
+    ours_params = 0
+    with safe_open(hf_hub_download(repo, "model.safetensors"), framework="pt") as weights:
+        for name in weights.keys():
+            if name != "pe":  # the sinusoids are not learned
+                ours_params += math.prod(weights.get_slice(name).get_shape())
+    ours_lr = ours["d_model"] ** -0.5 * 4000 ** -0.5  # the peak of lesson 3's schedule
+    points = [(label, p, lr, "data") for label, p, lr in GPT3]
+    points.append(("Llama 3 405B", LLAMA3_405B[0], LLAMA3_405B[1], "dec"))
+    points.append(("ours, lesson 3", ours_params, ours_lr, "enc"))
+    fig = Figure(
+        760,
+        380,
+        alt="Peak learning rates against model size: the eight GPT-3 models fall from 6e-4 at 125 million parameters "
+        "to 6e-5 at 175 billion; Llama 3 405B uses 8e-5; our ten-million-parameter model trained at about 1e-3. "
+        "Bigger models take smaller learning rates",
+    )
+    fig.text(14, 28, "Bigger models, smaller learning rates", kind="title")
+    fig.text(14, 50, "peak learning rate against parameters; GPT-3: its paper's Table 2.1, Llama 3: §3.4.1",
+             kind="note")
+    x0, x1, y0, y1 = 70, 720, 300, 84
+
+    def px(params):
+        return x0 + (x1 - x0) * (math.log10(params) - 6.5) / (12 - 6.5)
+
+    def py(lr):
+        return y0 + (y1 - y0) * (math.log10(lr) - math.log10(3e-5)) / (math.log10(2e-3) - math.log10(3e-5))
+
+    fig.line((x0, y0), (x1, y0), role="muted", width=1)
+    fig.line((x0, y0), (x0, y1), role="muted", width=1)
+    for exp in range(7, 13):
+        fig.text(px(10**exp), y0 + 20, f"10^{exp}", kind="small", anchor="middle")
+    for lr, label in [(1e-4, "1e-4"), (1e-3, "1e-3")]:
+        fig.text(x0 - 8, py(lr) + 4, label, kind="small", anchor="end")
+    gpt = [pt for pt in points if pt[3] == "data"]
+    for a, b in zip(gpt, gpt[1:]):
+        fig.line((px(a[1]), py(a[2])), (px(b[1]), py(b[2])), role="data", width=1.4)
+    for _, params, lr, role in points:
+        fig.rect(px(params) - 5, py(lr) - 5, 10, 10, role=role, r=5)
+    fig.text(px(125e6) + 10, py(6.0e-4) - 10, "GPT-3, 125M", kind="label")
+    fig.text(px(175e9) - 10, py(0.6e-4) + 22, "GPT-3, 175B", kind="label", anchor="end")
+    fig.text(px(405e9) + 4, py(8e-5) - 14, "Llama 3, 405B", kind="label", anchor="end")
+    fig.text(px(ours_params) + 10, py(ours_lr) + 4, "ours (lesson 3)", kind="label")
+    fig.text(x0, 356, "parameters, log scale", kind="label")
+    return fig
+
+
 # ---------------------------------------------------------------- grid against random search
 
 
@@ -248,6 +312,7 @@ def _cover(lang):
 
 
 FIGURES = {
+    "hero": hero,
     "grid-random": grid_random,
     "halving": halving,
     "bayes": bayes,
