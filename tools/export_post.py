@@ -10,6 +10,8 @@ What changes on the way from notebook to post:
 - a figure from the repository is shown in its light or dark version, following the site's theme;
 - tables keep their structure but take the site's colours; text outputs are set apart from code;
 - the body is wrapped in {% raw %} so that Liquid leaves Python's braces alone;
+- citations become numbers that lead to the references, and long paragraphs are split (tools/citations.py,
+  tools/paragraphs.py);
 - links to the previous and next lessons close the post.
 
 Usage:
@@ -32,6 +34,9 @@ import nbformat
 import tomllib
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import citations  # noqa: E402
+import paragraphs  # noqa: E402
+
 import build  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -214,7 +219,7 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         "",
     ]
     text = "\n".join(front) + "{% raw %}\n\n" + links_line(folder, meta) + "\n\n"
-    text += "\n\n".join(body)
+    text += paragraphs.shorten(citations.numbered("\n\n".join(body)))
     text += "\n\n" + neighbours(number, exported) + "\n\n{% endraw %}\n"
     post = site / "_posts" / f"{meta['published_on']}-{post_slug(folder)}.md"
     post.write_text(text, encoding="utf-8")

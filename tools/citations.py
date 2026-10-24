@@ -70,8 +70,10 @@ def numbered(body: str) -> str:
         text, section, tail = body[: heading.start()], body[start:end], body[end:]
         refs = _references(section)
         trailer = _trailer(section)
-    else:
-        text, tail, refs, trailer = body, "", [], ""
+    else:  # no list yet: one is made from the citations, before the closing {% endraw %} if there is one
+        end = body.rfind("{% endraw %}")
+        text, tail = (body[:end], body[end:]) if end >= 0 else (body, "")
+        refs, trailer = [], ""
 
     by_url = {url: k for k, ref in enumerate(refs) for url in ref["urls"]}
     order: list[int] = []  # indices into refs, in the order they are first cited
@@ -111,7 +113,9 @@ def numbered(body: str) -> str:
             out += " (" + "; ".join(keep) + ")"
         return out
 
-    text = GROUP.sub(group, text)
+    # code blocks and code spans are left alone: parentheses in code are not citations
+    parts = re.split(r"(```.*?```|`[^`\n]*`)", text, flags=re.S)
+    text = "".join(part if k % 2 else GROUP.sub(group, part) for k, part in enumerate(parts))
     if not refs:
         return body
 

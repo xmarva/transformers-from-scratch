@@ -4,7 +4,8 @@ post.md is the post as it will be published: front matter, then markdown with $.
 [[figure-name]] for the article's figures and charts (articles/<name>/figures.py). On the way to the site:
 - every placeholder becomes the light and the dark version of the picture, with the figure's alt text;
 - inline math $...$ becomes $$...$$, which kramdown renders as inline math;
-- citations in parentheses become numbers that lead to the references (tools/citations.py).
+- citations in parentheses become numbers that lead to the references (tools/citations.py);
+- long paragraphs are split at sentence boundaries into pieces of one to three sentences (tools/paragraphs.py).
 
 The pictures themselves are rendered by tools/render.py --article <name> --out <site>/<assets>.
 
@@ -24,6 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import citations  # noqa: E402
 import export_post  # noqa: E402
+import paragraphs  # noqa: E402
 import render  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,7 +57,7 @@ def export(name: str, site: Path, post: Path, assets: str) -> Path:
                          f'alt="{html.escape(alt)}" loading="lazy">')
         return "\n".join(shown)
 
-    body = citations.numbered(PLACEHOLDER.sub(picture, body))
+    body = paragraphs.shorten(citations.numbered(PLACEHOLDER.sub(picture, body)))
     out = site / post
     out.write_text(front + export_post.inline_math(body), encoding="utf-8")
     return out
