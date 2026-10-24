@@ -40,7 +40,7 @@ a generated tutorial.
 - Vague "from X to Y" and "X: a Y and a Z" headings that name no technique: "from notebook to package", "serving:
   an API and a demo".
 - An aphorism closing every paragraph; a pair of short contrasting sentences ("It isn't magic. It's math.");
-  rhetorical questions answered in the next word.
+  rhetorical questions answered in the next word; a clickbait question as a title ("Is BLEU lying?").
 - Stock phrases: "let's dive in", "delve", "crucial", "it's worth noting", "in this section we will", "the magic
   of", "a testament to", "game-changer", "in today's fast-paced world"; em dashes in every sentence.
 
@@ -51,8 +51,8 @@ A lesson's title is what a search engine shows and what decides whether anyone c
 - **clear**: a reader knows from the title alone what the lesson teaches;
 - **findable**: it contains the words people search for (the technique, the library, the task: "BLEU", "RoPE",
   "FastAPI", "machine translation");
-- **intriguing**: a question, a claim or a detail that makes the reader want to know more ("Is BLEU lying?",
-  "What Llama changed in the Transformer");
+- **intriguing** through content, not tricks: a concrete detail the reader didn't expect ("What Llama changed in
+  the Transformer"). No clickbait questions ("Is BLEU lying?") or teasers: they are how generated titles sound;
 - **specific**: it names techniques, not categories. "Serving a Transformer with FastAPI and Gradio" says more than
   "Serving: an API and a demo".
 
