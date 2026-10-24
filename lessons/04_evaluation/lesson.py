@@ -1227,8 +1227,9 @@ def breakages(reference, english):
 print(breakages("Том не знает, где Мэри живёт.", "Tom doesn't know where Mary lives."))
 
 # %% [markdown]
-# The last one is a control: «ё written as е» is the same translation in different typography, so there a good
-# metric should *not* prefer the paraphrase; ideally it barely notices the change.
+# The last one is a control: «ё written as е» is the same translation in different typography. There both
+# translations are correct, so neither preference is wrong; what matters is how much a metric charges for the
+# change of letters, which the second table shows.
 
 # %%
 rows = []
@@ -1275,8 +1276,7 @@ plt.show()
 #
 # Tom becoming John fools all three. For BLEU and chrF that's expected, one word in many. For COMET it is a known
 # blind spot: [Amrhein and Sennrich (2022)](https://aclanthology.org/2022.aacl-main.83/) found COMET models "not
-# sensitive enough to discrepancies in numbers and named entities". The control row shows the opposite problem:
-# for ё written as е, a change of typography, BLEU and chrF punish the copy more than COMET does, which is right.
+# sensitive enough to discrepancies in numbers and named entities".
 #
 # The averages tell the same story from another side: what each kind of damage costs, in each metric's own units.
 
@@ -1297,13 +1297,14 @@ table(pd.DataFrame(rows), digits=2)
 
 # %% [markdown]
 # By BLEU, a sentence missing its «не» is much better than a correct translation worded differently, and ё
-# written as е costs more than a reversed meaning. COMET's numbers are in a narrow band, but their order is
+# written as е costs more than a reversed meaning. chrF is milder about the letters and just as blind to the
+# meaning. COMET hardly charges for ё at all, which is right; its numbers sit in a narrow band, but their order is
 # mostly the order a reader would choose, names aside.
 #
 # > Every metric is blind to something. Before trusting one, find out what.
 
 # %% [markdown]
-# ## 10. Is the difference real? The paired bootstrap
+# ## 10. The paired bootstrap: which differences are real
 #
 # Back to our systems. Every score above was measured on one test set, and a test set is a sample: with other
 # sentences, the numbers would come out somewhat different. Is beam search really better than greedy, or did it
