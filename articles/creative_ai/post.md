@@ -137,6 +137,7 @@ Then something happened to the players. Minkyu Shin and colleagues analysed 5.8 
 - Beaty, R. E., Benedek, M., Silvia, P. J., & Schacter, D. L. (2016). [Creative cognition and brain network dynamics](https://doi.org/10.1016/j.tics.2015.10.004). *Trends in Cognitive Sciences*, 20(2), 87–95.
 - Pinho, A. L., Ullén, F., Castelo-Branco, M., Fransson, P., & de Manzano, Ö. (2016). [Addressing a paradox: dual strategies for creative performance in introspective and extrospective networks](https://doi.org/10.1093/cercor/bhv130). *Cerebral Cortex*, 26(7), 3052–3063.
 - Silver, D., et al. (2016). [Mastering the game of Go with deep neural networks and tree search](https://doi.org/10.1038/nature16961). *Nature*, 529, 484–489.
+- DeepMind. [AlphaGo](https://deepmind.google/research/breakthroughs/alphago/). Google DeepMind research page.
 - Metz, C. (2016). [The sadness and beauty of watching Google's AI play Go](https://www.wired.com/2016/03/sadness-beauty-watching-googles-ai-play-go/). *Wired*.
 - Hassabis, D. (2016). [What we learned in Seoul with AlphaGo](https://blog.google/technology/ai/what-we-learned-in-seoul-with-alphago/). Google.
 - Beaty, R. E., et al. (2018). [Robust prediction of individual creative ability from brain functional connectivity](https://doi.org/10.1073/pnas.1713532115). *PNAS*, 115(5), 1087–1092.
