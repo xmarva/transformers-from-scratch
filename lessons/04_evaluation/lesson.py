@@ -459,7 +459,7 @@ table(pd.DataFrame(scores), digits=1)
 # Where does each system sit on the brevity penalty? The ratio $c/r$ of the total lengths, on the penalty's curve:
 
 # %%
-ratios = np.linspace(0.6, 1.2, 200)
+ratios = np.linspace(0.9, 1.06, 200)  # around 1, where the three systems are
 penalty = np.where(ratios > 1, 1.0, np.exp(1 - 1 / ratios))
 
 fig, ax = plt.subplots(figsize=(6.4, 3))
@@ -679,10 +679,10 @@ for hypothesis, reference in pairs:
     print(f"{hypothesis} | chrF {ours:.1f}, sentence BLEU {bleu:.1f}")
 
 # %% [markdown]
-# For the single word, chrF gives most of the credit and BLEU next to nothing. The researcher sentence, which
-# lesson 3's models really wrote, gets a much higher chrF than BLEU: its two wrong words are wrong in their last
-# letters only. That is also chrF's weakness. Those letters are the whole difference between a woman who is tired
-# and a man who said it, and chrF barely notices them.
+# For the single word, chrF gives most of the credit and BLEU none at all. In the researcher sentence, the mistake
+# lesson 3's models really made, both metrics are generous and chrF more so: the two wrong words differ from the
+# right ones only in their endings. That is chrF's weakness as much as its strength. Those endings are the whole
+# difference between a woman talking about herself and a man talking about somebody else.
 #
 # And the test set, checked against sacreBLEU again:
 
@@ -697,15 +697,19 @@ for row in scores:
     row["chrF"] = chrf_from_stats(chrf_rows[system])
     theirs = sacrebleu.corpus_chrf(list(test[system]), [list(test.ru)]).score
     assert abs(row["chrF"] - theirs) < 1e-6
+    # chrF++: words and word pairs added to the characters (below)
+    chrf_plus = sacrebleu.CHRF(word_order=2)
+    row["chrF++"] = chrf_plus.corpus_score(list(test[system]), [list(test.ru)]).score
 table(pd.DataFrame(scores), digits=1)
 
 # %% [markdown]
 # Exact agreement again. chrF puts the systems in the same order as BLEU, with larger numbers: in characters,
 # every translation shares more with its reference than in whole words.
 #
-# Popović later added word unigrams and bigrams to the characters, **chrF++**
-# ([Popović, 2017](https://aclanthology.org/W17-4770/)), `word_order=2` in sacreBLEU. It changes little here, and
-# the paper itself found that for Russian, with its free word order, words help less than for other languages.
+# The last column is **chrF++** ([Popović, 2017](https://aclanthology.org/W17-4770/)), `word_order=2` in
+# sacreBLEU: chrF with single words and word pairs counted alongside the characters. It changes little here. In
+# the paper, adding single words helped for Russian but adding word pairs didn't, and Popović suggested Russian's
+# rich morphology and free word order as the reason.
 
 # %% [markdown]
 # ## 6. Several references per sentence
@@ -736,8 +740,8 @@ print("sentences with several references:", several, "of", len(references))
 most = references.apply(len).idxmax()  # the first sentence with the most references
 print(most)
 rows = []
-for k in range(0, len(references[most]), 4):
-    rows.append(references[most][k : k + 4])
+for k in range(0, len(references[most]), 3):
+    rows.append(references[most][k : k + 3])
 token_chips(rows, role="dec", mark_spaces=False)
 plt.show()
 
@@ -807,13 +811,14 @@ table(pd.DataFrame(rows), digits=1)
 # measure, dimension by dimension, how close the translation's meaning is to each.
 #
 # It was trained on the **direct assessments** (DA) of WMT 2017 to 2020: translations that annotators scored on a
-# scale from 0 to 100. COMET learned to predict those scores. So it can be no better than they were, and how well
-# it agrees with careful human judgment is a question section 8 puts to it.
+# scale from 0 to 100. COMET learned to predict those scores, so it learned whatever those annotators valued. How
+# well it agrees with careful professional judgment is a question section 8 puts to it.
 #
-# The official package is `unbabel-comet`. We won't install it: its current release pins numpy below 2.0, which
-# would break this notebook's environment, and in a fresh environment it doesn't even import without older
-# versions of `setuptools` and PyTorch. Writing COMET's forward pass ourselves is shorter than fixing that, and it
-# shows what the metric is. Start with its settings, a small file on the Hub:
+# The official package is `unbabel-comet`. We won't install it. Its current release pins numpy below 2.0, which
+# would break this notebook's environment, and in a fresh environment of its own it failed twice before scoring a
+# sentence: at import, for want of a module that recent `setuptools` no longer ships, and then in its data loader,
+# with current PyTorch. Writing COMET's forward pass ourselves is shorter than fixing that, and it shows what the
+# metric is. Start with its settings, a small file on the Hub:
 
 # %%
 COMET_REPO = "Unbabel/wmt22-comet-da"
@@ -1092,8 +1097,8 @@ table(pd.DataFrame(rows).sort_values("COMET", ascending=False), digits=2)
 #
 # ## 8. Metrics against professional translators
 #
-# A metric is a model of human judgment, and it is tested like any model: on data it hasn't seen. The best human
-# judgments available are **MQM** scores ([Freitag et al., 2021](https://aclanthology.org/2021.tacl-1.87/)):
+# A metric is a model of human judgment, and it is tested like any model: on data it hasn't seen. The most careful
+# human judgments available are **MQM** scores ([Freitag et al., 2021](https://aclanthology.org/2021.tacl-1.87/)):
 # professional translators mark every error in a translation, classify it (accuracy, fluency, terminology...) and
 # rate its severity, and the score is minus the weighted sum of the errors. Zero means flawless.
 #
@@ -1159,7 +1164,6 @@ for ax, metric in zip(axes, ["BLEU", "chrF", "COMET"]):
                     fontsize=8)
     ax.set_xlabel("MQM, translators (0 = no errors)")
     ax.set_title(metric)
-axes[0].set_ylabel("metric")
 plt.tight_layout()
 plt.show()
 
@@ -1251,7 +1255,7 @@ for metric, score in [("BLEU", sacrebleu.sentence_bleu), ("chrF", sacrebleu.sent
     stress[f"{metric} broken"] = broken
 
 KINDS = ["«не» dropped", "Tom becomes John", "last word dropped", "left in English",
-         "ё written as е"]
+         "ё written as е"]  # the last one is no error at all
 METRICS = ["BLEU", "chrF", "COMET"]
 preferred = np.zeros((len(KINDS), len(METRICS)))
 for i, kind in enumerate(KINDS):
@@ -1462,8 +1466,8 @@ for ax, metric in zip(axes, ["BLEU", "COMET"]):
         ax.bar_label(drawn, fmt=label_format, fontsize=8, padding=2)
     ax.set_xticks(x, SYSTEMS)
     ax.set_title(metric)
-    ax.set_ylim(0, seen_scores[metric].max() * 1.15)
-axes[0].legend(fontsize=9)
+    ax.set_ylim(0, seen_scores[metric].max() * 1.35)  # room for the legend
+axes[0].legend(fontsize=9, ncol=2, loc="upper left")
 plt.tight_layout()
 plt.show()
 
