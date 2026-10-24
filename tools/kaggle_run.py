@@ -70,14 +70,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("lesson", help="lesson folder name, e.g. 03_training")
     parser.add_argument("--branch", required=True, help="pushed git branch to run")
     parser.add_argument("--secrets", help="private Kaggle dataset with secret files, e.g. qmarva/tfs-secrets")
+    parser.add_argument("--kernel", default=KERNEL, help="the Kaggle kernel to run in; another one runs in parallel")
     args = parser.parse_args(argv)
 
     with tempfile.TemporaryDirectory() as tmp:
         folder = Path(tmp)
         (folder / "run_lesson.py").write_text(RUNNER.format(branch=args.branch, lesson=args.lesson, repo=REPO))
         metadata = {
-            "id": KERNEL,
-            "title": "tfs lesson runner",
+            "id": args.kernel,
+            "title": args.kernel.split("/")[-1].replace("-", " "),
             "code_file": "run_lesson.py",
             "language": "python",
             "kernel_type": "script",
@@ -94,13 +95,13 @@ def main(argv: list[str] | None = None) -> int:
 
     while True:
         time.sleep(60)
-        status = kaggle("kernels", "status", KERNEL)
+        status = kaggle("kernels", "status", args.kernel)
         if any(word in status for word in ("COMPLETE", "ERROR", "CANCEL")):
             print(status.strip())
             break
 
     with tempfile.TemporaryDirectory() as tmp:
-        kaggle("kernels", "output", KERNEL, "-p", tmp, "--file-pattern", "executed.ipynb")
+        kaggle("kernels", "output", args.kernel, "-p", tmp, "--file-pattern", "executed.ipynb")
         out = ROOT / "build" / "executed" / f"{args.lesson}.ipynb"
         out.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(Path(tmp) / "executed.ipynb", out)

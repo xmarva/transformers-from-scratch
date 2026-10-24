@@ -520,7 +520,8 @@ tuned = winner.model
 tuned.load_state_dict(load_file(CHECKPOINT, device=device))
 tuned.eval()
 print("best validation loss:", round(best, 4))
-print("the last three epochs:", [round(h["validation loss"], 4) for h in winner.history[-3:]])
+last_three = [round(record["validation loss"], 4) for record in winner.history[-3:]]
+print("the last three epochs:", last_three)
 table(pd.DataFrame([winner.config]), digits=4)
 
 # %% [markdown]
@@ -546,7 +547,8 @@ for name, model in [("lesson 5", lesson5), ("tuned", tuned)]:
                  "BLEU": sacrebleu.corpus_bleu(list(test[name]), [list(test.ru)]).score,
                  "chrF": sacrebleu.corpus_chrf(list(test[name]), [list(test.ru)]).score,
                  "COMET": test[f"COMET {name}"].mean()})
-table(pd.DataFrame(rows), digits=4)
+scores = pd.DataFrame(rows)
+table(scores, digits=4)
 
 # %%
 rng = np.random.default_rng(SEED)
@@ -560,10 +562,32 @@ print(f"COMET, tuned − lesson 5: {np.mean(differences):+.4f}")
 print(f"95% of the draws between {low:+.4f} and {high:+.4f}")
 
 # %% [markdown]
-# About three thousandths of COMET, and the bootstrap finds them in every draw. That is under half of what lesson
-# 5's three changes to the architecture bought over lesson 3, on the same data in the same twenty epochs. A search
-# doesn't replace a better model. It replaces a habit: lesson 5 trained a new architecture with the numbers of
-# 2017, and they turned out to be close to right, not right.
+# About three thousandths of COMET, and the bootstrap finds them in every draw. Lesson 5 showed what the bootstrap
+# can't see: another training run of the same recipe lands somewhere else. Its seed runs include two more runs of
+# lesson 5's recipe at twenty epochs; here they are next to the model from the Hub and the tuned one:
+
+# %%
+SEED_RUNS = "xmarva/tfs-seed-runs-en-ru"
+path = hf_hub_download(SEED_RUNS, "data/runs.parquet", repo_type="dataset")
+seed_runs = pd.read_parquet(path)
+recipe = seed_runs[(seed_runs.epochs == 20) & (seed_runs.setup == "+ RoPE")]
+ours = scores.set_index("model")
+rows = [{"model": "lesson 5, from the Hub",
+         "validation loss": ours.loc["lesson 5", "validation loss"],
+         "COMET": ours.loc["lesson 5", "COMET"]}]
+for _, run in recipe.iterrows():
+    rows.append({"model": f"lesson 5's recipe, seed {run.seed}",
+                 "validation loss": run["validation loss"], "COMET": run.COMET})
+rows.append({"model": "tuned", "validation loss": ours.loc["tuned", "validation loss"],
+             "COMET": ours.loc["tuned", "COMET"]})
+table(pd.DataFrame(rows), digits=4)
+
+# %% [markdown]
+# Three runs of lesson 5's recipe sit within about a thousandth of COMET of each other, and the tuned model is
+# above all of them by more than they differ among themselves: the three thousandths come from the
+# hyperparameters, not from the seed. That is about as much as lesson 5's four changes to the architecture bought
+# over the 2017 design trained the same way. A search doesn't replace a better model. It replaces a habit: lesson
+# 5 trained a new architecture with the numbers of 2017, and they turned out to be close to right, not right.
 #
 # One number escaped the search. The winner's validation loss was still falling at the twentieth epoch, and twenty
 # is lesson 3's budget, inherited and never searched over.
@@ -582,7 +606,10 @@ by_length = test.groupby("length", observed=True).agg(
 
 rows = []
 for interval, row in by_length.iterrows():
-    tokens = f"over {interval.left}" if interval.right == edges[-1] else f"{interval.left + 1}–{interval.right}"
+    if interval.right == edges[-1]:
+        tokens = f"over {interval.left}"
+    else:
+        tokens = f"{interval.left + 1}–{interval.right}"
     rows.append({"tokens": tokens, "sentences": int(row.sentences),
                  "same translation": f"{row.same:.0%}", "COMET gain": row.gain})
 table(pd.DataFrame(rows), digits=4)
