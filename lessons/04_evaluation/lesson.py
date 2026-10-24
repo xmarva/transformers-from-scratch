@@ -58,6 +58,7 @@ from huggingface_hub import HfApi, hf_hub_download
 from safetensors.torch import load_file
 from tfs import decoding
 from tfs.model import Transformer
+from tfs.viz import heatmap
 from tokenizers import Tokenizer
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -528,7 +529,9 @@ table(pd.DataFrame(rows), digits=1)
 # anything:
 
 # %%
-print(sacrebleu.BLEU().get_signature())
+metric = sacrebleu.BLEU()
+metric.corpus_score(list(test["ours, beam"]), [list(test.ru)])  # a signature needs a score
+print(metric.get_signature())
 
 # %% [markdown]
 # `nrefs:1`: one reference per sentence. `case:mixed`: case matters. `eff:no`: no "effective order" trick for
@@ -918,8 +921,10 @@ def sparsemax_by_search(z, steps=100):
 
 for z in [torch.tensor([2.0, 1.0, -1.0]), torch.tensor([0.5, 0.3, 0.1])]:
     assert torch.allclose(sparsemax(z), sparsemax_by_search(z), atol=1e-6)
-    softmax = z.softmax(dim=0).round(decimals=3)
-    print(z.tolist(), "→ sparsemax", sparsemax(z).tolist(), " softmax", softmax.tolist())
+    shown_sparsemax = [round(x, 3) for x in sparsemax(z).tolist()]
+    shown_softmax = [round(x, 3) for x in z.softmax(dim=0).tolist()]
+    shown_z = [round(x, 1) for x in z.tolist()]
+    print(shown_z, "→ sparsemax", shown_sparsemax, " softmax", shown_softmax)
 
 # %% [markdown]
 # The first example gives all the weight to the largest score: the others are too far behind. The second keeps all
@@ -1506,11 +1511,15 @@ test["English tokens"] = [len(encoding.ids) for encoding in encoded]
 edges = [0, 5, 8, 11, 15, 20, 30, 1000]
 test["length"] = pd.cut(test["English tokens"], edges)
 by_length = test.groupby("length", observed=True)[[f"COMET {s}" for s in SYSTEMS]].mean()
-counts = test.length.value_counts().sort_index()
+counts = test.length.value_counts().reindex(by_length.index)
 
 fig, ax = plt.subplots(figsize=(6.4, 3.2))
-labels = [f"{interval.left + 1}–{interval.right}" for interval in by_length.index]
-labels[-1] = f"over {by_length.index[-1].left}"
+labels = []
+for interval in by_length.index:
+    if interval.right == edges[-1]:
+        labels.append(f"over {interval.left}")
+    else:
+        labels.append(f"{interval.left + 1}–{interval.right}")
 for system, color in zip(SYSTEMS, [COLORS["enc"], COLORS["dec"], COLORS["data"]]):
     ax.plot(labels, by_length[f"COMET {system}"], marker="o", color=color, label=system)
 ax.set_xlabel("length of the English sentence, tokens")
