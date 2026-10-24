@@ -520,6 +520,8 @@ FINAL_EPOCHS = 20 if not SMOKE else 1
 CHECKPOINT = WORK_DIR / "tuned.safetensors"
 best = winner.history[-1]["validation loss"]  # where the search left it
 save_file(winner.model.state_dict(), CHECKPOINT)
+for variable in ["WANDB_SWEEP_ID", "WANDB_SWEEP_PARAM_PATH", "WANDB_RUN_ID"]:
+    os.environ.pop(variable, None)  # older agents leave these set: the run would join the sweep
 winner.run = wandb.init(project=PROJECT, mode=WANDB_MODE,
                         group="lesson 6: successive halving",
                         name=f"trial {winner.number}, to the end",
