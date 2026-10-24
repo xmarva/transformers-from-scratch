@@ -18,6 +18,7 @@ dev = [
     "pandas>=2.0",
     "pytest>=8.0",
     "ruff>=0.6",
+    "sacrebleu>=2.4",
     "safetensors>=0.4",
     "sentencepiece>=0.2",
     "tokenizers>=0.19",
@@ -41,6 +42,11 @@ extend-exclude = ["notebooks"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.isort]
+# the tools import each other by file name; without this, CI (where a package called "build" exists) and a laptop
+# sort these imports differently
+known-first-party = ["build", "citations", "paragraphs", "tfs", "tools"]
 
 [tool.ruff.lint.per-file-ignores]
 # lesson sources are notebooks: imports appear where they are first explained, names like SEED come from the shared

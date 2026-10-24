@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-label="BLEU on one sentence. Our model translates &#x27;Tell Tom that I may be late.&#x27; as Скажи Тому, что я, возможно, опоздаю. The reference says Скажи Тому, что я, может быть, опоздаю. The single different word breaks n-grams of every length: 9 of 10 1-grams match, 7 of 9 2-grams match, 5 of 8 3-grams match, 3 of 7 4-grams match. With the brevity penalty 0.90, BLEU is 60">
+<title>BLEU on one sentence. Our model translates &#x27;Tell Tom that I may be late.&#x27; as Скажи Тому, что я, возможно, опоздаю. The reference says Скажи Тому, что я, может быть, опоздаю. The single different word breaks n-grams of every length: 9 of 10 1-grams match, 7 of 9 2-grams match, 5 of 8 3-grams match, 3 of 7 4-grams match. With the brevity penalty 0.90, BLEU is 60</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="400" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">BLEU on one sentence: a synonym breaks n-grams of every length</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">English: Tell Tom that I may be late.</text>
+<text x="14.0" y="90.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">our model</text>
+<rect x="110.0" y="70.0" width="50.9" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="135.4" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">Скажи</text>
+<rect x="165.9" y="70.0" width="43.7" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="187.7" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">Тому</text>
+<rect x="214.6" y="70.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="227.8" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="246.0" y="70.0" width="36.5" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="264.2" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">что</text>
+<rect x="287.4" y="70.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="300.6" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">я</text>
+<rect x="318.8" y="70.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="332.0" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="350.2" y="70.0" width="72.5" height="28.0" rx="7" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<text x="386.5" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">возможно</text>
+<rect x="427.7" y="70.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="440.9" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="459.1" y="70.0" width="65.3" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="491.8" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">опоздаю</text>
+<rect x="529.4" y="70.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="542.6" y="88.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">.</text>
+<text x="14.0" y="132.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">reference</text>
+<rect x="110.0" y="112.0" width="50.9" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="135.4" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">Скажи</text>
+<rect x="165.9" y="112.0" width="43.7" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="187.7" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">Тому</text>
+<rect x="214.6" y="112.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="227.8" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="246.0" y="112.0" width="36.5" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="264.2" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">что</text>
+<rect x="287.4" y="112.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="300.6" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">я</text>
+<rect x="318.8" y="112.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="332.0" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="350.2" y="112.0" width="50.9" height="28.0" rx="7" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<text x="375.7" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">может</text>
+<rect x="406.1" y="112.0" width="43.7" height="28.0" rx="7" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<text x="428.0" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">быть</text>
+<rect x="454.8" y="112.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="468.0" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">,</text>
+<rect x="486.2" y="112.0" width="65.3" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="518.8" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">опоздаю</text>
+<rect x="556.5" y="112.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="569.7" y="130.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">.</text>
+<text x="14.0" y="182.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">n</text>
+<text x="60.0" y="182.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">n-grams of the translation found in the reference</text>
+<text x="560.0" y="182.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">precision</text>
+<text x="14.0" y="213.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">1</text>
+<rect x="60.0" y="202.0" width="480.0" height="14.0" rx="3" fill="#FCF0DA"/>
+<rect x="60.0" y="202.0" width="432.0" height="14.0" rx="3" fill="#C27A0E"/>
+<text x="560.0" y="213.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">9/10 = 0.90</text>
+<text x="14.0" y="247.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">2</text>
+<rect x="60.0" y="236.0" width="480.0" height="14.0" rx="3" fill="#FCF0DA"/>
+<rect x="60.0" y="236.0" width="373.3" height="14.0" rx="3" fill="#C27A0E"/>
+<text x="560.0" y="247.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">7/9 = 0.78</text>
+<text x="14.0" y="281.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">3</text>
+<rect x="60.0" y="270.0" width="480.0" height="14.0" rx="3" fill="#FCF0DA"/>
+<rect x="60.0" y="270.0" width="300.0" height="14.0" rx="3" fill="#C27A0E"/>
+<text x="560.0" y="281.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">5/8 = 0.62</text>
+<text x="14.0" y="315.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">4</text>
+<rect x="60.0" y="304.0" width="480.0" height="14.0" rx="3" fill="#FCF0DA"/>
+<rect x="60.0" y="304.0" width="205.7" height="14.0" rx="3" fill="#C27A0E"/>
+<text x="560.0" y="315.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">3/7 = 0.43</text>
+<text x="14.0" y="352.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">brevity penalty: 10 words against 11, BP = 0.90</text>
+<text x="14.0" y="376.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">BLEU = BP × geometric mean of the four precisions = 60, for a correct translation</text>
+</svg>

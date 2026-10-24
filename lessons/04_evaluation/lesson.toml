@@ -1,0 +1,8 @@
+number = 4
+short_title = "BLEU, chrF, COMET"
+cover_alt = "Lesson 4 cover: Evaluating translation. opus-mt-en-ru's correct translation of 'Are you coming alone?' scored by BLEU against the test set's other correct translations of the sentence: never above a third of the scale"
+gpu = true
+published = true
+published_on = 2026-10-24
+description = "Evaluate English–Russian translation with BLEU, chrF and COMET written from scratch: multiple references, agreement with professional translators, significance tests and a contaminated test set."
+tags = "machine-translation, evaluation, bleu, comet"
