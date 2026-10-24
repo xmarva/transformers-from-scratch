@@ -64,7 +64,17 @@ def paper_schedule(step, d_model=256, warmup=4000):
 
 
 def train_steps(
-    model, optimizer, batches, schedule, n_steps, pad_id, first_step=1, use_amp=True, clip=1.0, device="cuda"
+    model,
+    optimizer,
+    batches,
+    schedule,
+    n_steps,
+    pad_id,
+    first_step=1,
+    use_amp=True,
+    clip=1.0,
+    label_smoothing=0.1,
+    device="cuda",
 ):
     """`n_steps` training steps over the batches in shuffled order; returns the loss of every step."""
     use_amp = use_amp and device == "cuda"
@@ -78,7 +88,7 @@ def train_steps(
             for group in optimizer.param_groups:
                 group["lr"] = schedule(first_step + len(losses))
             with torch.autocast(device, dtype=torch.float16, enabled=use_amp):
-                loss = batch_loss(model, batches[index], pad_id, device=device)
+                loss = batch_loss(model, batches[index], pad_id, label_smoothing, device=device)
             optimizer.zero_grad()
             scaler.scale(loss).backward()
             scaler.unscale_(optimizer)
