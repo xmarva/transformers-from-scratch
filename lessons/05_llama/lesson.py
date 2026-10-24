@@ -24,12 +24,13 @@
 # 1. Read Llama 3.1's configuration and weight shapes without downloading its weights.
 # 2. Make training faster with fused attention, the first thing every modern implementation changes.
 # 3. Write pre-norm, RMSNorm, SwiGLU and rotary position embeddings, each checked against a reference.
-# 4. Train an ablation ladder: five models, one change apart, and find out which changes matter.
+# 4. Train an ablation ladder: five models, one change apart, and see how much of what it shows a new seed undoes.
 # 5. Add a KV cache, train the final model with lesson 3's full recipe, compare it with lesson 3's, and publish it.
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
-# T4 GPU*. The notebook downloads the data and tokenizer of lesson 1, the model of lesson 3 and the COMET checkpoint
-# of lesson 4, and trains ten models, most of them briefly; on a T4 it runs in about an hour and a quarter.
+# T4 GPU*. The notebook downloads the data and tokenizer of lesson 1, the model of lesson 3, the COMET checkpoint
+# of lesson 4 and the course's seed runs, and trains ten models, most of them briefly; on a T4 it runs in about an
+# hour and a quarter.
 
 # %% tags=["include:setup"]
 
@@ -823,10 +824,10 @@ ax.legend(fontsize=8)
 plt.show()
 
 # %% [markdown]
-# Six curves, falling together; the differences at the end are small. Mind the minutes in the printout too: every
-# change made training a little slower. Our RMSNorm and RoPE are several small operations each, and every one is
-# a separate trip through the GPU's memory, the very thing fused attention avoids. Production implementations fuse
-# them as well.
+# Six curves, falling together; the differences at the end are small. Mind the minutes in the printout too:
+# RMSNorm, SwiGLU and RoPE each made training a little slower. Our RMSNorm and RoPE are several small operations
+# each, and every one is a separate trip through the GPU's memory, the very thing fused attention avoids.
+# Production implementations fuse them as well.
 #
 # The validation loss is a loss, not a translation. Translate a sample of 5,000 test pairs with each model, greedy
 # as in lesson 4's comparison, and score them with lesson 4's metrics: BLEU and chrF from sacreBLEU, which lesson 4
@@ -867,12 +868,11 @@ ladder_scores = pd.DataFrame(rows)
 table(ladder_scores, digits=3)
 
 # %% [markdown]
-# Read the table in pairs of neighbours. Pre-norm made the model worse, by more than the two 2017 runs differ:
-# Wang et al.'s caveat about shallow models, measured. RMSNorm changed nothing, which is the whole of its promise:
-# the same quality for less computation. SwiGLU won back what pre-norm had cost and more, and RoPE added to that.
-#
-# BLEU's differences between rungs are hardly larger than its difference between the two seeds; COMET separates
-# them more clearly, as lesson 4 found.
+# Read the last row first: the 2017 design trained again with another seed. Nothing changed but chance, and the
+# two runs differ in COMET by about as much as neighbouring rungs do. They don't even agree on the direction: the
+# second run has the higher loss and the higher COMET. Keep that in mind for the rest of the table. Pre-norm
+# raised the loss and lowered COMET, Wang et al.'s caveat about shallow models; RMSNorm left both where they were,
+# which is the whole of its promise; SwiGLU and RoPE lowered the loss and raised COMET.
 #
 # Which of the differences are real? Lesson 4's paired bootstrap, on COMET, which lesson 4 found the least noisy
 # per sentence: every model against the 2017 model, on the same thousand resampled test sets.
@@ -901,9 +901,72 @@ for name in ladder_models:
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# The bootstrap puts it in numbers. Pre-norm and RMSNorm are worse than the 2017 model in practically every draw,
-# SwiGLU's rung is better in most draws but not all, RoPE's in all of them, and the second seed lands where chance
-# puts it. At our depth and budget, then: pre-norm costs a little, RMSNorm is free, SwiGLU and RoPE pay.
+# The bootstrap is sure of almost every row, including the one that can't mean anything: it finds the second run
+# of the 2017 design better than the first in every draw, by about as much as the RoPE rung. The bootstrap isn't
+# wrong. It resamples the test sentences and keeps the trained models fixed, so it answers a narrower question:
+# would these trained models change places on another test set? Whether another training run would land in the
+# same place is a different question, and a different seed is enough to change the answer: other starting
+# weights, the batches in another order.
+#
+# The only way to measure that is to train again. The course trained three more seeds of the 2017 design and four
+# of the last rung with this lesson's code (`seed_runs.py`, next to this notebook) and published the scores. With
+# this notebook's own runs, that makes five runs of each:
+
+# %%
+SEED_RUNS = "xmarva/tfs-seed-runs-en-ru"
+path = hf_hub_download(SEED_RUNS, "data/runs.parquet", repo_type="dataset")
+seed_runs = pd.read_parquet(path)
+columns = ["setup", "seed", "validation loss", "COMET"]
+
+ours = ladder_scores.set_index("model")
+here = []  # this notebook's own runs: (setup, seed, name in the ladder)
+here.append(("2017", SEED, "2017"))
+here.append(("2017", SEED + 1, "2017, another seed"))
+here.append(("+ RoPE", SEED, "+ RoPE"))
+rows = []
+for setup, seed, name in here:
+    rows.append({"setup": setup, "seed": seed, "COMET": ours.loc[name, "COMET"],
+                 "validation loss": ours.loc[name, "validation loss"]})
+other_seeds = seed_runs[seed_runs.epochs == 5][columns]
+short_runs = pd.concat([pd.DataFrame(rows), other_seeds], ignore_index=True)
+
+designs = [("2017", COLORS["muted"]), ("+ RoPE", COLORS["att"])]
+fig, axes = plt.subplots(1, 2, figsize=(6.4, 2.9))
+for ax, metric in zip(axes, ["COMET", "validation loss"]):
+    for k, (setup, color) in enumerate(designs):
+        values = short_runs[short_runs.setup == setup][metric].to_numpy()
+        offsets = np.linspace(-0.12, 0.12, len(values))  # close values stay visible
+        ax.scatter(k + offsets, values, color=color, s=30, zorder=3)
+    ax.set_xticks([0, 1], ["2017", "all four changes"])
+    ax.set_xlim(-0.6, 1.6)
+    ax.set_title(metric)
+fig.suptitle("Five runs of each design, five epochs, different seeds")
+plt.show()
+
+def design(setup):
+    return "2017" if setup == "2017" else "all four changes"
+
+
+rows = []
+for setup, runs in short_runs.groupby("setup", sort=False):
+    losses = runs["validation loss"]
+    rows.append({"design": design(setup), "runs": len(runs),
+                 "COMET from": runs.COMET.min(), "to": runs.COMET.max(),
+                 "validation loss from": losses.min(), "to ": losses.max()})
+table(pd.DataFrame(rows), digits=4)
+
+# %% [markdown]
+# Five runs of the same design spread over about a hundredth of COMET, as far as the largest step of the ladder.
+# One run per change can't rank pre-norm, RMSNorm, SwiGLU and RoPE by COMET on five thousand sentences, however
+# sure the bootstrap is.
+#
+# The validation loss is steadier: every run of the last rung is below every run of the 2017 design. So the
+# ladder's overall claim holds, on the loss: all four changes together train to a lower loss in five epochs. The
+# single rungs are less certain. Pre-norm's and SwiGLU's moves in the loss are larger than the spread between
+# seeds, RoPE's is about as large, RMSNorm's is nothing.
+#
+# One run per change and a confident table is an easy way to fool yourself, and the way out costs compute and
+# nothing else.
 #
 # Why keep pre-norm? Because this ladder measures quality after five epochs, and pre-norm's gift is stability: a
 # model that trains without a warm-up and survives higher learning rates. That matters more as models get deeper,
@@ -1026,12 +1089,12 @@ print(f"without a cache: {plain_seconds:.1f} s, with: {cached_seconds:.1f} s")
 # %% [markdown]
 # ## 12. The final model
 #
-# The ladder says that all four changes together beat the 2017 design after five epochs. Does that hold over a
-# full training run? Train the last rung, all four changes, the way lesson 3 trained its model.
+# Over five seeds, all four changes together train to a lower loss than the 2017 design in five epochs. Does that
+# hold over a full training run? Train the last rung, all four changes, the way lesson 3 trained its model.
 #
 # The recipe is lesson 3's, to the letter: twenty epochs, the 2017 schedule with its 4,000 warm-up steps, the
-# weights of the epoch with the lowest validation loss. The only difference is the architecture, so the comparison
-# with lesson 3's model is fair.
+# weights of the epoch with the lowest validation loss. The architecture is the only thing changed on purpose; the
+# starting weights differ too, as between any two runs.
 
 # %%
 FINAL = VARIANTS["+ RoPE"]
@@ -1048,8 +1111,7 @@ print("best validation loss:", round(best, 3))
 print("lesson 3's model:", round(lesson3_loss, 3))
 
 # %% [markdown]
-# Lower than lesson 3's model, with the same data, the same budget and the same recipe. Only the architecture
-# differs.
+# Lower than lesson 3's model, with the same data, the same budget and the same recipe.
 #
 # Now both models on the whole test set, with lesson 3's beam search (four beams), all three metrics, and the
 # paired bootstrap on the differences:
@@ -1087,9 +1149,45 @@ print(f"COMET, this lesson − lesson 3: {np.mean(differences):+.4f}")
 print(f"95% of the draws between {low:+.4f} and {high:+.4f}")
 
 # %% [markdown]
-# The new model is ahead on every metric, and the bootstrap finds the difference in every draw. By lesson 4's
-# yardstick it is a small step, a fraction of the distance to opus-mt-en-ru, and that's the honest size of what
-# an architecture buys when the data stays the same.
+# Ahead on every metric, and in every bootstrap draw. But section 10 showed what the bootstrap can't see: lesson
+# 3's model is one training run of the 2017 design, and another run would have landed somewhere else. The seed
+# runs include two more twenty-epoch runs of each design, trained with this lesson's code and scored the same way:
+
+# %%
+rows = [{"model": "lesson 3", "design": "2017", "validation loss": lesson3_loss,
+         "COMET": test["COMET lesson 3"].mean()},
+        {"model": "this lesson", "design": "all four changes", "validation loss": best,
+         "COMET": test["COMET this lesson"].mean()}]
+for _, run in seed_runs[seed_runs.epochs == 20].iterrows():
+    rows.append({"model": f"seed {run.seed}", "design": design(run.setup),
+                 "validation loss": run["validation loss"], "COMET": run.COMET})
+table(pd.DataFrame(rows).sort_values(["design", "COMET"]), digits=4)
+
+# %%
+path = hf_hub_download(SEED_RUNS, "data/test.parquet", repo_type="dataset")
+per_sentence = pd.read_parquet(path)
+per_sentence = per_sentence.loc[test.index]  # the same pairs, in the order of our test set
+assert (per_sentence.en.to_numpy() == test.en.to_numpy()).all()
+a = test["COMET this lesson"].to_numpy()
+for name in ["2017 s43, 20 epochs", "2017 s44, 20 epochs"]:
+    b = per_sentence[f"COMET {name}"].to_numpy()
+    rng = np.random.default_rng(SEED)
+    differences = []
+    for _ in range(1_000):
+        rows_drawn = rng.integers(0, len(test), size=len(test))
+        differences.append(a[rows_drawn].mean() - b[rows_drawn].mean())
+    low, high = np.percentile(differences, [2.5, 97.5])
+    seed = name.removesuffix(", 20 epochs")
+    print(f"this lesson − {seed}: {np.mean(differences):+.4f}, "
+          f"95% of the draws between {low:+.4f} and {high:+.4f}")
+
+# %% [markdown]
+# At twenty epochs the seeds agree far more closely than at five: the three runs of the new design are within a
+# thousandth of COMET of each other. Lesson 3's model is the lowest of the three 2017 runs, so part of the gap
+# above was that run's bad luck. Against the 2017 runs from this lesson's code the gain is smaller, and still
+# there: every run of the new design is above every run of the old one. That's the honest size of what an
+# architecture buys when the data stays the same: a few thousandths of COMET, a fraction of the distance to
+# opus-mt-en-ru.
 #
 # Lesson 4 found where lesson 3's model breaks: long sentences. Does the new one hold together longer?
 
@@ -1141,7 +1239,10 @@ for sentence in PROBES:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# PROBES_TEXT
+# On short sentences the two models write the same words. The researcher sentence got halfway there: one
+# researcher instead of several, and the adjective now agrees with *она*, but the noun and the verb are still
+# masculine, the agreement lesson 2's attention maps were about. The long sentence about whales is still nonsense,
+# only shorter: the first words are right, and then the model loses the thread.
 #
 # ## 13. Save and publish
 #
