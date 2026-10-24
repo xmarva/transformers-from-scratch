@@ -29,7 +29,7 @@
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. The notebook downloads the data and tokenizer of lesson 1, the model of lesson 3 and the COMET checkpoint
-# of lesson 4, and trains ten models, most of them briefly; it runs in about RUNTIME.
+# of lesson 4, and trains ten models, most of them briefly; on a T4 it runs in about an hour and a quarter.
 
 # %% tags=["include:setup"]
 
@@ -704,7 +704,9 @@ fused = ms_per_step(new_model(VARIANTS["2017"]), TIMING_STEPS)
 print(f"lesson 2's attention: {manual:.0f} ms per step; fused: {fused:.0f} ms per step")
 
 # %% [markdown]
-# FUSED_TEXT
+# On our sentences, a dozen tokens long, fused attention saves only a little: the $T \times T$ matrices are tiny,
+# and the time goes elsewhere. FlashAttention's gains grow with the length of the sequence, which is why every
+# model with a long context uses it. For us it's a small gain for free, with the same results.
 #
 # ## 10. The ablation ladder
 #
@@ -744,7 +746,9 @@ ax.legend(fontsize=9)
 plt.show()
 
 # %% [markdown]
-# WARMUP_TEXT
+# Without a warm-up, the 2017 model gets stuck, as in lesson 3. The pre-norm model doesn't: its loss falls from
+# the first steps at full speed. It is behind the 2017 model *with* a warm-up, though. Pre-norm removes the need
+# for a warm-up, not the benefit of one.
 #
 # ### Five models, one budget
 #
@@ -819,7 +823,10 @@ ax.legend(fontsize=8)
 plt.show()
 
 # %% [markdown]
-# LADDER_CURVES_TEXT
+# Six curves, falling together; the differences at the end are small. Mind the minutes in the printout too: every
+# change made training a little slower. Our RMSNorm and RoPE are several small operations each, and every one is
+# a separate trip through the GPU's memory, the very thing fused attention avoids. Production implementations fuse
+# them as well.
 #
 # The validation loss is a loss, not a translation. Translate a sample of 5,000 test pairs with each model, greedy
 # as in lesson 4's comparison, and score them with lesson 4's metrics: BLEU and chrF from sacreBLEU, which lesson 4
@@ -860,7 +867,12 @@ ladder_scores = pd.DataFrame(rows)
 table(ladder_scores, digits=3)
 
 # %% [markdown]
-# LADDER_TABLE_TEXT
+# Read the table in pairs of neighbours. Pre-norm made the model worse, by more than the two 2017 runs differ:
+# Wang et al.'s caveat about shallow models, measured. RMSNorm changed nothing, which is the whole of its promise:
+# the same quality for less computation. SwiGLU won back what pre-norm had cost and more, and RoPE added to that.
+#
+# BLEU's differences between rungs are hardly larger than its difference between the two seeds; COMET separates
+# them more clearly, as lesson 4 found.
 #
 # Which of the differences are real? Lesson 4's paired bootstrap, on COMET, which lesson 4 found the least noisy
 # per sentence: every model against the 2017 model, on the same thousand resampled test sets.
@@ -889,7 +901,13 @@ for name in ladder_models:
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# BOOTSTRAP_TEXT
+# The bootstrap puts it in numbers. Pre-norm and RMSNorm are worse than the 2017 model in practically every draw,
+# SwiGLU's rung is better in most draws but not all, RoPE's in all of them, and the second seed lands where chance
+# puts it. At our depth and budget, then: pre-norm costs a little, RMSNorm is free, SwiGLU and RoPE pay.
+#
+# Why keep pre-norm? Because this ladder measures quality after five epochs, and pre-norm's gift is stability: a
+# model that trains without a warm-up and survives higher learning rates. That matters more as models get deeper,
+# and lesson 6, which tunes the learning rate, measures how much it is worth to us.
 
 # %% [markdown]
 # ## 11. A KV cache
@@ -1001,12 +1019,15 @@ print(f"same translation: {same} of {len(sentences)}")
 print(f"without a cache: {plain_seconds:.1f} s, with: {cached_seconds:.1f} s")
 
 # %% [markdown]
-# CACHE_TEXT
+# The same translations, several times faster. And the longer the sentence, the bigger the factor: without a cache,
+# step $t$ recomputes $t$ positions, so a sentence of $T$ tokens costs about $T^2/2$ of them; with the cache it
+# costs $T$.
 
 # %% [markdown]
 # ## 12. The final model
 #
-# FINAL_INTRO
+# The ladder says that all four changes together beat the 2017 design after five epochs. Does that hold over a
+# full training run? Train the last rung, all four changes, the way lesson 3 trained its model.
 #
 # The recipe is lesson 3's, to the letter: twenty epochs, the 2017 schedule with its 4,000 warm-up steps, the
 # weights of the epoch with the lowest validation loss. The only difference is the architecture, so the comparison
@@ -1027,7 +1048,8 @@ print("best validation loss:", round(best, 3))
 print("lesson 3's model:", round(lesson3_loss, 3))
 
 # %% [markdown]
-# FINAL_LOSS_TEXT
+# Lower than lesson 3's model, with the same data, the same budget and the same recipe. Only the architecture
+# differs.
 #
 # Now both models on the whole test set, with lesson 3's beam search (four beams), all three metrics, and the
 # paired bootstrap on the differences:
@@ -1065,7 +1087,9 @@ print(f"COMET, this lesson − lesson 3: {np.mean(differences):+.4f}")
 print(f"95% of the draws between {low:+.4f} and {high:+.4f}")
 
 # %% [markdown]
-# FINAL_TEST_TEXT
+# The new model is ahead on every metric, and the bootstrap finds the difference in every draw. By lesson 4's
+# yardstick it is a small step, a fraction of the distance to opus-mt-en-ru, and that's the honest size of what
+# an architecture buys when the data stays the same.
 #
 # Lesson 4 found where lesson 3's model breaks: long sentences. Does the new one hold together longer?
 
@@ -1094,7 +1118,9 @@ ax.legend()
 plt.show()
 
 # %% [markdown]
-# LENGTH_TEXT
+# The gain isn't spread evenly. On short sentences the two models are equal; the longer the sentence, the further
+# ahead the new one, and long sentences are exactly where lesson 4 found lesson 3's model breaking. It still breaks
+# past thirty tokens, only later and less badly.
 #
 # The two models' translations of lesson 3's sentences, side by side:
 
