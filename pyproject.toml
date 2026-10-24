@@ -44,6 +44,11 @@ extend-exclude = ["notebooks"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
+[tool.ruff.lint.isort]
+# the tools import each other by file name; without this, CI (where a package called "build" exists) and a laptop
+# sort these imports differently
+known-first-party = ["build", "citations", "paragraphs", "tfs", "tools"]
+
 [tool.ruff.lint.per-file-ignores]
 # lesson sources are notebooks: imports appear where they are first explained, names like SEED come from the shared
 # setup cell (undefined names are caught by running the lesson in CI), markdown cells hold long links (code lines

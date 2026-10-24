@@ -34,10 +34,9 @@ import nbformat
 import tomllib
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import build  # noqa: E402
 import citations  # noqa: E402
 import paragraphs  # noqa: E402
-
-import build  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://xmarva.github.io"
