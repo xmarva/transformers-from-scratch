@@ -34,7 +34,7 @@
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. The notebook downloads the data and tokenizer of lesson 1, the model of lesson 3, opus-mt-en-ru and the
-# COMET checkpoint (2.3 GB). It runs in about half an hour.
+# COMET checkpoint (2.3 GB). On a T4 it runs in about twenty minutes.
 
 # %% tags=["include:setup"]
 
