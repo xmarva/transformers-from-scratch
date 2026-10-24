@@ -470,9 +470,20 @@ SWEEP = {
 def sweep_run():
     with wandb.init() as run:  # the agent filled run.config with the controller's choice
         trial = Trial(0, dict(run.config), run=run)
-        for _ in range(3):
-            trial.train(1)
+        try:
+            for _ in range(3):
+                trial.train(1)
+        except Exception as error:
+            if type(error) is not Exception:  # a real error, not the controller's stop
+                raise
+            # early stopping: the agent stops a run by raising a bare Exception inside it
+            print(f"{run.name}: stopped by the controller after {trial.epochs} epochs")
 
+
+# the agent shuts W&B down when it finishes, and a run left open can't log any more:
+# the search's runs end here, and the winner gets a new one in section 8
+for trial in trials:
+    trial.run.finish()
 
 SWEEP_RUNS = 6
 if WANDB_MODE == "online":
@@ -484,8 +495,8 @@ if WANDB_MODE == "online":
         rows.append({"run": swept_run.name, "state": swept_run.state,
                      "validation loss": swept_run.summary.get("validation loss"),
                      **{k: swept_run.config.get(k) for k in SWEEP["parameters"]}})
-    table(pd.DataFrame(rows).sort_values("validation loss"), digits=4)
     print("the sweep:", swept.url)
+    display(table(pd.DataFrame(rows).sort_values("validation loss"), digits=4))
 else:
     print("no W&B key: the sweep needs W&B's servers, so this cell does nothing offline")
 
@@ -509,13 +520,16 @@ FINAL_EPOCHS = 20 if not SMOKE else 1
 CHECKPOINT = WORK_DIR / "tuned.safetensors"
 best = winner.history[-1]["validation loss"]  # where the search left it
 save_file(winner.model.state_dict(), CHECKPOINT)
+winner.run = wandb.init(project=PROJECT, mode=WANDB_MODE,
+                        group="lesson 6: successive halving",
+                        name=f"trial {winner.number}, to the end",
+                        config=winner.config, reinit="create_new")
 while winner.epochs < FINAL_EPOCHS:
     loss = winner.train(2)  # one more epoch
     if loss < best:
         best = loss
         save_file(winner.model.state_dict(), CHECKPOINT)
-for trial in trials:
-    trial.run.finish()
+winner.run.finish()
 tuned = winner.model
 tuned.load_state_dict(load_file(CHECKPOINT, device=device))
 tuned.eval()
