@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" role="img" aria-label="chrF on the word сказал against the reference сказала: for n from 1 to 6, every character n-gram of the translation is found in the reference, so precision is 1; the reference has one n-gram more at every n, the ones with its last letter, so recall falls as n grows. Averaged, precision 1.00 and recall 0.73 give chrF 78; a word-level metric sees one wrong word">
+<title>chrF on the word сказал against the reference сказала: for n from 1 to 6, every character n-gram of the translation is found in the reference, so precision is 1; the reference has one n-gram more at every n, the ones with its last letter, so recall falls as n grows. Averaged, precision 1.00 and recall 0.73 give chrF 78; a word-level metric sees one wrong word</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="360" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">chrF gives partial credit: «сказал» against «сказала»</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the translation&#x27;s character n-grams (filled: found in the reference), and the ones it missed</text>
+<text x="14.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">n</text>
+<text x="52.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">the translation&#x27;s n-grams</text>
+<text x="452.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">missed</text>
+<text x="560.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">precision</text>
+<text x="660.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">recall</text>
+<text x="14.0" y="112.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">1</text>
+<rect x="52.0" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="65.2" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">с</text>
+<rect x="82.4" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="95.6" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">к</text>
+<rect x="112.8" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="126.0" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">а</text>
+<rect x="143.2" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="156.4" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">а</text>
+<rect x="173.6" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="186.8" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">з</text>
+<rect x="204.0" y="94.0" width="26.4" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="217.2" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">л</text>
+<rect x="452.0" y="94.0" width="26.4" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="465.2" y="111.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">а</text>
+<text x="560.0" y="112.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">6/6</text>
+<text x="660.0" y="112.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">6/7</text>
+<text x="14.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">2</text>
+<rect x="52.0" y="128.0" width="29.3" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="66.6" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">ск</text>
+<rect x="85.3" y="128.0" width="29.3" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="99.9" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">ка</text>
+<rect x="118.6" y="128.0" width="29.3" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="133.2" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">аз</text>
+<rect x="151.8" y="128.0" width="29.3" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="166.5" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">за</text>
+<rect x="185.1" y="128.0" width="29.3" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="199.8" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">ал</text>
+<rect x="452.0" y="128.0" width="29.3" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="466.6" y="145.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">ла</text>
+<text x="560.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">5/5</text>
+<text x="660.0" y="146.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">5/6</text>
+<text x="14.0" y="180.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">3</text>
+<rect x="52.0" y="162.0" width="36.5" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="70.2" y="179.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">ска</text>
+<rect x="92.5" y="162.0" width="36.5" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="110.7" y="179.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">каз</text>
+<rect x="133.0" y="162.0" width="36.5" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="151.2" y="179.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">аза</text>
+<rect x="173.4" y="162.0" width="36.5" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="191.7" y="179.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">зал</text>
+<rect x="452.0" y="162.0" width="36.5" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="470.2" y="179.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">ала</text>
+<text x="560.0" y="180.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">4/4</text>
+<text x="660.0" y="180.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">4/5</text>
+<text x="14.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">4</text>
+<rect x="52.0" y="196.0" width="43.7" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="73.8" y="213.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">сказ</text>
+<rect x="99.7" y="196.0" width="43.7" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="121.5" y="213.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">каза</text>
+<rect x="147.4" y="196.0" width="43.7" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="169.2" y="213.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">азал</text>
+<rect x="452.0" y="196.0" width="43.7" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="473.8" y="213.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">зала</text>
+<text x="560.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">3/3</text>
+<text x="660.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">3/4</text>
+<text x="14.0" y="248.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">5</text>
+<rect x="52.0" y="230.0" width="50.9" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="77.4" y="247.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">сказа</text>
+<rect x="106.9" y="230.0" width="50.9" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="132.3" y="247.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">казал</text>
+<rect x="452.0" y="230.0" width="50.9" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="477.4" y="247.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">азала</text>
+<text x="560.0" y="248.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">2/2</text>
+<text x="660.0" y="248.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">2/3</text>
+<text x="14.0" y="282.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">6</text>
+<rect x="52.0" y="264.0" width="58.1" height="26.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="81.0" y="281.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">сказал</text>
+<rect x="452.0" y="264.0" width="58.1" height="26.0" rx="7" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="481.0" y="281.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#A82D42" xml:space="preserve">казала</text>
+<text x="560.0" y="282.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1/1</text>
+<text x="660.0" y="282.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1/2</text>
+<text x="14.0" y="324.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">average over n: precision 1.00, recall 0.73; with recall weighted β = 2 times, chrF = 78</text>
+<text x="14.0" y="346.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">BLEU compares whole words: «сказал» is simply not «сказала».</text>
+</svg>
