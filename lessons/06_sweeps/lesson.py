@@ -156,7 +156,8 @@ def new_model(setup=LLAMA_STYLE, dropout=0.1, seed=SEED):
 # half:
 
 # %%
-run = wandb.init(project=PROJECT, mode=WANDB_MODE, name="lesson 6: lesson 5's recipe, one epoch",
+run = wandb.init(project=PROJECT, mode=WANDB_MODE,
+                 name="lesson 6: lesson 5's recipe, one epoch",
                  config={"peak_lr": 1e-3, "warmup": 1_000, "dropout": 0.1,
                          "label_smoothing": 0.1, "batch_tokens": 6_000})
 config = run.config  # the hyperparameters, stored with the run
@@ -317,8 +318,9 @@ class Trial:
         self.optimizer = training.adam(self.model)
         self.steps, self.epochs, self.history = 0, 0.0, []
         if run is None:  # every trial is a W&B run of its own, all of them open at once
-            run = wandb.init(project=PROJECT, mode=WANDB_MODE, group="lesson 6: successive halving",
-                             name=f"trial {number}", config=config, reinit="create_new")
+            run = wandb.init(project=PROJECT, mode=WANDB_MODE,
+                             group="lesson 6: successive halving", name=f"trial {number}",
+                             config=config, reinit="create_new")
         self.run = run
 
     def schedule(self, step):
