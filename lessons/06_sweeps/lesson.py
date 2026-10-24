@@ -520,6 +520,7 @@ tuned = winner.model
 tuned.load_state_dict(load_file(CHECKPOINT, device=device))
 tuned.eval()
 print("best validation loss:", round(best, 4))
+print("the last three epochs:", [round(h["validation loss"], 4) for h in winner.history[-3:]])
 table(pd.DataFrame([winner.config]), digits=4)
 
 # %% [markdown]
@@ -559,7 +560,37 @@ print(f"COMET, tuned − lesson 5: {np.mean(differences):+.4f}")
 print(f"95% of the draws between {low:+.4f} and {high:+.4f}")
 
 # %% [markdown]
-# FINAL_TEXT
+# About three thousandths of COMET, and the bootstrap finds them in every draw. That is under half of what lesson
+# 5's three changes to the architecture bought over lesson 3, on the same data in the same twenty epochs. A search
+# doesn't replace a better model. It replaces a habit: lesson 5 trained a new architecture with the numbers of
+# 2017, and they turned out to be close to right, not right.
+#
+# One number escaped the search. The winner's validation loss was still falling at the twentieth epoch, and twenty
+# is lesson 3's budget, inherited and never searched over.
+#
+# Where the three thousandths land, by the length of the English sentence:
+
+# %%
+encoded = tokenizer.encode_batch(list(test.en))
+test["English tokens"] = [len(encoding.ids) for encoding in encoded]
+edges = [0, 5, 8, 11, 15, 20, 30, 1000]
+test["length"] = pd.cut(test["English tokens"], edges)
+test["gain"] = test["COMET tuned"] - test["COMET lesson 5"]
+test["same translation"] = test["tuned"] == test["lesson 5"]
+by_length = test.groupby("length", observed=True).agg(
+    sentences=("gain", "size"), same=("same translation", "mean"), gain=("gain", "mean"))
+
+rows = []
+for interval, row in by_length.iterrows():
+    tokens = f"over {interval.left}" if interval.right == edges[-1] else f"{interval.left + 1}–{interval.right}"
+    rows.append({"tokens": tokens, "sentences": int(row.sentences),
+                 "same translation": f"{row.same:.0%}", "COMET gain": row.gain})
+table(pd.DataFrame(rows), digits=4)
+
+# %% [markdown]
+# On short sentences the two models mostly write the same words, and the gain is a rounding error. Past fifteen
+# tokens they almost never agree, and that's where the gain is: the same shape as lesson 5's, where the
+# architecture helped the long sentences too. Long sentences are rare in Tatoeba, so the average hides most of it.
 #
 # ## 9. Save and publish
 
