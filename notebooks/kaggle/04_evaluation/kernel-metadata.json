@@ -1,0 +1,14 @@
+{
+  "id": "qmarva/transformers-from-scratch-04-bleu-chrf-comet",
+  "title": "Transformers from Scratch · 04 BLEU, chrF, COMET",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
