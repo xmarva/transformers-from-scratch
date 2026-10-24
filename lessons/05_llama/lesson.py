@@ -7,8 +7,10 @@
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/05/hero-light.png" width="760" alt="Our 2017-style Transformer next to Llama 3.1 8B, from their config files: Llama is far bigger, and five design details differ: grouped key/value heads, RMSNorm before each block instead of LayerNorm after it, SwiGLU instead of ReLU, rotary position embeddings instead of added sinusoids, and no biases">
 #
-# The size differs by a factor of a thousand, and nobody is surprised by that. The five highlighted rows are more
-# interesting. Each is a change that survived years of people trying to improve the Transformer, and most such
+# The size differs by a factor of a thousand, and nobody is surprised by that. Meta's paper is frank about the
+# rest: Llama 3 "uses a standard, dense Transformer architecture", and its gains are "primarily driven by
+# improvements in data quality and diversity as well as by increased training scale"
+# ([Llama Team, 2024](https://arxiv.org/abs/2407.21783)). The five highlighted rows are the more interesting part. Each is a change that survived years of people trying to improve the Transformer, and most such
 # attempts didn't survive: when a team at Google reimplemented dozens of published modifications in one codebase,
 # most of them made no real difference ([Narang et al., 2021](https://arxiv.org/abs/2102.11972)).
 #
@@ -191,7 +193,9 @@ print("training batches:", len(train_batches), "validation batches:", len(valid_
 # **FlashAttention** ([Dao et al., 2022](https://arxiv.org/abs/2205.14135)) computes exactly the same thing in
 # tiles small enough to stay in the GPU's fast on-chip memory, so the $T \times T$ matrix never travels to the
 # slow memory at all. The result is not an approximation; the arithmetic is merely reordered. PyTorch ships such
-# kernels behind one function, `F.scaled_dot_product_attention`, and picks the fastest one the GPU supports.
+# kernels behind one function, `F.scaled_dot_product_attention`, and picks the fastest one the GPU supports. On a
+# T4 that isn't FlashAttention itself, which needs a newer GPU, but a memory-efficient kernel that also works
+# through the matrix piece by piece.
 #
 # Lesson 2's attention, with one change: the mask is now boolean, `True` where a position may be seen, which is
 # what the fused function takes as well. Then the check that both compute the same:
@@ -230,7 +234,20 @@ print("largest difference:", (ours - fused).abs().max().item())
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/05/blocks-light.png" width="760" alt="One encoder block in 2017 and in Llama's style. 2017: self-attention, add the input, LayerNorm, feed-forward with ReLU, add, LayerNorm: the normalization sits on the main path. Llama: RMSNorm, self-attention with rotary positions, add the input; RMSNorm, SwiGLU feed-forward, add: the main path from input to output carries only additions">
 #
-# PRENORM_WHY
+# Why bother? The gradient travels the same paths backwards. In pre-norm it reaches every layer straight through
+# the sum; in post-norm it has to pass through every norm on the way down. [Xiong et al.
+# (2020)](https://arxiv.org/abs/2002.04745) showed that at the start of training this leaves post-norm's
+# gradients largest near the output, and "using a large learning rate on those gradients makes the training
+# unstable". That is what lesson 3's warm-up was for. Pre-norm, they found, trains without one. Section 10 checks.
+#
+# The history is a little funny. Five months after the paper, its authors' own code,
+# [tensor2tensor](https://github.com/tensorflow/tensor2tensor), switched its default to pre-norm. A comment by
+# Noam Shazeer, one of the authors, still sits in that code: post-norm is "the published version of the
+# transformer", pre-norm "seems better for harder-to-learn models, so it should probably be the default". GPT-2
+# moved the norm "to the input of each sub-block" in 2019, GPT-3 kept it, and Llama credits GPT-3.
+#
+# One caveat that concerns us directly: [Wang et al. (2019)](https://aclanthology.org/P19-1176/) found pre-norm
+# slightly *behind* post-norm in shallow models. Ours has three layers per stack.
 #
 # In code, the two arrangements differ by where one call goes. One consequence of pre-norm is easy to miss: the
 # stream itself is never normalized, so the stack ends with one more norm of its own, before the output layer.
@@ -259,7 +276,11 @@ def residual(x, sublayer, norm, dropout, pre_norm):
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/05/norms-light.png" width="760" alt="LayerNorm and RMSNorm on the same eight numbers. LayerNorm subtracts their mean and divides by their standard deviation: the result is centred on zero. RMSNorm only divides by the root mean square: the pattern keeps its offset and only its scale changes">
 #
-# RMSNORM_WHY
+# Zhang and Sennrich's bet was that the rescaling is what makes LayerNorm work, keeping the size of the vectors in
+# check, while "re-centering invariance in LayerNorm is dispensable". Dropping it saves a mean and a subtraction
+# per vector. On a Transformer for translation they measured BLEU on a par with LayerNorm and training about 7%
+# faster; the "7%∼64%" of their abstract comes from other models. Seven percent is modest. On a model trained for
+# months on thousands of GPUs, modest is a lot of money.
 #
 # The statistics are computed in float32 even when the rest runs in half precision: a sum of squares of a
 # thousand numbers is exactly the kind of computation float16 gets wrong (lesson 3, section 6).
@@ -317,7 +338,9 @@ print("smallest value of SiLU:", round(F.silu(z).min().item(), 3))
 # off depending on one projection of the input; in SwiGLU one projection decides, smoothly, how much of another
 # gets through.
 #
-# Why that should work better, nobody can say exactly, including its author. SHAZEER_QUOTE
+# Why that should work better, nobody can say exactly, including its author. His paper ends: "We offer no
+# explanation as to why these architectures seem to work; we attribute their success, as all else, to divine
+# benevolence." It survived Narang et al.'s reimplementation, as one of the few changes that did.
 #
 # Three matrices instead of two would mean more weights. To compare fairly, the hidden width shrinks to two thirds
 # of the ReLU layer's, as in the paper and in Llama, rounded here to a multiple of 8, which GPUs like:
@@ -885,6 +908,27 @@ table(pd.DataFrame(rows), digits=4)
 # RoPE makes this easy: a key is rotated by its own position once, when it enters the cache, and never touched
 # again. With added sinusoids the same holds, since the position went in with the embedding.
 #
+# The cache costs memory, and that is where section 1's grouped-query attention comes in: every layer keeps a key
+# and a value per key/value head for every token written so far. From Llama's config:
+
+# %%
+def cache_bytes_per_token(layers, kv_heads, head_dim, bytes_per_number=2):
+    return 2 * layers * kv_heads * head_dim * bytes_per_number  # a key and a value
+
+
+head_dim = llama["hidden_size"] // llama["num_attention_heads"]
+layers = llama["num_hidden_layers"]
+with_gqa = cache_bytes_per_token(layers, llama["num_key_value_heads"], head_dim)
+without_gqa = cache_bytes_per_token(layers, llama["num_attention_heads"], head_dim)
+print(f"Llama 3.1 8B in bfloat16: {with_gqa / 1024:.0f} KiB per token")
+print(f"with a key/value head per query head: {without_gqa / 1024:.0f} KiB per token")
+print(f"a full context of 128K tokens: {with_gqa * 128 * 1024 / 2**30:.0f} GiB")
+
+# %% [markdown]
+# Gigabytes for the cache of a single long conversation, on top of the weights: this is why grouped-query
+# attention spread so fast. Our model, with four heads and sentences of a dozen tokens, keeps a few kilobytes per
+# token.
+#
 # `Attention` already handles a `cache` dictionary (section 9). The step function gives each decoder layer one,
 # and greedy decoding runs on it:
 
@@ -1146,4 +1190,16 @@ else:
 # %% [markdown]
 # ## References
 #
-# REFERENCES
+# - Vaswani, A. et al. (2017). [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS.
+# - Touvron, H. et al. (2023). [LLaMA: Open and Efficient Foundation Language Models](https://arxiv.org/abs/2302.13971). *Pre-normalization [GPT3], SwiGLU [PaLM], rotary embeddings [GPTNeo].*
+# - Llama Team, AI @ Meta (2024). [The Llama 3 Herd of Models](https://arxiv.org/abs/2407.21783).
+# - Narang, S. et al. (2021). [Do Transformer Modifications Transfer Across Implementations and Applications?](https://arxiv.org/abs/2102.11972). EMNLP.
+# - Xiong, R. et al. (2020). [On Layer Normalization in the Transformer Architecture](https://arxiv.org/abs/2002.04745). ICML.
+# - Wang, Q. et al. (2019). [Learning Deep Transformer Models for Machine Translation](https://aclanthology.org/P19-1176/). ACL.
+# - Radford, A. et al. (2019). [Language Models are Unsupervised Multitask Learners](https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf). OpenAI. *GPT-2 and pre-norm.*
+# - Zhang, B., Sennrich, R. (2019). [Root Mean Square Layer Normalization](https://arxiv.org/abs/1910.07467). NeurIPS.
+# - Shazeer, N. (2020). [GLU Variants Improve Transformer](https://arxiv.org/abs/2002.05202).
+# - Su, J. et al. (2021). [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864).
+# - Ainslie, J. et al. (2023). [GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints](https://arxiv.org/abs/2305.13245). EMNLP.
+# - Dao, T. et al. (2022). [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135). NeurIPS.
+# - Kwon, W. et al. (2023). [Efficient Memory Management for Large Language Model Serving with PagedAttention](https://arxiv.org/abs/2309.06180). SOSP. *The size of a KV cache.*
