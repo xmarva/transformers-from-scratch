@@ -1,6 +1,6 @@
 number = 2
 short_title = "The Transformer"
-cover_alt = "Lesson 2 cover: The Transformer, built by hand. In the Russian translation of 'The researcher said she was exhausted', the English word 'she' decides the feminine forms of three Russian words"
+cover_alt = "Lesson 2 cover: The Transformer in PyTorch. In the Russian translation of 'The researcher said she was exhausted', the English word 'she' decides the feminine forms of three Russian words"
 gpu = false
 published = true
 published_on = 2026-10-23

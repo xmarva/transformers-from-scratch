@@ -1,5 +1,5 @@
 # %% [markdown]
-# # Lesson 2. The Transformer, built by hand
+# # Lesson 2. Implementing the Transformer in PyTorch: why attention divides by √d_k
 #
 # GPT-4o, Llama 3 and DeepSeek-V3 come from different companies, learned from different data and differ in size by
 # orders of magnitude. Open any of them and you find the same thing: one block, stacked. Here are four real models

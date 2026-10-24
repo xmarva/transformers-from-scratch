@@ -6,7 +6,7 @@
 <circle cx="92" cy="84" r="5" fill="#FF3636"/>
 <text x="106.0" y="90.0" font-family="'IBM Plex Mono', monospace" font-size="18" font-weight="400" fill="#9DA3AE" text-anchor="start" >02_transformer.ipynb</text>
 <text x="68.0" y="214.0" font-family="'IBM Plex Sans', sans-serif" font-size="66" font-weight="600" fill="#F2F3F5" text-anchor="start" letter-spacing="-1">Трансформер</text>
-<text x="68.0" y="288.0" font-family="'IBM Plex Sans', sans-serif" font-size="66" font-weight="600" fill="#F2F3F5" text-anchor="start" letter-spacing="-1">своими руками</text>
+<text x="68.0" y="288.0" font-family="'IBM Plex Sans', sans-serif" font-size="66" font-weight="600" fill="#F2F3F5" text-anchor="start" letter-spacing="-1">на PyTorch</text>
 <text x="72.0" y="372.0" font-family="'IBM Plex Sans', sans-serif" font-size="26" font-weight="400" fill="#9DA3AE" text-anchor="start" >Одно «she» и три</text>
 <text x="72.0" y="408.0" font-family="'IBM Plex Sans', sans-serif" font-size="26" font-weight="400" fill="#9DA3AE" text-anchor="start" >формы женского рода</text>
 <rect x="72" y="548" width="28" height="3" fill="#FF3636"/>
