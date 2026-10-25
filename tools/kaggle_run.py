@@ -7,7 +7,9 @@ executed copy; then waits for it and downloads the result to build/executed/<les
 Usage (the branch must be pushed first):
     uv run python tools/kaggle_run.py 03_training --branch lesson-03
 
-Needs the Kaggle CLI credentials in ~/.kaggle, as for publishing.
+Needs the Kaggle CLI credentials in ~/.kaggle, as for publishing. Kaggle doesn't hand notebook secrets to runs started
+through the API, so `--secrets owner/dataset` attaches a private dataset instead and turns its files into
+environment variables (wandb_secret.txt -> WANDB_API_KEY) before the notebook runs.
 """
 
 from __future__ import annotations
@@ -29,6 +31,13 @@ RUNNER = '''
 import subprocess, sys, time, urllib.request
 
 BRANCH, LESSON, REPO = {branch!r}, {lesson!r}, {repo!r}
+import glob, os
+SECRET_FILES = {{"wandb_secret.txt": "WANDB_API_KEY"}}  # file in the private secrets dataset -> variable
+for path in glob.glob("/kaggle/input/**/*", recursive=True):  # empty unless --secrets attached a dataset
+    name = os.path.basename(path)
+    if name in SECRET_FILES:
+        os.environ[SECRET_FILES[name]] = open(path).read().strip()  # the notebook's kernel inherits it
+        print("secret set:", SECRET_FILES[name], flush=True)
 subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", f"git+https://github.com/{{REPO}}@{{BRANCH}}"])
 import nbformat
 from nbclient import NotebookClient
@@ -60,21 +69,23 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("lesson", help="lesson folder name, e.g. 03_training")
     parser.add_argument("--branch", required=True, help="pushed git branch to run")
+    parser.add_argument("--secrets", help="private Kaggle dataset with secret files, e.g. qmarva/tfs-secrets")
+    parser.add_argument("--kernel", default=KERNEL, help="the Kaggle kernel to run in; another one runs in parallel")
     args = parser.parse_args(argv)
 
     with tempfile.TemporaryDirectory() as tmp:
         folder = Path(tmp)
         (folder / "run_lesson.py").write_text(RUNNER.format(branch=args.branch, lesson=args.lesson, repo=REPO))
         metadata = {
-            "id": KERNEL,
-            "title": "tfs lesson runner",
+            "id": args.kernel,
+            "title": args.kernel.split("/")[-1].replace("-", " "),
             "code_file": "run_lesson.py",
             "language": "python",
             "kernel_type": "script",
             "is_private": True,
             "enable_gpu": True,
             "enable_internet": True,
-            "dataset_sources": [],
+            "dataset_sources": [args.secrets] if args.secrets else [],
             "competition_sources": [],
             "kernel_sources": [],
             "model_sources": [],
@@ -84,13 +95,13 @@ def main(argv: list[str] | None = None) -> int:
 
     while True:
         time.sleep(60)
-        status = kaggle("kernels", "status", KERNEL)
+        status = kaggle("kernels", "status", args.kernel)
         if any(word in status for word in ("COMPLETE", "ERROR", "CANCEL")):
             print(status.strip())
             break
 
     with tempfile.TemporaryDirectory() as tmp:
-        kaggle("kernels", "output", KERNEL, "-p", tmp, "--file-pattern", "executed.ipynb")
+        kaggle("kernels", "output", args.kernel, "-p", tmp, "--file-pattern", "executed.ipynb")
         out = ROOT / "build" / "executed" / f"{args.lesson}.ipynb"
         out.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(Path(tmp) / "executed.ipynb", out)
