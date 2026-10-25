@@ -939,8 +939,8 @@ for ax, metric in zip(axes, ["COMET", "validation loss"]):
         ax.scatter(k + offsets, values, color=color, s=30, zorder=3)
     ax.set_xticks([0, 1], ["2017", "all four changes"])
     ax.set_xlim(-0.6, 1.6)
-    ax.set_title(metric)
-fig.suptitle("Five runs of each design, five epochs, different seeds")
+axes[0].set_title("COMET, five runs of each design")
+axes[1].set_title("validation loss")
 plt.show()
 
 def design(setup):
@@ -1239,9 +1239,9 @@ for sentence in PROBES:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# On short sentences the two models write the same words. The researcher sentence got halfway there: one
-# researcher instead of several, and the adjective now agrees with *она*, but the noun and the verb are still
-# masculine, the agreement lesson 2's attention maps were about. The long sentence about whales is still nonsense,
+# On short sentences the two models write the same words. The researcher sentence lost one mistake: one researcher
+# instead of several. The noun and the verb are still masculine, the agreement lesson 2's attention maps were
+# about. The long sentence about whales is still nonsense,
 # only shorter: the first words are right, and then the model loses the thread.
 #
 # ## 13. Save and publish
