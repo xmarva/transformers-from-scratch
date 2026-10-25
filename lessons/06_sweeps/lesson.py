@@ -34,7 +34,7 @@
 # T4 GPU*. A free [Weights & Biases](https://wandb.ai) account is optional: add your API key as the secret
 # `WANDB_API_KEY` (Kaggle: *Add-ons → Secrets*; Colab: the key icon on the left) to see the runs online and run
 # the sweep of section 8. Without it everything else runs the same, and the runs are kept on disk. The notebook
-# runs in about RUNTIME.
+# runs in about an hour and ten minutes.
 
 # %% tags=["include:setup"]
 
@@ -237,9 +237,18 @@ for name, setup in [("2017 design", DESIGN_2017), ("lesson 5's design", LLAMA_ST
     ranges[name] = range_test(setup, n_steps=RANGE_STEPS)
 
 # %%
+def until_diverged(rates, losses):
+    """The test ends where the loss stops being a number, and so does the curve."""
+    losses = np.asarray(losses, dtype=float)
+    broken = np.flatnonzero(~np.isfinite(losses))
+    end = broken[0] if len(broken) else len(losses)
+    smooth = pd.Series(losses[:end]).rolling(15, min_periods=1).mean().to_numpy()
+    return np.asarray(rates[:end]), smooth
+
+
 fig, ax = plt.subplots(figsize=(6.4, 3.4))
 for (name, (rates, losses)), color in zip(ranges.items(), [COLORS["muted"], COLORS["att"]]):
-    smooth = pd.Series(losses).rolling(15, min_periods=1).mean()
+    rates, smooth = until_diverged(rates, losses)
     ax.plot(rates, smooth, color=color, label=name)
 ax.set_xscale("log")
 ax.set_ylim(top=12)
@@ -250,8 +259,8 @@ ax.legend()
 plt.show()
 
 for name, (rates, losses) in ranges.items():
-    smooth = pd.Series(losses).rolling(15, min_periods=1).mean().to_numpy()
-    best_rate = rates[int(np.nanargmin(smooth))]
+    rates, smooth = until_diverged(rates, losses)
+    best_rate = rates[int(np.argmin(smooth))]
     print(f"{name}: lowest loss at a learning rate of {best_rate:.1e}")
 
 # %% [markdown]
@@ -494,8 +503,8 @@ print(f"COMET, tuned − lesson 5: {np.mean(differences):+.4f}")
 print(f"95% of the draws between {low:+.4f} and {high:+.4f}")
 
 # %% [markdown]
-# About three thousandths of COMET, and the bootstrap finds them in every draw. Lesson 5 showed what the bootstrap
-# can't see: another training run of the same recipe lands somewhere else. Its seed runs include two more runs of
+# About two thousandths of COMET, and the bootstrap keeps the whole interval above zero. Lesson 5 showed what the
+# bootstrap can't see: another training run of the same recipe lands somewhere else. Its seed runs include two more runs of
 # lesson 5's recipe at twenty epochs; here they are next to the model from the Hub and the tuned one:
 
 # %%
@@ -516,15 +525,16 @@ table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
 # Three runs of lesson 5's recipe sit within about a thousandth of COMET of each other, and the tuned model is
-# above all of them by more than they differ among themselves: the three thousandths come from the
-# hyperparameters, not from the seed. That is about as much as lesson 5's four changes to the architecture bought
-# over the 2017 design trained the same way. A search doesn't replace a better model. It replaces a habit: lesson
+# above all of them by more than they differ among themselves: the two thousandths come from the hyperparameters,
+# not from the seed. That is about half of what lesson 5's four changes to the architecture bought over the 2017
+# design trained the same way. The validation loss moved much further than COMET did: a lower loss doesn't turn
+# one for one into better translations. A search doesn't replace a better model. It replaces a habit: lesson
 # 5 trained a new architecture with the numbers of 2017, and they turned out to be close to right, not right.
 #
-# One number escaped the search. The winner's validation loss was still falling at the twentieth epoch, and twenty
-# is lesson 3's budget, inherited and never searched over.
+# One number escaped the search: twenty epochs, lesson 3's budget, inherited and never searched over. The last
+# three epochs printed above show the loss had stopped falling, so this time twenty was enough.
 #
-# Where the three thousandths land, by the length of the English sentence:
+# Where the two thousandths land, by the length of the English sentence:
 
 # %%
 encoded = tokenizer.encode_batch(list(test.en))
@@ -547,9 +557,10 @@ for interval, row in by_length.iterrows():
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# On short sentences the two models mostly write the same words, and the gain is a rounding error. Past fifteen
-# tokens they almost never agree, and that's where the gain is: the same shape as lesson 5's, where the
-# architecture helped the long sentences too. Long sentences are rare in Tatoeba, so the average hides most of it.
+# Half the shortest sentences come out word for word as lesson 5 wrote them, and up to twenty tokens the gain is a
+# couple of thousandths or less. Past twenty tokens the two models almost never agree, and the gain is several
+# times larger, as it was for lesson 5's architecture. Long sentences are rare in Tatoeba, so the average hides
+# most of it.
 #
 # ## 8. The same search as a W&B Sweep
 #
