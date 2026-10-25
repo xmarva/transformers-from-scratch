@@ -1,0 +1,25 @@
+{
+ "source": "github.com/marcelbinz/Llama-3.1-Centaur-70B, generalization/feher2020humans/prompts.jsonl, participant 0",
+ "header": [
+  "You are playing the role of a musician living in a fantasy land.",
+  "You play the flute for gold coins to an audience of genies, who live inside magic lamps on Pink Mountain and Blue Mountain.",
+  "Pink Mountain has genies E and V, and Blue Mountain has genies F and G.",
+  "Each genie lives in a lamp with the corresponding letter on it.",
+  "When you arrive on a mountain, you can pick up a lamp and rub it.",
+  "If the genie is in the mood for music, he will come out of his lamp, listen to a song, and give you a gold coin.",
+  "Each genie\u2019s interest in music changes with time.",
+  "To go to the mountains, you chose one of two magic carpets, which you purchase from a magician, who enchants them to fly.",
+  "Magic carpet M generally flies to Pink Mountain, and magic carpet R generally flies to Blue Mountain.",
+  "However, on rare occasions a strong wind blowing from that mountain makes flying there too dangerous because the wind might blow you off the carpet.",
+  "In this case, the carpet is forced to land instead on the other mountain.",
+  "You can take a magic carpet or pick up a lamp and rub it by pressing the corresponding key.",
+  "Your goal is to get as many coins as possible over the next 212 days."
+ ],
+ "trials": [
+  "You are presented with magic carpets R and M. You press <<M>>. You end up on Blue Mountain. You see lamp F and lamp G. You rub lamp <<G>>. You receive 0 coins.",
+  "You are presented with magic carpets R and M. You press <<M>>. You end up on Pink Mountain. You see lamp E and lamp V. You rub lamp <<E>>. You receive 1 coins.",
+  "You are presented with magic carpets R and M. You press <<M>>. You end up on Blue Mountain. You see lamp F and lamp G. You rub lamp <<F>>. You receive 1 coins.",
+  "You are presented with magic carpets R and M. You press <<M>>. You end up on Blue Mountain. You see lamp F and lamp G. You rub lamp <<F>>. You receive 0 coins."
+ ],
+ "responses": 407
+}

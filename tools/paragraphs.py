@@ -7,6 +7,7 @@ what belongs together:
 - after a sentence that ends with a colon, which introduces what follows;
 - before a sentence that refers back to the previous one ("This", "It", "But", "So", "Here" ...);
 - where it would leave a very short piece on its own.
+A sentence end inside a quotation is not a place to cut, so a quoted passage stays in one paragraph.
 Only plain prose is touched: headings, lists, quotes, tables, HTML, code, display math and figure placeholders are
 left as they are. Links, inline code, inline math and inline HTML are hidden while sentences are found, so the dots
 inside them do not count; so are abbreviations (et al., e.g., U.S.), initials and decimals.
@@ -53,6 +54,11 @@ def _unmask(text: str, kept: list[str]) -> str:
     return re.sub(r"\x00(\d+)\x01", lambda m: kept[int(m.group(1))], text)
 
 
+def _inside_quote(text: str) -> bool:
+    """Whether a quotation opened in the text is still open at its end (straight or curly double quotes)."""
+    return text.count('"') % 2 == 1 or text.count("“") > text.count("”")
+
+
 def sentences(paragraph: str) -> list[str]:
     masked, kept = _mask(paragraph)
     pieces, start = [], 0
@@ -61,6 +67,8 @@ def sentences(paragraph: str) -> list[str]:
         last_word = re.split(r"[\s(]", before)[-1].lower() if before else ""
         if last_word in ABBREVIATIONS or re.fullmatch(r"[a-z]", last_word) or re.fullmatch(r"(\w\.)+\w", last_word):
             continue  # an abbreviation or an initial, not the end of a sentence
+        if _inside_quote(masked[:match.end(1)]):
+            continue  # a sentence inside a quotation: the quotation stays in one piece
         end = match.start(2)
         pieces.append(masked[start:end])
         start = match.end()
