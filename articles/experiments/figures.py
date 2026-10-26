@@ -1,11 +1,11 @@
 """16:9 covers for the experiments on the portfolio page of xmarva.github.io.
 
 Each card takes one real picture from the project (a detection result, a structure render, a segmentation, a camera
-frame), cuts the object out or recolours it into the site's palette, and sets it on the dark background with the dot
-grid used by the site's covers. The palette is the one the posts' figures use on dark (amber, teal, rose, violet) plus
-the brand red, and where the source picture uses colour to tell things apart, each of its colours maps to one of these.
-Sources are in data/source/: the projects' own images, and for the language-model experiment a public-domain title page
-from 1902 (Wikimedia Commons, "Cover Lenin Zadachy.jpg").
+frame, a forecast), cuts the object out or recolours it into the site's palette, and sets it on the dark background
+with the dot grid used by the site's covers. The palette is the one the posts' figures use on dark (amber, teal, rose,
+violet) plus the brand red, and where the source picture uses colour to tell things apart, each of its colours maps to
+one of these. Sources are in data/source/: the projects' own images and data, and for the language-model experiment a
+public-domain title page from 1902 (Wikimedia Commons, "Cover Lenin Zadachy.jpg").
 
     uv run --group articles python tools/render.py --article experiments \
         --out ../../websites/xmarva.github.io/assets/img/projects/personal
@@ -177,29 +177,46 @@ def card_cv():
     return _card(_place(out, 70, 18, 660, "shadow"), glow=TEAL)
 
 
-# ---------------------------------------------------------------- geology: the layered section with the well path
+# ---------------------------------------------------------------- geology: the known layer and the two forecasts
 
 def card_geology():
-    from matplotlib.colors import rgb_to_hsv
-    from scipy import ndimage
+    """Three test sections as small chart cards: the known layer depth up to the bit, then the 5th-place forecast
+    (amber) and the baseline's (teal) over the next 300 ft."""
+    import json
 
-    img = _load("geology-section.png")[262:880, 102:1298]  # the cross-section without axes or the log label
-    hsv = rgb_to_hsv(img)
-    hue, sat = hsv[..., 0], hsv[..., 1]
-    lum = img @ np.array([0.299, 0.587, 0.114])
-    # the layers in dark greys with a cool cast, the deepest the darkest
-    t = np.clip((lum - 0.4) / 0.55, 0, 1)[..., None]
-    rgb = _rgb("#16181D") * (1 - t) + _rgb("#3D434E") * t
-    well = lum < 0.18  # the black well path and the section's outlines
-    dashed = (sat < 0.15) & (lum > 0.25) & (lum < 0.55)  # the grey dashed line
-    horizons = (sat > 0.45) & ~well
-    for kind, colour in [((hue < 0.03) | (hue > 0.95), ROSE), ((hue > 0.3) & (hue < 0.5), TEAL),
-                         ((hue >= 0.5) & (hue < 0.75), VIOLET)]:  # the red, green and blue horizons
-        rgb[ndimage.binary_dilation(horizons & kind)] = _rgb(colour)
-    rgb[dashed] = _rgb(AMBER)
-    rgb[ndimage.binary_dilation(well)] = _rgb("#F2F3F5")
-    framed = _framed(rgb, radius=14)
-    return _card(_place(framed, 60, (H - 680 * framed.shape[0] / framed.shape[1]) / 2, 680, "shadow"), glow=VIOLET)
+    sections = json.loads((SOURCE / "geology-forecast.json").read_text())["sections"]
+    pw, ph, gap = 230, 290, 20
+    x0, y0 = (W - 3 * pw - 2 * gap) / 2, (H - ph) / 2
+    parts = []
+    for i, sec in enumerate(sections):
+        x = x0 + i * (pw + gap)
+        known, best, base = (np.array(sec[k]) for k in ("known", "best", "baseline"))
+        lo, hi = min(known.min(), best.min(), base.min()), max(known.max(), best.max(), base.max())
+        pad = 0.12 * (hi - lo)
+
+        def px(t, x=x):
+            return x + 18 + (t + 300) / 600 * (pw - 36)
+
+        def py(z, lo=lo, hi=hi, pad=pad):
+            return y0 + 22 + (hi + pad - z) / (hi - lo + 2 * pad) * (ph - 44)
+
+        def line(ts, zs, colour, width):
+            points = " ".join(f"{px(t):.1f},{py(z):.1f}" for t, z in zip(ts, zs, strict=True))
+            return (f'<polyline points="{points}" fill="none" stroke="{colour}" stroke-width="{width}" '
+                    f'stroke-linejoin="round" stroke-linecap="round"/>')
+
+        grid = "".join(f'<line x1="{x + 18}" x2="{x + pw - 18}" y1="{y0 + 22 + k * (ph - 44) / 4:.1f}" '
+                       f'y2="{y0 + 22 + k * (ph - 44) / 4:.1f}" stroke="#2C333D" stroke-width="1"/>' for k in range(5))
+        parts.append(
+            f'<rect x="{x}" y="{y0}" width="{pw}" height="{ph}" rx="12" fill="#1A1F26" stroke="#2C333D" '
+            f'filter="url(#shadow)"/>{grid}'
+            f'<line x1="{px(0):.1f}" x2="{px(0):.1f}" y1="{y0 + 16}" y2="{y0 + ph - 16}" stroke="{MUTED}" '
+            f'stroke-width="1.2" stroke-dasharray="4 4"/>'  # the bit
+            + line(np.arange(-299, 1), known, INK, 2.4)
+            + line(np.arange(0, 301), np.r_[known[-1], base], TEAL, 2.6)
+            + line(np.arange(0, 301), np.r_[known[-1], best], AMBER, 2.6)
+        )
+    return _card("".join(parts), glow=AMBER)
 
 
 # ---------------------------------------------------------------- pandemic vision: a camera frame with the alerts
