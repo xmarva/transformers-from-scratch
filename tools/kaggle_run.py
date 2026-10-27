@@ -1,4 +1,4 @@
-"""Run a lesson in full on a Kaggle GPU, from a git branch, and download the executed notebook.
+"""Run a lesson in full on Kaggle, from a git branch, and download the executed notebook.
 
 Lessons that train need a GPU, which CI and most laptops don't have. This pushes a private Kaggle script that
 installs the branch's helpers, executes the branch's Kaggle notebook top to bottom with nbclient, and saves the
@@ -6,6 +6,7 @@ executed copy; then waits for it and downloads the result to build/executed/<les
 
 Usage (the branch must be pushed first):
     uv run python tools/kaggle_run.py 03_training --branch lesson-03
+    uv run python tools/kaggle_run.py 07_package --branch lesson-07-package --cpu   # no GPU quota spent
 
 Needs the Kaggle CLI credentials in ~/.kaggle, as for publishing. Kaggle doesn't hand notebook secrets to runs started
 through the API, so `--secrets owner/dataset` attaches a private dataset instead and turns its files into
@@ -71,6 +72,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--branch", required=True, help="pushed git branch to run")
     parser.add_argument("--secrets", help="private Kaggle dataset with secret files, e.g. qmarva/tfs-secrets")
     parser.add_argument("--kernel", default=KERNEL, help="the Kaggle kernel to run in; another one runs in parallel")
+    parser.add_argument("--cpu", action="store_true", help="run without a GPU, for lessons that don't train")
     args = parser.parse_args(argv)
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -83,7 +85,7 @@ def main(argv: list[str] | None = None) -> int:
             "language": "python",
             "kernel_type": "script",
             "is_private": True,
-            "enable_gpu": True,
+            "enable_gpu": not args.cpu,
             "enable_internet": True,
             "dataset_sources": [args.secrets] if args.secrets else [],
             "competition_sources": [],

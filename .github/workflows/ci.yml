@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # the release tags: a lesson's package is checked against the release it made
       - uses: astral-sh/setup-uv@v7
       - name: Install
         run: uv sync --group dev

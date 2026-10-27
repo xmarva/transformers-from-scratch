@@ -16,6 +16,7 @@ dev = [
     "nbclient>=0.10",
     "nbformat>=5.9",
     "pandas>=2.0",
+    "pip>=24",  # lesson 7 installs its package with pip, as a reader would
     "pytest>=8.0",
     "ruff>=0.6",
     "sacrebleu>=2.4",
@@ -39,7 +40,9 @@ packages = ["src/tfs"]
 [tool.ruff]
 line-length = 120
 target-version = "py310"
-extend-exclude = ["notebooks"]
+# lesson 7 writes a class in parts with %%writefile -a, which can't parse as one file; the code it writes is
+# linted where it lives, in perevod/
+extend-exclude = ["notebooks", "lessons/07_package/lesson.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

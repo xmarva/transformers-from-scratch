@@ -1,0 +1,33 @@
+[project]
+name = "perevod"
+version = "0.1.0"
+description = "English-to-Russian translation with a small Transformer built from scratch"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "tokenizers>=0.15",
+    "huggingface_hub>=0.20",
+    "safetensors>=0.4",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "ruff>=0.6", "sacrebleu>=2.4", "pandas>=2.0", "pyarrow>=14"]
+
+[project.scripts]
+perevod = "perevod.cli:main"
+
+[project.urls]
+Source = "https://github.com/xmarva/transformers-from-scratch/tree/main/perevod"
+Model = "https://huggingface.co/xmarva/perevod-en-ru"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+markers = ["slow: downloads the published model and translates real sentences"]
+
+[tool.ruff]
+line-length = 92  # what a notebook cell shows: lesson 7 writes these files in its cells

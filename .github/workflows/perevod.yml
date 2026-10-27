@@ -1,0 +1,65 @@
+name: perevod
+
+on:
+  push:
+    branches: [main]
+    paths: ["perevod/**", ".github/workflows/perevod.yml"]
+  pull_request:
+    paths: ["perevod/**", ".github/workflows/perevod.yml"]
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays: the published model against the golden file
+
+defaults:
+  run:
+    working-directory: perevod  # the package lives in a folder of the course repository
+
+env:
+  # PyTorch's CPU build, without gigabytes of CUDA libraries
+  PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.13"]  # the oldest Python the package promises, and the newest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[test]"
+      - run: ruff check .
+      - run: pytest -q -m "not slow"
+
+  wheel:
+    # tests import the package from its folder; this job checks what users install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip wheel --no-deps --wheel-dir dist .
+      - run: pip install dist/*.whl
+      - name: The installed command works outside the source tree
+        working-directory: /tmp
+        run: perevod --version
+
+  quality:
+    # slow, downloads the model: on main, on Mondays, on pull requests labelled "model"
+    if: >-
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.labels.*.name, 'model')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/huggingface
+          key: huggingface-${{ hashFiles('perevod/src/perevod/translator.py') }}
+      - run: pip install -e ".[test]"
+      - run: pytest -q -m slow
