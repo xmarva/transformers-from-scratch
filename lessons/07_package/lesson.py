@@ -26,7 +26,7 @@
 # 1. Open a real package and a real model repository and see what makes them installable and findable.
 # 2. Move the model into a package with the src layout, a `pyproject.toml`, configs that refuse bad values, a
 #    two-line Python API and a command line.
-# 3. Write tests of four kinds, then plant ten bugs in the code and see which tests catch which.
+# 3. Write tests of four kinds, plant ten bugs to see which tests catch which, and fix the test the bugs expose.
 # 4. Set up CI on GitHub Actions and run its steps here.
 # 5. Measure what the model can't do and write it into a model card.
 #
@@ -122,8 +122,8 @@ display(table(pd.DataFrame(rows)))
 # %% [markdown]
 # Two differences matter for this lesson. The opus-mt repository is self-contained: tokenizer files, the model's
 # config and its generation settings (`generation_config.json`) sit next to the weights. Ours keeps the tokenizer in
-# another repository, and nothing in it says which. And look at the size of the two `README.md` files. On the Hub
-# the README is the **model card**, the page people read before trusting a model:
+# another repository, and nothing in it says which. And then there are the two `README.md` files. On the Hub the
+# README is the **model card**, the page people read before trusting a model:
 
 # %%
 for repo_id in ["Helsinki-NLP/opus-mt-en-ru", "xmarva/tfs-transformer-en-ru-tuned"]:
@@ -134,8 +134,9 @@ for repo_id in ["Helsinki-NLP/opus-mt-en-ru", "xmarva/tfs-transformer-en-ru-tune
 
 # %% [markdown]
 # The block between the `---` lines is YAML for machines: the Hub builds its search filters (language, license,
-# task) from it. Ours says almost nothing a user needs: not what the model is for, not where it fails. We will fix
-# that in section 13, with numbers.
+# task) from it. Below it, opus-mt lists its training data and a table of scores, ours a validation loss. Neither
+# says what the model is for or where it fails, and those are the questions a user has. Section 13 answers them
+# for ours, with numbers.
 #
 # ## 2. The plan
 #
@@ -640,8 +641,9 @@ display(table(pd.DataFrame({
 
 # %% [markdown]
 # The notebooks' model checks `pos == "rope"` to decide whether to rotate queries and keys, and `"RoPE"` is not
-# `"rope"`. So it runs with no idea of word order at all, and its Russian is still fluent enough to pass a quick
-# look, which is the worst kind of failure: no error, wrong output. Removing the switches removes this bug, and the
+# `"rope"`. So it runs with no idea of word order at all. Some of its sentences fall apart; others are fluent
+# Russian that says something else, like the sister who became two. That's the worst kind of failure: no error,
+# plausible output. Removing the switches removes this bug, and the
 # config adds a second line of defence. A package checks its config when it reads it, and stops with a message in
 # the terms the user wrote. A frozen dataclass does that in a few lines: it lists the allowed fields, refuses unknown
 # ones, and checks the values in `__post_init__`, which runs right after the fields are set:
@@ -1008,19 +1010,21 @@ def seconds(command, repeats=3):
 
 
 PEREVOD = shutil.which("perevod")
+LOAD = "from perevod import Translator; Translator.from_pretrained(device='cpu')"
 startup = {
     "import perevod": seconds([sys.executable, "-c", "import perevod"]),
     "perevod --version": seconds([PEREVOD, "--version"]),
     "import torch": seconds([sys.executable, "-c", "import torch"]),
+    "import torch, load the model": seconds([sys.executable, "-c", LOAD]),
     "perevod 'Nobody understands me.'": seconds([PEREVOD, "Nobody understands me."]),
 }
 for command, took in startup.items():
     print(f"{took:.2f} s  {command}")
 
 # %%
-fig, ax = plt.subplots(figsize=(8, 2.6))
-bars = ax.barh(list(startup), list(startup.values()),
-               color=[COLORS["data"], COLORS["data"], COLORS["muted"], COLORS["enc"]])
+fig, ax = plt.subplots(figsize=(8, 3))
+bars = ax.barh(list(startup), list(startup.values()), color=[
+    COLORS["data"], COLORS["data"], COLORS["muted"], COLORS["muted"], COLORS["enc"]])
 ax.bar_label(bars, fmt="{:.2f} s", padding=4, fontsize=9, color=COLORS["muted"])
 ax.invert_yaxis()
 ax.set_xlabel("seconds, fastest of three runs")
@@ -1030,8 +1034,8 @@ plt.show()
 # %% [markdown]
 # Importing PyTorch is the expensive part on its own. `perevod --version` and `perevod --help` don't need it, so
 # they answer in about the time it takes Python to start. A translation pays for PyTorch, then for loading the
-# model, and only then for translating, which is the smallest part. That cost, paid again by every process, is the
-# argument for the next lesson's server, which loads the model once and keeps it.
+# model, and the difference between the last two bars is all the translating itself costs. Every process pays the
+# first two again, which is the argument for the next lesson's server: it loads the model once and keeps it.
 #
 # The command at work, on a file with an empty line in the middle:
 
@@ -1079,8 +1083,23 @@ from perevod.model import Seq2Seq
 
 # a model small enough to build in a millisecond: twenty words, random weights. It
 # translates nonsense, which is fine: these tests check what must hold for any weights
-WORDS = ["<pad>", "<unk>", "<bos>", "<eos>", "i", "think", "therefore", "am", ".", ",",
-         "tom", "reads", "a", "book", "я", "думаю", "том", "читает", "книгу", "?"]
+SPECIAL = ["<pad>", "<unk>", "<bos>", "<eos>"]
+WORDS = SPECIAL + ["i", "think", "therefore", "am", ".", ",", "tom", "reads", "a", "book",
+                   "?", "я", "думаю", "том", "читает", "книгу"]
+
+# %%
+# %%writefile -a perevod/tests/conftest.py
+
+
+def tiny_tokenizer():
+    vocab = {}
+    for token_id, word in enumerate(WORDS):
+        vocab[word] = token_id
+    tokenizer = Tokenizer(models.WordLevel(vocab, unk_token="<unk>"))
+    tokenizer.add_special_tokens(SPECIAL)  # so that decoding leaves them out
+    tokenizer.normalizer = normalizers.Lowercase()
+    tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
+    return tokenizer
 
 # %%
 # %%writefile -a perevod/tests/conftest.py
@@ -1089,14 +1108,7 @@ WORDS = ["<pad>", "<unk>", "<bos>", "<eos>", "i", "think", "therefore", "am", ".
 @pytest.fixture(scope="session")
 def tiny_dir(tmp_path_factory):
     path = tmp_path_factory.mktemp("tiny-model")
-    vocab = {}
-    for token_id, word in enumerate(WORDS):
-        vocab[word] = token_id
-    tokenizer = Tokenizer(models.WordLevel(vocab, unk_token="<unk>"))
-    tokenizer.normalizer = normalizers.Lowercase()
-    tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
-    tokenizer.save(str(path / "tokenizer.json"))
-
+    tiny_tokenizer().save(str(path / "tokenizer.json"))
     config = ModelConfig(setup={"norm": "rms", "ffn": "swiglu", "pos": "rope"},
                          vocab_size=len(WORDS), d_model=16, n_heads=2, d_ff=32, n_layers=2,
                          dropout=0.1, max_len=32)
@@ -1249,7 +1261,7 @@ def test_a_long_input_is_cut_with_a_warning(translator):
 # %% [markdown]
 # The command line is tested two ways: in a fresh process, as a user runs it, and by calling `main` directly with
 # pytest's `capsys`, which captures what it prints, and `monkeypatch`, which replaces the standard input for the
-# duration of one test. The second test keeps the promise of section 9: importing perevod must not import PyTorch.
+# duration of one test. The second test keeps the promise of section 7: importing perevod must not import PyTorch.
 
 # %%
 # %%writefile perevod/tests/test_cli.py
@@ -1292,7 +1304,7 @@ def test_one_line_in_one_line_out(tiny_dir, capsys, monkeypatch):
 # The fast tests, all of them:
 
 # %%
-# !cd perevod && {sys.executable} -m pytest -q -m "not slow" -p no:cacheprovider
+# !cd perevod && {sys.executable} -m pytest -q -m "not slow" -p no:cacheprovider --color=no
 
 # %% [markdown]
 # Under a second, and not one of them knows what a good translation is. The last two kinds do.
@@ -1365,7 +1377,7 @@ def test_chrf_on_a_sample_of_the_test_set(published):
     assert chrf >= CHRF_FLOOR
 
 # %%
-# !cd perevod && {sys.executable} -m pytest -q -p no:cacheprovider
+# !cd perevod && {sys.executable} -m pytest -q -p no:cacheprovider --color=no
 
 # %% [markdown]
 # ## 11. Do the tests catch bugs?
@@ -1411,9 +1423,10 @@ MUTANTS = {
 # %%
 def run_tests(project):
     environment = dict(os.environ, PYTHONPATH=str(project / "src"))
-    result = subprocess.run([sys.executable, "-m", "pytest", "-q", "-rf", "--tb=no",
-                             "-p", "no:cacheprovider"], cwd=project, env=environment,
-                            capture_output=True, text=True)
+    command = [sys.executable, "-m", "pytest", "-q", "-rf", "--tb=no", "--color=no",
+               "-p", "no:cacheprovider"]
+    result = subprocess.run(command, cwd=project, env=environment, capture_output=True,
+                            text=True)
     failed = []
     for line in result.stdout.splitlines():
         if line.startswith("FAILED"):
@@ -1433,61 +1446,240 @@ def mutate(name, edits):
     return project
 
 # %%
-killed_by = {}
-start = time.perf_counter()
-for name, edits in MUTANTS.items():
-    killed_by[name] = run_tests(mutate(name, edits))
-    print(f"{name}: {len(killed_by[name])} failing tests")
-print(f"{time.perf_counter() - start:.0f} s for {len(MUTANTS)} mutants")
+def run_mutants():
+    killed_by = {}
+    start = time.perf_counter()
+    for name, edits in MUTANTS.items():
+        killed_by[name] = run_tests(mutate(name, edits))
+        print(f"{name}: {len(killed_by[name])} failing tests")
+    print(f"{time.perf_counter() - start:.0f} s for {len(MUTANTS)} mutants")
+    return killed_by
+
+
+first_run = run_mutants()
 
 # %% [markdown]
 # Which test killed which mutant, as a grid:
 
 # %%
-test_names = []
-for path in sorted(Path("perevod/tests").glob("test_*.py")):
-    for node in ast.parse(path.read_text(encoding="utf-8")).body:
-        if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
-            test_names.append(node.name)
-catching = []
-for test in test_names:
-    for failed in killed_by.values():
-        if test in failed and test not in catching:
-            catching.append(test)
+def show_grid(killed_by, title):
+    test_names = []
+    for path in sorted(Path("perevod/tests").glob("test_*.py")):
+        for node in ast.parse(path.read_text(encoding="utf-8")).body:
+            if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
+                test_names.append(node.name)
+    catching = []
+    for test in test_names:
+        for failed in killed_by.values():
+            if test in failed and test not in catching:
+                catching.append(test)
+    fig, ax = plt.subplots(figsize=(9, 4.6))
+    for row, mutant in enumerate(MUTANTS):
+        for col, test in enumerate(catching):
+            colour = COLORS["dec"] if test in killed_by[mutant] else COLORS["grid"]
+            ax.add_patch(plt.Rectangle((col, row), 0.92, 0.88, color=colour))
+    ax.set_xlim(0, len(catching))
+    ax.set_ylim(len(MUTANTS), 0)
+    labels = [test.removeprefix("test_").replace("_", " ") for test in catching]
+    ax.set_xticks([k + 0.46 for k in range(len(catching))], labels, rotation=60,
+                  ha="right", fontsize=8)
+    ax.set_yticks([k + 0.44 for k in range(len(MUTANTS))], list(MUTANTS), fontsize=9)
+    ax.tick_params(length=0)
+    ax.grid(False)
+    for side in ax.spines.values():
+        side.set_visible(False)
+    ax.set_title(title)
+    plt.show()
 
-fig, ax = plt.subplots(figsize=(9, 4.6))
-for row, mutant in enumerate(MUTANTS):
-    for col, test in enumerate(catching):
-        caught = test in killed_by[mutant]
-        ax.add_patch(plt.Rectangle((col, row), 0.92, 0.88, color=COLORS["dec"] if caught
-                                   else COLORS["grid"]))
-ax.set_xlim(0, len(catching))
-ax.set_ylim(len(MUTANTS), 0)
-ax.set_xticks([k + 0.46 for k in range(len(catching))],
-              [test.removeprefix("test_").replace("_", " ") for test in catching],
-              rotation=60, ha="right", fontsize=8)
-ax.set_yticks([k + 0.44 for k in range(len(MUTANTS))], list(MUTANTS), fontsize=9)
-ax.tick_params(length=0)
-ax.grid(False)
-for side in ax.spines.values():
-    side.set_visible(False)
-ax.set_title("Ten planted bugs and the tests that failed because of them")
-plt.show()
+
+show_grid(first_run, "Ten planted bugs and the tests that failed because of them")
 
 # %% [markdown]
 # Read the grid column by column. The invariant tests, with their random twenty-word model, catch the structural
 # bugs: a mask that lets the decoder peek, an encoder that attends to padding, dropout left on. They can't see the
 # rest. A missing $\sqrt{d_{\text{model}}}$ or lost positions don't break any property that holds for random
-# weights; they only break a model that *learned* with them. Only the two tests that run the real model catch those.
+# weights; they only break a model that *learned* with them, and only the two tests that run the real model
+# notice.
 #
-# The inverted length penalty is the instructive one. It changes which hypothesis the beam search picks, so the
-# golden test fails, but the average over 500 sentences moves too little to cross the chrF floor. A quality gate
-# catches disasters, not regressions; the golden test catches every change, including the small ones nobody would
-# notice in a score.
+# The inverted length penalty changes which hypothesis the beam search picks, so the golden test fails, but the
+# average over 500 sentences moves too little to cross the chrF floor. A quality gate catches disasters, not
+# regressions; the golden test catches every change, including the small ones nobody would see in a score.
 #
-# And the last mutant survives everything, correctly: the translator collapses whitespace, so a line that keeps its
-# newline is translated exactly like one that doesn't. A surviving mutant isn't always a missing test. Sometimes
-# it's a change that changes nothing, and finding out which one it is is the point of the exercise.
+# The last mutant survives everything, correctly: the translator collapses whitespace, so a line that keeps its
+# newline is translated exactly like one that doesn't. A surviving mutant isn't always a missing test; sometimes
+# it's a change that changes nothing.
+#
+# Two other rows should worry us. The empty input that reaches the model survived everything too, although
+# `test_an_empty_input_has_an_empty_translation` was written for exactly that bug. And translations that come back
+# in the wrong order passed `test_a_batch_translates_like_one_sentence_at_a_time`, which exists to catch them; only
+# the slow tests noticed. Here is the tiny model the fast tests run, built the way `conftest.py` builds it, on the
+# four sentences of the batch test:
+
+# %%
+import torch
+from perevod.config import GenerationConfig, ModelConfig
+from perevod.model import Seq2Seq
+
+conftest = runpy.run_path("perevod/tests/conftest.py")
+tiny_config = ModelConfig(setup={"norm": "rms", "ffn": "swiglu", "pos": "rope"},
+                          vocab_size=len(conftest["WORDS"]), d_model=16, n_heads=2, d_ff=32,
+                          n_layers=2, dropout=0.1, max_len=32)
+torch.manual_seed(0)
+tiny = Translator(Seq2Seq(tiny_config), conftest["tiny_tokenizer"](),
+                  GenerationConfig(beam_size=3, max_tokens=10))
+print(tiny(["i think therefore i am .", "tom reads a book", "i am ?", "tom"]))
+
+# %% [markdown]
+# Every sentence becomes an empty string: the random decoder writes only special tokens, which decoding drops.
+# That explains both rows. An empty input gets an empty translation whether the model sees it or not, and four
+# identical answers can come back in any order. A test is only as good as its power to tell outcomes apart, and
+# with this model these two had none.
+#
+# The fix costs a second: let the tiny model learn something. Four sentence pairs made of its twenty words,
+# learned by heart in two hundred steps of Adam, lesson 3's training loop without the schedule. The second version
+# of `conftest.py`:
+
+# %%
+# %%writefile perevod/tests/conftest.py
+import json
+
+import pytest
+import torch
+import torch.nn.functional as F
+from safetensors.torch import save_file
+from tokenizers import Tokenizer, models, normalizers, pre_tokenizers
+
+from perevod import Translator
+from perevod.config import GenerationConfig, ModelConfig
+from perevod.decoding import pad
+from perevod.model import Seq2Seq
+
+# a model small enough to train in a second: twenty words, four sentence pairs learned by
+# heart, so that different sentences get different translations
+SPECIAL = ["<pad>", "<unk>", "<bos>", "<eos>"]
+WORDS = SPECIAL + ["i", "think", "therefore", "am", ".", ",", "tom", "reads", "a", "book",
+                   "?", "я", "думаю", "том", "читает", "книгу"]
+PAIRS = {"i think therefore i am .": "я думаю .", "tom reads a book": "том читает книгу",
+         "i am ?": "я ?", "tom": "том"}
+
+# %%
+# %%writefile -a perevod/tests/conftest.py
+
+
+def tiny_tokenizer():
+    vocab = {}
+    for token_id, word in enumerate(WORDS):
+        vocab[word] = token_id
+    tokenizer = Tokenizer(models.WordLevel(vocab, unk_token="<unk>"))
+    tokenizer.add_special_tokens(SPECIAL)  # so that decoding leaves them out
+    tokenizer.normalizer = normalizers.Lowercase()
+    tokenizer.pre_tokenizer = pre_tokenizers.Whitespace()
+    return tokenizer
+
+
+def learn_pairs(model, tokenizer, steps=200):
+    bos, eos = tokenizer.token_to_id("<bos>"), tokenizer.token_to_id("<eos>")
+    sources, targets = [], []
+    for english, russian in PAIRS.items():
+        sources.append(tokenizer.encode(english).ids)
+        targets.append([bos] + tokenizer.encode(russian).ids + [eos])
+    src, tgt = pad(sources, 0, "cpu"), pad(targets, 0, "cpu")
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    for _ in range(steps):
+        logits = model(src, tgt[:, :-1])
+        loss = F.cross_entropy(logits.transpose(1, 2), tgt[:, 1:], ignore_index=0)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+# %%
+# %%writefile -a perevod/tests/conftest.py
+
+
+@pytest.fixture(scope="session")
+def tiny_dir(tmp_path_factory):
+    path = tmp_path_factory.mktemp("tiny-model")
+    tokenizer = tiny_tokenizer()
+    tokenizer.save(str(path / "tokenizer.json"))
+    config = ModelConfig(setup={"norm": "rms", "ffn": "swiglu", "pos": "rope"},
+                         vocab_size=len(WORDS), d_model=16, n_heads=2, d_ff=32, n_layers=2,
+                         dropout=0.1, max_len=32)
+    torch.manual_seed(0)
+    model = Seq2Seq(config)
+    learn_pairs(model, tokenizer)
+    save_file(model.state_dict(), path / "model.safetensors")
+    (path / "config.json").write_text(json.dumps(config.to_dict()))
+    generation = GenerationConfig(beam_size=3, max_tokens=10)
+    (path / "generation_config.json").write_text(json.dumps(generation.to_dict()))
+    return path
+
+
+@pytest.fixture
+def pairs():
+    return PAIRS
+
+
+@pytest.fixture
+def translator(tiny_dir):
+    return Translator.from_pretrained(str(tiny_dir), device="cpu")
+
+# %% [markdown]
+# The decoding tests change in two ways. They run on the four learned sentences, and the batch test first checks
+# that those translate differently, so that it can't pass vacuously again. And there is a new test: the tiny model
+# must translate what it learned, a golden test in miniature that needs no download.
+
+# %%
+# %%writefile perevod/tests/test_decoding.py
+from perevod import decoding
+
+
+def test_a_beam_of_one_is_greedy_decoding(translator, pairs):
+    model, tokenizer = translator.model, translator.tokenizer
+    greedy = decoding.greedy(model, tokenizer, list(pairs), max_tokens=10)
+    beam = decoding.beam_search(model, tokenizer, list(pairs), beam_size=1, max_tokens=10)
+    assert beam == greedy
+
+
+def test_a_batch_translates_like_one_sentence_at_a_time(translator, pairs):
+    alone = []
+    for sentence in pairs:
+        alone.append(translator.translate(sentence))
+    assert len(set(alone)) == len(alone)  # otherwise the order of the results can't be seen
+    assert translator.translate(list(pairs)) == alone
+
+
+def test_the_same_input_gives_the_same_translation(translator, pairs):
+    assert translator.translate(list(pairs)) == translator.translate(list(pairs))
+
+
+def test_the_tiny_model_translates_what_it_learned(translator, pairs):
+    assert translator.translate(list(pairs)) == list(pairs.values())
+
+# %%
+# !cd perevod && {sys.executable} -m pytest -q -m "not slow" -p no:cacheprovider --color=no
+
+# %% [markdown]
+# Still fast, training included. And the same ten mutants against the improved tests:
+
+# %%
+second_run = run_mutants()
+show_grid(second_run, "The same bugs against the improved tests")
+
+# %% [markdown]
+# Both worrying rows are fixed. The empty input now fails its own test and the command line's, because a model
+# that has learned something writes a sentence where there should be none. Translations in the wrong order fail
+# three fast tests instead of none. And two bugs that needed the real model before are caught offline now: the
+# tiny model learned its sentences with RoPE and can't reproduce them without it, and the decoder that peeks at
+# the next token fails four tests instead of two.
+#
+# Two things didn't move, and that's information too. The missing $\sqrt{d_{\text{model}}}$ still escapes
+# everything but the real model: the tiny model learned its four sentences so firmly that rescaled embeddings
+# don't change them. And the length penalty still needs the golden test, because four short sentences give a
+# beam search nothing to choose between.
+#
+# That's the division of labour the four kinds of tests promised: the fast ones catch what breaks the structure,
+# the slow ones what breaks the quality. Mutation testing is how you find out which is which, and which test only
+# looked like it was working.
 #
 # ## 12. Continuous integration
 #
@@ -1688,8 +1880,8 @@ plt.show()
 # Fourth, a known weak spot of machine translation. English says "my doctor" without a gender, Russian can't:
 # врач is masculine, and a woman who is a doctor needs the verb to say so, "сказал**а**". The pronoun in the
 # second half of the sentence is the only clue. [Stanovsky et al. (2019)](https://doi.org/10.18653/v1/P19-1164)
-# built a benchmark of such sentences and found commercial systems choosing the right Russian gender in under 40%
-# of cases. Our probe is small and blunt: one sentence, twelve professions, both pronouns.
+# built a benchmark of such sentences; Google Translate chose the right Russian gender in 37.7% of them. Our probe
+# is small and blunt: one sentence, twelve professions, both pronouns.
 
 # %%
 PROFESSIONS = ["doctor", "teacher", "lawyer", "engineer", "nurse", "scientist",
