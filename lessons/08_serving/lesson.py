@@ -7,14 +7,15 @@
 # been quoted ever since, mostly without the footnotes: the Google experiment also showed thirty results instead
 # of ten, so it measured a heavier page, not just a slower one. When Google ran a clean experiment three years
 # later, adding 100 to 400 ms to search cost 0.2–0.6% of searches
-# ([Brutlag, 2009](https://services.google.com/fh/files/blogs/google_delayexp.pdf)). Smaller than the legend, and
-# still enough for Google to measure it in fractions of a percent.
+# ([Brutlag, 2009](https://services.google.com/fh/files/blogs/google_delayexp.pdf)). The effect is smaller than the
+# legend, but it is there.
 #
 # The other half of the story is what happens when many people ask at once. A request that is fast alone can wait
-# behind others, and the waiting, not the computing, is what users feel. Dean and Barroso's paper on Google's
-# serving put the consequence bluntly: if a request touches a hundred servers and each is slow one time in a
-# hundred, 63% of requests are slow
-# ([Dean & Barroso, 2013](https://doi.org/10.1145/2408776.2408794)).
+# behind others, and users feel the waiting as much as the computing. The slow requests also matter more than their
+# share suggests. Dean and Barroso's paper on Google's serving points out that if answering a user takes a hundred
+# servers, and each is slow one time in a hundred, 63% of users wait for a slow one
+# ([Dean & Barroso, 2013](https://doi.org/10.1145/2408776.2408794)). That's why this lesson measures the slowest
+# requests, not only the average.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/hero-light.png" width="760" alt="The share of slow requests against the number of servers a request waits for, when each server is slow one time in a hundred: 1% for one server, about 10% for ten, 63% for a hundred. The slowest part of a system decides how often its users wait">
 #
@@ -26,19 +27,19 @@
 #
 # 1. Time a real translator and ours, and find where a translation spends its time.
 # 2. Bring lesson 5's KV cache into perevod's beam search, and check it changes no translation.
-# 3. Try int8 quantization and measure why it doesn't help this model.
+# 3. Try int8 quantization, measure that it doesn't help this model, and see why.
 # 4. Build a FastAPI service, load it the way users do, and compare the curves with queueing theory.
 # 5. Add dynamic batching, a Gradio page, and release perevod 0.2.0.
 #
 # **What you need**: a CPU, as in lesson 7; Kaggle's free CPU sessions will do. The lesson downloads opus-mt
 # (300 MB) for a comparison and lesson 7's model (40 MB), and runs in about a quarter of an hour, two thirds of it
-# in load tests that run in real time.
+# in load tests that run in real time. On your own machine you can also open the service in a browser; on Kaggle
+# and Colab the notebook talks to it from Python.
 
 # %% tags=["include:setup"]
 
 # %%
 import asyncio
-import json
 import math
 import os
 import random
@@ -120,6 +121,7 @@ os.chdir(REPO)
 
 
 def write(path, text):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(text.lstrip("\n"), encoding="utf-8")
 
 
@@ -136,10 +138,9 @@ print(f"perevod {perevod.__version__}: {n_ours / 1e6:.1f}M parameters, "
       f"median {np.median(ours_times) * 1000:.0f} ms")
 
 # %% [markdown]
-# Ours is several times smaller and, on the same sentences, faster. A sentence in a few dozen milliseconds sounds
-# like the end of the story. It isn't, for two reasons. The time per sentence depends on its length, and the next
-# section shows how badly. And a service doesn't translate one sentence: it translates whatever arrives, whenever
-# it arrives, and section 8 shows what that does.
+# @@OPUS_RESULT@@ It isn't, for two reasons. The time per sentence depends on
+# its length, and the next section shows how badly. And a service doesn't translate one sentence: it translates
+# whatever arrives, whenever it arrives, and section 7 shows what that does.
 #
 # ## 2. Where a translation spends its time
 #
@@ -162,22 +163,29 @@ with torch.inference_mode():
     encode_ms = (time.perf_counter() - start) * 1000
     written = torch.full((1, 1), bos)
     plain_steps = []
-    for _ in range(100):
+    for _ in range(100):  # past the end of the translation too: only the clock matters here
         start = time.perf_counter()
         next_id = model.decode(written, memory, src)[:, -1].argmax(dim=-1)
         plain_steps.append((time.perf_counter() - start) * 1000)
         written = torch.cat([written, next_id[:, None]], dim=1)
 print(f"encoder: {encode_ms:.1f} ms for {src.shape[1]} tokens")
-print(f"decoder step 1: {plain_steps[1]:.1f} ms, step 100: {plain_steps[99]:.1f} ms")
+print(f"decoder step 1: {plain_steps[0]:.1f} ms, step 100: {plain_steps[99]:.1f} ms")
 
 # %% [markdown]
-# The decoder is called with everything written so far, so every step recomputes all the earlier positions to
-# get the scores for the next one. Step $t$ processes $t$ positions, and a translation of $T$ tokens processes
+# The encoder reads all the English tokens in about the time of one decoder step, and a translation takes one
+# decoder step per Russian token: nearly all the time goes to the decoder. And its steps get slower as the
+# translation grows. The decoder is called with everything written so far, so every step recomputes all the earlier
+# positions to get the scores for the next one. Step $t$ processes $t$ positions, and a translation of $T$ tokens
+# processes
 #
 # $$1 + 2 + \dots + T = \frac{T(T+1)}{2}$$
 #
-# positions in all: twice as long a sentence costs four times as much. Lesson 5 met this and fixed it for greedy
-# decoding with a **KV cache**. perevod 0.1.0 ships the uncached code, because lesson 7 moved the simplest decoding
+# positions in all: twice as long a sentence means four times the positions. The clock shows less than that here.
+# Step 100 handles a hundred times the positions of step 1 and takes only a few times as long, because one short
+# sequence leaves the CPU mostly idle, and the fixed cost of a call dominates. Beam search runs four hypotheses of
+# every sentence of a batch at once, and there the positions dominate, as the next section measures.
+#
+# Lesson 5 met this and fixed it for greedy decoding with a **KV cache**. perevod 0.1.0 ships the uncached code, because lesson 7 moved the simplest decoding
 # into the package. The package's default, beam search, never had a cache at all.
 #
 # ## 3. The KV cache, in the package
@@ -238,7 +246,9 @@ def length_penalty(length, alpha=0.6):
 # %% [markdown]
 # `attend` is one attention sublayer for the newest token. It works on the model's own `Attention` modules, so the
 # weights are the model's; only the order of operations is new. For self-attention it rotates the new query and
-# key with RoPE and appends the key and value to the cache; for cross-attention the cache is fixed:
+# key with RoPE and appends the key and value to the cache. It needs no causal mask: the only query is the newest
+# token, and everything in the cache is its past. For cross-attention the cache is computed once from the source,
+# and marked `"fixed"` so that nothing is appended to it:
 
 # %%
 # %%writefile -a perevod/src/perevod/decoding.py
@@ -265,7 +275,7 @@ def attend(attention, x, cache, mask, angles):
 # %% [markdown]
 # `decode_step` runs the decoder of `model.py` for one token, in the same order: pre-norm, self-attention,
 # cross-attention, feed-forward. It repeats the model's arithmetic outside the model, which is a debt: if
-# `model.py` changes, this has to change with it. The golden test of lesson 7 is what collects that debt.
+# `model.py` changes, this has to change with it. The golden test of lesson 7 fails if the two drift apart.
 
 # %%
 # %%writefile -a perevod/src/perevod/decoding.py
@@ -293,6 +303,10 @@ def decode_step(model, token, memory_mask, caches, position):
                        None)
         x = x + layer.feed_forward(layer.norm3(x))
     return (model.decoder_norm(x) @ model.embedding.weight.T)[:, -1]
+
+# %% [markdown]
+# `reorder` moves the cached keys and values along with their hypotheses, as in the figure above. It handles both
+# kinds of cache, so the source's keys and values follow their sentence too.
 
 # %%
 # %%writefile -a perevod/src/perevod/decoding.py
@@ -380,6 +394,15 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
         finished = [[] for _ in indices]
         active = [True for _ in indices]
 
+# %% [markdown]
+# Each step does three things. It collects the cache rows of the live hypotheses of every sentence still being
+# translated, and reorders the caches to them. On the first step that turns one row per sentence into one row per
+# hypothesis; later, sentences that are done drop out, and their rows with them. Then one decoder step runs for all
+# those hypotheses at once, and each gets its `beam_size` best next tokens. Finally, for each sentence, every
+# hypothesis is extended by each of its tokens, the candidates are sorted, those that end with `<eos>` are set
+# aside as finished, and the best `beam_size` others survive. A sentence stops when it has `beam_size` finished
+# hypotheses.
+
 # %%
 # %%writefile -a perevod/src/perevod/decoding.py
 
@@ -421,6 +444,9 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
                 if len(finished[k]) >= beam_size:
                     active[k] = False
 
+# %% [markdown]
+# At the end each sentence takes its best hypothesis by the length-normalized score, as in lesson 3:
+
 # %%
 # %%writefile -a perevod/src/perevod/decoding.py
 
@@ -456,7 +482,7 @@ print("new:", new.__file__)
 # lesson 7, with beam search, the old code against the new:
 
 # %%
-from sacrebleu.utils import get_reference_files, get_source_file
+from sacrebleu.utils import get_source_file
 
 tatoeba = test.sample(500, random_state=SEED)
 news_file = Path(get_source_file("wmt20", "en-ru"))
@@ -510,8 +536,10 @@ plt.show()
 # ## 4. int8 quantization, measured
 #
 # The next speed-up everyone reaches for is **quantization**: store weights as 8-bit integers instead of 32-bit
-# floats, and multiply in integers. PyTorch's dynamic quantization does it in one call: the weights of every
-# `nn.Linear` become int8, and the activations are quantized on the fly, at every call
+# floats, and multiply in integers. Each weight matrix gets a scale $s$ so that $w \approx s \cdot q$, with $q$ an
+# integer from −128 to 127. PyTorch's dynamic quantization does it in one call: the weights of every `nn.Linear`
+# become int8 once, and at every call the input is measured and scaled the same way, the multiplication runs in
+# integers, and the result is scaled back
 # ([PyTorch docs](https://docs.pytorch.org/docs/stable/generated/torch.ao.quantization.quantize_dynamic.html)).
 
 # %%
@@ -542,17 +570,20 @@ print(f"int8:    {int8_seconds:.1f} s, chrF {int8_chrf:.1f}, {changed} of {len(s
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/step-flops-light.png" width="760" alt="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32">
 #
-# The largest single matrix is the output projection onto the 16,000 tokens of the vocabulary, and it isn't an
-# `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches it. What it does touch
-# are 256-wide layers, too small for int8 arithmetic to beat the cost of quantizing the activations at every call.
-# For a model this size, on this CPU, the trade is all cost. perevod 0.2.0 doesn't ship it; a measurement is a fine
-# reason to drop a feature. (PyTorch is moving quantization to its `torchao` library, and the old API is on its way
-# out; the arithmetic above won't change with the API.)
+# The output projection onto the 16,000 tokens of the vocabulary does 59% of the multiply-adds of a step, and it
+# isn't an `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches it. Even if int8
+# made every `nn.Linear` free, more than half of the work would stay in float32. What quantization does touch are
+# 256-wide layers, too small for integer arithmetic to win back the cost of measuring and scaling the input at
+# every call. On a model this size, on this CPU, quantization costs quality and buys nothing, so perevod 0.2.0
+# doesn't use it. (The warning above says PyTorch is moving quantization to its `torchao` library; the arithmetic
+# won't change with the API.)
 #
 # ## 5. Batches and threads
 #
-# A CPU does more work per second when it multiplies bigger matrices: one call on a batch of sixteen sentences costs
-# much less than sixteen calls. Here is perevod's throughput with batches of different sizes, on 256 sentences:
+# A CPU does more work per second on bigger matrices. The fixed cost of every call, and reading the weights from
+# memory, are paid once per batch instead of once per sentence. Here is perevod's throughput with batches of
+# different sizes, on 256 sentences. `beam_search` groups sentences of similar length into a batch, so that none
+# waits long for a much longer neighbour; these numbers are the best case:
 
 # %%
 sentences = list(test.sample(256, random_state=SEED + 1).en)
@@ -587,19 +618,27 @@ display(table(pd.DataFrame(rows)))
 # each, and two threads that share a core mostly take turns. PyTorch starts one thread per physical core, two here,
 # and four buy nothing over two. The default is right on this machine and can be wrong on another: a container run
 # with `--cpus=2` still shows the process every core of its host, and PyTorch starts a thread per physical core of
-# the host. Check the number on the machine you deploy to.
+# the host. Check the number on the machine you deploy to, and set it if it's wrong: `torch.set_num_threads(n)` in
+# the code, or the `OMP_NUM_THREADS` environment variable before the process starts
+# ([PyTorch notes](https://docs.pytorch.org/docs/stable/notes/cpu_threading_torchscript_inference.html)).
 #
 # ## 6. A FastAPI service
 #
 # A command line loads the model for every call, and lesson 7 measured that the loading costs more than translating
 # a sentence. A **service** loads it once and answers requests over HTTP for as long as it runs.
-# [FastAPI](https://fastapi.tiangolo.com) is the common choice in Python: you describe the request and the response
-# as typed classes, and it validates the input, writes the errors, and generates documentation.
+#
+# Two programs make one in Python. A server, here [uvicorn](https://www.uvicorn.org), listens on a port, speaks HTTP
+# and hands every request to the app. The app, written with [FastAPI](https://fastapi.tiangolo.com), decides what
+# to answer. (The interface between the two is called ASGI; you'll meet the name in error messages.) In the app, a
+# **handler** is the function called for one address. Ours are a POST to `/translate` with a JSON body like
+# `{"text": "..."}`, and a GET to `/health` that tells whoever asks that the service is up.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/service-light.png" width="760" alt="How a request travels through perevod's service: an HTTP request reaches uvicorn and FastAPI, which validates it and puts it into a queue; a batcher takes the requests that arrived within a few milliseconds, translates them as one batch in a worker thread, and answers each request with its own translation">
 #
-# The request and the response are pydantic models; a text longer than 5,000 characters is refused before it
-# reaches the model:
+# FastAPI builds on pydantic, which turns a class with typed fields into a validator: a request body that doesn't
+# fit is refused, with an explanation, before our code runs. The model reads at most 256 tokens, about a thousand
+# characters of English, so the API refuses longer texts instead of cutting them silently. A real service would
+# split a long text into sentences and translate them one by one.
 
 # %%
 # %%writefile perevod/src/perevod/server.py
@@ -616,16 +655,31 @@ from .translator import MODEL, Translator
 
 
 class TranslateRequest(BaseModel):
-    text: str = Field(max_length=5000, examples=["Tom is afraid of the dark."])
+    # the model reads at most 256 tokens, about a thousand characters of English
+    text: str = Field(max_length=1000, examples=["Tom is afraid of the dark."])
 
 
 class TranslateResponse(BaseModel):
     translation: str
 
 # %% [markdown]
-# Between the HTTP handlers and the model sits a queue. Every request puts its text and a future into it and waits
-# for the future. A **batcher** takes requests out of the queue: the first one, then whatever else arrives within
-# `max_wait` seconds, up to `max_batch` requests. With `max_batch=1` it is a plain queue, one request at a time.
+# Many requests can be open at once, and the model should see them one batch at a time. Between the two sits a
+# queue, and the queue lives in asyncio, the part of Python that uvicorn runs on. It needs a paragraph of its own.
+#
+# uvicorn runs the app on an **event loop**: one thread that juggles all the open requests. A function defined with
+# `async def` is a **coroutine**, and at every `await` (on the network, a queue, a timer) it pauses and lets the
+# loop run something else. That's how one process holds hundreds of requests without hundreds of threads. The flip
+# side is that code which computes without awaiting holds the whole loop: a translation of 60 ms would freeze every
+# other request for 60 ms. So the model runs in another thread, through `asyncio.to_thread`, and the loop waits for
+# it as it waits for the network. Last, a **future** is a box for a result that doesn't exist yet: `await answer`
+# pauses until someone calls `answer.set_result(...)`, and then returns that value.
+#
+# Now the **batcher**. Every request puts its text and a future into the queue and waits for the future. The
+# batcher takes requests out of the queue: the first one, whenever it comes, then whatever else arrives within
+# `max_wait` seconds (`wait_for` gives up when the time left runs out), up to `max_batch` requests. With
+# `max_batch=1` it is a plain queue, one request at a time. NVIDIA's Triton inference server batches with the same
+# two settings
+# ([Triton docs](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/batcher.html)).
 
 # %%
 # %%writefile -a perevod/src/perevod/server.py
@@ -646,13 +700,13 @@ class Batcher:
     async def translate(self, text):
         answer = asyncio.get_running_loop().create_future()
         await self.queue.put((text, answer))
-        return await answer
+        return await answer  # until run() gives the future its result
 
 # %%
 # %%writefile -a perevod/src/perevod/server.py
 
     async def collect(self):
-        batch = [await self.queue.get()]
+        batch = [await self.queue.get()]  # waits for the first request, however long
         deadline = time.monotonic() + self.max_wait
         while len(batch) < self.max_batch:
             remaining = deadline - time.monotonic()
@@ -665,9 +719,11 @@ class Batcher:
         return batch
 
 # %% [markdown]
-# The batcher translates in a worker thread, so that the server keeps accepting requests while the model works,
-# and gives every request its own translation back. If the translation fails, every request of the batch gets the
-# error instead of waiting forever.
+# The batcher translates each batch in a worker thread and gives every request its own translation. If the
+# translation fails, every request of the batch gets the error instead of waiting forever. The `done()` checks
+# cover a quieter case: a caller that stopped waiting, say on a timeout, leaves a cancelled future behind. Setting a
+# result on it raises an error, and without the check that error would end `run()`; every later request would then
+# wait forever, while `/health` went on answering "ok".
 
 # %%
 # %%writefile -a perevod/src/perevod/server.py
@@ -677,19 +733,21 @@ class Batcher:
             batch = await self.collect()
             self.batch_sizes.append(len(batch))
             texts = [text for text, _ in batch]
-            # in a thread, so that the server keeps accepting requests meanwhile
-            job = asyncio.ensure_future(asyncio.to_thread(self.translator.translate, texts))
-            await asyncio.wait([job])
-            if job.exception() is not None:  # every request of the batch gets the error
+            try:  # in a thread, so that the event loop keeps serving requests meanwhile
+                translations = await asyncio.to_thread(self.translator.translate, texts)
+            except Exception as error:  # noqa: BLE001, every request of the batch gets it
                 for _, answer in batch:
-                    answer.set_exception(job.exception())
+                    if not answer.done():
+                        answer.set_exception(error)
                 continue
-            for (_, answer), translation in zip(batch, job.result(), strict=True):
-                answer.set_result(translation)
+            for (_, answer), translation in zip(batch, translations, strict=True):
+                if not answer.done():  # done already if its caller stopped waiting
+                    answer.set_result(translation)
 
 # %% [markdown]
-# The app itself. The `lifespan` function runs when the server starts and stops: it loads the model once and
-# starts the batcher. The two handlers are three lines each. The `demo` switch mounts a Gradio page, section 9's.
+# The app itself. `lifespan` runs when the server starts and when it stops: it loads the model once and starts the
+# batcher as a background task next to the handlers (`create_task`), and cancels it at the end. `app.state` is
+# where the handlers find the batcher. The `demo` switch mounts the Gradio page of section 9.
 
 # %%
 # %%writefile -a perevod/src/perevod/server.py
@@ -698,9 +756,10 @@ class Batcher:
 def create_app(model=MODEL, revision=None, max_batch=16, max_wait=0.005, demo=False):
     @asynccontextmanager
     async def lifespan(app):
+        # before yield: when the server starts; after it: when it stops
         translator = Translator.from_pretrained(model, revision)
         app.state.batcher = Batcher(translator, max_batch, max_wait)
-        worker = asyncio.create_task(app.state.batcher.run())
+        worker = asyncio.create_task(app.state.batcher.run())  # runs next to the handlers
         yield
         worker.cancel()
 
@@ -716,7 +775,7 @@ def create_app(model=MODEL, revision=None, max_batch=16, max_wait=0.005, demo=Fa
         return {"status": "ok", "version": __version__}
 
     if demo:
-        import gradio as gr
+        import gradio as gr  # only the demo extra installs it
 
         from .demo import build_demo
 
@@ -740,7 +799,7 @@ def main(argv=None):
     parser.add_argument("--demo", action="store_true", help="serve a Gradio page at /")
     args = parser.parse_args(argv)
 
-    import uvicorn
+    import uvicorn  # only the serve extra installs it; the tests don't need it
 
     app = create_app(max_batch=args.max_batch, max_wait=args.max_wait_ms / 1000,
                      demo=args.demo)
@@ -813,15 +872,16 @@ def __getattr__(name):
 # %% [markdown]
 # From here on we change the package as we go, so it's installed in **editable** mode: pip puts a pointer to
 # `perevod/src` into site-packages instead of a copy, and every process that imports perevod gets the current
-# files. That's the right install for working on a package; lesson 7's CI job that installs the built wheel is
-# still what checks the copy users get.
+# files. That's the right install for working on a package. The CI job that installs the built wheel is what
+# checks the copy users get, and section 10 makes it check more.
 
 # %%
 # !{sys.executable} -m pip install -q -e "./perevod[serve]"
 
 # %% [markdown]
-# A service runs in its own process. Start one, wait until `/health` answers, and send it a sentence, first with
-# batching turned off:
+# A service runs in its own process. `start_server` starts one, sends what it prints to a log file, and waits
+# until `/health` answers; if the process exits first, the error shows the end of its log. Then a sentence, first
+# with batching turned off:
 
 # %%
 def start_server(port, max_batch, max_wait_ms=5, demo=False):
@@ -829,15 +889,20 @@ def start_server(port, max_batch, max_wait_ms=5, demo=False):
                "--max-batch", str(max_batch), "--max-wait-ms", str(max_wait_ms)]
     if demo:
         command.append("--demo")
-    quiet = subprocess.DEVNULL
-    process = subprocess.Popen(command, stdout=quiet, stderr=quiet)
+    log = Path(f"server-{port}.log")
+    with log.open("w") as output:
+        process = subprocess.Popen(command, stdout=output, stderr=subprocess.STDOUT)
     for _ in range(180):
+        if process.poll() is not None:  # it exited: a port in use, a missing package...
+            break
         try:
             if httpx.get(f"http://127.0.0.1:{port}/health").status_code == 200:
                 return process
         except httpx.HTTPError:
-            time.sleep(1)
-    raise RuntimeError("the server did not start")
+            pass
+        time.sleep(1)
+    process.kill()
+    raise RuntimeError("the server did not start:\n" + log.read_text()[-2000:])
 
 
 server = start_server(8001, max_batch=1)
@@ -848,10 +913,11 @@ refused = httpx.post(URL, json={"text": "word " * 2000})
 print(refused.status_code, refused.json()["detail"][0]["msg"])
 
 # %% [markdown]
-# A translation, and a 422 with a readable reason for the text that is too long, which our code never saw:
-# FastAPI refused it from the declaration of `TranslateRequest`. The same declarations describe the API at
-# `/docs`, an interactive page anyone can try requests on, and at `/openapi.json`, a machine-readable description
-# from which clients in other languages can be generated:
+# A translation, and for the text that is too long a 422, HTTP's code for "I understood the request, but its
+# content is invalid", with a readable reason. Our code never saw that request: FastAPI refused it from the
+# declaration of `TranslateRequest`. The same declarations describe the API at `/docs`, an interactive page where
+# anyone can try requests (on your own machine, open http://127.0.0.1:8001/docs in a browser), and at
+# `/openapi.json`, a machine-readable description from which clients in other languages can be generated:
 
 # %%
 spec = httpx.get("http://127.0.0.1:8001/openapi.json").json()
@@ -864,17 +930,20 @@ for path, operations in spec["paths"].items():
 #
 # Now the question this lesson is about: how fast does the service answer when many people use it? The obvious
 # way to find out is a loop that sends a request, waits for the answer, records the time, and sends the next one,
-# with a few such loops in parallel. Most load testing tools work that way, and Gil Tene named what's wrong with it:
-# **coordinated omission** ([Tene, 2013](https://groups.google.com/g/mechanical-sympathy/c/icNZJejUHfE/m/BfDekfBEs_sJ)).
+# with a few such loops in parallel. Tools built around "virtual users" that wait for their answers, like Locust or
+# JMeter's usual thread groups, work that way, and Gil Tene named what's wrong with it: **coordinated omission**
+# ([Tene, 2013](https://groups.google.com/g/mechanical-sympathy/c/icNZJejUHfE/m/BfDekfBEs_sJ)).
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/omission-light.png" width="760" alt="A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow">
 #
 # When the server stalls, a tester that waits for each answer stops sending, so it records one slow request where
 # real users, who don't coordinate with the server, would have produced dozens. The fix is an **open-loop** test:
 # decide in advance when every request is sent, independently of the answers, and measure each latency from the
-# moment the request was *supposed* to go. Users arriving independently at an average rate $\lambda$ are well
-# described by a **Poisson process**, whose gaps between arrivals are exponentially distributed with mean
-# $1/\lambda$:
+# moment the request was *supposed* to go. [wrk2](https://github.com/giltene/wrk2), which Tene wrote for exactly
+# this, and the arrival-rate executors of
+# [k6](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/) work that way. Users
+# arriving independently at an average rate $\lambda$ are well described by a **Poisson process**, whose gaps
+# between arrivals are exponentially distributed with mean $1/\lambda$:
 
 # %%
 def arrival_times(rate, seconds, seed):
@@ -887,6 +956,9 @@ def arrival_times(rate, seconds, seed):
 
 
 async def load_test(url, rate, seconds, sentences, seed=0):
+    # no connection limit: with httpx's default of 100, requests would queue in the
+    # client and the test would blame the server; no timeout: a slow answer is a
+    # measurement, not an error
     limits = httpx.Limits(max_connections=None, max_keepalive_connections=None)
     async with httpx.AsyncClient(timeout=None, limits=limits) as client:
         start = time.perf_counter()
@@ -904,24 +976,50 @@ async def load_test(url, rate, seconds, sentences, seed=0):
 
 # %% [markdown]
 # Each request is a coroutine that sleeps until its moment, then sends. If the server is slow, the coroutines don't
-# wait for each other, just like users. First, the **service time**: how long the server takes per request when
-# nobody else is asking. One request every two seconds keeps it idle between them:
+# wait for each other, just like users. `gather` runs them all together and returns their results in order. (A
+# notebook can `await` at the top level; in a script you'd write `asyncio.run(load_test(...))`.)
+#
+# Two shortcuts make this a lesson's load test rather than a release's. The load generator shares the server's two
+# cores, where a real test runs it from another machine. And `raise_for_status` stops the test at the first error,
+# where a real one counts errors next to latencies: a server that answers "500" quickly has excellent latency.
+#
+# First, the **service time**: how long the server takes per request when no other request is waiting. For this
+# one measurement the closed loop is exactly the right tool: send a request, wait for the answer, send the next.
+# There's never a queue, so every time it records is a service time. Five hundred sentences of the traffic the load
+# test will send, in the same order:
 
 # %%
 traffic = list(test.sample(2_000, random_state=SEED + 2).en)
-idle = await load_test(URL, rate=0.5, seconds=40, sentences=traffic, seed=1)
-service = idle.mean()
+service_times, answers = [], []
+with httpx.Client(timeout=None) as client:
+    for sentence in traffic[:500]:
+        start = time.perf_counter()
+        response = client.post(URL, json={"text": sentence})
+        service_times.append(time.perf_counter() - start)
+        answers.append(response.json()["translation"])
+service_times = np.array(service_times)
+service = service_times.mean()
 mu = 1 / service
-print(f"service time over {len(idle)} requests: mean {service * 1000:.0f} ms, "
-      f"median {np.median(idle) * 1000:.0f} ms, max {idle.max() * 1000:.0f} ms")
+median, p99 = np.percentile(service_times, [50, 99]) * 1000
+print(f"service time: mean {service * 1000:.0f} ms, median {median:.0f} ms, "
+      f"99th percentile {p99:.0f} ms")
 print(f"one request at a time, at most {mu:.1f} requests per second")
+slowest = service_times.argmax()
+print(f"\nthe slowest, {service_times[slowest] * 1000:.0f} ms:")
+print(traffic[slowest])
+print(answers[slowest])
 
 # %% [markdown]
+# @@SERVICE_RESULT@@
+#
 # A service that answers one request at a time has a capacity of $\mu = 1/S$ requests per second, where $S$ is the
-# mean service time. The load test runs at fractions of it, from a fifth to almost all, thirty seconds each. It
-# reports the median and the 90th percentile: thirty seconds hold a few hundred requests at most, and their 99th
-# percentile would rest on the slowest two or three. A load test before a release runs for many minutes and reports
-# the 99th percentile and beyond.
+# mean service time. The load test runs at fractions of it, from a fifth to almost all, thirty seconds each.
+#
+# It reports two **percentiles** of the latency. The median, p50, is the latency half of the requests beat. The
+# 90th percentile, p90, is the one nine requests in ten beat: one user in ten waits longer. Dean and Barroso's
+# "slow one time in a hundred" is the 99th percentile, but thirty seconds hold a few hundred requests at most, and
+# their 99th percentile would rest on the slowest two or three. A load test before a release runs for many minutes
+# and reports the 99th percentile and beyond.
 
 # %%
 LOADS = [0.2, 0.4, 0.6, 0.7, 0.8, 0.9, 0.95]
@@ -936,31 +1034,33 @@ for load in LOADS:
 # %% [markdown]
 # @@ONE_RESULT@@
 #
-# Queueing theory predicts this curve, and the prediction is worth having before you buy servers. The simplest
-# model is the **M/M/1 queue**: Poisson arrivals at rate $\lambda$, one server, exponentially distributed service
+# Queueing theory predicts this curve, and the prediction is worth having before you buy servers. Its formulas are
+# simplest for the mean, so from here on the comparison is about mean latency. The simplest model is the **M/M/1
+# queue** (Harchol-Balter, 2013): Poisson arrivals at rate $\lambda$, one server, exponentially distributed service
 # times with mean $S = 1/\mu$. The **utilization** $\rho = \lambda / \mu$ is the fraction of time the server is
-# busy; it has to stay below 1, or the queue grows without end. The time a request spends in the system, waiting
-# plus being served, is then exponentially distributed with rate $\mu - \lambda$, so its mean and its quantiles
-# are
+# busy; it has to stay below 1, or the queue grows without end. The mean time a request spends in the system,
+# waiting plus being served, is then
 #
-# $$\mathbb{E}[T] = \frac{1}{\mu - \lambda} = \frac{S}{1 - \rho}, \qquad
-# T_q = \frac{-\ln(1 - q)}{\mu - \lambda} = \frac{-\ln(1 - q)\, S}{1 - \rho}.$$
+# $$\mathbb{E}[T] = \frac{1}{\mu - \lambda} = \frac{S}{1 - \rho}.$$
 #
 # The factor $1/(1 - \rho)$ is the whole story: at $\rho = 0.5$ a request takes twice its service time on average,
-# at $0.9$ ten times, at $0.99$ a hundred. The last 10% of capacity costs more latency than the first 90%.
+# at $0.9$ ten times, at $0.99$ a hundred. The last 10% of capacity costs more latency than the first 90%. That's
+# why services are planned to stay well below full at their busiest hour, often around 60–70% busy, where waiting
+# adds one and a half to two and a half service times and a burst of traffic doesn't push them over the edge.
 #
-# Our service times aren't exponential: a sentence takes about as long as its length, and the lengths are spread
-# less than an exponential distribution would spread them. Kingman's approximation keeps the factor and corrects
-# for the spread ([Kingman, 1961](https://doi.org/10.1017/S0305004100036094)):
+# Real service times are rarely exponential. Kingman's approximation keeps the factor and corrects for how spread
+# out the service times are ([Kingman, 1961](https://doi.org/10.1017/S0305004100036094)):
 #
 # $$\mathbb{E}[T] \approx S + \frac{\rho}{1 - \rho} \cdot \frac{c_a^2 + c_s^2}{2} \cdot S,$$
 #
 # where $c_a$ and $c_s$ are the coefficients of variation (standard deviation over mean) of the gaps between
-# arrivals and of the service times. Poisson arrivals have $c_a = 1$; exponential service has $c_s = 1$, and then
-# the formula is exactly M/M/1's. Ours, measured at low load:
+# arrivals and of the service times. Poisson arrivals have $c_a = 1$, and then the formula is exact, not
+# approximate: it's the Pollaczek–Khinchine formula for a single server with any distribution of service times.
+# Exponential service has $c_s = 1$ too, and then the formula is M/M/1's. Ours, from the five hundred service
+# times:
 
 # %%
-c_s = idle.std() / idle.mean()
+c_s = service_times.std() / service_times.mean()
 print(f"coefficient of variation of the service time: {c_s:.2f}")
 rows = []
 for rate, times in one_at_a_time.items():
@@ -976,35 +1076,41 @@ display(table(theory, digits=0))
 # Our tests start from an empty queue, and near capacity a queue forgets slowly. For M/M/1 the time it takes, the
 # relaxation time, is $S/(1 - \sqrt{\rho})^2$, which grows like $1/(1 - \rho)^2$
 # ([Morse, 1955](https://doi.org/10.1287/opre.3.3.255)): about 90 service times at 80% load, 380 at 90% and 1,560
-# at 95%. With ours, that's six seconds, twenty-five and a minute and a half. A thirty-second test near capacity
-# ends before its queue has settled.
+# at 95%. A test that starts empty and ends before its queue has settled measures less than the steady state.
 #
-# And a thirty-second test is one draw of a random process. An early burst of arrivals leaves a backlog that a
-# server with little spare capacity clears slowly, and the mean of the whole test goes up with it. How much tests
-# vary, the queue itself can tell. A single server that answers in order follows **Lindley's recursion**
+# And a thirty-second test is one draw of a random process. A burst of arrivals early on leaves a backlog that a
+# server with little spare capacity clears slowly, and the mean of the whole test goes up with it. How much do such
+# tests vary? The queue can tell us itself. A single server that answers in order follows **Lindley's recursion**
 # ([Lindley, 1952](https://doi.org/10.1017/S0305004100027638)): a request starts when it arrives or when the
-# previous one ends, whichever is later. Run it on the arrival times our tests used, with service times drawn from
-# those measured at idle, five hundred times per load:
+# previous one ends, whichever is later. Run it with service times drawn from the five hundred we measured, two
+# hundred times on the arrivals each of our tests actually had, which predicts what that test should have
+# measured, and two hundred times on fresh arrivals, which shows how much thirty-second tests at that load vary:
 
 # %%
 def simulated_mean(arrivals, service_times):
-    done, latencies = 0.0, []
+    done, spent = 0.0, []
     for arrived, service_time in zip(arrivals, service_times, strict=True):
         done = max(arrived, done) + service_time  # on arrival, or when the last one ends
-        latencies.append(done - arrived)
-    return np.mean(latencies)
+        spent.append(done - arrived)
+    return np.mean(spent)
 
 
+def simulate(arrivals):
+    return simulated_mean(arrivals, rng.choice(service_times, len(arrivals)))
+
+
+for load in [0.8, 0.9, 0.95]:
+    print(f"relaxation time at {load:.0%} load: {service / (1 - load**0.5) ** 2:.0f} s")
 rng = np.random.default_rng(SEED)
 rows = []
 for load, (rate, times) in zip(LOADS, one_at_a_time.items(), strict=True):
-    arrivals = arrival_times(rate, 30, seed=int(100 * load))  # the test's own arrivals
-    means = []
-    for _ in range(500):
-        means.append(simulated_mean(arrivals, rng.choice(idle, len(arrivals))))
-    low, middle, high = 1000 * np.percentile(means, [10, 50, 90])
+    own = arrival_times(rate, 30, seed=int(100 * load))  # the arrivals this test had
+    predicted = np.median([simulate(own) for _ in range(200)])
+    others = [simulate(arrival_times(rate, 30, seed=1_000 + k)) for k in range(200)]
+    low, high = np.percentile(others, [10, 90])
     rows.append({"load, %": round(100 * load), "measured mean, ms": 1000 * times.mean(),
-                 "simulated: 10%": low, "median": middle, "90%": high})
+                 "predicted for its arrivals": 1000 * predicted,
+                 "8 in 10 tests: from": 1000 * low, "to": 1000 * high})
 simulated = pd.DataFrame(rows)
 display(table(simulated, digits=0))
 
@@ -1016,13 +1122,15 @@ ax.plot(rhos, 1000 * (service + rhos / (1 - rhos) * (1 + c_s**2) / 2 * service),
         color=COLORS["att"], label="Kingman's approximation")
 ax.plot(rhos, 1000 * service / (1 - rhos), color=COLORS["muted"], linestyle=(0, (3, 3)),
         label="M/M/1")
-ax.vlines(LOADS, simulated["simulated: 10%"], simulated["90%"],
+ax.vlines(LOADS, simulated["8 in 10 tests: from"], simulated["to"],
           color=COLORS["dec"], alpha=0.3, linewidth=7,
           label="8 in 10 simulated 30-second tests")
+ax.plot(LOADS, simulated["predicted for its arrivals"], "x", color=COLORS["dec"],
+        label="simulated with the test's own arrivals")
 ax.plot(LOADS, measured, "o", color=COLORS["dec"], label="measured mean")
 ax.set_xlabel("utilization ρ = λ / μ")
 ax.set_ylabel("mean latency, ms")
-ax.set_ylim(0, 1.15 * max(max(measured), simulated["90%"].max()))
+ax.set_ylim(0, 1.15 * max(max(measured), simulated["to"].max()))
 ax.set_title("Latency against load, one request at a time")
 ax.legend(frameon=False)
 plt.show()
@@ -1032,15 +1140,20 @@ plt.show()
 #
 # ## 8. Dynamic batching
 #
-# Section 5 showed that one batch of sixteen costs a few times one sentence, not sixteen times. A queue full of
-# waiting requests is a batch nobody formed. The batcher of section 6 forms it: it takes the first request, waits
-# up to a few milliseconds for more, and translates whatever it has together.
+# Section 5 showed that one batch of sixteen costs a few times one sentence, not sixteen times. Requests waiting in
+# a queue are already a batch; the batcher of section 6 only takes them together: the first request, whatever else
+# arrives within a few milliseconds, all translated at once.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/batching-light.png" width="760" alt="Requests arriving over time, one at a time and with dynamic batching. One at a time, each request waits for all those before it. With dynamic batching, the requests that arrive while a batch is being translated go into the next batch together, so the queue empties in a few batches instead of many single translations">
 #
 # The cost is a wait of at most `max_wait` for the first request of a batch when the server is idle; the gain is
-# that under load the server translates many requests at the price of a few. The same server with batches of up
-# to sixteen, at the same loads and at loads it couldn't take before:
+# that under load the server translates many requests at the price of a few. Section 5 also gives a forecast. Its
+# batches of sixteen ran at about four times the throughput of single sentences. The server will do worse: it
+# batches whatever arrives, short and long sentences together, and every request in a batch waits for the longest.
+# Two to four times the capacity is a fair guess.
+#
+# The same server with batches of up to sixteen, at the same loads with the same arrivals, and at loads it couldn't
+# take before:
 
 # %%
 server.terminate()
@@ -1048,10 +1161,12 @@ server.wait()
 server = start_server(8002, max_batch=16, max_wait_ms=5)
 URL = "http://127.0.0.1:8002/translate"
 batched = {}
-for rate in list(one_at_a_time) + [1.5 * mu, 2 * mu, 2.5 * mu, 3 * mu]:
-    batched[rate] = await load_test(URL, rate, 30, traffic, seed=int(10 * rate))
+for load in LOADS + [1.5, 2, 2.5, 3]:
+    rate = load * mu
+    batched[rate] = await load_test(URL, rate, 30, traffic, seed=int(100 * load))
     p50, p90 = np.percentile(batched[rate], [50, 90]) * 1000
-    print(f"{rate:5.1f} requests/s: p50 {p50:6.0f} ms, p90 {p90:6.0f} ms")
+    print(f"{rate:5.1f} requests/s, {load:.0%} of the capacity one at a time: "
+          f"p50 {p50:6.0f} ms, p90 {p90:6.0f} ms")
 
 # %%
 fig, ax = plt.subplots(figsize=(8, 3.8))
@@ -1075,6 +1190,15 @@ plt.show()
 # %% [markdown]
 # @@BATCH_RESULT@@
 #
+# Two settings remain to choose, and the measurements above say how. `max_wait` is added latency when the server is
+# idle, and it hardly matters under load, because the queue fills batches while the model works: keep it a small
+# fraction of the service time. `max_batch` belongs where section 5's throughput flattens. Past that point a bigger
+# batch adds little throughput, and every request in it waits for all of it.
+#
+# One thing this server doesn't do. Its queue has no limit, so beyond capacity the latency grows for as long as the
+# overload lasts, and the last points of the plot measure the length of the test more than the server. A
+# production service caps its queue and answers 503, "try later", to the requests it can't take.
+#
 # Large language model servers take the same idea further. A request to an LLM generates hundreds of tokens, and
 # waiting for a whole batch to finish would hold short answers behind long ones, so vLLM and its predecessors
 # batch at the level of single decoding steps: a finished sequence leaves the batch after its last token and a
@@ -1084,9 +1208,9 @@ plt.show()
 #
 # ## 9. A Gradio page
 #
-# An API is for programs. For people, and for the next lesson's demo, a page with a text box helps more. Gradio,
-# part of Hugging Face since 2021 ([Abid, 2021](https://huggingface.co/blog/gradio-joins-hf)), builds one from a
-# few lines, and it can live inside the same FastAPI app, so the page and the API share one model and one queue:
+# An API is for programs. For people, a page with a text box helps more. [Gradio](https://www.gradio.app/docs)
+# builds one from a few lines, and it can live inside the same FastAPI app, so the page and the API share one model
+# and one queue:
 
 # %%
 # %%writefile perevod/src/perevod/demo.py
@@ -1113,14 +1237,17 @@ def build_demo(app):
         source = gr.Textbox(label="English", lines=3)
         target = gr.Textbox(label="Russian", lines=3)
         button = gr.Button("Translate", variant="primary")
-        button.click(translate, source, target)
+        # no limit: Gradio would otherwise send its visitors one at a time
+        button.click(translate, source, target, concurrency_limit=None)
         gr.Examples(EXAMPLES, source)
     return demo
 
 # %% [markdown]
-# The page translates through `app.state.batcher`, so a person typing and a program calling the API wait in the
-# same queue and fill the same batches. Gradio is a heavy dependency, so it is an extra of its own, `demo`, and the
-# page appears only with `--demo`. Here is what it looks like:
+# The page translates through `app.state.batcher`, so people on the page and programs calling the API wait in the
+# same queue and fill the same batches. One argument makes that true: Gradio sends a page's clicks through a queue
+# of its own, one at a time by default, and `concurrency_limit=None` lets them all through to ours. Gradio is a
+# heavy dependency, so it is an extra of its own, `demo`, and the page appears only with `--demo`. Here is what it
+# looks like:
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/gradio.png" width="700" alt="The Gradio page of perevod: a short description with links to the course and the model card, an English text box with 'My brother lives in a small town by the sea.', the Russian box below it with 'Мой брат живёт в маленьком городке у моря.', a Translate button and four example sentences">
 
@@ -1139,11 +1266,13 @@ print("the page:", page.status_code, "| the API:", answer.json())
 # ## 10. Tests and the release of 0.2.0
 #
 # The server gets tests of its own, on lesson 7's tiny model. pytest runs the app in-process: FastAPI's
-# `TestClient` calls it without a network, and runs its lifespan, so the batcher is real. The last test is the
-# one that matters most: requests that end up in one batch must each get their own translation back, the bug
-# lesson 7's mutation testing taught us to fear. `TestClient` sends one request and waits for its answer, so it
-# can never put two requests in one batch; that test sends all four at once from an asynchronous HTTPX client
-# that talks to the app directly, and checks that the batcher really saw a single batch of four.
+# `TestClient` calls it without a network and runs its lifespan, so the batcher is real. The last test matters
+# most: requests that end up in one batch must each get their own translation back. It's lesson 7's "translations
+# come back in the wrong order" one level up, where request A would get request B's translation. `TestClient` sends
+# one request and waits for its answer, so it can never put two requests in one batch. That test sends all four at
+# once from an asynchronous HTTPX client instead. `ASGITransport` lets HTTPX call the app directly, without uvicorn
+# or a network, but it doesn't run the lifespan, so the test enters it itself, and `asyncio.run` gives the test an
+# event loop of its own. Then it checks that the batcher really saw one batch of four.
 
 # %%
 # %%writefile perevod/tests/test_server.py
@@ -1195,23 +1324,163 @@ def test_requests_in_one_batch_get_their_own_translations(tiny_dir, pairs):
     for response, russian in zip(responses, pairs.values(), strict=True):
         assert response.json()["translation"] == russian
 
+# %% [markdown]
+# Rereading lesson 7 for this release turned up two gaps in its tests, and 0.2.0 closes them.
+#
+# Lesson 7 planted "dropout left on" to see which tests notice, and the test that the same input gives the same
+# translation was one of them. Then section 11 made the tiny model learn its four pairs by heart, and the model
+# became too sure of itself for dropout to change a word: that test stopped noticing, as lesson 7's second grid
+# shows. A test that compares outputs can lose its power this way when the model changes; the direct check can't.
+# The file with one more test at the end:
+
+# %%
+# %%writefile perevod/tests/test_translator.py
+import pytest
+
+
+def test_an_empty_input_has_an_empty_translation(translator):
+    assert translator.translate(["", "   ", "tom reads"])[:2] == ["", ""]
+
+
+def test_a_string_gives_a_string_and_a_list_gives_a_list(translator):
+    assert isinstance(translator.translate("tom reads"), str)
+    assert isinstance(translator.translate(["tom reads"]), list)
+
+
+def test_spaces_and_line_breaks_change_nothing(translator):
+    expected = translator.translate("tom reads a book")
+    assert translator.translate("tom  reads\na book") == expected
+
+
+def test_a_long_input_is_cut_with_a_warning(translator):
+    long_text = " ".join(["tom reads a book ."] * 10)  # 50 tokens, the model has 32 places
+    with pytest.warns(UserWarning, match="cut"):
+        translation = translator.translate(long_text)
+    assert isinstance(translation, str)
+
+
+def test_the_translator_switches_dropout_off(translator):
+    assert not translator.model.training
+
+# %% [markdown]
+# The second gap is in CI. The wheel job ran only `perevod --version`, and thanks to lesson 7's light
+# `import perevod` that command loads neither PyTorch nor the model code: a wheel without `decoding.py` would have
+# passed. The job now installs the wheel with its test extra and runs the fast tests against it, from a folder
+# outside the source tree. And the quality job now starts the moment someone adds the label `model` to a pull
+# request, not at the next push:
+
+# %%
+write(".github/workflows/perevod.yml", """
+name: perevod
+
+on:
+  push:
+    branches: [main]
+    paths: ["perevod/**", ".github/workflows/perevod.yml"]
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]  # labeled: see the quality job
+    paths: ["perevod/**", ".github/workflows/perevod.yml"]
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays: the published model against the golden file
+
+defaults:
+  run:
+    working-directory: perevod  # the package lives in a folder of the course repository
+
+env:
+  # PyTorch's CPU build, without gigabytes of CUDA libraries
+  PIP_EXTRA_INDEX_URL: https://download.pytorch.org/whl/cpu
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.13"]  # the oldest Python the package promises, and the newest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e ".[test]"
+      - run: ruff check .
+      - run: pytest -q -m "not slow"
+
+  wheel:
+    # tests import the package from its folder; this job checks what users install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip wheel --no-deps --wheel-dir dist .
+      - run: pip install "$(ls dist/*.whl)[test]"
+      - name: The installed command works outside the source tree
+        working-directory: /tmp
+        run: perevod --version
+      - name: The fast tests pass against the installed wheel, outside the source tree
+        working-directory: /tmp
+        run: pytest -q -p no:cacheprovider -m "not slow" "$GITHUB_WORKSPACE/perevod/tests"
+
+  quality:
+    # slow, downloads the model: on main, on Mondays, on pull requests labelled "model"
+    if: >-
+      github.event_name != 'pull_request' ||
+      contains(github.event.pull_request.labels.*.name, 'model')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/huggingface
+          key: huggingface-${{ hashFiles('perevod/src/perevod/translator.py') }}
+      - run: pip install -e ".[test]"
+      - run: pytest -q -m slow
+""")
+
 # %%
 # !{sys.executable} -m pip install -q -e "./perevod[test,serve]"
 # !cd perevod && {sys.executable} -m pytest -q -p no:cacheprovider --color=no
 
 # %% [markdown]
 # All of them, the slow ones included. The golden test of lesson 7 is the statement this release rests on: the
-# cached beam search, the new decoding step and the reordered caches produce, on the twelve golden sentences and
-# on the chrF sample, exactly what 0.1.0 produced. That makes 0.2.0 a **minor** release in lesson 7's terms: new
-# features (the server, the page, the speed), nothing that changes what users get.
+# cached beam search, the new decoding step and the reordered caches produce exactly what 0.1.0 produced on the
+# twelve golden sentences, the chrF test keeps its floor, and section 3 compared 530 more sentences word for word.
+# That makes 0.2.0 a **minor** release in lesson 7's terms: new features (the server, the page, the speed), and
+# nothing that changes a translation or breaks a call that worked in 0.1.0.
 #
-# The release is a commit and a tag, `perevod-v0.2.0`, in the course repository; lesson 9 builds its Docker image
-# from that tag:
+# The release is a commit and a tag, `perevod-v0.2.0`, in the course repository. On your own machine it installs
+# and starts like this (on Linux without a GPU, add `--extra-index-url https://download.pytorch.org/whl/cpu` to the
+# first command, or pip downloads gigabytes of CUDA libraries with PyTorch):
 #
 # ```bash
-# pip install "perevod[serve] @ git+https://github.com/xmarva/transformers-from-scratch@perevod-v0.2.0#subdirectory=perevod"
+# pip install "perevod[demo] @ git+https://github.com/xmarva/transformers-from-scratch@perevod-v0.2.0#subdirectory=perevod"
 # perevod-server --port 8000 --demo
 # ```
+#
+# Then open http://127.0.0.1:8000 for the page and http://127.0.0.1:8000/docs for the API, or ask from a terminal:
+#
+# ```bash
+# curl -X POST http://127.0.0.1:8000/translate -H "Content-Type: application/json" -d '{"text": "Hello!"}'
+# ```
+#
+# ## 11. The same for your own model
+#
+# Nothing in the method depends on perevod. Measure the service time first, one request at a time, back to back,
+# on inputs like the ones your users send, and compute the capacity $\mu = 1/S$. Then run open-loop tests at a
+# range of loads, from a fifth of $\mu$ to almost all of it; `arrival_times` and `load_test` above work against any
+# HTTP endpoint. Near capacity, run each load for many relaxation times of the queue, minutes rather than seconds,
+# leave out the first stretch while the queue fills up, and count errors along with latencies. Read the median and
+# the 90th percentile, and the 99th only from thousands of requests.
+#
+# Then put the means next to Kingman's curve. If they follow it, you understand your server and can predict what
+# more traffic will do to it. If they don't, something besides the queue is at work: another process taking the
+# CPU, or service times measured on the wrong inputs. Plan for the busiest hour at 60–70% of capacity; if that's
+# not enough, batch, and measure again.
 #
 # ## References
 #
@@ -1219,7 +1488,7 @@ def test_requests_in_one_batch_get_their_own_translations(tiny_dir, pairs):
 # - Brutlag, J. (2009). [Speed Matters for Google Web Search](https://services.google.com/fh/files/blogs/google_delayexp.pdf). Google.
 # - Dean, J., Barroso, L. A. (2013). [The Tail at Scale](https://doi.org/10.1145/2408776.2408794). Communications of the ACM 56(2).
 # - Tene, G. (2013). [Coordinated Omission](https://groups.google.com/g/mechanical-sympathy/c/icNZJejUHfE/m/BfDekfBEs_sJ), on the mechanical-sympathy list; and the talk [How NOT to Measure Latency](https://www.youtube.com/watch?v=lJ8ydIuPFeU) (2015).
-# - Little, J. D. C. (1961). [A Proof for the Queuing Formula: L = λW](https://doi.org/10.1287/opre.9.3.383). Operations Research 9(3).
+# - Open-loop load generators: [wrk2](https://github.com/giltene/wrk2); k6, [open and closed models](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/).
 # - Lindley, D. V. (1952). [The theory of queues with a single server](https://doi.org/10.1017/S0305004100027638). Proceedings of the Cambridge Philosophical Society 48(2).
 # - Morse, P. M. (1955). [Stochastic Properties of Waiting Lines](https://doi.org/10.1287/opre.3.3.255). Operations Research 3(3). *The relaxation time of a queue.*
 # - Kingman, J. F. C. (1961). [The single server queue in heavy traffic](https://doi.org/10.1017/S0305004100036094). Proceedings of the Cambridge Philosophical Society 57(4).
@@ -1229,4 +1498,3 @@ def test_requests_in_one_batch_get_their_own_translations(tiny_dir, pairs):
 # - [NVIDIA Triton: dynamic batcher](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/batcher.html).
 # - PyTorch: [dynamic quantization](https://docs.pytorch.org/docs/stable/generated/torch.ao.quantization.quantize_dynamic.html), [CPU threading](https://docs.pytorch.org/docs/stable/notes/cpu_threading_torchscript_inference.html).
 # - [FastAPI](https://fastapi.tiangolo.com), [Uvicorn](https://www.uvicorn.org), [Gradio](https://www.gradio.app/docs), [HTTPX](https://www.python-httpx.org).
-# - Abid, A. (2021). [Gradio is joining Hugging Face!](https://huggingface.co/blog/gradio-joins-hf)

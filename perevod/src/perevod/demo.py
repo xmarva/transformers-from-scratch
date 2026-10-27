@@ -21,6 +21,7 @@ def build_demo(app):
         source = gr.Textbox(label="English", lines=3)
         target = gr.Textbox(label="Russian", lines=3)
         button = gr.Button("Translate", variant="primary")
-        button.click(translate, source, target)
+        # no limit: Gradio would otherwise send its visitors one at a time
+        button.click(translate, source, target, concurrency_limit=None)
         gr.Examples(EXAMPLES, source)
     return demo

@@ -20,3 +20,7 @@ def test_a_long_input_is_cut_with_a_warning(translator):
     with pytest.warns(UserWarning, match="cut"):
         translation = translator.translate(long_text)
     assert isinstance(translation, str)
+
+
+def test_the_translator_switches_dropout_off(translator):
+    assert not translator.model.training
