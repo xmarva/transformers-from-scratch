@@ -84,8 +84,9 @@ def create_app(model=MODEL, revision=None, max_batch=16, max_wait=0.005, demo=Fa
         return TranslateResponse(translation=translation)
 
     @app.get("/health")
-    async def health():
-        return {"status": "ok", "version": __version__}
+    async def health():  # what is running: the package's version and the model's commit
+        model = app.state.batcher.translator.source
+        return {"status": "ok", "version": __version__, "model": model}
 
     if demo:
         import gradio as gr  # only the demo extra installs it

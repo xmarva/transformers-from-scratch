@@ -14,8 +14,10 @@ def client(tiny_dir):
         yield client
 
 
-def test_the_health_check(client):
-    assert client.get("/health").json()["status"] == "ok"
+def test_the_health_check_names_the_model(client, tiny_dir):
+    health = client.get("/health").json()
+    assert health["status"] == "ok"
+    assert health["model"] == str(tiny_dir)
 
 
 def test_the_api_translates_like_the_package(client, translator, pairs):

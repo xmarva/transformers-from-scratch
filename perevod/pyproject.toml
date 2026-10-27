@@ -10,6 +10,7 @@ dependencies = [
     "tokenizers>=0.15",
     "huggingface_hub>=0.20",
     "safetensors>=0.4",
+    "numpy>=1.24",  # perevod doesn't use it, but PyTorch warns on import without it
 ]
 
 [project.optional-dependencies]
