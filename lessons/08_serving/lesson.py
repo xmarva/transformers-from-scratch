@@ -515,6 +515,9 @@ plt.show()
 # %%
 from torch.ao.quantization import quantize_dynamic
 
+engines = torch.backends.quantized.supported_engines
+if torch.backends.quantized.engine == "none" and "qnnpack" in engines:  # ARM, e.g. a Mac
+    torch.backends.quantized.engine = "qnnpack"
 quantized = quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)
 sentences = list(tatoeba.en)
 start = time.perf_counter()

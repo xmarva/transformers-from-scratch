@@ -1,0 +1,14 @@
+{
+  "id": "qmarva/transformers-from-scratch-08-serving-under-load",
+  "title": "Transformers from Scratch · 08 Serving under load",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
