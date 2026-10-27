@@ -1055,7 +1055,8 @@ with httpx.Client(timeout=None) as client:
         client.post(URL, json={"text": sentence}).raise_for_status()
         again.append(time.perf_counter() - start)
 before, after = 1000 * service_times[:100].mean(), 1000 * np.mean(again)
-print(f"the same 100 sentences: {before:.0f} ms before the load tests, {after:.0f} ms after")
+print(f"the same 100 sentences: {before:.0f} ms before the load tests, "
+      f"{after:.0f} ms after")
 
 # %% [markdown]
 # @@DRIFT_RESULT@@
