@@ -31,8 +31,8 @@
 # 5. Add dynamic batching, a Gradio page, and release perevod 0.2.0.
 #
 # **What you need**: a CPU, as in lesson 7; Kaggle's free CPU sessions will do. The lesson downloads opus-mt
-# (300 MB) for a comparison and lesson 7's model (40 MB), and runs in about three quarters of an hour, a third of
-# it in load tests that run in real time.
+# (300 MB) for a comparison and lesson 7's model (40 MB), and runs in about twenty minutes, half of them in load
+# tests that run in real time.
 
 # %% tags=["include:setup"]
 
@@ -112,7 +112,8 @@ print(f"opus-mt: {n_opus / 1e6:.0f}M parameters, "
 REPO = WORK_DIR / "course"
 shutil.rmtree(REPO, ignore_errors=True)
 URL = "https://github.com/xmarva/transformers-from-scratch"
-subprocess.run(["git", "clone", "-q", "--depth", "1", "--branch", "perevod-v0.1.0",
+QUIET = ["-c", "advice.detachedHead=false"]
+subprocess.run(["git", *QUIET, "clone", "-q", "--depth", "1", "--branch", "perevod-v0.1.0",
                 "--filter=blob:none", "--sparse", URL, str(REPO)], check=True)
 subprocess.run(["git", "sparse-checkout", "set", "perevod"], cwd=REPO, check=True)
 os.chdir(REPO)
@@ -498,6 +499,7 @@ ax.plot(range(1, 101), plain_steps, color=COLORS["dec"], label="recompute everyt
 ax.plot(range(1, 101), cached_steps, color=COLORS["enc"], label="with the KV cache")
 ax.set_xlabel("decoding step")
 ax.set_ylabel("ms per step")
+ax.set_ylim(bottom=0)
 ax.set_title("One decoding step, on a CPU")
 ax.legend(frameon=False)
 plt.show()
@@ -534,9 +536,9 @@ print(f"int8:    {int8_seconds:.1f} s, chrF {int8_chrf:.1f}, {changed} of {len(s
       "translations changed")
 
 # %% [markdown]
-# Not faster, and worse. The speed-up that int8 promises comes from large matrix multiplications, where moving
-# 8-bit numbers instead of 32-bit ones saves memory traffic. Count where the work of one decoding step goes in our
-# model, layer by layer:
+# About as fast as before, and worse. The speed-up that int8 promises comes from large matrix multiplications,
+# where moving 8-bit numbers instead of 32-bit ones saves memory traffic. Count where the work of one decoding step
+# goes in our model, layer by layer:
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/step-flops-light.png" width="760" alt="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32">
 #
@@ -565,9 +567,7 @@ by_batch = pd.DataFrame(rows)
 display(table(by_batch, digits=1))
 
 # %% [markdown]
-# The throughput grows several times over, and the time per batch grows much slower than the batch. That's the
-# fact the second half of this lesson is built on: one translation of sixteen sentences costs little more than one
-# translation of one.
+# @@BATCHES_RESULT@@
 #
 # One more knob: threads. PyTorch splits a matrix multiplication between CPU threads, and more isn't always better:
 
@@ -583,9 +583,11 @@ torch.set_num_threads(threads_before)
 display(table(pd.DataFrame(rows)))
 
 # %% [markdown]
-# On Kaggle the free CPU session shows four cores to Python but has two physical ones, each running two hardware
-# threads; two threads that share a core mostly wait for each other. PyTorch picks its default from what it can
-# see, so check it on the machine you deploy to.
+# Kaggle's free CPU session shows Python four cores, but they are two physical cores running two hardware threads
+# each, and two threads that share a core mostly take turns. PyTorch starts one thread per physical core, two here,
+# and four buy nothing over two. The default is right on this machine and can be wrong on another: a container run
+# with `--cpus=2` still shows the process every core of its host, and PyTorch starts a thread per physical core of
+# the host. Check the number on the machine you deploy to.
 #
 # ## 6. A FastAPI service
 #
@@ -614,7 +616,7 @@ from .translator import MODEL, Translator
 
 
 class TranslateRequest(BaseModel):
-    text: str = Field(max_length=5000, examples=["I think, therefore I am."])
+    text: str = Field(max_length=5000, examples=["Tom is afraid of the dark."])
 
 
 class TranslateResponse(BaseModel):
@@ -687,7 +689,7 @@ class Batcher:
 
 # %% [markdown]
 # The app itself. The `lifespan` function runs when the server starts and stops: it loads the model once and
-# starts the batcher. The two handlers are three lines each. The `demo` switch mounts a Gradio page, section 10's.
+# starts the batcher. The two handlers are three lines each. The `demo` switch mounts a Gradio page, section 9's.
 
 # %%
 # %%writefile -a perevod/src/perevod/server.py
@@ -913,22 +915,23 @@ print(f"one request at a time, at most {mu:.1f} requests per second")
 
 # %% [markdown]
 # A service that answers one request at a time has a capacity of $\mu = 1/S$ requests per second, where $S$ is the
-# mean service time. The load test runs at fractions of it, from a fifth to almost all, fifteen seconds each:
+# mean service time. The load test runs at fractions of it, from a fifth to almost all, thirty seconds each. It
+# reports the median and the 90th percentile: thirty seconds hold a few hundred requests at most, and their 99th
+# percentile would rest on the slowest two or three. A load test before a release runs for many minutes and reports
+# the 99th percentile and beyond.
 
 # %%
 LOADS = [0.2, 0.4, 0.6, 0.7, 0.8, 0.9, 0.95]
 one_at_a_time = {}
 for load in LOADS:
     rate = load * mu
-    one_at_a_time[rate] = await load_test(URL, rate, 15, traffic, seed=int(100 * load))
-    p50, p99 = np.percentile(one_at_a_time[rate], [50, 99]) * 1000
+    one_at_a_time[rate] = await load_test(URL, rate, 30, traffic, seed=int(100 * load))
+    p50, p90 = np.percentile(one_at_a_time[rate], [50, 90]) * 1000
     print(f"{rate:5.1f} requests/s, {load:.0%} of capacity: "
-          f"p50 {p50:6.0f} ms, p99 {p99:6.0f} ms")
+          f"p50 {p50:6.0f} ms, p90 {p90:6.0f} ms")
 
 # %% [markdown]
-# At a fifth of its capacity the server answers in about its service time. At nine tenths, the median is several
-# times that and the 99th percentile is much worse, though the model works exactly as fast as before. The time went
-# into the queue.
+# @@ONE_RESULT@@
 #
 # Queueing theory predicts this curve, and the prediction is worth having before you buy servers. The simplest
 # model is the **M/M/1 queue**: Poisson arrivals at rate $\lambda$, one server, exponentially distributed service
@@ -986,9 +989,9 @@ plt.show()
 #
 # ## 8. Dynamic batching
 #
-# Section 5 showed that one batch of sixteen costs little more than one sentence. A queue full of waiting requests
-# is a batch nobody formed. The batcher of section 6 forms it: it takes the first request, waits up to a few
-# milliseconds for more, and translates whatever it has together.
+# Section 5 showed that one batch of sixteen costs a few times one sentence, not sixteen times. A queue full of
+# waiting requests is a batch nobody formed. The batcher of section 6 forms it: it takes the first request, waits
+# up to a few milliseconds for more, and translates whatever it has together.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/batching-light.png" width="760" alt="Requests arriving over time, one at a time and with dynamic batching. One at a time, each request waits for all those before it. With dynamic batching, the requests that arrive while a batch is being translated go into the next batch together, so the queue empties in a few batches instead of many single translations">
 #
@@ -1002,10 +1005,10 @@ server.wait()
 server = start_server(8002, max_batch=16, max_wait_ms=5)
 URL = "http://127.0.0.1:8002/translate"
 batched = {}
-for rate in list(one_at_a_time) + [1.5 * mu, 2 * mu, 3 * mu]:
-    batched[rate] = await load_test(URL, rate, 15, traffic, seed=int(10 * rate))
-    p50, p99 = np.percentile(batched[rate], [50, 99]) * 1000
-    print(f"{rate:5.1f} requests/s: p50 {p50:6.0f} ms, p99 {p99:6.0f} ms")
+for rate in list(one_at_a_time) + [1.5 * mu, 2 * mu, 2.5 * mu, 3 * mu]:
+    batched[rate] = await load_test(URL, rate, 30, traffic, seed=int(10 * rate))
+    p50, p90 = np.percentile(batched[rate], [50, 90]) * 1000
+    print(f"{rate:5.1f} requests/s: p50 {p50:6.0f} ms, p90 {p90:6.0f} ms")
 
 # %%
 fig, ax = plt.subplots(figsize=(8, 3.8))
@@ -1013,9 +1016,9 @@ for runs, colour, name in [(one_at_a_time, COLORS["dec"], "one at a time"),
                            (batched, COLORS["enc"], "dynamic batching, up to 16")]:
     rates = list(runs)
     p50 = [1000 * np.percentile(runs[rate], 50) for rate in rates]
-    p99 = [1000 * np.percentile(runs[rate], 99) for rate in rates]
+    p90 = [1000 * np.percentile(runs[rate], 90) for rate in rates]
     ax.plot(rates, p50, "o-", color=colour, label=f"{name}: median")
-    ax.plot(rates, p99, "o--", color=colour, alpha=0.6, label=f"{name}: 99th percentile")
+    ax.plot(rates, p90, "o--", color=colour, alpha=0.6, label=f"{name}: 90th percentile")
 ax.axvline(mu, color=COLORS["muted"], linewidth=1, linestyle=(0, (3, 3)))
 ax.text(mu, ax.get_ylim()[1] * 0.92, " capacity one at a time", color=COLORS["muted"],
         fontsize=9)
@@ -1046,8 +1049,9 @@ plt.show()
 # %%writefile perevod/src/perevod/demo.py
 import gradio as gr
 
-EXAMPLES = ["I think, therefore I am.", "Do you dream in color?", "Nobody understands me.",
-            "Memory is the diary we all carry about with us."]
+EXAMPLES = ["My brother lives in a small town by the sea.",
+            "Every morning I drink tea and read the news.",
+            "The cat is sleeping on the windowsill.", "Tom is afraid of the dark."]
 ABOUT = """# perevod
 English to Russian with a small Transformer built from scratch in the course
 [Transformers: from scratch to production][course]. It was trained on short everyday
@@ -1075,7 +1079,7 @@ def build_demo(app):
 # same queue and fill the same batches. Gradio is a heavy dependency, so it is an extra of its own, `demo`, and the
 # page appears only with `--demo`. Here is what it looks like:
 #
-# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/gradio.png" width="700" alt="The Gradio page of perevod: a short description with links to the course and the model card, an English text box, a Russian one, a Translate button and four example sentences">
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/gradio.png" width="700" alt="The Gradio page of perevod: a short description with links to the course and the model card, an English text box with 'My brother lives in a small town by the sea.', the Russian box below it with 'Мой брат живёт в маленьком городке у моря.', a Translate button and four example sentences">
 
 # %%
 server.terminate()
@@ -1084,9 +1088,9 @@ server.wait()
 server = start_server(8003, max_batch=16, demo=True)
 page = httpx.get("http://127.0.0.1:8003/")
 answer = httpx.post("http://127.0.0.1:8003/translate", json={"text": "Do you dream?"})
-print("the page:", page.status_code, "| the API:", answer.json())
 server.terminate()
 server.wait()
+print("the page:", page.status_code, "| the API:", answer.json())
 
 # %% [markdown]
 # ## 10. Tests and the release of 0.2.0
@@ -1094,7 +1098,9 @@ server.wait()
 # The server gets tests of its own, on lesson 7's tiny model. pytest runs the app in-process: FastAPI's
 # `TestClient` calls it without a network, and runs its lifespan, so the batcher is real. The last test is the
 # one that matters most: requests that end up in one batch must each get their own translation back, the bug
-# lesson 7's mutation testing taught us to fear.
+# lesson 7's mutation testing taught us to fear. `TestClient` sends one request and waits for its answer, so it
+# can never put two requests in one batch; that test sends all four at once from an asynchronous HTTPX client
+# that talks to the app directly, and checks that the batcher really saw a single batch of four.
 
 # %%
 # %%writefile perevod/tests/test_server.py

@@ -11,7 +11,7 @@ from .translator import MODEL, Translator
 
 
 class TranslateRequest(BaseModel):
-    text: str = Field(max_length=5000, examples=["I think, therefore I am."])
+    text: str = Field(max_length=5000, examples=["Tom is afraid of the dark."])
 
 
 class TranslateResponse(BaseModel):

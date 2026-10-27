@@ -1,7 +1,8 @@
 import gradio as gr
 
-EXAMPLES = ["I think, therefore I am.", "Do you dream in color?", "Nobody understands me.",
-            "Memory is the diary we all carry about with us."]
+EXAMPLES = ["My brother lives in a small town by the sea.",
+            "Every morning I drink tea and read the news.",
+            "The cat is sleeping on the windowsill.", "Tom is afraid of the dark."]
 ABOUT = """# perevod
 English to Russian with a small Transformer built from scratch in the course
 [Transformers: from scratch to production][course]. It was trained on short everyday
