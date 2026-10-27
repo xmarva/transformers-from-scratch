@@ -11,7 +11,9 @@
 # what they built. To translate one sentence with lesson 6's model you need the model's class from lessons 2 and 5,
 # the beam search of lesson 3, the right tokenizer, the right config, and the cells that glue them together, in
 # the right order. To translate a file, you copy all of it into a script. To find out that a library update broke
-# it, you wait for someone to complain.
+# it, you wait for someone to complain. (The course's `tfs` package, which the lessons install, holds the parts but
+# isn't a product either: it carries every experimental switch and the plotting, and has no loader, no command and
+# no description of what the model can and can't do.)
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/07/hero-light.png" width="760" alt="The package perevod by lines of code: the model and its decoding are less than half of the lines; the rest is the interface people use, the tests, and the packaging and CI around them">
 #
@@ -27,13 +29,14 @@
 # 2. Move the model into a package with the src layout, a `pyproject.toml`, configs that refuse bad values, a
 #    two-line Python API and a command line.
 # 3. Write tests of four kinds, plant ten bugs to see which tests catch which, and fix the test the bugs expose.
-# 4. Set up CI on GitHub Actions and run its steps here.
+# 4. Set up CI on GitHub Actions and run its wheel check here, step by step.
 # 5. Measure what the model can't do and write it into a model card.
 #
-# **What you need**: a CPU; this lesson trains nothing, so Kaggle's free CPU sessions will do and no GPU quota is
-# spent. It downloads the model of lesson 6 (40 MB) and runs in about half an hour, most of it in section 11, where
-# the test suite runs twenty times over. A [Hugging Face](https://huggingface.co) token as the secret `HF_TOKEN` is
-# optional: with it, the last section publishes your copy of the model and its card.
+# **What you need**: a CPU; this lesson trains nothing beyond a twenty-word toy model for the tests, so Kaggle's
+# free CPU sessions will do and no GPU quota is spent. It downloads the model of lesson 6 (40 MB) and runs in about
+# half an hour, most of it in section 11, where the test suite runs twenty times over. A
+# [Hugging Face](https://huggingface.co) token as the secret `HF_TOKEN` is optional: with it, and your user name in
+# the environment variable `TFS_HUB_USER`, the last section publishes your copy of the model and its card.
 
 # %% tags=["include:setup"]
 
@@ -148,8 +151,8 @@ for repo_id in ["Helsinki-NLP/opus-mt-en-ru", "xmarva/tfs-transformer-en-ru-tune
 # The package is called **perevod**, Russian for "translation", which also has the merit of being free on PyPI. It
 # lives in a folder of the course's repository,
 # [`perevod/`](https://github.com/xmarva/transformers-from-scratch/tree/main/perevod), and the next two lessons
-# install it from there to serve and deploy it. This notebook writes every file of it again, so you can see each
-# one being born. We work in a folder laid out like the course repository: the package in `perevod/`, CI in
+# install it from there to serve and deploy it. This notebook writes every file of it again, so you can read every
+# one of them. We work in a folder laid out like the course repository: the package in `perevod/`, CI in
 # `.github/`.
 
 # %%
@@ -178,15 +181,15 @@ print("working in", Path.cwd())
 # `perevod/src/perevod/`. The extra folder looks like bureaucracy, and it is there to stop one specific accident.
 #
 # Python looks for modules in the folders of `sys.path`, in order, and the current folder comes first. Run the
-# tests from the project folder of a flat layout and `import perevod` finds the source folder right there, never
-# the copy pip installed. Your tests pass; the package your users install may be missing a file, a module, or a
-# dependency, and nothing tells you. The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
+# tests with `python -m pytest` from the project folder of a flat layout, and `import perevod` finds the source
+# folder right there, never the copy pip installed. Your tests pass; the package your users install may be missing
+# a file, a module, or a dependency, and nothing tells you. The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
 # puts it as "the src layout helps prevent accidental usage of the in-development copy of the code".
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/07/import-path-light.png" width="760" alt="How Python finds import perevod when pytest runs in the project folder. The current folder comes first in the search path. In a flat layout the folder holds perevod/ itself, so the tests import the source and never the installed copy. In the src layout the source sits in src/, not on the path, so the tests import what pip installed">
 #
-# The current folder is the first thing Python checks, as the empty string at the start of `sys.path` in any
-# script run from it:
+# The current folder is the first thing Python checks in a `python -c` command, as the empty string at the start
+# of `sys.path`; `python -m`, which this lesson uses to run pytest, puts the current folder first as well:
 
 # %%
 first = subprocess.run([sys.executable, "-c", "import sys; print(repr(sys.path[0]))"],
@@ -251,7 +254,8 @@ line-length = 92  # what a notebook cell shows: lesson 7 writes these files in i
 # application (the server of lesson 8) is the opposite case: it pins everything, in a lock file, so that it
 # runs the same tomorrow.
 #
-# `[project.optional-dependencies]` adds what only developers need: `pip install "perevod[test]"`.
+# `[project.optional-dependencies]` adds what only developers need, installed with `pip install -e ".[test]"` from
+# the project folder (section 9 explains the `-e`).
 # `[project.scripts]` is our `entry_points.txt`: it asks pip to create a command `perevod` that calls `main` in
 # `perevod/cli.py`, the same mechanism that gave us `sacrebleu`. `[build-system]` names the tool that turns the
 # folder into a wheel; hatchling finds `src/perevod` without being told. The last two tables configure pytest
@@ -293,11 +297,11 @@ Tests: `pip install -e ".[test]"`, then `pytest -m "not slow"` (seconds, offline
 # %% [markdown]
 # ## 5. The model code, cut down to what we ship
 #
-# The model is the code of lessons 2 and 5, and the notebooks' version of it can build four models: the 2017
-# design, pre-norm with LayerNorm, pre-norm with RMSNorm, ReLU or SwiGLU, sinusoids or RoPE. Those switches were
-# for the experiments of lesson 5. A package ships one model, and every switch it keeps is a path that users can
-# take and the tests have to cover. So perevod keeps the design the published model uses and nothing else: the
-# module shrinks by a third, and section 6 shows a bug the switches used to hide.
+# The model is the code of lessons 2 and 5, and the notebooks' version of it has three switches: the 2017 design or
+# pre-norm with LayerNorm or with RMSNorm, ReLU or SwiGLU, sinusoids or RoPE. Those switches were for the
+# experiments of lesson 5. A package ships one model, and every switch it keeps is a path that users can take and
+# the tests have to cover. So perevod keeps the design the published model uses and nothing else: the module
+# shrinks by almost half, and section 6 shows a bug the switches used to hide.
 #
 # You have read this code before, so here it is in five cells without commentary beyond the comments. Rotary
 # positions first, as in lesson 5:
@@ -960,8 +964,11 @@ if __name__ == "__main__":
 #
 # ## 9. Installing it, and the first translation
 #
-# The files are in place, so the package can be installed like any other. Not in editable mode: we want the
-# notebook to use the same thing a user would get.
+# The files are in place, so the package can be installed like any other. Not in editable mode, though. `pip
+# install -e` installs a pointer to the source folder instead of a copy, so edits take effect without reinstalling;
+# that's the right install while you work on a package, and CI's test job uses it. But with an editable install,
+# what pip installed *is* the source folder, so a file missing from the wheel goes unnoticed; only a job that
+# installs the built wheel can see that. Here we want the notebook to use what a user would get, a copy.
 
 # %%
 # !{sys.executable} -m pip install -q ./perevod
@@ -981,8 +988,8 @@ translator("I think, therefore I am.")
 
 # %% [markdown]
 # Before anything else, one check that matters more than any test we'll write: the package must translate exactly
-# as the notebooks did. Moving code is a change like any other, and a refactoring that changes the output is a bug
-# with good intentions. Lesson 6's own code path, on a few sentences, against the package:
+# as the notebooks did. Moving code is a change like any other, and a refactoring that changes the output is a
+# bug. Lesson 6's own code path, on a few sentences, against the package:
 
 # %%
 sentences = ["Do you dream in color?", "Nobody understands me.",
@@ -1066,8 +1073,14 @@ Mary has two brothers and a sister.
 # The first two kinds need no real model, and that's their strength: they run in milliseconds, offline, on every
 # push. The trick that makes the second kind possible is a model that is tiny and random: twenty words, sixteen
 # numbers per vector, weights from a fixed seed. It translates nonsense, and that's fine, because what these tests
-# check must hold for *any* weights. pytest finds shared setup in `conftest.py` and hands it to every test that
-# names it as an argument, a **fixture**:
+# check must hold for *any* weights.
+#
+# pytest's rules are few. It collects every file named `test_*.py`, runs every function in it whose name starts
+# with `test_`, and reports a failure when an `assert` is false or an exception escapes. A test asks for what it
+# needs by naming it as an argument, and pytest looks for a **fixture** of that name, a function marked with
+# `@pytest.fixture`, in the test's file or in `conftest.py`, calls it, and passes the result in. `scope="session"`
+# builds a fixture once for the whole run instead of once per test, and `tmp_path_factory` is one of pytest's own
+# fixtures, which hands out temporary folders. The tiny model, as a fixture:
 
 # %%
 # %%writefile perevod/tests/conftest.py
@@ -1308,7 +1321,7 @@ def test_one_line_in_one_line_out(tiny_dir, capsys, monkeypatch):
 # !cd perevod && {sys.executable} -m pytest -q -m "not slow" -p no:cacheprovider --color=no
 
 # %% [markdown]
-# Under a second, and not one of them knows what a good translation is. The last two kinds do.
+# Under a second, and none of them uses the real model. The last two kinds do.
 #
 # A **golden test** writes down what the published model translates today and fails when that changes. It doesn't
 # claim the translations are right; some of ours are wrong, and the golden file keeps the mistakes too. What it
@@ -1335,9 +1348,15 @@ display(table(pd.DataFrame({"English": list(golden), "perevod": list(golden.valu
 # Read the right column honestly: memory became "Матери" ("mothers"), and the doctor who said *she* was tired is
 # masculine in Russian. Section 13 measures both kinds of mistake.
 #
+# Outside a notebook, the cell that records the file becomes a small script next to the tests, run by hand when a
+# change is intended. Record it on the kind of machine CI uses: floating-point results differ slightly between
+# CPUs, GPUs and math libraries, and a beam search near a tie can pick a different word.
+#
 # A **quality floor** translates 500 sentences of the test set and fails if chrF drops below a line drawn a
 # few points under today's score: not a check of every sentence, but of the average. Both tests are marked
-# `slow`: they download the model, so the fast run skips them and CI runs them on its own schedule.
+# `slow`: they download the model, so the fast run skips them and CI runs them on its own schedule. `pytestmark`
+# marks every test of a file at once, `-m "not slow"` deselects them, and the marker is registered in
+# `pyproject.toml` so that pytest knows it and warns about a misspelt one.
 
 # %%
 # %%writefile perevod/tests/test_quality.py
@@ -1386,12 +1405,13 @@ def test_chrf_on_a_sample_of_the_test_set(published):
 # Twenty passing tests prove that the code does what the tests check, and nothing about what they don't. To
 # measure a test suite, break the code on purpose and count how often the tests notice. That's **mutation
 # testing**, from [DeMillo, Lipton and Sayward (1978)](https://doi.org/10.1109/C-M.1978.218136): each deliberate
-# bug is a mutant, and a test that fails because of it *kills* it.
+# bug is a mutant, and a test that fails because of it *kills* it. Tools such as mutmut generate mutants by the
+# thousand, flipping operators and constants. Ours are written by hand, because the bugs that matter in model code,
+# like a forgotten `model.eval()`, aren't operator flips, and each run of our suite takes over a minute.
 #
 # Here are ten mutants, each a bug that happens in real code: a mask off by one position, a forgotten
-# `model.eval()`, a missing scale, a sign flipped in the length penalty, translations returned in the order of the
-# sorted batch instead of the order of the input. Each is a replacement in one or two
-# files:
+# `model.eval()`, a missing scale, the length penalty multiplied instead of divided, translations returned in the
+# order of the sorted batch instead of the order of the input. Each is a replacement in one or two files:
 
 # %%
 ENCODER_MASK = "        mask = (src != self.config.pad_id)[:, None, None, :]"
@@ -1503,12 +1523,13 @@ show_grid(first_run, "Ten planted bugs and the tests that failed because of them
 # notice.
 #
 # The inverted length penalty changes which hypothesis the beam search picks, so the golden test fails, but the
-# average over 500 sentences moves too little to cross the chrF floor. A quality gate catches disasters, not
-# regressions; the golden test catches every change, including the small ones nobody would see in a score.
+# average over 500 sentences moves too little to cross the chrF floor. A floor a few points under today's score
+# catches large drops, not small ones; the golden test catches every change, including the small ones nobody would
+# see in a score.
 #
 # The last mutant survives everything, correctly: the translator collapses whitespace, so a line that keeps its
 # newline is translated exactly like one that doesn't. A surviving mutant isn't always a missing test; sometimes
-# it's a change that changes nothing.
+# it's a change that changes nothing, an **equivalent mutant** in the field's terms.
 #
 # Two other rows should worry us. The empty input that reaches the model survived everything too, although
 # `test_an_empty_input_has_an_empty_translation` was written for exactly that bug. And translations that come back
@@ -1533,12 +1554,12 @@ print(tiny(["i think therefore i am .", "tom reads a book", "i am ?", "tom"]))
 # %% [markdown]
 # Every sentence becomes an empty string: the random decoder writes only special tokens, which decoding drops.
 # That explains both rows. An empty input gets an empty translation whether the model sees it or not, and four
-# identical answers can come back in any order. A test is only as good as its power to tell outcomes apart, and
-# with this model these two had none.
+# identical answers can come back in any order. When every answer is the same, these two tests can't tell a right
+# one from a wrong one.
 #
-# The fix costs a second: let the tiny model learn something. Four sentence pairs made of its twenty words,
-# learned by heart in two hundred steps of Adam, lesson 3's training loop without the schedule. The second version
-# of `conftest.py`:
+# The fix costs about ten seconds per run: let the tiny model learn something. Four sentence pairs made of its twenty
+# words, learned by heart in two hundred steps of Adam, lesson 3's training loop without the schedule. The second
+# version of `conftest.py`:
 
 # %%
 # %%writefile perevod/tests/conftest.py
@@ -1669,14 +1690,21 @@ show_grid(second_run, "The same bugs against the improved tests")
 # %% [markdown]
 # Both worrying rows are fixed. The empty input now fails its own test and the command line's, because a model
 # that has learned something writes a sentence where there should be none. Translations in the wrong order fail
-# three fast tests instead of none. And two bugs that needed the real model before are caught offline now: the
-# tiny model learned its sentences with RoPE and can't reproduce them without it, and the decoder that peeks at
-# the next token fails four tests instead of two.
+# three fast tests instead of none. Lost positions, which needed the real model before, are caught offline now: the
+# tiny model learned its sentences with RoPE and can't reproduce them without it. And the decoder that peeks at the
+# next token, which only the causality test caught offline, now fails three fast tests instead of one.
 #
 # Two things didn't move, and that's information too. The missing $\sqrt{d_{\text{model}}}$ still escapes
 # everything but the real model: the tiny model learned its four sentences so firmly that rescaled embeddings
 # don't change them. And the length penalty still needs the golden test, because four short sentences give a
 # beam search nothing to choose between.
+#
+# And one row got worse. "Dropout left on" was caught by four tests and now by three: the column of
+# `test_the_same_input_gives_the_same_translation` is gone from the grid, because it no longer kills anything. A
+# model that has learned four sentences by heart is too sure of itself for dropout to change a word, so the same
+# input does give the same translation, dropout or not. A test that compares outputs can lose its power when the
+# model under it changes, and nothing announces it. Lesson 8 adds the direct check, that the translator's model is
+# not in training mode.
 #
 # That's the division of labour the four kinds of tests promised: the fast ones catch what breaks the structure,
 # the slow ones what breaks the quality. Mutation testing is how you find out which is which, and which test only
@@ -1764,18 +1792,24 @@ jobs:
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/07/ci-light.png" width="760" alt="The CI workflow of perevod. A push to main, a pull request or the Monday schedule starts it. The test job runs on Python 3.10 and 3.13: install, ruff, the fast tests. The wheel job builds the wheel, installs it and runs the command outside the source folder. The quality job, on main, on Mondays and on pull requests labelled model, downloads the published model and runs the slow tests">
 #
 # `test` asks "does the code work?" on the oldest Python we promise and the newest, through a **matrix**: one job
-# definition, run once per value. The extra index installs PyTorch's CPU build: the default wheel for Linux pulls
-# in the CUDA libraries, about 3 GB of downloads on a machine that has no GPU.
+# definition, run once per value. Before the tests it runs ruff, a linter: it reads the code without running it and
+# flags unused imports, undefined names and style problems, and `ruff check .` fails the job on any of them. The
+# extra index installs PyTorch's CPU build: the default wheel for Linux pulls in the CUDA libraries, about 3 GB of
+# downloads on a machine that has no GPU.
 #
-# `wheel` asks "does the thing users install work?" It builds the wheel and runs the installed command from
-# `/tmp`, far from the source folder. It catches what the src layout makes possible to catch: a file missing from
-# the wheel, a dependency missing from `pyproject.toml`.
+# `wheel` asks "does the thing users install work?" It builds the wheel, installs it, and runs the installed command
+# from `/tmp`, far from the source folder, so it catches a wheel that doesn't build or install and a command that
+# isn't there. It catches less than it looks like it does. Thanks to the light `import perevod` of section 7,
+# `perevod --version` loads only `__init__.py` and `cli.py`: a model file missing from the wheel, or PyTorch missing
+# from the dependencies, would pass. Lesson 8 closes the gap by running the tests against the installed wheel.
 #
 # `quality` asks "does the published model still translate as it did?" It runs the slow tests: after every merge,
-# every Monday whether anything changed or not, and on pull requests that someone labels `model`. The Monday run is
-# for the changes that come from outside: a new release of PyTorch or `tokenizers` arrives without a commit of
-# ours, and the golden test is how we find out it translates differently. The model downloads are cached between
-# runs.
+# every Monday whether anything changed or not, and on pull requests that someone labels `model` (as written, the
+# job sees the label at the next push to the pull request; lesson 8 makes it start the moment the label is added).
+# The Monday run is for the changes that come from outside: a new release of PyTorch or `tokenizers` arrives
+# without a commit of ours, and the golden test is how we find out it translates differently. The model downloads
+# are cached between runs, under a key made from `translator.py`, the file that names the model's revision, so a
+# new revision starts a fresh cache.
 #
 # The `wheel` job, done here, step for step. The wheel first, and what's inside, the same way we opened
 # sacreBLEU's:
@@ -1789,7 +1823,7 @@ for name in zipfile.ZipFile(our_wheel).namelist():
 
 # %% [markdown]
 # The code, the metadata, and in `entry_points.txt` our command. Now the wheel installed into an empty folder,
-# without the dependencies (the notebook has them already), and the command run from `/tmp`:
+# without the dependencies (the notebook has them already), and perevod imported from `/tmp`:
 
 # %%
 target = WORK_DIR / "clean-install"
@@ -1878,6 +1912,9 @@ ax.set_title("chrF by sentence length on Tatoeba, and on news")
 plt.show()
 
 # %% [markdown]
+# Up to twelve words the score stays between 61 and 65; at thirteen words and more it drops to about 41, on 81
+# sentences. That's what the card's "long sentences" rests on.
+#
 # Fourth, a known weak spot of machine translation. English says "my doctor" without a gender, Russian can't:
 # врач is masculine, and a woman who is a doctor needs the verb to say so, "сказал**а**". The pronoun in the
 # second half of the sentence is the only clue. [Stanovsky et al. (2019)](https://doi.org/10.18653/v1/P19-1164)
@@ -1901,10 +1938,12 @@ for pronoun in ["she", "he"]:
 display(table(gender[gender.pronoun == "she"][["profession", "perevod"]]))
 
 # %% [markdown]
-# The pronoun barely matters. The verb follows the profession: masculine for a doctor or an engineer whatever the
-# sentence says, feminine for a nurse, because медсестра is a feminine noun. This is not a quirk of our model.
-# Tatoeba, like most text, mentions male doctors more often than female ones, and the model learned the
-# statistics instead of the grammar. It's exactly what a model card is for.
+# The pronoun doesn't steer the verb: with "he", the verb is feminine in two translations of twelve, more often than
+# with "she". The verb follows the profession instead, masculine for a doctor or an engineer whatever the sentence
+# says, feminine for a nurse, because медсестра is a feminine noun. The Russian is grammatical, and that's the
+# trouble: "Мой врач сказал, что она устала" means that a male doctor said some other woman was tired, a reading
+# the English hardly suggests. The likely cause is the data, where male doctors are probably mentioned more often
+# than female ones; Stanovsky et al. found the same pattern in commercial systems.
 #
 # Now the card. The header is YAML for the Hub; `model-index` holds the scores in a format the Hub turns into a
 # table on the model's page ([spec](https://huggingface.co/docs/hub/model-cards)). The text follows Mitchell et
@@ -2004,8 +2043,12 @@ print(CARD)
 
 # %% [markdown]
 # Notice what the card does not say: that the model is good. It says where it's usable and where it isn't, with the
-# measurement next to each claim, so a reader can decide for their own case. That's the whole idea of
-# Mitchell et al.: a model isn't good or bad, it's good *for* something.
+# measurement next to each claim, so a reader can decide for their own case. That's the idea of Mitchell et al.:
+# the question isn't whether a model is good, but what it is good for.
+#
+# The card's license is CC BY 2.0, not the package's MIT: the weights follow the license of the Tatoeba sentences
+# they were trained on, and the code that runs them has its own. A model and the package around it are licensed
+# separately.
 #
 # ## 14. Release
 #
@@ -2051,6 +2094,17 @@ else:
 # nobody's translations change, because perevod 0.1.0 asks for the commit it was tested with. While the version
 # starts with 0, SemVer allows anything to change at any time; we will still follow the rules above, because users
 # don't read the fine print of version numbers.
+#
+# In practice a release is a short routine, in this order. Upload the model and note the commit the upload returns.
+# Put that commit into `REVISION` in `translator.py` (and your repository into `MODEL`, if you publish your own
+# copy), and record the golden file with that model. Raise the version, commit, then tag the commit and push the
+# tag: `git tag perevod-v0.1.0 && git push origin perevod-v0.1.0`. One weak spot of ours: the version is written in
+# two places, `pyproject.toml` and `__init__.py`, and the version test compares the command with one of them, so
+# nothing checks that the two agree. Lesson 8 moves the version to one place.
+#
+# perevod isn't on PyPI: the name is free there, but a course package shouldn't take it. Publishing your own takes
+# two more steps. `python -m build` makes the wheel and the source archive, and `twine upload dist/*`, or PyPI's
+# trusted publishing from a GitHub workflow, uploads them.
 #
 # The next lessons install exactly this version from the course repository, by its tag:
 #
