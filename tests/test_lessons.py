@@ -1,8 +1,10 @@
 import ast
+import subprocess
 from pathlib import Path
 
 import jupytext
 import pytest
+import tomllib
 
 LESSONS = Path(__file__).resolve().parents[1] / "lessons"
 SOURCES = sorted(LESSONS.glob("*/lesson.py")) + sorted((LESSONS / "_shared").glob("*.py"))
@@ -47,10 +49,28 @@ def files_written(path):
     return files
 
 
-def test_lesson_7_writes_the_package_of_the_repository():
-    written = files_written(LESSONS / "07_package" / "lesson.py")
+def released_file(release, name):
+    """The file as the package's release tag has it, or as the working tree has it before the tag exists."""
+    root = LESSONS.parent
+    tagged = subprocess.run(["git", "rev-parse", "--verify", "--quiet", f"refs/tags/{release}"], cwd=root,
+                            capture_output=True)
+    if tagged.returncode != 0:
+        return (root / name).read_text(encoding="utf-8")
+    shown = subprocess.run(["git", "show", f"{release}:{name}"], cwd=root, capture_output=True, check=True)
+    return shown.stdout.decode("utf-8")
+
+
+PACKAGE_LESSONS = []
+for toml_path in sorted(LESSONS.glob("*/lesson.toml")):
+    if "package_release" in tomllib.loads(toml_path.read_text(encoding="utf-8")):
+        PACKAGE_LESSONS.append(toml_path.parent.name)
+
+
+@pytest.mark.parametrize("lesson", PACKAGE_LESSONS)
+def test_a_lesson_writes_the_package_it_releases(lesson):
+    release = tomllib.loads((LESSONS / lesson / "lesson.toml").read_text(encoding="utf-8"))["package_release"]
+    written = files_written(LESSONS / lesson / "lesson.py")
     package_files = [name for name in written if name.startswith(("perevod/", ".github/"))]
-    assert len(package_files) > 10
+    assert package_files
     for name in package_files:
-        repository_file = LESSONS.parent / name
-        assert written[name] == repository_file.read_text(encoding="utf-8"), name
+        assert written[name] == released_file(release, name), name
