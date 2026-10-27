@@ -1090,9 +1090,10 @@ display(table(theory, digits=0))
 # server with little spare capacity clears slowly, and the mean of the whole test goes up with it. How much do such
 # tests vary? The queue can tell us itself. A single server that answers in order follows **Lindley's recursion**
 # ([Lindley, 1952](https://doi.org/10.1017/S0305004100027638)): a request starts when it arrives or when the
-# previous one ends, whichever is later. Run it with service times drawn from the five hundred we measured, two
-# hundred times on the arrivals each of our tests actually had, which predicts what that test should have
-# measured, and two hundred times on fresh arrivals, which shows how much thirty-second tests at that load vary:
+# previous one ends, whichever is later. Run it two ways. First, replay each of our tests exactly: the arrival
+# times it had, and for request $k$ the service time we measured for sentence $k$, the sentence it sent. Second,
+# two hundred times on fresh arrivals, with service times drawn at random from the five hundred, which shows how
+# much thirty-second tests at that load vary:
 
 # %%
 def simulated_mean(arrivals, service_times):
@@ -1113,11 +1114,12 @@ rng = np.random.default_rng(SEED)
 rows = []
 for load, (rate, times) in zip(LOADS, one_at_a_time.items(), strict=True):
     own = arrival_times(rate, 30, seed=int(100 * load))  # the arrivals this test had
-    predicted = np.median([simulate(own) for _ in range(200)])
+    sent = np.arange(len(own)) % len(service_times)  # request k sent sentence k
+    replay = simulated_mean(own, service_times[sent])
     others = [simulate(arrival_times(rate, 30, seed=1_000 + k)) for k in range(200)]
     low, high = np.percentile(others, [10, 90])
     rows.append({"load, %": round(100 * load), "measured mean, ms": 1000 * times.mean(),
-                 "predicted for its arrivals": 1000 * predicted,
+                 "replay, ms": 1000 * replay,
                  "8 in 10 tests: from": 1000 * low, "to": 1000 * high})
 simulated = pd.DataFrame(rows)
 display(table(simulated, digits=0))
@@ -1133,8 +1135,8 @@ ax.plot(rhos, 1000 * service / (1 - rhos), color=COLORS["muted"], linestyle=(0, 
 ax.vlines(LOADS, simulated["8 in 10 tests: from"], simulated["to"],
           color=COLORS["dec"], alpha=0.3, linewidth=7,
           label="8 in 10 simulated 30-second tests")
-ax.plot(LOADS, simulated["predicted for its arrivals"], "x", color=COLORS["dec"],
-        label="simulated with the test's own arrivals")
+ax.plot(LOADS, simulated["replay, ms"], "x", color=COLORS["dec"], markersize=8,
+        label="replay of the test")
 ax.plot(LOADS, measured, "o", color=COLORS["dec"], label="measured mean")
 ax.set_xlabel("utilization ρ = λ / μ")
 ax.set_ylabel("mean latency, ms")
