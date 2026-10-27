@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="The share of slow requests against the number of servers a request waits for, when each server is slow one time in a hundred: 1% for one server, about 10% for ten, 63% for a hundred. The slowest part of a system decides how often its users wait">
+<title>The share of slow requests against the number of servers a request waits for, when each server is slow one time in a hundred: 1% for one server, about 10% for ten, 63% for a hundred. The slowest part of a system decides how often its users wait</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="330" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">One server in a hundred is slow; how often is a request?</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">share of requests that wait for at least one slow server: 1 − 0.99ⁿ</text>
+<polyline points="70.0,280.0 720.0,280.0" fill="none" stroke="#5B6575" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="70.0,280.0 70.0,80.0" fill="none" stroke="#5B6575" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="70.0,230.0 720.0,230.0" fill="none" stroke="#5B6575" stroke-width="0.5" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62.0" y="234.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">25%</text>
+<polyline points="70.0,180.0 720.0,180.0" fill="none" stroke="#5B6575" stroke-width="0.5" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62.0" y="184.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">50%</text>
+<polyline points="70.0,130.0 720.0,130.0" fill="none" stroke="#5B6575" stroke-width="0.5" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62.0" y="134.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">75%</text>
+<polyline points="70.0,80.0 720.0,80.0" fill="none" stroke="#5B6575" stroke-width="0.5" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="62.0" y="84.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">100%</text>
+<text x="70.0" y="298.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1</text>
+<text x="352.5" y="298.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">10</text>
+<text x="635.0" y="298.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">100</text>
+<text x="720.0" y="298.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">servers</text>
+<polyline points="70.0,278.0 76.5,277.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="76.5,277.9 83.0,277.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="83.0,277.8 89.5,277.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="89.5,277.7 96.0,277.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="96.0,277.5 102.5,277.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="102.5,277.4 109.0,277.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="109.0,277.3 115.5,277.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="115.5,277.1 122.0,277.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="122.0,277.0 128.5,276.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="128.5,276.8 135.0,276.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="135.0,276.6 141.5,276.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="141.5,276.4 148.0,276.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="148.0,276.2 154.5,276.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="154.5,276.0 161.0,275.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="161.0,275.8 167.5,275.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="167.5,275.6 174.0,275.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="174.0,275.4 180.5,275.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="180.5,275.1 187.0,274.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="187.0,274.9 193.5,274.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="193.5,274.6 200.0,274.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="200.0,274.3 206.5,274.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="206.5,274.0 213.0,273.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="213.0,273.7 219.5,273.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="219.5,273.3 226.0,273.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="226.0,273.0 232.5,272.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="232.5,272.6 239.0,272.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="239.0,272.2 245.5,271.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="245.5,271.8 252.0,271.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="252.0,271.3 258.5,270.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="258.5,270.9 265.0,270.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="265.0,270.4 271.5,269.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="271.5,269.9 278.0,269.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="278.0,269.3 284.5,268.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="284.5,268.8 291.0,268.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="291.0,268.2 297.5,267.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="297.5,267.6 304.0,266.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="304.0,266.9 310.5,266.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="310.5,266.2 317.0,265.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="317.0,265.5 323.5,264.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="323.5,264.7 330.0,263.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="330.0,263.9 336.5,263.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="336.5,263.1 343.0,262.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="343.0,262.2 349.5,261.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="349.5,261.3 356.0,260.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="356.0,260.3 362.5,259.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="362.5,259.3 369.0,258.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="369.0,258.3 375.5,257.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="375.5,257.2 382.0,256.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="382.0,256.0 388.5,254.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="388.5,254.8 395.0,253.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="395.0,253.5 401.5,252.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="401.5,252.2 408.0,250.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="408.0,250.8 414.5,249.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="414.5,249.3 421.0,247.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="421.0,247.8 427.5,246.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="427.5,246.2 434.0,244.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="434.0,244.5 440.5,242.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="440.5,242.8 447.0,241.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="447.0,241.0 453.5,239.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="453.5,239.1 460.0,237.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="460.0,237.1 466.5,235.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="466.5,235.0 473.0,232.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="473.0,232.9 479.5,230.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="479.5,230.7 486.0,228.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="486.0,228.4 492.5,226.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="492.5,226.0 499.0,223.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="499.0,223.5 505.5,221.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="505.5,221.0 512.0,218.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="512.0,218.3 518.5,215.6" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="518.5,215.6 525.0,212.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="525.0,212.7 531.5,209.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="531.5,209.8 538.0,206.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="538.0,206.8 544.5,203.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="544.5,203.7 551.0,200.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="551.0,200.5 557.5,197.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="557.5,197.2 564.0,193.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="564.0,193.8 570.5,190.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="570.5,190.4 577.0,186.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="577.0,186.9 583.5,183.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="583.5,183.3 590.0,179.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="590.0,179.7 596.5,175.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="596.5,175.9 603.0,172.2" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="603.0,172.2 609.5,168.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="609.5,168.4 616.0,164.5" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="616.0,164.5 622.5,160.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="622.5,160.7 629.0,156.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="629.0,156.8 635.5,152.9" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="635.5,152.9 642.0,149.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="642.0,149.0 648.5,145.1" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="648.5,145.1 655.0,141.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="655.0,141.3 661.5,137.4" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="661.5,137.4 668.0,133.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="668.0,133.7 674.5,130.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="674.5,130.0 681.0,126.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="681.0,126.3 687.5,122.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="687.5,122.8 694.0,119.3" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="694.0,119.3 700.5,116.0" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="700.5,116.0 707.0,112.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="707.0,112.8 713.5,109.7" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="713.5,109.7 720.0,106.8" fill="none" stroke="#D23F57" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="66.0" y="274.0" width="8.0" height="8.0" rx="4" fill="#D23F57"/>
+<text x="80.0" y="270.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">1%</text>
+<rect x="348.5" y="256.9" width="8.0" height="8.0" rx="4" fill="#D23F57"/>
+<text x="362.5" y="252.9" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">10%</text>
+<rect x="631.0" y="149.2" width="8.0" height="8.0" rx="4" fill="#D23F57"/>
+<text x="619.0" y="145.2" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">63%</text>
+<text x="14.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Dean &amp; Barroso (2013): with 100 servers, 63% of requests take as long as the slowest 1%.</text>
+</svg>

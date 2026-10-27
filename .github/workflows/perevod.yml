@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths: ["perevod/**", ".github/workflows/perevod.yml"]
   pull_request:
+    types: [opened, synchronize, reopened, labeled]  # labeled: see the quality job
     paths: ["perevod/**", ".github/workflows/perevod.yml"]
   schedule:
     - cron: "0 6 * * 1"  # Mondays: the published model against the golden file
@@ -41,10 +42,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip wheel --no-deps --wheel-dir dist .
-      - run: pip install dist/*.whl
+      - run: pip install "$(ls dist/*.whl)[test]"
       - name: The installed command works outside the source tree
         working-directory: /tmp
         run: perevod --version
+      - name: The fast tests pass against the installed wheel, outside the source tree
+        working-directory: /tmp
+        run: pytest -q -p no:cacheprovider -m "not slow" "$GITHUB_WORKSPACE/perevod/tests"
 
   quality:
     # slow, downloads the model: on main, on Mondays, on pull requests labelled "model"

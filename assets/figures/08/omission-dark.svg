@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 320" width="760" height="320" role="img" aria-label="A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow">
+<title>A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="320" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">A one-second stall, seen by two testers</text>
+<text x="14.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">users on their own schedule</text>
+<text x="14.0" y="106.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">10 of 40 requests slow, 25%</text>
+<polyline points="220.0,120.0 740.0,120.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="350.0" y="80.0" width="130.0" height="40.0" rx="2" fill="#1A1F26"/>
+<rect x="218.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="231.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="244.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="257.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="270.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="283.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="296.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="309.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="322.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="335.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="348.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="361.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="374.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="387.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="400.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="413.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="426.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="439.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="452.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="465.5" y="90.0" width="3.0" height="30.0" rx="1" fill="#F2667C"/>
+<rect x="478.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="491.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="504.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="517.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="530.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="543.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="556.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="569.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="582.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="595.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="608.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="621.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="634.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="647.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="660.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="673.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="686.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="699.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="712.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<rect x="725.5" y="112.0" width="3.0" height="8.0" rx="1" fill="#F2667C"/>
+<text x="14.0" y="186.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">a tester that waits for answers</text>
+<text x="14.0" y="206.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">1 of 32 requests slow, 3%</text>
+<polyline points="220.0,220.0 740.0,220.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="350.0" y="180.0" width="130.0" height="40.0" rx="2" fill="#1A1F26"/>
+<rect x="218.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="231.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="244.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="257.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="270.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="283.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="296.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="309.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="322.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="335.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="348.5" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="361.5" y="190.0" width="3.0" height="30.0" rx="1" fill="#F0B04A"/>
+<rect x="479.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="492.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="505.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="518.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="531.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="544.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="557.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="570.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="583.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="596.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="609.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="622.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="635.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="648.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="661.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="674.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="687.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="700.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="713.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<rect x="726.8" y="212.0" width="3.0" height="8.0" rx="1" fill="#F0B04A"/>
+<text x="350.0" y="64.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">stall</text>
+<text x="14.0" y="300.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">The waiting tester sends nothing while the server is stuck, so the stall barely shows.</text>
+</svg>
