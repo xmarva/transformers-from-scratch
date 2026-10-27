@@ -138,7 +138,9 @@ print(f"perevod {perevod.__version__}: {n_ours / 1e6:.1f}M parameters, "
       f"median {np.median(ours_times) * 1000:.0f} ms")
 
 # %% [markdown]
-# @@OPUS_RESULT@@ It isn't, for two reasons. The time per sentence depends on
+# Ours is eight times smaller and three and a half times faster. Not eight: opus-mt's `generate` keeps a KV cache,
+# the trick of lesson 5, and perevod 0.1.0 doesn't; section 3 adds it. A sentence in less than a tenth of a second
+# sounds like the end of the story. It isn't, for two reasons. The time per sentence depends on
 # its length, and the next section shows how badly. And a service doesn't translate one sentence: it translates
 # whatever arrives, whenever it arrives, and section 7 shows what that does.
 #
@@ -598,7 +600,11 @@ by_batch = pd.DataFrame(rows)
 display(table(by_batch, digits=1))
 
 # %% [markdown]
-# @@BATCHES_RESULT@@
+# From one sentence to sixteen, the throughput grows four times, from 18 sentences a second to 72, and a batch of
+# sixteen takes four times as long as a single sentence, not sixteen times. That's the fact the second half of
+# this lesson is built on: one translation of sixteen sentences costs about as much as four translations of one.
+# Past sixteen the gain flattens. A batch of 64 gives 83 sentences a second instead of 72 and takes three quarters
+# of a second, which every sentence in it waits for. The server's batches will stop at sixteen.
 #
 # One more knob: threads. PyTorch splits a matrix multiplication between CPU threads, and more isn't always better:
 
@@ -1018,7 +1024,12 @@ print(traffic[slowest])
 print(answers[slowest])
 
 # %% [markdown]
-# @@SERVICE_RESULT@@
+# Half the requests take about 50 ms, the mean is 60, and one in a hundred takes more than a quarter of a second.
+# The slowest took 777 ms, fifteen times the median, and its translation shows why: on a long sentence the model
+# fell into a loop, "он утверждает, что он утверждает…", and wrote until it reached the limit of 128 tokens, each
+# token one more step of the decoder. Here the slowest requests are the model's failures. A server can bound them
+# by capping the output at a multiple of the input's length. perevod doesn't, because the cap would change
+# translations, and this release promises to change none.
 #
 # A service that answers one request at a time has a capacity of $\mu = 1/S$ requests per second, where $S$ is the
 # mean service time. The load test runs at fractions of it, from a fifth to almost all, thirty seconds each.
@@ -1040,7 +1051,13 @@ for load in LOADS:
           f"p50 {p50:6.0f} ms, p90 {p90:6.0f} ms")
 
 # %% [markdown]
-# @@ONE_RESULT@@
+# At a fifth of its capacity the server answers in about its service time: the median request takes 59 ms. The
+# tail moves first. At 60% the median has grown by 40% and the 90th percentile has doubled; at 95% the median is
+# seven times the median service time, and one request in ten waits nearly a second, though the model works
+# exactly as fast as before. The time went into the queue.
+#
+# One point is out of line: the test at 80% load came out worse than the one at 90%, with a median of a quarter of
+# a second and one request in ten waiting a second and a half. Keep it in mind; the next pages explain it.
 #
 # One check before any theory. This runs on a shared machine, and a cloud CPU can get slower or faster while you
 # measure, when its neighbours start or stop working. If it did, the service time we measured belongs to another
@@ -1059,7 +1076,10 @@ print(f"the same 100 sentences: {before:.0f} ms before the load tests, "
       f"{after:.0f} ms after")
 
 # %% [markdown]
-# @@DRIFT_RESULT@@
+# The same speed before and after: the service time we measured is the one the load tests met. On one of the runs
+# that went into writing this lesson it wasn't. The machine took half again as long per sentence while the service
+# time was measured and was fast again by the load tests, and the predictions near capacity came out three to five
+# times too high. Measure the service time again after a load test; it costs a few seconds.
 #
 # Queueing theory predicts this curve, and the prediction is worth having before you buy servers. Its formulas are
 # simplest for the mean, so from here on the comparison is about mean latency. The simplest model is the **M/M/1
@@ -1165,7 +1185,24 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@QUEUE_RESULT@@
+# Our service times are almost as spread out as an exponential distribution's, $c_s = 0.91$, because of the few
+# sentences the model loops on, so Kingman's curve and M/M/1's nearly coincide. The measured means follow them up
+# to 70% of capacity. Above that, tests scatter widely, as the bands show, and the 80% point lies outside even its
+# band.
+#
+# The replays settle it. Given the arrival times each test had and the service time measured for each sentence it
+# sent, a dozen lines of arithmetic with no server in them reproduce every measured mean to within 7%, the 80% test
+# included. In that test a burst of arrivals, a quarter more than the server could handle, came between the 18th
+# and the 21st second, together with two of the slowest sentences of the traffic, the looping Darwin among them.
+# The queue they built took most of the remaining test to clear. In the 90% test the same two sentences came just
+# before a quieter stretch, and their queue was gone three seconds later. So this server is a queue and nothing
+# more, and a thirty-second test is one throw of its dice.
+#
+# Two practical rules follow. Below about 70% of capacity a short test is enough. Near capacity a single test can
+# land almost anywhere: at 95%, eight thirty-second tests in ten fall between a quarter and a little more than the
+# steady-state mean of Kingman's formula. That's why the measured 95% point sits so far under the curve: thirty
+# seconds is a third of its relaxation time of 94 seconds, and a test that starts from an empty queue doesn't reach
+# the steady state in that time. Near capacity, run long tests, or many, before you believe a number.
 #
 # ## 8. Dynamic batching
 #
@@ -1217,7 +1254,13 @@ ax.legend(frameon=False, fontsize=8)
 plt.show()
 
 # %% [markdown]
-# @@BATCH_RESULT@@
+# At the loads the server could already take, batching changes little at the bottom and a lot near the top. At
+# 20% of the old capacity the two servers answer alike, the batching one a couple of milliseconds slower, the price
+# of `max_wait`. At 95% the median falls from 366 ms to 104 and the 90th percentile from 874 ms to 228. And the
+# server now takes loads it couldn't take at all: at one and a half times the old capacity the median is 162 ms, at
+# twice 265 ms. At two and a half times the latency climbs, and at three the queue grows for as long as the test
+# lasts. The capacity grew about two and a half times, inside the forecast and short of section 5's fourfold,
+# because a batch waits for its longest sentence.
 #
 # Two settings remain to choose, and the measurements above say how. `max_wait` is added latency when the server is
 # idle, and it hardly matters under load, because the queue fills batches while the model works: keep it a small
