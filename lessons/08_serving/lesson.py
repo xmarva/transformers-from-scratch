@@ -577,8 +577,8 @@ print(f"int8:    {int8_seconds:.1f} s, chrF {int8_chrf:.1f}, {changed} of {len(s
 # made every `nn.Linear` free, more than half of the work would stay in float32. What quantization does touch are
 # 256-wide layers, too small for integer arithmetic to win back the cost of measuring and scaling the input at
 # every call. On a model this size, on this CPU, quantization costs quality and buys nothing, so perevod 0.2.0
-# doesn't use it. (The warning above says PyTorch is moving quantization to its `torchao` library; the arithmetic
-# won't change with the API.)
+# doesn't use it. (PyTorch is moving quantization to its `torchao` library, and the cell prints a deprecation
+# warning saying so; the arithmetic won't change with the API.)
 #
 # ## 5. Batches and threads
 #
@@ -1335,6 +1335,9 @@ server.wait()
 print("the page:", page.status_code, "| the API:", answer.json())
 
 # %% [markdown]
+# Both answer. On Kaggle, pip also prints an error about `dopamine-rl` and `gym`, two packages of Kaggle's own
+# environment that disagree with each other; it has nothing to do with ours.
+#
 # ## 10. Tests and the release of 0.2.0
 #
 # The server gets tests of its own, on lesson 7's tiny model. pytest runs the app in-process: FastAPI's

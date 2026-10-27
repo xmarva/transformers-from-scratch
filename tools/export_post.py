@@ -42,6 +42,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://xmarva.github.io"
 COURSE_PAGE = "/teaching/"
 FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)-light\.png"([^>]*)>')
+# one image for both themes, like a screenshot of a page
+# terminal escape codes: colours and cursor control that pip and others print; Jupyter renders them, a post can't
+ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
+PICTURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)\.png"([^>]*)>')
 ATTRIBUTE = re.compile(r'(\w+)="([^"]*)"')
 # code blocks, code spans, display math, and inline math, which may wrap onto the next line but not past a paragraph
 MATH = re.compile(r"(```.*?```|`[^`\n]*`|\$\$.*?\$\$|\$(?:[^$\n]|\n(?!\n))+?\$)", re.S)
@@ -97,10 +101,18 @@ def figure(match: re.Match, assets: Path, web: str) -> str:
     return "\n".join(shown)
 
 
+def picture(match: re.Match, assets: Path, web: str) -> str:
+    number, name, attributes = match.groups()
+    shutil.copy(ROOT / "assets" / "figures" / number / f"{name}.png", assets / f"{name}.png")
+    extra = " ".join(f'{key}="{html.escape(html.unescape(value))}"' for key, value in ATTRIBUTE.findall(attributes))
+    return f'<img class="tfs-figure" src="{web}/{name}.png" {extra} loading="lazy">'
+
+
 def markdown_cell(source: str, assets: Path, web: str, first: bool) -> str:
     if first:  # the lesson's title is the post's title
         source = re.sub(r"\A# [^\n]*\n+", "", source)
     source = FIGURE.sub(lambda match: figure(match, assets, web), source)
+    source = PICTURE.sub(lambda match: picture(match, assets, web), source)
     return inline_math(source)
 
 
@@ -121,7 +133,7 @@ def output_blocks(cell, assets: Path, web: str, counter: list[int]) -> list[str]
 
     def flush():
         if text:
-            printed = html.escape("".join(text).rstrip("\n"))
+            printed = html.escape(ANSI.sub("", "".join(text)).rstrip("\n"))
             blocks.append(f'<pre class="tfs-printed" markdown="0"><code>{printed}</code></pre>')
             text.clear()
 
