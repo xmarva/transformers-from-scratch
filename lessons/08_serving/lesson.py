@@ -31,8 +31,8 @@
 # 5. Add dynamic batching, a Gradio page, and release perevod 0.2.0.
 #
 # **What you need**: a CPU, as in lesson 7; Kaggle's free CPU sessions will do. The lesson downloads opus-mt
-# (300 MB) for a comparison and lesson 7's model (40 MB), and runs in about twenty minutes, half of them in load
-# tests that run in real time.
+# (300 MB) for a comparison and lesson 7's model (40 MB), and runs in about a quarter of an hour, two thirds of it
+# in load tests that run in real time.
 
 # %% tags=["include:setup"]
 
@@ -877,13 +877,16 @@ for path, operations in spec["paths"].items():
 # $1/\lambda$:
 
 # %%
-async def load_test(url, rate, seconds, sentences, seed=0):
+def arrival_times(rate, seconds, seed):
     rng = random.Random(seed)
-    send_at = []
-    moment = rng.expovariate(rate)
+    times, moment = [], rng.expovariate(rate)
     while moment < seconds:
-        send_at.append(moment)
+        times.append(moment)
         moment += rng.expovariate(rate)  # exponential gaps: a Poisson process
+    return times
+
+
+async def load_test(url, rate, seconds, sentences, seed=0):
     limits = httpx.Limits(max_connections=None, max_keepalive_connections=None)
     async with httpx.AsyncClient(timeout=None, limits=limits) as client:
         start = time.perf_counter()
@@ -895,7 +898,7 @@ async def load_test(url, rate, seconds, sentences, seed=0):
             return time.perf_counter() - (start + at)  # from when it was due, not sent
 
         tasks = []
-        for k, at in enumerate(send_at):
+        for k, at in enumerate(arrival_times(rate, seconds, seed)):
             tasks.append(one(k, at))
         return np.array(await asyncio.gather(*tasks))
 
@@ -963,10 +966,47 @@ rows = []
 for rate, times in one_at_a_time.items():
     rho = rate / mu
     kingman = service + rho / (1 - rho) * (1 + c_s**2) / 2 * service
-    rows.append({"utilization": rho, "measured mean, ms": 1000 * times.mean(),
+    rows.append({"load, %": round(100 * rho), "measured mean, ms": 1000 * times.mean(),
                  "M/M/1, ms": 1000 * service / (1 - rho), "Kingman, ms": 1000 * kingman})
 theory = pd.DataFrame(rows)
 display(table(theory, digits=0))
+
+# %% [markdown]
+# Both formulas describe a queue in its **steady state**, after it has run long enough to forget how it started.
+# Our tests start from an empty queue, and near capacity a queue forgets slowly. For M/M/1 the time it takes, the
+# relaxation time, is $S/(1 - \sqrt{\rho})^2$, which grows like $1/(1 - \rho)^2$
+# ([Morse, 1955](https://doi.org/10.1287/opre.3.3.255)): about 90 service times at 80% load, 380 at 90% and 1,560
+# at 95%. With ours, that's six seconds, twenty-five and a minute and a half. A thirty-second test near capacity
+# ends before its queue has settled.
+#
+# And a thirty-second test is one draw of a random process. An early burst of arrivals leaves a backlog that a
+# server with little spare capacity clears slowly, and the mean of the whole test goes up with it. How much tests
+# vary, the queue itself can tell. A single server that answers in order follows **Lindley's recursion**
+# ([Lindley, 1952](https://doi.org/10.1017/S0305004100027638)): a request starts when it arrives or when the
+# previous one ends, whichever is later. Run it on the arrival times our tests used, with service times drawn from
+# those measured at idle, five hundred times per load:
+
+# %%
+def simulated_mean(arrivals, service_times):
+    done, latencies = 0.0, []
+    for arrived, service_time in zip(arrivals, service_times, strict=True):
+        done = max(arrived, done) + service_time  # on arrival, or when the last one ends
+        latencies.append(done - arrived)
+    return np.mean(latencies)
+
+
+rng = np.random.default_rng(SEED)
+rows = []
+for load, (rate, times) in zip(LOADS, one_at_a_time.items(), strict=True):
+    arrivals = arrival_times(rate, 30, seed=int(100 * load))  # the test's own arrivals
+    means = []
+    for _ in range(500):
+        means.append(simulated_mean(arrivals, rng.choice(idle, len(arrivals))))
+    low, middle, high = 1000 * np.percentile(means, [10, 50, 90])
+    rows.append({"load, %": round(100 * load), "measured mean, ms": 1000 * times.mean(),
+                 "simulated: 10%": low, "median": middle, "90%": high})
+simulated = pd.DataFrame(rows)
+display(table(simulated, digits=0))
 
 # %%
 rhos = np.linspace(0.05, 0.97, 100)
@@ -976,10 +1016,13 @@ ax.plot(rhos, 1000 * (service + rhos / (1 - rhos) * (1 + c_s**2) / 2 * service),
         color=COLORS["att"], label="Kingman's approximation")
 ax.plot(rhos, 1000 * service / (1 - rhos), color=COLORS["muted"], linestyle=(0, (3, 3)),
         label="M/M/1")
-ax.plot(theory.utilization, measured, "o", color=COLORS["dec"], label="measured mean")
+ax.vlines(LOADS, simulated["simulated: 10%"], simulated["90%"],
+          color=COLORS["dec"], alpha=0.3, linewidth=7,
+          label="8 in 10 simulated 30-second tests")
+ax.plot(LOADS, measured, "o", color=COLORS["dec"], label="measured mean")
 ax.set_xlabel("utilization ρ = λ / μ")
 ax.set_ylabel("mean latency, ms")
-ax.set_ylim(0, 1.15 * max(measured))
+ax.set_ylim(0, 1.15 * max(max(measured), simulated["90%"].max()))
 ax.set_title("Latency against load, one request at a time")
 ax.legend(frameon=False)
 plt.show()
@@ -1177,6 +1220,8 @@ def test_requests_in_one_batch_get_their_own_translations(tiny_dir, pairs):
 # - Dean, J., Barroso, L. A. (2013). [The Tail at Scale](https://doi.org/10.1145/2408776.2408794). Communications of the ACM 56(2).
 # - Tene, G. (2013). [Coordinated Omission](https://groups.google.com/g/mechanical-sympathy/c/icNZJejUHfE/m/BfDekfBEs_sJ), on the mechanical-sympathy list; and the talk [How NOT to Measure Latency](https://www.youtube.com/watch?v=lJ8ydIuPFeU) (2015).
 # - Little, J. D. C. (1961). [A Proof for the Queuing Formula: L = λW](https://doi.org/10.1287/opre.9.3.383). Operations Research 9(3).
+# - Lindley, D. V. (1952). [The theory of queues with a single server](https://doi.org/10.1017/S0305004100027638). Proceedings of the Cambridge Philosophical Society 48(2).
+# - Morse, P. M. (1955). [Stochastic Properties of Waiting Lines](https://doi.org/10.1287/opre.3.3.255). Operations Research 3(3). *The relaxation time of a queue.*
 # - Kingman, J. F. C. (1961). [The single server queue in heavy traffic](https://doi.org/10.1017/S0305004100036094). Proceedings of the Cambridge Philosophical Society 57(4).
 # - Harchol-Balter, M. (2013). *Performance Modeling and Design of Computer Systems: Queueing Theory in Action*. Cambridge University Press. *The M/M/1 queue.*
 # - Yu, G.-I. et al. (2022). [Orca: A Distributed Serving System for Transformer-Based Generative Models](https://www.usenix.org/conference/osdi22/presentation/yu). OSDI. *Iteration-level scheduling.*
