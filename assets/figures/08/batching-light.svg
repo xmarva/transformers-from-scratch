@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Requests arriving over time, one at a time and with dynamic batching. One at a time, each request waits for all those before it. With dynamic batching, the requests that arrive while a batch is being translated go into the next batch together, so the queue empties in a few batches instead of many single translations">
+<title>Requests arriving over time, one at a time and with dynamic batching. One at a time, each request waits for all those before it. With dynamic batching, the requests that arrive while a batch is being translated go into the next batch together, so the queue empties in a few batches instead of many single translations</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">22 requests in one second, one at a time and in batches</text>
+<text x="14.0" y="82.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">arrivals</text>
+<rect x="162.1" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="172.6" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="178.7" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="191.1" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="204.2" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="205.1" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="205.2" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="229.4" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="233.4" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="237.0" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="309.4" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="317.9" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="342.0" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="350.6" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="364.2" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="366.3" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="379.8" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="406.7" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="416.6" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="434.6" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="449.4" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<rect x="450.3" y="70.0" width="3.0" height="16.0" rx="1" fill="#C27A0E"/>
+<text x="14.0" y="140.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">one at a time</text>
+<rect x="163.6" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="187.1" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="210.5" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="233.9" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="257.4" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="280.8" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="304.3" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="327.7" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="351.1" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="374.6" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="398.0" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="421.5" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="444.9" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="468.3" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="491.8" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="515.2" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="538.7" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="562.1" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="585.5" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="609.0" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="632.4" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<rect x="655.9" y="124.0" width="21.4" height="24.0" rx="2" fill="#FBE6EA"/>
+<text x="14.0" y="200.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">batched</text>
+<rect x="163.6" y="184.0" width="21.4" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="175.3" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1</text>
+<rect x="187.1" y="184.0" width="25.0" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="200.5" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">2</text>
+<rect x="214.0" y="184.0" width="32.0" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="231.0" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">4</text>
+<rect x="248.0" y="184.0" width="28.5" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="263.2" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">3</text>
+<rect x="310.9" y="184.0" width="21.4" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="322.6" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1</text>
+<rect x="334.3" y="184.0" width="21.4" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="346.1" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1</text>
+<rect x="357.8" y="184.0" width="25.0" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="371.3" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">2</text>
+<rect x="384.7" y="184.0" width="28.5" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="400.0" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">3</text>
+<rect x="415.2" y="184.0" width="21.4" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="426.9" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1</text>
+<rect x="438.6" y="184.0" width="25.0" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="452.1" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">2</text>
+<rect x="465.6" y="184.0" width="25.0" height="24.0" rx="2" fill="#E1F3F0"/>
+<text x="479.1" y="201.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">2</text>
+<text x="14.0" y="260.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the last request is answered at 1.77 s one at a time, at 1.13 s in batches</text>
+<text x="14.0" y="284.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">toy numbers: 80 ms per translation, 12 ms more per extra sentence in a batch; the axis runs to 2 s</text>
+</svg>

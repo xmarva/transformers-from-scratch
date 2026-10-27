@@ -40,9 +40,9 @@ packages = ["src/tfs"]
 [tool.ruff]
 line-length = 120
 target-version = "py310"
-# lesson 7 writes a class in parts with %%writefile -a, which can't parse as one file; the code it writes is
-# linted where it lives, in perevod/
-extend-exclude = ["notebooks", "lessons/07_package/lesson.py"]
+# lessons 7 and 8 write classes in parts with %%writefile -a, which can't parse as one file; the code they
+# write is linted where it lives, in perevod/
+extend-exclude = ["notebooks", "lessons/07_package/lesson.py", "lessons/08_serving/lesson.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]

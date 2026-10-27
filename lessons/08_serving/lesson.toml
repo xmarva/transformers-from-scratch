@@ -1,0 +1,4 @@
+number = 8
+short_title = "FastAPI serving under load"
+cover_alt = "Lesson 8 cover: Serving under load. Two latency curves against requests per second: one request at a time rises steeply near its capacity, dynamic batching stays flat to four times that load"
+gpu = false

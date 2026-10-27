@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 316" width="760" height="316" role="img" aria-label="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32">
+<title>Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="316" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">One decoding step: 6.9 million multiply-adds, by where they go</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">d_model 256, 3 decoder layers, 16,000 tokens; the 20th token of a translation of 15 source tokens</text>
+<text x="14.0" y="94.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">output projection onto the vocabulary</text>
+<rect x="330.0" y="80.0" width="300.0" height="22.0" rx="3" fill="#D23F57"/>
+<text x="638.0" y="96.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">59%</text>
+<text x="14.0" y="138.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">feed-forward, 3 matrices per layer</text>
+<rect x="330.0" y="124.0" width="114.8" height="22.0" rx="3" fill="#C27A0E"/>
+<text x="452.8" y="140.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">23%</text>
+<text x="14.0" y="182.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">self-attention q, k, v, o</text>
+<rect x="330.0" y="168.0" width="57.6" height="22.0" rx="3" fill="#C27A0E"/>
+<text x="395.6" y="184.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">11%</text>
+<text x="14.0" y="226.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">cross-attention q, o</text>
+<rect x="330.0" y="212.0" width="28.8" height="22.0" rx="3" fill="#C27A0E"/>
+<text x="366.8" y="228.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">6%</text>
+<text x="14.0" y="270.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">attention scores and sums</text>
+<rect x="330.0" y="256.0" width="3.9" height="22.0" rx="3" fill="#D23F57"/>
+<text x="341.9" y="272.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1%</text>
+<rect x="14.0" y="290.0" width="14.0" height="14.0" rx="2" fill="#C27A0E"/>
+<text x="34.0" y="302.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">nn.Linear: int8 after quantize_dynamic</text>
+<rect x="380.0" y="290.0" width="14.0" height="14.0" rx="2" fill="#D23F57"/>
+<text x="400.0" y="302.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">not nn.Linear: stays float32</text>
+</svg>

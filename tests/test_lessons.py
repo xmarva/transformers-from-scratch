@@ -47,10 +47,11 @@ def files_written(path):
     return files
 
 
-def test_lesson_7_writes_the_package_of_the_repository():
-    written = files_written(LESSONS / "07_package" / "lesson.py")
+@pytest.mark.parametrize("lesson", ["07_package", "08_serving"])
+def test_the_package_a_lesson_writes_is_the_repository_s(lesson):
+    written = files_written(LESSONS / lesson / "lesson.py")
     package_files = [name for name in written if name.startswith(("perevod/", ".github/"))]
-    assert len(package_files) > 10
+    assert package_files
     for name in package_files:
         repository_file = LESSONS.parent / name
         assert written[name] == repository_file.read_text(encoding="utf-8"), name
