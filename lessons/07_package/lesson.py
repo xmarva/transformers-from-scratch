@@ -30,9 +30,10 @@
 # 4. Set up CI on GitHub Actions and run its steps here.
 # 5. Measure what the model can't do and write it into a model card.
 #
-# **What you need**: a CPU; this lesson trains nothing. It downloads the model of lesson 6 (40 MB) and runs in
-# about a quarter of an hour. A [Hugging Face](https://huggingface.co) token as the secret `HF_TOKEN` is optional:
-# with it, the last section publishes your copy of the model and its card.
+# **What you need**: a CPU; this lesson trains nothing, so Kaggle's free CPU sessions will do and no GPU quota is
+# spent. It downloads the model of lesson 6 (40 MB) and runs in about half an hour, most of it in section 11, where
+# the test suite runs twenty times over. A [Hugging Face](https://huggingface.co) token as the secret `HF_TOKEN` is
+# optional: with it, the last section publishes your copy of the model and its card.
 
 # %% tags=["include:setup"]
 
@@ -1910,8 +1911,6 @@ display(table(gender[gender.pronoun == "she"][["profession", "perevod"]]))
 # al.'s sections, with the measurements filled in by the code:
 
 # %%
-from IPython.display import Markdown
-
 she = gender[gender.pronoun == "she"]["feminine verb"].mean()
 n_parameters = 0
 for parameter in translator.model.parameters():
@@ -2001,7 +2000,7 @@ instead. Inputs longer than 256 tokens are cut, with a warning.
 [package]: https://github.com/xmarva/transformers-from-scratch/tree/main/perevod
 """
 Path("perevod-en-ru-README.md").write_text(CARD, encoding="utf-8")
-display(Markdown(CARD.split("---\n", 2)[2]))
+print(CARD)
 
 # %% [markdown]
 # Notice what the card does not say: that the model is good. It says where it's usable and where it isn't, with the
