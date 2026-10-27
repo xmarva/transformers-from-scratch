@@ -62,25 +62,12 @@ class Attention(nn.Module):
         batch, length, _ = x.shape
         return x.view(batch, length, self.n_heads, self.d_k).transpose(1, 2)
 
-    def keys_values(self, x, angles=None):
-        k, v = self.split_heads(self.w_k(x)), self.split_heads(self.w_v(x))
-        if angles is not None:  # RoPE in self-attention; cross-attention has no positions
-            k = apply_rope(k, angles)
-        return k, v
-
-    def forward(self, x_query, x_key_value, mask, angles=None, cache=None):
+    def forward(self, x_query, x_key_value, mask, angles=None):
         q = self.split_heads(self.w_q(x_query))
-        if angles is not None:
-            q = apply_rope(q, angles)
-        if cache is not None and "fixed" in cache:  # the source's keys and values, once
-            k, v = cache["k"], cache["v"]
-        else:
-            k, v = self.keys_values(x_key_value, angles)
-            if cache is not None:  # the keys and values of earlier steps, then the new ones
-                if "k" in cache:
-                    k = torch.cat([cache["k"], k], dim=2)
-                    v = torch.cat([cache["v"], v], dim=2)
-                cache["k"], cache["v"] = k, v
+        k = self.split_heads(self.w_k(x_key_value))
+        v = self.split_heads(self.w_v(x_key_value))
+        if angles is not None:  # RoPE in self-attention; cross-attention has no positions
+            q, k = apply_rope(q, angles), apply_rope(k, angles)
         out = F.scaled_dot_product_attention(q, k, v, attn_mask=mask)
         batch, _, length, _ = out.shape
         return self.w_o(out.transpose(1, 2).reshape(batch, length, -1))
@@ -97,15 +84,13 @@ class Block(nn.Module):
             self.norm3 = RMSNorm(config.d_model)
         self.dropout = nn.Dropout(config.dropout)
 
-    def forward(self, x, mask, angles, memory=None, memory_mask=None, cache=None):
-        own = cache["self"] if cache is not None else None
+    def forward(self, x, mask, angles, memory=None, memory_mask=None):
         h = self.norm1(x)
-        x = x + self.dropout(self.self_attention(h, h, mask, angles, own))
+        x = x + self.dropout(self.self_attention(h, h, mask, angles))
         if self.cross_attention is None:
             return x + self.dropout(self.feed_forward(self.norm2(x)))
-        other = cache["cross"] if cache is not None else None
         h = self.norm2(x)
-        x = x + self.dropout(self.cross_attention(h, memory, memory_mask, cache=other))
+        x = x + self.dropout(self.cross_attention(h, memory, memory_mask))
         return x + self.dropout(self.feed_forward(self.norm3(x)))
 
 
@@ -141,23 +126,6 @@ class Seq2Seq(nn.Module):
         for layer in self.decoder:
             x = layer(x, mask, self.angles[:length], memory, memory_mask)
         return self.decoder_norm(x) @ self.embedding.weight.T
-
-    def new_caches(self, memory):
-        # one per decoder layer: an empty self-attention cache, and the cross-attention's
-        # keys and values, which depend only on the source
-        caches = []
-        for layer in self.decoder:
-            k, v = layer.cross_attention.keys_values(memory)
-            caches.append({"self": {}, "cross": {"fixed": True, "k": k, "v": v}})
-        return caches
-
-    def decode_step(self, token, memory_mask, caches, position):
-        # scores for the next token from the newest token alone: the rest is in the caches
-        x = self.embed(token)
-        angles = self.angles[position : position + 1]
-        for layer, cache in zip(self.decoder, caches, strict=True):
-            x = layer(x, None, angles, None, memory_mask, cache)
-        return (self.decoder_norm(x) @ self.embedding.weight.T)[:, -1]
 
     def forward(self, src, tgt):
         return self.decode(tgt, self.encode(src), src)

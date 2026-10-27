@@ -108,3 +108,7 @@ def main(argv=None):
     app = create_app(max_batch=args.max_batch, max_wait=args.max_wait_ms / 1000,
                      demo=args.demo)
     uvicorn.run(app, host=args.host, port=args.port)
+
+
+if __name__ == "__main__":
+    main()

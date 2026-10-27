@@ -3,6 +3,9 @@
 # model's positions is cut to fit, instead of failing inside the model.
 
 import torch
+import torch.nn.functional as F
+
+from .model import apply_rope
 
 
 def special_ids(tokenizer):
@@ -33,6 +36,49 @@ def length_penalty(length, alpha=0.6):
     return ((5 + length) / 6) ** alpha
 
 
+def attend(attention, x, cache, mask, angles):
+    # one attention sublayer for the newest token; the cache holds everything before it
+    q = attention.split_heads(attention.w_q(x))
+    if angles is not None:  # RoPE: self-attention rotates queries and keys by position
+        q = apply_rope(q, angles)
+    if "fixed" not in cache:  # self-attention: add the new token's key and value
+        k = attention.split_heads(attention.w_k(x))
+        v = attention.split_heads(attention.w_v(x))
+        if angles is not None:
+            k = apply_rope(k, angles)
+        if "k" in cache:
+            k = torch.cat([cache["k"], k], dim=2)
+            v = torch.cat([cache["v"], v], dim=2)
+        cache["k"], cache["v"] = k, v
+    out = F.scaled_dot_product_attention(q, cache["k"], cache["v"], attn_mask=mask)
+    batch, _, length, _ = out.shape
+    return attention.w_o(out.transpose(1, 2).reshape(batch, length, -1))
+
+
+def new_caches(model, memory):
+    # per decoder layer: an empty self-attention cache, and the cross-attention's keys and
+    # values, which depend only on the source and are computed once
+    caches = []
+    for layer in model.decoder:
+        attention = layer.cross_attention
+        k = attention.split_heads(attention.w_k(memory))
+        v = attention.split_heads(attention.w_v(memory))
+        caches.append({"self": {}, "cross": {"fixed": True, "k": k, "v": v}})
+    return caches
+
+
+def decode_step(model, token, memory_mask, caches, position):
+    # the decoder of model.py, in the same order, for one new token; dropout is off anyway
+    x = model.embed(token)
+    angles = model.angles[position : position + 1]
+    for layer, cache in zip(model.decoder, caches, strict=True):
+        x = x + attend(layer.self_attention, layer.norm1(x), cache["self"], None, angles)
+        x = x + attend(layer.cross_attention, layer.norm2(x), cache["cross"], memory_mask,
+                       None)
+        x = x + layer.feed_forward(layer.norm3(x))
+    return (model.decoder_norm(x) @ model.embedding.weight.T)[:, -1]
+
+
 def reorder(caches, rows):
     # the cached keys and values follow their hypotheses: row r of the new caches is row
     # rows[r] of the old ones
@@ -56,12 +102,12 @@ def greedy(model, tokenizer, sentences, max_tokens=128, batch_size=256):
     for indices in batches(sources, batch_size):
         src = pad([sources[i] for i in indices], pad_id, device)
         memory_mask = (src != pad_id)[:, None, None, :]
-        caches = model.new_caches(model.encode(src))
+        caches = new_caches(model, model.encode(src))
         token = torch.full((len(indices), 1), bos, device=device)
         written = []
         done = torch.zeros(len(indices), dtype=torch.bool, device=device)
         for position in range(max_tokens):
-            scores = model.decode_step(token, memory_mask, caches, position)
+            scores = decode_step(model, token, memory_mask, caches, position)
             next_ids = scores.argmax(dim=-1)
             next_ids[done] = pad_id  # a finished sentence only collects padding
             written.append(next_ids)
@@ -94,7 +140,7 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
     for indices in batches(sources, batch_size):
         src = pad([sources[i] for i in indices], pad_id, device)
         memory_mask = (src != pad_id)[:, None, None, :]
-        caches = model.new_caches(model.encode(src))
+        caches = new_caches(model, model.encode(src))
         # per sentence: (tokens so far, total log-probability, its row in the caches)
         beams = []
         for k in range(len(indices)):
@@ -115,7 +161,7 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
             reorder(caches, torch.tensor(rows, device=device))
             token = torch.tensor(last, device=device)[:, None]
             owner = torch.tensor(owners, device=device)
-            scores = model.decode_step(token, memory_mask[owner], caches, position)
+            scores = decode_step(model, token, memory_mask[owner], caches, position)
             top = scores.float().log_softmax(dim=-1).topk(beam_size)
             values, ids = top.values.tolist(), top.indices.tolist()
 
