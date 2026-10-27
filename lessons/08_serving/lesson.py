@@ -811,14 +811,19 @@ if __name__ == "__main__":
 
 # %% [markdown]
 # The package grows a new optional dependency, the server's: `pip install "perevod[serve]"` installs FastAPI and
-# uvicorn, and a plain `pip install perevod` stays as light as it was. The version becomes 0.2.0, and the server
-# gets a command of its own:
+# uvicorn, and a plain `pip install perevod` stays as light as it was. The server gets a command of its own,
+# `perevod-server`.
+#
+# The version becomes 0.2.0, and from now on it is written in one place. Lesson 7 wrote it twice, in
+# `pyproject.toml` and in `__init__.py`, and its version test compared the command's output with the second copy,
+# so the two could drift apart at the first release without a test noticing. Now `pyproject.toml` declares the
+# version `dynamic`, and hatchling reads it from `__init__.py` when it builds the wheel:
 
 # %%
 write("perevod/pyproject.toml", """
 [project]
 name = "perevod"
-version = "0.2.0"
+dynamic = ["version"]  # read from src/perevod/__init__.py, see [tool.hatch.version]
 description = "English-to-Russian translation with a small Transformer built from scratch"
 readme = "README.md"
 license = "MIT"
@@ -847,6 +852,9 @@ Model = "https://huggingface.co/xmarva/perevod-en-ru"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/perevod/__init__.py"  # the one place the version is written
 
 [tool.pytest.ini_options]
 markers = ["slow: downloads the published model and translates real sentences"]
