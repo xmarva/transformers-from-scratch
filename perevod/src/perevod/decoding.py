@@ -1,6 +1,6 @@
-# Greedy decoding and beam search of lesson 3, batched as in lesson 4, moved here from the
-# course's notebooks. One change: a source longer than the model's positions is cut to fit,
-# instead of failing inside the model.
+# Greedy decoding and beam search of lesson 3, batched as in lesson 4, with lesson 5's KV
+# cache: every step feeds the decoder only the newest token. A source longer than the
+# model's positions is cut to fit, instead of failing inside the model.
 
 import torch
 
@@ -33,6 +33,16 @@ def length_penalty(length, alpha=0.6):
     return ((5 + length) / 6) ** alpha
 
 
+def reorder(caches, rows):
+    # the cached keys and values follow their hypotheses: row r of the new caches is row
+    # rows[r] of the old ones
+    for cache in caches:
+        for part in cache.values():
+            for key in ("k", "v"):
+                if key in part:
+                    part[key] = part[key][rows]
+
+
 @torch.inference_mode()
 def greedy(model, tokenizer, sentences, max_tokens=128, batch_size=256):
     model.eval()
@@ -45,19 +55,24 @@ def greedy(model, tokenizer, sentences, max_tokens=128, batch_size=256):
     translations = [None] * len(sentences)
     for indices in batches(sources, batch_size):
         src = pad([sources[i] for i in indices], pad_id, device)
-        memory = model.encode(src)
-        written = torch.full((len(indices), 1), bos, device=device)
+        memory_mask = (src != pad_id)[:, None, None, :]
+        caches = model.new_caches(model.encode(src))
+        token = torch.full((len(indices), 1), bos, device=device)
+        written = []
         done = torch.zeros(len(indices), dtype=torch.bool, device=device)
-        for _ in range(max_tokens):
-            next_ids = model.decode(written, memory, src)[:, -1].argmax(dim=-1)
+        for position in range(max_tokens):
+            scores = model.decode_step(token, memory_mask, caches, position)
+            next_ids = scores.argmax(dim=-1)
             next_ids[done] = pad_id  # a finished sentence only collects padding
-            written = torch.cat([written, next_ids[:, None]], dim=1)
+            written.append(next_ids)
             done |= next_ids == eos
+            token = next_ids[:, None]
             if done.all():
                 break
+        written = torch.stack(written, dim=1)
         for row, i in enumerate(indices):
             ids = []
-            for token_id in written[row, 1:].tolist():
+            for token_id in written[row].tolist():
                 if token_id in (eos, pad_id):
                     break
                 ids.append(token_id)
@@ -78,24 +93,29 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
     translations = [None] * len(sentences)
     for indices in batches(sources, batch_size):
         src = pad([sources[i] for i in indices], pad_id, device)
-        memory = model.encode(src)
-        # per sentence: a list of (tokens so far, total log-probability)
-        beams = [[([bos], 0.0)] for _ in indices]
+        memory_mask = (src != pad_id)[:, None, None, :]
+        caches = model.new_caches(model.encode(src))
+        # per sentence: (tokens so far, total log-probability, its row in the caches)
+        beams = []
+        for k in range(len(indices)):
+            beams.append([([bos], 0.0, k)])
         finished = [[] for _ in indices]
         active = [True for _ in indices]
 
-        for _ in range(max_tokens):
-            rows, owners = [], []
+        for position in range(max_tokens):
+            rows, owners, last = [], [], []
             for k in range(len(indices)):
                 if active[k]:
-                    for tokens, _ in beams[k]:
-                        rows.append(tokens)
+                    for tokens, _, row in beams[k]:
+                        rows.append(row)
                         owners.append(k)
+                        last.append(tokens[-1])
             if not rows:
                 break
+            reorder(caches, torch.tensor(rows, device=device))
+            token = torch.tensor(last, device=device)[:, None]
             owner = torch.tensor(owners, device=device)
-            tgt = torch.tensor(rows, device=device)  # all live beams have the same length
-            scores = model.decode(tgt, memory[owner], src[owner])[:, -1]
+            scores = model.decode_step(token, memory_mask[owner], caches, position)
             top = scores.float().log_softmax(dim=-1).topk(beam_size)
             values, ids = top.values.tolist(), top.indices.tolist()
 
@@ -104,17 +124,17 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
                 if not active[k]:
                     continue
                 candidates = []
-                for tokens, total in beams[k]:
+                for tokens, total, _ in beams[k]:
                     for log_p, token_id in zip(values[row], ids[row], strict=True):
-                        candidates.append((tokens + [token_id], total + log_p))
+                        candidates.append((tokens + [token_id], total + log_p, row))
                     row += 1
                 candidates.sort(key=lambda candidate: candidate[1], reverse=True)
                 beams[k] = []
-                for tokens, total in candidates:
+                for tokens, total, parent in candidates:
                     if tokens[-1] == eos:
                         finished[k].append((tokens, total))
                     else:
-                        beams[k].append((tokens, total))
+                        beams[k].append((tokens, total, parent))
                     if len(beams[k]) == beam_size:
                         break
                 if len(finished[k]) >= beam_size:
@@ -123,9 +143,9 @@ def beam_search(model, tokenizer, sentences, beam_size=4, alpha=0.6, max_tokens=
         for k, i in enumerate(indices):
 
             def normalized(candidate):
-                tokens, total = candidate
+                tokens, total = candidate[0], candidate[1]
                 return total / length_penalty(len(tokens) - 1, alpha)  # without <bos>
 
-            best_tokens, _ = max(finished[k] or beams[k], key=normalized)
-            translations[i] = tokenizer.decode(best_tokens[1:])  # decode drops <eos>
+            best = max(finished[k] or beams[k], key=normalized)
+            translations[i] = tokenizer.decode(best[0][1:])  # decode drops <eos>
     return translations
