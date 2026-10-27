@@ -1042,6 +1042,24 @@ for load in LOADS:
 # %% [markdown]
 # @@ONE_RESULT@@
 #
+# One check before any theory. This runs on a shared machine, and a cloud CPU can get slower or faster while you
+# measure, when its neighbours start or stop working. If it did, the service time we measured belongs to another
+# machine than the load tests, and nothing below would add up. The first hundred sentences, one at a time, once
+# more:
+
+# %%
+again = []
+with httpx.Client(timeout=None) as client:
+    for sentence in traffic[:100]:
+        start = time.perf_counter()
+        client.post(URL, json={"text": sentence}).raise_for_status()
+        again.append(time.perf_counter() - start)
+before, after = 1000 * service_times[:100].mean(), 1000 * np.mean(again)
+print(f"the same 100 sentences: {before:.0f} ms before the load tests, {after:.0f} ms after")
+
+# %% [markdown]
+# @@DRIFT_RESULT@@
+#
 # Queueing theory predicts this curve, and the prediction is worth having before you buy servers. Its formulas are
 # simplest for the mean, so from here on the comparison is about mean latency. The simplest model is the **M/M/1
 # queue** (Harchol-Balter, 2013): Poisson arrivals at rate $\lambda$, one server, exponentially distributed service
