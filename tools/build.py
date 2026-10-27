@@ -36,7 +36,7 @@ REPO = "xmarva/transformers-from-scratch"
 RAW = f"https://raw.githubusercontent.com/{REPO}"
 KAGGLE_USER = "qmarva"
 COURSE = "Transformers: from scratch to production"
-TOTAL_LESSONS = 9
+TOTAL_LESSONS = 10
 TARGETS = ("kaggle", "colab")
 BUILD_TAGS = ("only-kaggle", "only-colab")
 

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="The package perevod by lines of code: the model and its decoding are 217 of 629 non-empty lines, 34%; the rest is the interface people use, the tests, and the packaging and CI around them">
+<title>The package perevod by lines of code: the model and its decoding are 217 of 629 non-empty lines, 34%; the rest is the interface people use, the tests, and the packaging and CI around them</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">What a translator package is made of</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">non-empty lines of perevod, 629 in all; the model and its decoding are 34% of them</text>
+<rect x="14.0" y="92.0" width="120.4" height="64.0" rx="4" fill="#3CC2B0"/>
+<polyline points="75.7,158.0 75.7,170.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="75.7" y="186.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the model</text>
+<text x="75.7" y="204.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">106 lines</text>
+<rect x="137.4" y="92.0" width="126.2" height="64.0" rx="4" fill="#3CC2B0"/>
+<polyline points="201.9,158.0 201.9,214.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="201.9" y="230.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">decoding</text>
+<text x="201.9" y="248.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">111 lines</text>
+<rect x="266.5" y="92.0" width="176.2" height="64.0" rx="4" fill="#362A14"/>
+<polyline points="356.1,158.0 356.1,170.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="356.1" y="186.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">API, config, CLI</text>
+<text x="356.1" y="204.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">154 lines</text>
+<rect x="445.8" y="92.0" width="173.9" height="64.0" rx="4" fill="#272144"/>
+<polyline points="534.2,158.0 534.2,214.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="534.2" y="230.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">tests</text>
+<text x="534.2" y="248.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">152 lines</text>
+<rect x="622.6" y="92.0" width="120.4" height="64.0" rx="4" fill="#391D24"/>
+<polyline points="684.3,158.0 684.3,170.0" fill="none" stroke="#9AA3B2" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="746.0" y="186.0" text-anchor="end" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">packaging and CI</text>
+<text x="746.0" y="204.0" text-anchor="end" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">106 lines</text>
+<text x="14.0" y="286.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">Sculley et al. (2015) drew this for whole ML systems: the model is the small box in the middle.</text>
+</svg>

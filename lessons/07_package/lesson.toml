@@ -1,0 +1,4 @@
+number = 7
+short_title = "Package, tests, CI"
+cover_alt = "Lesson 7 cover: Notebook code as a package. A terminal: pip install ./perevod, perevod --version, pytest with every test passing, git push, and CI reporting that all checks have passed"
+gpu = false

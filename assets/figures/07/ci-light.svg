@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" role="img" aria-label="The CI workflow of perevod. A push to main, a pull request or the Monday schedule starts it. The test job runs on Python 3.10 and 3.13: install, ruff, the fast tests. The wheel job builds the wheel, installs it and runs the command outside the source folder. The quality job, on main, on Mondays and on pull requests labelled model, downloads the published model and runs the slow tests">
+<title>The CI workflow of perevod. A push to main, a pull request or the Monday schedule starts it. The test job runs on Python 3.10 and 3.13: install, ruff, the fast tests. The wheel job builds the wheel, installs it and runs the command outside the source folder. The quality job, on main, on Mondays and on pull requests labelled model, downloads the published model and runs the slow tests</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="360" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Every push runs the same checks on a clean machine</text>
+<rect x="14.0" y="90.0" width="150.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="89.0" y="114.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">push to main</text>
+<polyline points="164.0,110.0 196.0,110.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="14.0" y="166.0" width="150.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="89.0" y="190.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">pull request</text>
+<polyline points="164.0,186.0 196.0,186.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="14.0" y="242.0" width="150.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="89.0" y="266.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">Monday 06:00</text>
+<polyline points="164.0,262.0 196.0,262.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="196.0,110.0 196.0,290.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="196.0,102.0 228.0,102.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="232.0" y="62.0" width="514.0" height="80.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="246.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="15" font-weight="600" fill="#C27A0E">test × Python 3.10, 3.13</text>
+<rect x="246.0" y="100.0" width="80.7" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="286.4" y="119.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">install</text>
+<rect x="340.7" y="100.0" width="57.3" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="369.4" y="119.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">ruff</text>
+<rect x="412.0" y="100.0" width="127.5" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="475.8" y="119.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">pytest (fast)</text>
+<polyline points="196.0,196.0 228.0,196.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="232.0" y="156.0" width="514.0" height="80.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="246.0" y="180.0" text-anchor="start" font-family="IBM Plex Sans" font-size="15" font-weight="600" fill="#D23F57">wheel</text>
+<rect x="246.0" y="194.0" width="65.1" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="278.6" y="213.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">build</text>
+<rect x="325.1" y="194.0" width="80.7" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="365.5" y="213.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">install</text>
+<rect x="419.8" y="194.0" width="111.9" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="475.8" y="213.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">run in /tmp</text>
+<polyline points="196.0,290.0 228.0,290.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="232.0" y="250.0" width="514.0" height="80.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="246.0" y="274.0" text-anchor="start" font-family="IBM Plex Sans" font-size="15" font-weight="600" fill="#0F8C7E">quality: main, Mondays</text>
+<rect x="246.0" y="288.0" width="65.1" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="278.6" y="307.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">cache</text>
+<rect x="325.1" y="288.0" width="135.3" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="392.8" y="307.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">download model</text>
+<rect x="474.4" y="288.0" width="127.5" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="538.2" y="307.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">pytest (slow)</text>
+<text x="14.0" y="346.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">A failing check marks the pull request red; nothing reaches main without the fast tests.</text>
+</svg>

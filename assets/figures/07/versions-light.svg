@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 296" width="760" height="296" role="img" aria-label="Two version numbers move separately. The package version follows semantic versioning: a bug fix is a patch, a new option a minor release, and a new default model, which changes the translations users get, a major one. The model is pinned by the commit of its repository, so a corrected model card on the Hub changes no one&#x27;s translations">
+<title>Two version numbers move separately. The package version follows semantic versioning: a bug fix is a patch, a new option a minor release, and a new default model, which changes the translations users get, a major one. The model is pinned by the commit of its repository, so a corrected model card on the Hub changes no one&#x27;s translations</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="296" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Two versions: the package&#x27;s number and the model&#x27;s commit</text>
+<text x="14.0" y="62.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">the change</text>
+<text x="330.0" y="62.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">perevod</text>
+<text x="520.0" y="62.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">model revision</text>
+<rect x="14.0" y="76.0" width="300.0" height="36.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="164.0" y="98.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">a bug fix in the code</text>
+<text x="330.0" y="99.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">patch  0.1.0 → 0.1.1</text>
+<text x="520.0" y="99.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">same</text>
+<rect x="14.0" y="126.0" width="300.0" height="36.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="164.0" y="148.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">a new option, e.g. --max-tokens</text>
+<text x="330.0" y="149.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">minor  0.1.1 → 0.2.0</text>
+<text x="520.0" y="149.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">same</text>
+<rect x="14.0" y="176.0" width="300.0" height="36.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="164.0" y="198.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">a new default model</text>
+<text x="330.0" y="199.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">major  0.2.0 → 1.0.0</text>
+<text x="520.0" y="199.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">a new pinned commit</text>
+<rect x="14.0" y="226.0" width="300.0" height="36.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="164.0" y="248.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">a corrected model card</text>
+<text x="330.0" y="249.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">no release</text>
+<text x="520.0" y="249.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">a commit nobody pins</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#232327"/></pattern></defs>
+<rect width="1200" height="630" fill="#161618"/>
+<rect x="600" width="600" height="630" fill="url(#dots)"/>
+<rect x="72" y="64" width="227" height="40" rx="8" fill="none" stroke="#4A4D55" stroke-width="1.4"/>
+<circle cx="92" cy="84" r="5" fill="#FF3636"/>
+<text x="106.0" y="90.0" font-family="'IBM Plex Mono', monospace" font-size="18" font-weight="400" fill="#9DA3AE" text-anchor="start" >07_package.ipynb</text>
+<text x="68.0" y="214.0" font-family="'IBM Plex Sans', sans-serif" font-size="66" font-weight="600" fill="#F2F3F5" text-anchor="start" letter-spacing="-1">Notebook code</text>
+<text x="68.0" y="288.0" font-family="'IBM Plex Sans', sans-serif" font-size="66" font-weight="600" fill="#F2F3F5" text-anchor="start" letter-spacing="-1">as a package</text>
+<text x="72.0" y="372.0" font-family="'IBM Plex Sans', sans-serif" font-size="26" font-weight="400" fill="#9DA3AE" text-anchor="start" >Which bug would</text>
+<text x="72.0" y="408.0" font-family="'IBM Plex Sans', sans-serif" font-size="26" font-weight="400" fill="#9DA3AE" text-anchor="start" >your tests miss?</text>
+<rect x="72" y="548" width="28" height="3" fill="#FF3636"/>
+<text x="72.0" y="580.0" font-family="'IBM Plex Mono', monospace" font-size="17" font-weight="400" fill="#6E7380" text-anchor="start" >Transformers: from scratch to production</text>
+<text x="616.0" y="128.0" font-family="'IBM Plex Mono', monospace" font-size="15" font-weight="400" fill="#6E7380" text-anchor="start" letter-spacing="1">THE TRANSLATOR AS A PACKAGE</text><rect x="616" y="150" width="512" height="360" rx="14" fill="#1E1F23" stroke="#4A4D55" stroke-width="1.4"/><text x="644.0" y="200.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#F2F3F5" text-anchor="start" >$ pip install perevod</text><text x="644.0" y="244.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#F2F3F5" text-anchor="start" >$ perevod --version</text><text x="644.0" y="288.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#9DA3AE" text-anchor="start" >perevod 0.1.0</text><text x="644.0" y="332.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#F2F3F5" text-anchor="start" >$ pytest -q</text><text x="644.0" y="376.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#9DA3AE" text-anchor="start" >20 passed</text><text x="644.0" y="420.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#F2F3F5" text-anchor="start" >$ git push</text><text x="644.0" y="464.0" font-family="'IBM Plex Mono', monospace" font-size="24" font-weight="400" fill="#FF3636" text-anchor="start" >CI: all checks have passed</text>
+</svg>
