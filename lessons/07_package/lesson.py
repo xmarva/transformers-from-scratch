@@ -1660,7 +1660,7 @@ def test_the_tiny_model_translates_what_it_learned(translator, pairs):
 # !cd perevod && {sys.executable} -m pytest -q -m "not slow" -p no:cacheprovider --color=no
 
 # %% [markdown]
-# Still fast, training included. And the same ten mutants against the improved tests:
+# Still a matter of seconds, training included. And the same ten mutants against the improved tests:
 
 # %%
 second_run = run_mutants()
