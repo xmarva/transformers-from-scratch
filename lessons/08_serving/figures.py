@@ -322,18 +322,19 @@ def _cover(lang):
     x0, x1, y0, y1 = cv.MOTIF_X0 + 10, cv.MOTIF_X1 - 10, 500, 170
     out.append(f'<line x1="{x0}" y1="{y0}" x2="{x1}" y2="{y0}" stroke="{cv.LINE}" stroke-width="1.4"/>')
     out.append(f'<line x1="{x0}" y1="{y0}" x2="{x0}" y2="{y1}" stroke="{cv.LINE}" stroke-width="1.4"/>')
-    for capacity, colour, width in [(1.0, cv.MUTED, 2.5), (4.0, cv.RED, 4)]:
+    top_rate = 2.8  # batching measured about 2.5 times the capacity of one request at a time
+    for capacity, colour, width in [(1.0, cv.MUTED, 2.5), (2.5, cv.RED, 4)]:
         points = []
-        for k in range(200):
-            rate = 4.4 * k / 200
-            rho = rate / capacity
-            if rho >= 0.985:
+        for k in range(400):
+            rate = top_rate * k / 400
+            latency = 1 / (1 - rate / capacity) if rate < capacity else float("inf")
+            if latency > 12:  # the curve leaves the top of the plot
                 break
-            latency = 1 / (1 - rho)
-            points.append((x0 + (x1 - x0) * rate / 4.4, y0 - (y0 - y1) * min(latency, 12) / 12))
+            points.append((x0 + (x1 - x0) * rate / top_rate, y0 - (y0 - y1) * latency / 12))
         path = " ".join(f"{x:.1f},{y:.1f}" for x, y in points)
         out.append(f'<polyline points="{path}" fill="none" stroke="{colour}" stroke-width="{width}"/>')
-    out.append(cv.text(x0 + 110, y1 + 40, "one at a time" if english else "по одному", 18, cv.MUTED, cv.MONO))
+    wall = x0 + (x1 - x0) / top_rate  # where one request at a time runs out of capacity
+    out.append(cv.text(wall + 14, y1 + 40, "one at a time" if english else "по одному", 18, cv.MUTED, cv.MONO))
     out.append(cv.text(x1 - 4, y1 + 90, "batched" if english else "батчами", 18, cv.RED, cv.MONO, anchor="end"))
     out.append(cv.text(x1, y0 + 30, "requests / s" if english else "запросов / с", 16, cv.FAINT, cv.MONO,
                        anchor="end"))

@@ -1,5 +1,5 @@
 number = 8
 short_title = "Serving under load"
-cover_alt = "Lesson 8 cover: Serving under load. Two latency curves against requests per second: one request at a time rises steeply near its capacity, dynamic batching stays flat to four times that load"
+cover_alt = "Lesson 8 cover: Serving under load. Two latency curves against requests per second: one request at a time rises steeply near its capacity, dynamic batching holds out to about two and a half times that load"
 gpu = false
 package_release = "perevod-v0.2.0"  # the tag of the package this lesson writes
