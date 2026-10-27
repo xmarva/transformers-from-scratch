@@ -7,8 +7,8 @@
 # needed a file that wasn't there, a library version that no longer exists, or cells run in an order nobody wrote
 # down.
 #
-# Our six lessons are notebooks too. They run, because the course's CI runs them every day, but try to *use* what
-# they built. To translate one sentence with lesson 6's model you need the model's class from lessons 2 and 5,
+# Our six lessons are notebooks too. They run, because the course's CI runs them on every change, but try to *use*
+# what they built. To translate one sentence with lesson 6's model you need the model's class from lessons 2 and 5,
 # the beam search of lesson 3, the right tokenizer, the right config, and the cells that glue them together, in
 # the right order. To translate a file, you copy all of it into a script. To find out that a library update broke
 # it, you wait for someone to complain.
