@@ -1,39 +1,16 @@
 {
- "index_digest": "sha256:d88f7f473ddf107cc50d92818d41886f9029e611b1cfa75c44e3377f4b5cb0d0",
- "index": {
-  "schemaVersion": 2,
-  "mediaType": "application/vnd.oci.image.index.v1+json",
-  "manifests": [
-   {
-    "mediaType": "application/vnd.oci.image.manifest.v1+json",
-    "digest": "sha256:1b2a1105926973846ceeef283f2678db2ed9cdb27a14cd83cc44504d28075a97",
-    "size": 3256,
-    "platform": {
-     "architecture": "amd64",
-     "os": "linux"
-    }
-   },
-   {
-    "mediaType": "application/vnd.oci.image.manifest.v1+json",
-    "digest": "sha256:0b3e3021bd1a54e615f6b93974bfe510fa260506d04cb901f1144528409463f2",
-    "size": 3256,
-    "platform": {
-     "architecture": "arm64",
-     "os": "linux"
-    }
-   }
-  ]
- },
+ "version": "0.3.1",
+ "index_digest": "sha256:8b46a084770cc8cd7aac71ca30ffd1c95807ad79af9200f5e7fb28464b27839b",
  "platforms": {
   "amd64": {
-   "manifest_digest": "sha256:1b2a1105926973846ceeef283f2678db2ed9cdb27a14cd83cc44504d28075a97",
+   "manifest_digest": "sha256:7e0587fe56237655e8cd239ea05e827ac4c1fa98db0db5579cbb6cd98522909e",
    "manifest": {
     "schemaVersion": 2,
     "mediaType": "application/vnd.oci.image.manifest.v1+json",
     "config": {
      "mediaType": "application/vnd.oci.image.config.v1+json",
-     "digest": "sha256:55354b22bac1f4494df41f623f462d83d582e069671ab17cc1e8874f36865981",
-     "size": 9474
+     "digest": "sha256:86b33887c4384213fc2d05d2b98f1bb7096e92d50c9554745b8dfd972585293e",
+     "size": 9636
     },
     "layers": [
      {
@@ -58,10 +35,10 @@
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:804c320d8dbdbba97bbdb78d0d17cfc5ef6cbd1f62a7468accaf0ccdd578ff20",
-      "size": 3310,
+      "digest": "sha256:9bf637879bdbf007fdd549a12342989225f39fff7f9d2e379a2dbc06194066dd",
+      "size": 3312,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
@@ -69,55 +46,55 @@
       "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
       "size": 32,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:26c93d61d4e89f3ed70e6a45c134f9cf0efff14847421feb71a204cace4ed9da",
-      "size": 22643,
+      "digest": "sha256:6e14e470eed79d362e08d8f66459be74645f186f886aa3fe8f697ed62dc358a7",
+      "size": 22644,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:7e67ce56f95e8d10a3082816c8f255a6d157035e4ba3d2b7c4338877bcabb908",
-      "size": 285232537,
+      "digest": "sha256:c824a6192a9c1826b4beb58b6a59aaf81b9a00a283589a6b73513b322e747f3c",
+      "size": 285232909,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:dda3c96301880ab21c5fc0398a168492d4068105438cf14c14be9b39c4638e09",
-      "size": 1524,
+      "digest": "sha256:dc91cd7a49c1530e4e5f39d6f54b59883fd798a81ed5d00e561aac9a37e3de00",
+      "size": 1528,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:ede2ce7f833e2c74098db165f0e796394cf780e852fc29f1182ab0a4cc2301c6",
-      "size": 8583,
+      "digest": "sha256:4d2432de0cb9679af176b5fe84bc0f554b6de5761881ba696008be720de96f4c",
+      "size": 8582,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:ce5bf9c3571a559a39b120d0c19aedb9d4f4c4e591f1c9beabb420f3bcce18fd",
-      "size": 93787,
+      "digest": "sha256:83c0363b76d15e1fe68a940e2f58b402ff5c1700cf93e836bdac0f8676e6471f",
+      "size": 93801,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:163faca30266cf6a0614fe73a801dd795f828af67cf09566aafc3517da07ec9b",
-      "size": 35858717,
+      "digest": "sha256:728a16b78002ddf21a7065add6bb3a7537d16e971a077e5273f992a6ffc0fb9d",
+      "size": 35855913,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      }
     ]
@@ -138,6 +115,7 @@
       "PIP_NO_CACHE_DIR=1",
       "PIP_DISABLE_PIP_VERSION_CHECK=1",
       "PYTHONUNBUFFERED=1",
+      "HF_HUB_CACHE=/home/perevod/models",
       "HF_HUB_OFFLINE=1"
      ],
      "Cmd": [
@@ -149,13 +127,13 @@
      ],
      "WorkingDir": "/home/perevod",
      "Labels": {
-      "org.opencontainers.image.revision": "cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "org.opencontainers.image.revision": "1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "org.opencontainers.image.source": "https://github.com/xmarva/transformers-from-scratch",
-      "org.opencontainers.image.version": "0.3.0"
+      "org.opencontainers.image.version": "0.3.1"
      },
      "ArgsEscaped": true
     },
-    "created": "2026-10-28T18:35:20Z",
+    "created": "2026-10-28T20:11:52Z",
     "history": [
      {
       "created": "2026-10-20T21:32:55Z",
@@ -214,89 +192,95 @@
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "ARG SOURCE_DATE_EPOCH=1793212520",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG SOURCE_DATE_EPOCH=1793218312",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PYTHONUNBUFFERED=1",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "WORKDIR /home/perevod",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY requirements.lock build.lock ./ # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY pyproject.toml README.md ./src/ # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY src ./src/src # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_CACHE=/home/perevod/models",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "USER perevod",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache/huggingface/xet # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "ENV HF_HUB_OFFLINE=1",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "ARG VERSION=0.3.0 REVISION=cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG VERSION=0.3.1 REVISION=1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.0 org.opencontainers.image.revision=cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.1 org.opencontainers.image.revision=1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "EXPOSE [8000/tcp]",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "CMD [\"perevod-server\" \"--host\" \"0.0.0.0\" \"--port\" \"8000\"]",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
@@ -310,27 +294,27 @@
       "sha256:4471abbb93788ec93b3c4985c6552787a6a2e20c416becf3504b454e2ed16684",
       "sha256:d0240b53eb0169db59a6fc2e9b65823e17ee303ce553be997d001569fb849369",
       "sha256:7d2c3f5d47a367987053141e12ed994fcbdf164831589314b0c2bf6b89a34408",
-      "sha256:293f6d4d2c4382383ab9bede1b2f03d989fcedbe570826220678842930ec8c7e",
+      "sha256:6d7a915ca082c29882cab3b18eae3da1a887f8f2a29bafc39defcd5164267365",
       "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-      "sha256:33924bfef47ced07bc4fb4fd85689393a4428fd470bf18e76c614b8d1c1c3545",
-      "sha256:09523a5dd417a19819aacf273a655984f5d71794159f9940b734da20723c08bb",
-      "sha256:8738569e3d786a67b4cd26997fce144391b117b6b1b9790503755e9cf20a3954",
-      "sha256:ecaa2b570a780046fa071bf165bd0fa462c1d00a02ff37df9ec02b985f7c4fe1",
-      "sha256:db91d7ad5feff9f498435bcda13f4baea37e40918e14abdd9ed39cb6d59f863b",
-      "sha256:69b2d2eab9e20c3d9346f03f73723d69d9521a3e6a5bc45b8666cd20e76d3944"
+      "sha256:f64985f4cc36520a6ceb0dd53e4cd5bf31e2a4c4f4f9bf86b050cf5e8767e389",
+      "sha256:6e95837973c654ef87b8422a1597f223ea9ac8784cfe3bc857faab51c1a0f1bf",
+      "sha256:5cee0cc328623f44c72c301b7808d3008a3496ab2f9eb665ceea0cb72ea6ca87",
+      "sha256:8c1ae576599e85e7f2ddf1ba17dbb85acc847d9f7df93a8c152248606403caa2",
+      "sha256:865ba6c92e9a5d576adf3e4e4b1d04129318e9523e419180e675842c8ef31643",
+      "sha256:08a143477056d698002b6110d1350b1cfc6c07c586959cdb78a843401f5d8de7"
      ]
     }
    }
   },
   "arm64": {
-   "manifest_digest": "sha256:0b3e3021bd1a54e615f6b93974bfe510fa260506d04cb901f1144528409463f2",
+   "manifest_digest": "sha256:6ebee0b71c4262b039cb2d130d6d13344c6e8c8eefb6e558b346df9ead10b5d8",
    "manifest": {
     "schemaVersion": 2,
     "mediaType": "application/vnd.oci.image.manifest.v1+json",
     "config": {
      "mediaType": "application/vnd.oci.image.config.v1+json",
-     "digest": "sha256:b2da335e736a6682ebada4440a3c8bd2fadbfdde4f78a1844150569c171d80c3",
-     "size": 9480
+     "digest": "sha256:16254b3f7139ab1a06df0984e8aa0ab94472bdc49bea362a305b7b641fc88000",
+     "size": 9642
     },
     "layers": [
      {
@@ -355,10 +339,10 @@
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:8d5fb0344e36a7ce0a414da02bc98f8228bd488f0d16d340d144db46ff6d066d",
-      "size": 3312,
+      "digest": "sha256:985d9152a3c6ad321f5be589199469d0b2cc5f3e8744b49c644548aacb37c4d0",
+      "size": 3314,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
@@ -366,55 +350,55 @@
       "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
       "size": 32,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:26c93d61d4e89f3ed70e6a45c134f9cf0efff14847421feb71a204cace4ed9da",
-      "size": 22643,
+      "digest": "sha256:6e14e470eed79d362e08d8f66459be74645f186f886aa3fe8f697ed62dc358a7",
+      "size": 22644,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:4bada405c4f235d337119d32eb197c8ceeed572d6e8972085e7da7b57976f518",
-      "size": 247909640,
+      "digest": "sha256:58186e4e757c144315bfcbdd6e229ae4ac6165c51decc9d7aea5be8fc7394b8f",
+      "size": 247910013,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:dda3c96301880ab21c5fc0398a168492d4068105438cf14c14be9b39c4638e09",
-      "size": 1524,
+      "digest": "sha256:dc91cd7a49c1530e4e5f39d6f54b59883fd798a81ed5d00e561aac9a37e3de00",
+      "size": 1528,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:ede2ce7f833e2c74098db165f0e796394cf780e852fc29f1182ab0a4cc2301c6",
-      "size": 8583,
+      "digest": "sha256:4d2432de0cb9679af176b5fe84bc0f554b6de5761881ba696008be720de96f4c",
+      "size": 8582,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:6373c60d2b18d271fde7cb3c4bd1e4fb68f1be4bb6b89a45dc14a51d5ab1fc29",
-      "size": 93790,
+      "digest": "sha256:8e8d59f6b1e2f48eeb733fdbd5f5567018aaf83b66dc3b2139de1f0fcbaded3d",
+      "size": 93802,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      },
      {
       "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:163faca30266cf6a0614fe73a801dd795f828af67cf09566aafc3517da07ec9b",
-      "size": 35858717,
+      "digest": "sha256:728a16b78002ddf21a7065add6bb3a7537d16e971a077e5273f992a6ffc0fb9d",
+      "size": 35855913,
       "annotations": {
-       "buildkit/rewritten-timestamp": "1793212520"
+       "buildkit/rewritten-timestamp": "1793218312"
       }
      }
     ]
@@ -435,6 +419,7 @@
       "PIP_NO_CACHE_DIR=1",
       "PIP_DISABLE_PIP_VERSION_CHECK=1",
       "PYTHONUNBUFFERED=1",
+      "HF_HUB_CACHE=/home/perevod/models",
       "HF_HUB_OFFLINE=1"
      ],
      "Cmd": [
@@ -446,13 +431,13 @@
      ],
      "WorkingDir": "/home/perevod",
      "Labels": {
-      "org.opencontainers.image.revision": "cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "org.opencontainers.image.revision": "1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "org.opencontainers.image.source": "https://github.com/xmarva/transformers-from-scratch",
-      "org.opencontainers.image.version": "0.3.0"
+      "org.opencontainers.image.version": "0.3.1"
      },
      "ArgsEscaped": true
     },
-    "created": "2026-10-28T18:35:20Z",
+    "created": "2026-10-28T20:11:52Z",
     "history": [
      {
       "created": "2026-10-20T21:32:55Z",
@@ -511,89 +496,95 @@
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "ARG SOURCE_DATE_EPOCH=1793212520",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG SOURCE_DATE_EPOCH=1793218312",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PYTHONUNBUFFERED=1",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "WORKDIR /home/perevod",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY requirements.lock build.lock ./ # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY pyproject.toml README.md ./src/ # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "COPY src ./src/src # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_CACHE=/home/perevod/models",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "USER perevod",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793212520 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache/huggingface/xet # buildkit",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache # buildkit",
       "comment": "buildkit.dockerfile.v0"
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "ENV HF_HUB_OFFLINE=1",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "ARG VERSION=0.3.0 REVISION=cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG VERSION=0.3.1 REVISION=1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
-      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.0 org.opencontainers.image.revision=cf5d34fd665209ac232201f0240db0a5ec12d01b",
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.1 org.opencontainers.image.revision=1db63fa5a13dd09d00be9b7c6179850a1894500a",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "EXPOSE [8000/tcp]",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
      },
      {
-      "created": "2026-10-28T18:35:20Z",
+      "created": "2026-10-28T20:11:52Z",
       "created_by": "CMD [\"perevod-server\" \"--host\" \"0.0.0.0\" \"--port\" \"8000\"]",
       "comment": "buildkit.dockerfile.v0",
       "empty_layer": true
@@ -607,14 +598,14 @@
       "sha256:30b514fe84180ee4eb558f242e215cb351e323595f38d88bead3d3170324b7b3",
       "sha256:c2b5c2a98ecbee949b1f9c3168d8070233dadd1abb5afb42f7c93fc05f9995a8",
       "sha256:947c04d2828ec2bfe4d3f77439f60771fe5b4865825ee58a3daed257150e7950",
-      "sha256:e2625d240a6bb5f86ceb295a90e879cb66b04ea87caa5bdfbe7bace4c874ad1f",
+      "sha256:21fe22733e2fcf60d6012148309bbf77a009ec9f28d1a0faee020a810d7a5d87",
       "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
-      "sha256:33924bfef47ced07bc4fb4fd85689393a4428fd470bf18e76c614b8d1c1c3545",
-      "sha256:b5c5489f33b558871787a27501acc8bb4875d91f66dace49dea99e9d96cad5ac",
-      "sha256:8738569e3d786a67b4cd26997fce144391b117b6b1b9790503755e9cf20a3954",
-      "sha256:ecaa2b570a780046fa071bf165bd0fa462c1d00a02ff37df9ec02b985f7c4fe1",
-      "sha256:8e10125477725c1bc13a996300b71ed1c5fff84e6d3df8cae9cf2c0eec67da27",
-      "sha256:69b2d2eab9e20c3d9346f03f73723d69d9521a3e6a5bc45b8666cd20e76d3944"
+      "sha256:f64985f4cc36520a6ceb0dd53e4cd5bf31e2a4c4f4f9bf86b050cf5e8767e389",
+      "sha256:11d9f52eda837102c9843ebf9e05b5eecba770cdd7c7e050a88c5352500d84e9",
+      "sha256:5cee0cc328623f44c72c301b7808d3008a3496ab2f9eb665ceea0cb72ea6ca87",
+      "sha256:8c1ae576599e85e7f2ddf1ba17dbb85acc847d9f7df93a8c152248606403caa2",
+      "sha256:7b1e82dcabf734b06e5978f24724ec8a718404e8f93093e6ac868635ca2827d0",
+      "sha256:08a143477056d698002b6110d1350b1cfc6c07c586959cdb78a843401f5d8de7"
      ]
     }
    }

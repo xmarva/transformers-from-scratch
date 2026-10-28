@@ -875,10 +875,10 @@ display(table(pd.DataFrame(rows), digits=1))
 #
 # The layer where pip installs perevod differs for a reason that took some digging. Running pip makes Python
 # import a few modules of its own standard library that the base image hadn't cached yet, and Python writes
-# their `.pyc` files into this layer. Python's import system writes timestamp headers no matter what
-# `SOURCE_DATE_EPOCH` says, which only changes the default of `py_compile` and `compileall`. The timestamps are
-# those of the standard library's source files, which differ between the two base images; inside one
-# architecture they're pinned along with the base, so two builds still agree.
+# their `.pyc` files into this layer, along with the folders they live in. Python's import system writes
+# timestamp headers no matter what `SOURCE_DATE_EPOCH` says, which only changes the default of `py_compile` and
+# `compileall`. The times are those of the standard library's files and folders, which differ between the two
+# base images; inside one architecture they're pinned along with the base, so two builds still agree.
 #
 # There's a stronger test than CI's. CI builds twice on the same machine, minutes apart. The real promise of a
 # reproducible build is that anyone, anywhere, later, gets the same bytes. A day after the release, a rebuild
