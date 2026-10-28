@@ -1,0 +1,614 @@
+{
+ "version": "0.3.1",
+ "index_digest": "sha256:8b46a084770cc8cd7aac71ca30ffd1c95807ad79af9200f5e7fb28464b27839b",
+ "platforms": {
+  "amd64": {
+   "manifest_digest": "sha256:7e0587fe56237655e8cd239ea05e827ac4c1fa98db0db5579cbb6cd98522909e",
+   "manifest": {
+    "schemaVersion": 2,
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "config": {
+     "mediaType": "application/vnd.oci.image.config.v1+json",
+     "digest": "sha256:86b33887c4384213fc2d05d2b98f1bb7096e92d50c9554745b8dfd972585293e",
+     "size": 9636
+    },
+    "layers": [
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034",
+      "size": 29843579
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:f5b253875fcbce1c3ed3bf3431019fc52d83f106ccf45e58e083985648ad4ec7",
+      "size": 1551798
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:ca30a39e3f58fe12fab1873dcbc2295c56c29222f8aca17c0765e9777c59615c",
+      "size": 12122141
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:86586d55cc56d61ea925eceb95264d80c84fae62b3f013b4022710968a0bcf73",
+      "size": 254
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:9bf637879bdbf007fdd549a12342989225f39fff7f9d2e379a2dbc06194066dd",
+      "size": 3312,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "size": 32,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:6e14e470eed79d362e08d8f66459be74645f186f886aa3fe8f697ed62dc358a7",
+      "size": 22644,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:c824a6192a9c1826b4beb58b6a59aaf81b9a00a283589a6b73513b322e747f3c",
+      "size": 285232909,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:dc91cd7a49c1530e4e5f39d6f54b59883fd798a81ed5d00e561aac9a37e3de00",
+      "size": 1528,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:4d2432de0cb9679af176b5fe84bc0f554b6de5761881ba696008be720de96f4c",
+      "size": 8582,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:83c0363b76d15e1fe68a940e2f58b402ff5c1700cf93e836bdac0f8676e6471f",
+      "size": 93801,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:728a16b78002ddf21a7065add6bb3a7537d16e971a077e5273f992a6ffc0fb9d",
+      "size": 35855913,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     }
+    ]
+   },
+   "config": {
+    "architecture": "amd64",
+    "config": {
+     "User": "perevod",
+     "ExposedPorts": {
+      "8000/tcp": {}
+     },
+     "Env": [
+      "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.12.16",
+      "PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+      "PIP_NO_CACHE_DIR=1",
+      "PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "PYTHONUNBUFFERED=1",
+      "HF_HUB_CACHE=/home/perevod/models",
+      "HF_HUB_OFFLINE=1"
+     ],
+     "Cmd": [
+      "perevod-server",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+     ],
+     "WorkingDir": "/home/perevod",
+     "Labels": {
+      "org.opencontainers.image.revision": "1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "org.opencontainers.image.source": "https://github.com/xmarva/transformers-from-scratch",
+      "org.opencontainers.image.version": "0.3.1"
+     },
+     "ArgsEscaped": true
+    },
+    "created": "2026-10-28T20:11:52Z",
+    "history": [
+     {
+      "created": "2026-10-20T21:32:55Z",
+      "created_by": "# debian.sh --arch 'amd64' out/ 'trixie' '@1792531975'",
+      "comment": "debuerreotype 0.17"
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "ENV LANG=C.UTF-8",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tca-certificates \t\tnetbase \t\ttzdata \t; \tapt-get dist-clean # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "ENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "ENV PYTHON_VERSION=3.12.16",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:44:57.97483236Z",
+      "created_by": "ENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:54:16.909605855Z",
+      "created_by": "RUN /bin/sh -c set -eux; \t\tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tdpkg-dev \t\tg++ \t\tgcc \t\tgnupg \t\tlibbluetooth-dev \t\tlibbz2-dev \t\tlibc6-dev \t\tlibdb-dev \t\tlibffi-dev \t\tlibgdbm-dev \t\tliblzma-dev \t\tlibncursesw5-dev \t\tlibreadline-dev \t\tlibsqlite3-dev \t\tlibssl-dev \t\tmake \t\ttk-dev \t\tuuid-dev \t\twget \t\txz-utils \t\tzlib1g-dev \t; \t\twget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\"; \techo \"$PYTHON_SHA256 *python.tar.xz\" | sha256sum -c -; \twget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\"; \tGNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\"; \tgpg --batch --verify python.tar.xz.asc python.tar.xz; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" python.tar.xz.asc; \tmkdir -p /usr/src/python; \ttar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz; \trm python.tar.xz; \t\tcd /usr/src/python; \tgnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\"; \t./configure \t\t--build=\"$gnuArch\" \t\t--enable-loadable-sqlite-extensions \t\t--enable-optimizations \t\t--enable-option-checking=fatal \t\t--enable-shared \t\t$(test \"${gnuArch%%-*}\" != 'riscv64' && echo '--with-lto') \t\t--with-ensurepip \t; \tnproc=\"$(nproc)\"; \tEXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\"; \tLDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\"; \tLDFLAGS=\"${LDFLAGS:-} -Wl,--strip-all\"; \tarch=\"$(dpkg --print-architecture)\"; arch=\"${arch##*-}\"; \tcase \"$arch\" in \t\tamd64|arm64) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer\"; \t\t\t;; \t\ti386) \t\t\t;; \t\t*) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer\"; \t\t\t;; \tesac; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-}\" \t; \trm python; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\\$\\$ORIGIN/../lib'\" \t\tpython \t; \tmake install; \t\tcd /; \trm -rf /usr/src/python; \t\tfind /usr/local -depth \t\t\\( \t\t\t\\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\) \t\t\t-o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\) \t\t\\) -exec rm -rf '{}' + \t; \t\tldconfig; \t\tapt-mark auto '.*' > /dev/null; \tapt-mark manual $savedAptMark; \tfind /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec ldd '{}' ';' \t\t| awk '/=>/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf \"*%s\\n\", so }' \t\t| sort -u \t\t| xargs -rt dpkg-query --search \t\t| awk 'sub(\":$\", \"\", $1) { print $1 }' \t\t| sort -u \t\t| xargs -r apt-mark manual \t; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tapt-get dist-clean; \t\texport PYTHONDONTWRITEBYTECODE=1; \tpython3 --version; \tpip3 --version # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:54:17.016188357Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tfor src in idle3 pip3 pydoc3 python3 python3-config; do \t\tdst=\"$(echo \"$src\" | tr -d 3)\"; \t\t[ -s \"/usr/local/bin/$src\" ]; \t\t[ ! -e \"/usr/local/bin/$dst\" ]; \t\tln -svT \"$src\" \"/usr/local/bin/$dst\"; \tdone # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:54:17.016188357Z",
+      "created_by": "CMD [\"python3\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG SOURCE_DATE_EPOCH=1793218312",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PYTHONUNBUFFERED=1",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "WORKDIR /home/perevod",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY requirements.lock build.lock ./ # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY pyproject.toml README.md ./src/ # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY src ./src/src # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_CACHE=/home/perevod/models",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "USER perevod",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_OFFLINE=1",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG VERSION=0.3.1 REVISION=1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.1 org.opencontainers.image.revision=1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "EXPOSE [8000/tcp]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "CMD [\"perevod-server\" \"--host\" \"0.0.0.0\" \"--port\" \"8000\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     }
+    ],
+    "os": "linux",
+    "rootfs": {
+     "type": "layers",
+     "diff_ids": [
+      "sha256:a70f6272827f64e1427d048ced77491aab5d64ab95725e56920802ff391197d7",
+      "sha256:4471abbb93788ec93b3c4985c6552787a6a2e20c416becf3504b454e2ed16684",
+      "sha256:d0240b53eb0169db59a6fc2e9b65823e17ee303ce553be997d001569fb849369",
+      "sha256:7d2c3f5d47a367987053141e12ed994fcbdf164831589314b0c2bf6b89a34408",
+      "sha256:6d7a915ca082c29882cab3b18eae3da1a887f8f2a29bafc39defcd5164267365",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:f64985f4cc36520a6ceb0dd53e4cd5bf31e2a4c4f4f9bf86b050cf5e8767e389",
+      "sha256:6e95837973c654ef87b8422a1597f223ea9ac8784cfe3bc857faab51c1a0f1bf",
+      "sha256:5cee0cc328623f44c72c301b7808d3008a3496ab2f9eb665ceea0cb72ea6ca87",
+      "sha256:8c1ae576599e85e7f2ddf1ba17dbb85acc847d9f7df93a8c152248606403caa2",
+      "sha256:865ba6c92e9a5d576adf3e4e4b1d04129318e9523e419180e675842c8ef31643",
+      "sha256:08a143477056d698002b6110d1350b1cfc6c07c586959cdb78a843401f5d8de7"
+     ]
+    }
+   }
+  },
+  "arm64": {
+   "manifest_digest": "sha256:6ebee0b71c4262b039cb2d130d6d13344c6e8c8eefb6e558b346df9ead10b5d8",
+   "manifest": {
+    "schemaVersion": 2,
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "config": {
+     "mediaType": "application/vnd.oci.image.config.v1+json",
+     "digest": "sha256:16254b3f7139ab1a06df0984e8aa0ab94472bdc49bea362a305b7b641fc88000",
+     "size": 9642
+    },
+    "layers": [
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:ddc0c1e36a6793411b6c8d48e1ddad2987405d377da92bcf532ed3181c2e4d62",
+      "size": 30200478
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:1fe8ddfb8cbbdc5855c68e22392842a3bf0c0bf8d87eb204c158c96f664e2182",
+      "size": 1534088
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:ff13255a981b23e12e8a9c280a29ba23dcfd066500231f0fda0200d4a1314a7f",
+      "size": 12059492
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:3634f8258f7a1c7d6a39d89ead1c23218f16d88d64fbe6be2a2093726ae046a7",
+      "size": 248
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:985d9152a3c6ad321f5be589199469d0b2cc5f3e8744b49c644548aacb37c4d0",
+      "size": 3314,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1",
+      "size": 32,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:6e14e470eed79d362e08d8f66459be74645f186f886aa3fe8f697ed62dc358a7",
+      "size": 22644,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:58186e4e757c144315bfcbdd6e229ae4ac6165c51decc9d7aea5be8fc7394b8f",
+      "size": 247910013,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:dc91cd7a49c1530e4e5f39d6f54b59883fd798a81ed5d00e561aac9a37e3de00",
+      "size": 1528,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:4d2432de0cb9679af176b5fe84bc0f554b6de5761881ba696008be720de96f4c",
+      "size": 8582,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:8e8d59f6b1e2f48eeb733fdbd5f5567018aaf83b66dc3b2139de1f0fcbaded3d",
+      "size": 93802,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     },
+     {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:728a16b78002ddf21a7065add6bb3a7537d16e971a077e5273f992a6ffc0fb9d",
+      "size": 35855913,
+      "annotations": {
+       "buildkit/rewritten-timestamp": "1793218312"
+      }
+     }
+    ]
+   },
+   "config": {
+    "architecture": "arm64",
+    "config": {
+     "User": "perevod",
+     "ExposedPorts": {
+      "8000/tcp": {}
+     },
+     "Env": [
+      "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.12.16",
+      "PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+      "PIP_NO_CACHE_DIR=1",
+      "PIP_DISABLE_PIP_VERSION_CHECK=1",
+      "PYTHONUNBUFFERED=1",
+      "HF_HUB_CACHE=/home/perevod/models",
+      "HF_HUB_OFFLINE=1"
+     ],
+     "Cmd": [
+      "perevod-server",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000"
+     ],
+     "WorkingDir": "/home/perevod",
+     "Labels": {
+      "org.opencontainers.image.revision": "1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "org.opencontainers.image.source": "https://github.com/xmarva/transformers-from-scratch",
+      "org.opencontainers.image.version": "0.3.1"
+     },
+     "ArgsEscaped": true
+    },
+    "created": "2026-10-28T20:11:52Z",
+    "history": [
+     {
+      "created": "2026-10-20T21:32:55Z",
+      "created_by": "# debian.sh --arch 'arm64' out/ 'trixie' '@1792531975'",
+      "comment": "debuerreotype 0.17"
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "ENV LANG=C.UTF-8",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tca-certificates \t\tnetbase \t\ttzdata \t; \tapt-get dist-clean # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "ENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "ENV PYTHON_VERSION=3.12.16",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:47:52.689843056Z",
+      "created_by": "ENV PYTHON_SHA256=b5796915dc45ff745cfb4e990a7e7c93d6f546328a102ce31448d69ebc37575c",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-26T22:59:41.717114585Z",
+      "created_by": "RUN /bin/sh -c set -eux; \t\tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tdpkg-dev \t\tg++ \t\tgcc \t\tgnupg \t\tlibbluetooth-dev \t\tlibbz2-dev \t\tlibc6-dev \t\tlibdb-dev \t\tlibffi-dev \t\tlibgdbm-dev \t\tliblzma-dev \t\tlibncursesw5-dev \t\tlibreadline-dev \t\tlibsqlite3-dev \t\tlibssl-dev \t\tmake \t\ttk-dev \t\tuuid-dev \t\twget \t\txz-utils \t\tzlib1g-dev \t; \t\twget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\"; \techo \"$PYTHON_SHA256 *python.tar.xz\" | sha256sum -c -; \twget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\"; \tGNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\"; \tgpg --batch --verify python.tar.xz.asc python.tar.xz; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" python.tar.xz.asc; \tmkdir -p /usr/src/python; \ttar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz; \trm python.tar.xz; \t\tcd /usr/src/python; \tgnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\"; \t./configure \t\t--build=\"$gnuArch\" \t\t--enable-loadable-sqlite-extensions \t\t--enable-optimizations \t\t--enable-option-checking=fatal \t\t--enable-shared \t\t$(test \"${gnuArch%%-*}\" != 'riscv64' && echo '--with-lto') \t\t--with-ensurepip \t; \tnproc=\"$(nproc)\"; \tEXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\"; \tLDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\"; \tLDFLAGS=\"${LDFLAGS:-} -Wl,--strip-all\"; \tarch=\"$(dpkg --print-architecture)\"; arch=\"${arch##*-}\"; \tcase \"$arch\" in \t\tamd64|arm64) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer\"; \t\t\t;; \t\ti386) \t\t\t;; \t\t*) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer\"; \t\t\t;; \tesac; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-}\" \t; \trm python; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\\$\\$ORIGIN/../lib'\" \t\tpython \t; \tmake install; \t\tcd /; \trm -rf /usr/src/python; \t\tfind /usr/local -depth \t\t\\( \t\t\t\\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\) \t\t\t-o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\) \t\t\\) -exec rm -rf '{}' + \t; \t\tldconfig; \t\tapt-mark auto '.*' > /dev/null; \tapt-mark manual $savedAptMark; \tfind /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec ldd '{}' ';' \t\t| awk '/=>/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf \"*%s\\n\", so }' \t\t| sort -u \t\t| xargs -rt dpkg-query --search \t\t| awk 'sub(\":$\", \"\", $1) { print $1 }' \t\t| sort -u \t\t| xargs -r apt-mark manual \t; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tapt-get dist-clean; \t\texport PYTHONDONTWRITEBYTECODE=1; \tpython3 --version; \tpip3 --version # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:59:41.826233416Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tfor src in idle3 pip3 pydoc3 python3 python3-config; do \t\tdst=\"$(echo \"$src\" | tr -d 3)\"; \t\t[ -s \"/usr/local/bin/$src\" ]; \t\t[ ! -e \"/usr/local/bin/$dst\" ]; \t\tln -svT \"$src\" \"/usr/local/bin/$dst\"; \tdone # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-26T22:59:41.826233416Z",
+      "created_by": "CMD [\"python3\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG SOURCE_DATE_EPOCH=1793218312",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 PYTHONUNBUFFERED=1",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c useradd --uid 1000 --create-home perevod # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "WORKDIR /home/perevod",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY requirements.lock build.lock ./ # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --require-hashes --no-deps -r requirements.lock -r build.lock         --extra-index-url https://download.pytorch.org/whl/cpu # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY pyproject.toml README.md ./src/ # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "COPY src ./src/src # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c pip install --no-deps --no-build-isolation ./src && rm -rf ./src # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_CACHE=/home/perevod/models",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "USER perevod",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "RUN |1 SOURCE_DATE_EPOCH=1793218312 /bin/sh -c python -c \"from perevod import Translator; Translator.from_pretrained()\"     && rm -rf /home/perevod/.cache # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ENV HF_HUB_OFFLINE=1",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "ARG VERSION=0.3.1 REVISION=1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "LABEL org.opencontainers.image.source=https://github.com/xmarva/transformers-from-scratch org.opencontainers.image.version=0.3.1 org.opencontainers.image.revision=1db63fa5a13dd09d00be9b7c6179850a1894500a",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "EXPOSE [8000/tcp]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     },
+     {
+      "created": "2026-10-28T20:11:52Z",
+      "created_by": "CMD [\"perevod-server\" \"--host\" \"0.0.0.0\" \"--port\" \"8000\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+     }
+    ],
+    "os": "linux",
+    "rootfs": {
+     "type": "layers",
+     "diff_ids": [
+      "sha256:e5593b7179d10a64cfe451e886e3ab13ccd476f906dc670865322ae1dbdf969f",
+      "sha256:30b514fe84180ee4eb558f242e215cb351e323595f38d88bead3d3170324b7b3",
+      "sha256:c2b5c2a98ecbee949b1f9c3168d8070233dadd1abb5afb42f7c93fc05f9995a8",
+      "sha256:947c04d2828ec2bfe4d3f77439f60771fe5b4865825ee58a3daed257150e7950",
+      "sha256:21fe22733e2fcf60d6012148309bbf77a009ec9f28d1a0faee020a810d7a5d87",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:f64985f4cc36520a6ceb0dd53e4cd5bf31e2a4c4f4f9bf86b050cf5e8767e389",
+      "sha256:11d9f52eda837102c9843ebf9e05b5eecba770cdd7c7e050a88c5352500d84e9",
+      "sha256:5cee0cc328623f44c72c301b7808d3008a3496ab2f9eb665ceea0cb72ea6ca87",
+      "sha256:8c1ae576599e85e7f2ddf1ba17dbb85acc847d9f7df93a8c152248606403caa2",
+      "sha256:7b1e82dcabf734b06e5978f24724ec8a718404e8f93093e6ac868635ca2827d0",
+      "sha256:08a143477056d698002b6110d1350b1cfc6c07c586959cdb78a843401f5d8de7"
+     ]
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="The image job in GitHub Actions. A pull request or a release tag starts it. It builds the image for x86-64 and ARM, then builds it again from scratch, and compares the two digests; if they differ, the job fails. On a release tag, the first build is pushed to ghcr.io/xmarva/perevod with the package&#x27;s version as its tag">
+<title>The image job in GitHub Actions. A pull request or a release tag starts it. It builds the image for x86-64 and ARM, then builds it again from scratch, and compares the two digests; if they differ, the job fails. On a release tag, the first build is pushed to ghcr.io/xmarva/perevod with the package&#x27;s version as its tag</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">The image job: build, build again from scratch, compare, publish</text>
+<rect x="14.0" y="70.0" width="150.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="89.0" y="94.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">pull request</text>
+<rect x="14.0" y="130.0" width="150.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="89.0" y="154.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">tag perevod-v*</text>
+<polyline points="168.0,90.0 210.0,90.0 210.0,118.0 232.0,118.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="168.0,150.0 210.0,150.0 210.0,122.0 232.0,122.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="236.0" y="70.0" width="200.0" height="40.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="336.0" y="94.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">build: amd64 + arm64</text>
+<rect x="236.0" y="130.0" width="200.0" height="40.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="336.0" y="154.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">build again, no cache</text>
+<polyline points="336.0,112.0 336.0,126.0" fill="none" stroke="#0F8C7E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-enc)"/>
+<polyline points="440.0,120.0 486.0,120.0" fill="none" stroke="#0F8C7E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-enc)"/>
+<rect x="490.0" y="98.0" width="120.0" height="44.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="550.0" y="124.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">same digest?</text>
+<polyline points="614.0,108.0 652.0,84.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<rect x="656.0" y="64.0" width="90.0" height="36.0" rx="9" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="701.0" y="86.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">push</text>
+<polyline points="614.0,132.0 652.0,156.0" fill="none" stroke="#D23F57" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-dec)"/>
+<rect x="656.0" y="140.0" width="90.0" height="36.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="701.0" y="162.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">fail</text>
+<text x="656.0" y="120.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">on a tag only</text>
+<text x="14.0" y="214.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">SOURCE_DATE_EPOCH = the commit&#x27;s time · BuildKit v0.34.1 · no attestations</text>
+<text x="14.0" y="240.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">QEMU emulates ARM on the x86 runner, so one job builds both architectures.</text>
+<text x="14.0" y="262.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">The pushed image: ghcr.io/xmarva/perevod:0.3.1, public, pulled without a login.</text>
+</svg>

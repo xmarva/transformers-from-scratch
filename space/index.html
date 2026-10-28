@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>perevod</title>
+<meta name="description" content="English to Russian with a small Transformer built from scratch, running entirely in your browser">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #ffffff; --card: #f6f7f9; --ink: #1d2430; --muted: #5d6573; --line: #d9dde3; --red: #e5383b; --red-ink: #ffffff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #18191c; --card: #212226; --ink: #e8eaee; --muted: #9aa0aa; --line: #3a3d44; --red: #ff4848; --red-ink: #18191c; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 "IBM Plex Sans", system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 56px; }
+  h1 { font-weight: 600; font-size: 34px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .tab { display: inline-block; font: 13px "IBM Plex Mono", monospace; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; margin-bottom: 18px; }
+  .tab::before { content: "●"; color: var(--red); margin-right: 8px; }
+  p { margin: 0 0 12px; color: var(--muted); }
+  a { color: var(--red); }
+  label { display: block; font: 13px "IBM Plex Mono", monospace; color: var(--muted); margin: 22px 0 6px; }
+  textarea { width: 100%; min-height: 96px; resize: vertical; font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  textarea:focus { outline: 2px solid var(--red); outline-offset: 1px; }
+  button#translate { margin-top: 14px; width: 100%; padding: 12px; font: 600 16px "IBM Plex Sans", sans-serif; color: var(--red-ink); background: var(--red); border: 0; border-radius: 10px; cursor: pointer; }
+  button#translate:disabled { opacity: 0.45; cursor: wait; }
+  .meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 12px "IBM Plex Mono", monospace; color: var(--muted); margin-top: 10px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .example { font: 14px "IBM Plex Sans", sans-serif; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer; text-align: left; }
+  .example:hover { border-color: var(--red); }
+  footer { margin-top: 36px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="tab">perevod / in your browser</div>
+  <h1>perevod</h1>
+  <p>English to Russian with a small Transformer built from scratch in the course
+    <a href="https://github.com/xmarva/transformers-from-scratch">Transformers: from scratch to production</a>.
+    It was trained on short everyday sentences; its <a href="https://huggingface.co/xmarva/perevod-en-ru">model card</a>
+    says where it fails.</p>
+  <p>The model runs here, on your device, with ONNX Runtime Web: the first visit downloads about 56 MB, and the
+    browser keeps them.</p>
+  <label for="input">English</label>
+  <textarea id="input" placeholder="Type a sentence">My brother lives in a small town by the sea.</textarea>
+  <button id="translate" disabled>Translate</button>
+  <label for="output">Russian</label>
+  <textarea id="output" readonly></textarea>
+  <div class="meta"><span id="status">Loading the model into your browser…</span><span id="timing"></span></div>
+  <label>Examples</label>
+  <div class="examples">
+    <button class="example">My brother lives in a small town by the sea.</button>
+    <button class="example">Every morning I drink tea and read the news.</button>
+    <button class="example">The cat is sleeping on the windowsill.</button>
+    <button class="example">Tom is afraid of the dark.</button>
+  </div>
+  <footer>The same model as the <code>perevod</code> package, exported to ONNX; translations are checked to match the
+    package's, word for word. Source: <a href="https://github.com/xmarva/transformers-from-scratch/tree/main/perevod">perevod</a>.</footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

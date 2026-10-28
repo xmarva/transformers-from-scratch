@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 380" width="760" height="380" role="img" aria-label="The 16-byte header of a .pyc file, compiled twice from the same source saved a minute apart. Timestamp mode: magic number, flags 0, the source&#x27;s modification time and size; the time differs, so the files differ. Checked-hash mode, with SOURCE_DATE_EPOCH set: magic number, flags 3, an 8-byte hash of the source; the two files are identical">
+<title>The 16-byte header of a .pyc file, compiled twice from the same source saved a minute apart. Timestamp mode: magic number, flags 0, the source&#x27;s modification time and size; the time differs, so the files differ. Checked-hash mode, with SOURCE_DATE_EPOCH set: magic number, flags 3, an 8-byte hash of the source; the two files are identical</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="380" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">The first 16 bytes of a .pyc, compiled from one file saved a minute apart</text>
+<text x="14.0" y="72.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">by default</text>
+<text x="14.0" y="124.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">saved at +0 min</text>
+<rect x="150.0" y="104.0" width="142.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="221.0" y="123.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">2b 0e 0d 0a</text>
+<text x="221.0" y="96.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">magic</text>
+<rect x="298.0" y="104.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="369.0" y="123.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">00 00 00 00</text>
+<text x="369.0" y="96.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">flags</text>
+<rect x="446.0" y="104.0" width="142.0" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="517.0" y="123.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">68 40 e2 6a</text>
+<text x="517.0" y="96.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">source time</text>
+<rect x="594.0" y="104.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="665.0" y="123.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">28 00 00 00</text>
+<text x="665.0" y="96.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">source size</text>
+<text x="14.0" y="164.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">saved at +1 min</text>
+<rect x="150.0" y="144.0" width="142.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="221.0" y="163.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">2b 0e 0d 0a</text>
+<rect x="298.0" y="144.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="369.0" y="163.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">00 00 00 00</text>
+<rect x="446.0" y="144.0" width="142.0" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="517.0" y="163.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">a4 40 e2 6a</text>
+<rect x="594.0" y="144.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="665.0" y="163.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">28 00 00 00</text>
+<text x="746.0" y="72.0" text-anchor="end" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">the files differ</text>
+<text x="14.0" y="222.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">with SOURCE_DATE_EPOCH set</text>
+<text x="14.0" y="274.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">saved at +0 min</text>
+<rect x="150.0" y="254.0" width="142.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="221.0" y="273.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">2b 0e 0d 0a</text>
+<text x="221.0" y="246.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">magic</text>
+<rect x="298.0" y="254.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="369.0" y="273.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">03 00 00 00</text>
+<text x="369.0" y="246.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">flags</text>
+<rect x="446.0" y="254.0" width="290.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="591.0" y="273.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">c1 ae 20 d3 44 b9 4c a3</text>
+<text x="591.0" y="246.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">hash of the source</text>
+<text x="14.0" y="314.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">saved at +1 min</text>
+<rect x="150.0" y="294.0" width="142.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="221.0" y="313.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">2b 0e 0d 0a</text>
+<rect x="298.0" y="294.0" width="142.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="369.0" y="313.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">03 00 00 00</text>
+<rect x="446.0" y="294.0" width="290.0" height="30.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="591.0" y="313.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">c1 ae 20 d3 44 b9 4c a3</text>
+<text x="746.0" y="222.0" text-anchor="end" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">identical bytes</text>
+<text x="14.0" y="368.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">flags 0: check the time; flags 3: check the hash (PEP 552)</text>
+</svg>
