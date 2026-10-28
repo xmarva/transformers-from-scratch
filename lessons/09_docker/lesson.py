@@ -18,9 +18,9 @@
 # ([NumPy 2.0.0 release notes](https://numpy.org/doc/stable/release/2.0.0-notes.html)). PyTorch caught up five
 # weeks later, in 2.4.0. Everyone who reinstalled in between learned what their model was really made of.
 #
-# It is made of more than weights. When perevod translates a sentence, the 38 MB of weights are the smallest part
-# of what runs: around them are the package's code, three dozen Python packages, Python itself, the system
-# libraries that Python and PyTorch load, and a processor. Change any of them, and you have a different program,
+# It is made of more than weights. When perevod translates a sentence, its 38 MB of weights are one part of what
+# runs: around them are the package's code, three dozen Python packages, Python itself, the system libraries
+# that Python and PyTorch load, and a processor. Change any of them, and you have a different program,
 # which may or may not give the same translations, or start at all.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/09/hero-light.png" width="760" alt="What runs when perevod translates, as a stack: the weights, perevod's code, the Python packages, Python and Debian's libraries, the build itself, and the processor. Next to each, what pins it in perevod 0.3.1: the model's commit, a git tag, a lock file with hashes, a base image pinned by digest, a pinned builder and a fixed time; the processor is the one part no image can pin">
@@ -108,7 +108,7 @@ print(Path("perevod/pyproject.toml").read_text().split("[project.scripts]")[0])
 # You can ask it on other days. [uv](https://docs.astral.sh/uv/), a fast replacement for pip written in Rust, can
 # resolve requirements as if it were an earlier date: `--exclude-newer` makes it ignore every file uploaded after
 # it. Here is what perevod's requirements, with the server extra, resolved to a year before this lesson, half a
-# year before, and on the day its image was released:
+# year before, and on the day perevod's lock file was made:
 
 # %%
 # !{sys.executable} -m pip install -q uv==0.12.24
@@ -159,16 +159,17 @@ print("new: ", sorted(set(last) - set(first)))
 # were replaced outright, an HTTP library by another. None of this is a bug. It's what a range asks for.
 #
 # For a library, that's the deal. For a service, it's a gamble: the server you test today and the one that
-# restarts next month install different code. Donald Stufft, who later led PyPI's development, drew the line in
-# 2013: "While a library tends to want to have wide open ended version specifiers an application wants very
+# restarts next month install different code. Donald Stufft, who maintained pip and PyPI for years, drew the line
+# in 2013: "While a library tends to want to have wide open ended version specifiers an application wants very
 # specific dependencies" ([setup.py vs requirements.txt](https://caremad.io/posts/2013/07/setup-vs-requirement/)).
 # perevod is both. It keeps the ranges in `pyproject.toml` for people who install it as a library, and the
 # service is deployed from a second file that pins every package: a **lock file**.
 #
 # ## 2. A lock file, with hashes
 #
-# First, a change that lesson 8's image test revealed. PyTorch tries to import NumPy when it loads, and
-# without it prints `Failed to initialize NumPy: No module named 'numpy'`. perevod never calls NumPy, so nothing
+# First, a change that the image revealed. On a laptop, some other package has always installed NumPy; in an
+# image that holds only what perevod asks for, it's missing, and PyTorch, which tries to import NumPy when it
+# loads, prints `Failed to initialize NumPy: No module named 'numpy'`. perevod never calls NumPy, so nothing
 # breaks, but a server that starts with a warning trains people to ignore warnings. perevod now asks for it:
 
 # %%
@@ -188,11 +189,11 @@ replace("perevod/pyproject.toml", '    "safetensors>=0.4",\n',
 #   196 MB for the CPU build. A translation server without a GPU needs none of it.
 # - `--generate-hashes`: next to each version, the sha256 of every file that version may be installed from.
 #
-# And one more for this lesson: `--exclude-newer` with the moment perevod 0.3's lock was made, so that the
-# notebook resolves the same answer even if you run it a year from now.
+# And one more for this lesson: `--exclude-newer` with the day perevod 0.3's lock was made, so that the notebook
+# resolves the same answer even if you run it a year from now.
 
 # %%
-LOCKED_ON = "2026-10-27T12:00:00Z"  # when perevod 0.3's lock was made
+LOCKED_ON = "2026-10-27T12:00:00Z"  # the day perevod 0.3's lock was made
 COMPILE = [*UV, "pip", "compile", "--universal", "--python-version", "3.12",
            "--generate-hashes", "--exclude-newer", LOCKED_ON, "--quiet"]
 subprocess.run([*COMPILE, "pyproject.toml", "--extra", "serve", "--torch-backend", "cpu",
@@ -514,8 +515,8 @@ print("same bytes:", first == second)
 
 # %% [markdown]
 # Even if the archive's times are clamped, the time inside the file survives, and pip installs thousands of
-# `.pyc` files. PEP 552 added a second kind of header, with a hash of the source instead of its time, and Python's
-# compiler switches to it by itself when `SOURCE_DATE_EPOCH` is set
+# `.pyc` files. PEP 552 added a second kind of header, with a hash of the source instead of its time, and
+# `py_compile`, which pip uses through `compileall`, switches to it by itself when `SOURCE_DATE_EPOCH` is set
 # ([py_compile](https://docs.python.org/3/library/py_compile.html)):
 
 # %%
@@ -550,8 +551,8 @@ print("same bytes:", first == second)
 # | the archives, and the parser | each BuildKit version writes and parses its own way | BuildKit's version pinned in CI |
 # | attestations | they record when and where a build ran | `--provenance=false --sbom=false` |
 #
-# The order of a tar archive is a cause too, in general; BuildKit already writes files sorted. And one cause
-# this table missed: perevod 0.3.0 shipped with it, and section 6 shows it.
+# The order of the entries in a tar archive can differ too, in general; here BuildKit's builds agreed on it. And
+# one cause this table missed: perevod 0.3.0 shipped with it, and section 7 shows it.
 #
 # ## 5. perevod's Dockerfile
 #
