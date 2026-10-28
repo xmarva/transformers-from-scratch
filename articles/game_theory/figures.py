@@ -15,7 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE))
 
-from games import P, R, S, STRATEGIES, T, payoffs, strategy, tournament  # noqa: E402
+from games import STRATEGIES, P, R, S, T, payoffs, strategy, tournament  # noqa: E402
 
 from tools.figures import cover as cv  # noqa: E402
 from tools.figures.lib import Figure  # noqa: E402
@@ -516,7 +516,6 @@ def chart_alts():
 
 def cover():
     tft = STRATEGIES["Tit for tat"]
-    g = STRATEGIES["Generous tit for tat"]
     rows = [play(tft, tft, random.Random(0)), generous_sample()[0]]
     out = [cv.label(cv.MOTIF_X0, 128, "ONE MISTAKE, TWO STRATEGIES")]
     cell, gap = 24, 6
@@ -533,7 +532,6 @@ def cover():
                     out.append(f'<rect x="{x}" y="{yy}" width="{cell}" height="{cell}" rx="4" fill="none" '
                                f'stroke="{cv.LINE}" stroke-width="2"/>')
     cv.fits(cv.MOTIF_X0 + ROUNDS * (cell + gap) - gap)
-    del g
     return cv.frame("blog / game theory", ["How to treat", "people"], ["Trust, forgiveness and", "reputation"],
                     "".join(out), footer="The repeated prisoner's dilemma")
 
