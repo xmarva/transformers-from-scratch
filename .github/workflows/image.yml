@@ -14,6 +14,7 @@ env:
   # OCI media types in both builds, and no attestations: those record when and where a build
   # ran, so no two builds have the same ones
   OUTPUT: oci-mediatypes=true,rewrite-timestamp=true
+  PUSH: ${{ github.ref_type == 'tag' }}  # only a release tag publishes
 
 jobs:
   image:
@@ -30,7 +31,8 @@ jobs:
       - name: Settings from the commit
         run: |
           echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
-          version=$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' perevod/src/perevod/__init__.py)
+          init=perevod/src/perevod/__init__.py
+          version=$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' "$init")
           echo "VERSION=$version" >> "$GITHUB_ENV"
           echo "REVISION=$GITHUB_SHA" >> "$GITHUB_ENV"
       - name: The tag matches the package's version
@@ -44,14 +46,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build, and push on a release tag
         run: |
-          docker buildx build perevod --platform "$PLATFORMS" --provenance=false --sbom=false \
+          docker buildx build perevod --platform "$PLATFORMS" \
+            --provenance=false --sbom=false \
             --build-arg SOURCE_DATE_EPOCH --build-arg VERSION --build-arg REVISION \
-            --output "type=image,name=$IMAGE:$VERSION,push=${{ github.ref_type == 'tag' }},$OUTPUT" \
+            --output "type=image,name=$IMAGE:$VERSION,push=$PUSH,$OUTPUT" \
             --metadata-file first.json
       - name: Build again from scratch, and compare
         run: |
-          docker buildx build perevod --platform "$PLATFORMS" --provenance=false --sbom=false \
-            --no-cache --build-arg SOURCE_DATE_EPOCH --build-arg VERSION --build-arg REVISION \
+          docker buildx build perevod --platform "$PLATFORMS" \
+            --provenance=false --sbom=false --no-cache \
+            --build-arg SOURCE_DATE_EPOCH --build-arg VERSION --build-arg REVISION \
             --output "type=oci,dest=second.tar,$OUTPUT" --metadata-file second.json
           first=$(jq -r '."containerimage.digest"' first.json)
           second=$(jq -r '."containerimage.digest"' second.json)
