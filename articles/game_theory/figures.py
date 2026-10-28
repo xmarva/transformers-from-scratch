@@ -1,10 +1,10 @@
-"""Figures, charts and the cover of the post "How to treat people, according to game theory" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Is it rational to be good?" on xmarva.github.io.
 
 Everything is computed when it is drawn: payoffs of the repeated prisoner's dilemma exactly, from the Markov chain
 of two memory-one strategies (games.py); the populations that learn by imitation from data/evolution.json
 (simulate.py).
 
-    uv run --group articles python tools/render.py --article game_theory --out <site>/assets/posts/game-theory-people
+    uv run --group articles python tools/render.py --article game_theory --out <site>/assets/posts/game-theory-ethics
 """
 
 import json
@@ -249,41 +249,6 @@ def echo() -> Figure:
     return fig
 
 
-# ---------------------------------------------------------------- noise
-
-NOISY = ("Generous tit for tat", "Win-stay, lose-shift", "Tit for tat", "Grim trigger")
-
-
-def noise_lines():
-    levels = [k / 1000 for k in range(0, 101)]
-    lines = {}
-    for name in NOISY:
-        lines[name] = []
-        for noise in levels:
-            lines[name].append(payoffs(STRATEGIES[name], STRATEGIES[name], 0.99, noise)[0])
-    return levels, lines
-
-
-def chart_noise(theme):
-    import matplotlib.pyplot as plt
-
-    c = _style(theme)
-    levels, lines = noise_lines()
-    fig, ax = plt.subplots(figsize=(7.6, 3.6))
-    fig.subplots_adjust(left=0.09, right=0.97, top=0.78, bottom=0.15)
-    colors = dict(zip(NOISY, (c["enc"], c["att"], c["data"], c["dec"]), strict=True))
-    for name, ys in lines.items():
-        ax.plot([100 * x for x in levels], ys, color=colors[name], linewidth=2.2, label=name)
-    ax.set_xlim(0, 10)
-    ax.set_ylim(1, 3.1)
-    ax.set_xlabel("mistakes: % of moves that come out the opposite of what was meant")
-    ax.set_ylabel("points per round")
-    ax.legend(frameon=False, loc="center right", bbox_to_anchor=(1.0, 0.42), fontsize=9.5, ncol=2)
-    _caption(fig, "Two players of the same strategy, when moves sometimes go wrong",
-             "points per round each, in relationships of 100 rounds on average", c)
-    return fig
-
-
 # ---------------------------------------------------------------- how forgiving to be
 
 def forgiveness_lines():
@@ -364,49 +329,6 @@ def chart_cycles(theme):
     return fig
 
 
-# ---------------------------------------------------------------- extortion
-
-OPPONENTS = ("Always cooperate", "Tit for tat", "Win-stay, lose-shift", "Generous tit for tat", "Random",
-             "Always defect")
-
-
-def extortion_scores():
-    rows = {}
-    for player in ("Extortioner", "Generous ZD"):
-        rows[player] = []
-        for opponent in OPPONENTS:
-            mine, theirs = payoffs(STRATEGIES[player], STRATEGIES[opponent], LONG)
-            rows[player].append((opponent, mine, theirs))
-    return rows
-
-
-def chart_extortion(theme):
-    import matplotlib.pyplot as plt
-
-    c = _style(theme)
-    rows = extortion_scores()
-    fig, axes = plt.subplots(1, 2, figsize=(7.6, 3.6), sharey=True)
-    fig.subplots_adjust(left=0.09, right=0.98, top=0.76, bottom=0.2, wspace=0.08)
-    for ax, (player, color) in zip(axes, (("Extortioner", c["dec"]), ("Generous ZD", c["enc"])), strict=True):
-        xs = list(range(len(OPPONENTS)))
-        ax.bar([x - 0.19 for x in xs], [r[1] for r in rows[player]], width=0.36, color=color,
-               label="extortioner" if player == "Extortioner" else "generous ZD")
-        ax.bar([x + 0.19 for x in xs], [r[2] for r in rows[player]], width=0.36, color=c["line"],
-               label="its opponent")
-        ax.set_xticks(xs)
-        ax.set_xticklabels([o.replace("Win-stay, lose-shift", "Win-stay,\nlose-shift")
-                            .replace("Generous tit for tat", "Generous\ntit for tat")
-                            .replace("Always ", "Always\n").replace("Tit for tat", "Tit\nfor tat")
-                            for o in OPPONENTS], fontsize=8)
-        ax.set_title(player.replace("ZD", "zero-determinant"), fontsize=10.5)
-        ax.legend(frameon=False, loc="upper right", fontsize=8.5)
-    axes[0].set_ylabel("points per round")
-    axes[0].set_ylim(0, 4.3)
-    _caption(fig, "An extortioner never earns less than its opponent, and rarely earns much",
-             "Press and Dyson's zero-determinant strategies, each enforcing a 3 : 1 ratio, against six opponents", c)
-    return fig
-
-
 # ---------------------------------------------------------------- reputation
 
 CASES = (  # the donor's act, the recipient's reputation, then the donor's new reputation under two rules
@@ -482,8 +404,6 @@ def chart_alts():
     best, worst = rows[0], rows[-1]
     defect = next(r for r in rows if r["name"] == "Always defect")
     d = evolution()["populations"]
-    levels, lines = noise_lines()
-    at = levels.index(0.01)
     return {
         "shadow": "Points per round against tit for tat as a function of w, the probability of another round. "
         "Cooperating earns 3. Always defecting earns 5 - 4w and wins below w = 1/2; defecting and making up in "
@@ -492,10 +412,6 @@ def chart_alts():
         f"highest, {best['score']:.2f}, winning {best['wins']} matches; the nice strategies take the top places "
         f"without winning any. Always defect wins {defect['wins']} of 11 matches and scores {defect['score']:.2f}; "
         f"{worst['name']} is last with {worst['score']:.2f}",
-        "noise": "Points per round for two players of the same strategy as mistakes grow from 0 to 10 percent. "
-        f"At 1 percent: generous tit for tat {lines['Generous tit for tat'][at]:.2f}, win-stay lose-shift "
-        f"{lines['Win-stay, lose-shift'][at]:.2f}, tit for tat {lines['Tit for tat'][at]:.2f}, grim trigger "
-        f"{lines['Grim trigger'][at]:.2f}",
         "forgiveness": "Left: residents who forgive a defection with probability q earn 3; an invader who "
         "defects every other round earns more once q passes 1/3, one who always defects once q passes 1/2. "
         "Right: with 5 percent mistakes the residents earn more the more they forgive",
@@ -504,10 +420,6 @@ def chart_alts():
         f"which defectors take over again; over twenty runs defectors hold the majority "
         f"{d['without']['defectors_in_majority']:.0%} of the time. With generous tit for tat it mostly holds the "
         f"population, and defectors hold the majority {d['with']['defectors_in_majority']:.0%} of the time",
-        "extortion": "Points per round of an extortioner and of a generous zero-determinant strategy against six "
-        "opponents, next to their opponents' points. The extortioner never earns less than its opponent but earns "
-        "little against anyone who retaliates; the generous strategy never earns more than its opponent and earns 3 "
-        "against every cooperator",
         "stag": "Expected catch of hunting the stag (4 times the share p of others who hunt it) and of hunting hare "
         "(3). Hunting the stag pays when more than three quarters of the others hunt it; below that the share of "
         "stag hunters falls, above it it rises",
@@ -532,8 +444,8 @@ def cover():
                     out.append(f'<rect x="{x}" y="{yy}" width="{cell}" height="{cell}" rx="4" fill="none" '
                                f'stroke="{cv.LINE}" stroke-width="2"/>')
     cv.fits(cv.MOTIF_X0 + ROUNDS * (cell + gap) - gap)
-    return cv.frame("blog / game theory", ["How to treat", "people"], ["Trust, forgiveness and", "reputation"],
-                    "".join(out), footer="The repeated prisoner's dilemma")
+    title, hook = ["Is it rational", "to be good?"], ["Game theory and the", "ethics of cooperation"]
+    return cv.frame("blog / philosophy", title, hook, "".join(out), footer="The repeated prisoner's dilemma")
 
 
 COVER = cover
@@ -547,9 +459,7 @@ FIGURES = {
 CHARTS = {
     "shadow": chart_shadow,
     "tournament": chart_tournament,
-    "noise": chart_noise,
     "forgiveness": chart_forgiveness,
     "cycles": chart_cycles,
-    "extortion": chart_extortion,
     "stag": chart_stag,
 }

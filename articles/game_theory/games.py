@@ -1,4 +1,4 @@
-"""The games of the post "How to treat people, according to game theory".
+"""The games of the post "Is it rational to be good?".
 
 The repeated prisoner's dilemma between memory-one strategies is a Markov chain on the four outcomes of a
 round, so the payoffs are computed exactly instead of by playing: with a probability w of another round and a

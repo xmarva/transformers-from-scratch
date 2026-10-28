@@ -1,4 +1,4 @@
-"""Populations that learn by imitation, for the post "How to treat people, according to game theory".
+"""Populations that learn by imitation, for the post "Is it rational to be good?".
 
 A hundred players, each with a strategy for the repeated prisoner's dilemma. At every step one player looks at
 another and copies their strategy, the more likely the better the other has done against everyone (the Fermi
