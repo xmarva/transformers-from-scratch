@@ -10,3 +10,5 @@ data/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
+# the in-browser demo's model files: space/export_onnx.py makes them
+space/model/

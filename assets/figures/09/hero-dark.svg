@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 392" width="760" height="392" role="img" aria-label="What runs when perevod translates, as a stack: the weights, perevod&#x27;s code, the Python packages, Python and Debian&#x27;s libraries, the build itself, and the processor. Next to each, what pins it in perevod 0.3.1: the model&#x27;s commit, a git tag, a lock file with hashes, a base image pinned by digest, a pinned builder and a fixed time; the processor is the one part no image can pin">
+<title>What runs when perevod translates, as a stack: the weights, perevod&#x27;s code, the Python packages, Python and Debian&#x27;s libraries, the build itself, and the processor. Next to each, what pins it in perevod 0.3.1: the model&#x27;s commit, a git tag, a lock file with hashes, a base image pinned by digest, a pinned builder and a fixed time; the processor is the one part no image can pin</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="392" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">What runs when perevod translates, and what pins each part</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">sizes are the compressed layers of the image for x86-64</text>
+<text x="430.0" y="80.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">pinned by</text>
+<rect x="14.0" y="92.0" width="300.0" height="40.0" rx="9" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="30.0" y="117.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the weights</text>
+<text x="300.0" y="117.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#9AA3B2">36 MB</text>
+<polyline points="322.0,112.0 420.0,112.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="430.0" y="117.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the model&#x27;s commit on the Hub, 4abc0d6</text>
+<rect x="14.0" y="142.0" width="300.0" height="40.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="30.0" y="167.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">perevod&#x27;s code</text>
+<text x="300.0" y="167.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#9AA3B2">94 kB</text>
+<polyline points="322.0,162.0 420.0,162.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="430.0" y="167.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">a git tag, perevod-v0.3.1</text>
+<rect x="14.0" y="192.0" width="300.0" height="40.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="30.0" y="217.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">35 Python packages</text>
+<text x="300.0" y="217.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#9AA3B2">285 MB</text>
+<polyline points="322.0,212.0 420.0,212.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="430.0" y="217.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">a lock file: versions and sha256 hashes</text>
+<rect x="14.0" y="242.0" width="300.0" height="40.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="30.0" y="267.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">Python 3.12.16, Debian</text>
+<text x="300.0" y="267.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#9AA3B2">44 MB</text>
+<polyline points="322.0,262.0 420.0,262.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="430.0" y="267.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the base image, by its digest</text>
+<rect x="14.0" y="292.0" width="300.0" height="40.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="30.0" y="317.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the build</text>
+<polyline points="322.0,312.0 420.0,312.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="430.0" y="317.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">a pinned BuildKit and the commit&#x27;s time</text>
+<polyline points="14.0,342.0 314.0,342.0 314.0,382.0 14.0,382.0 14.0,342.0" fill="none" stroke="#9AA3B2" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="30.0" y="367.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">the processor</text>
+<text x="430.0" y="367.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">nothing: whatever processor runs it</text>
+</svg>

@@ -1,0 +1,14 @@
+{
+  "id": "qmarva/transformers-from-scratch-09-reproducible-docker",
+  "title": "Transformers from Scratch · 09 Reproducible Docker",
+  "code_file": "notebook.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

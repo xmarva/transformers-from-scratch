@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" width="760" height="350" role="img" aria-label="The in-browser demo. A static Hugging Face Space serves the page, the tokenizer as JSON and two ONNX files: the encoder and one decoder step. In the visitor&#x27;s browser, a JavaScript tokenizer turns the text into ids, ONNX Runtime Web runs the encoder once and the decoder step once per beam search step, and the beam search in JavaScript picks the translation">
+<title>The in-browser demo. A static Hugging Face Space serves the page, the tokenizer as JSON and two ONNX files: the encoder and one decoder step. In the visitor&#x27;s browser, a JavaScript tokenizer turns the text into ids, ONNX Runtime Web runs the encoder once and the decoder step once per beam search step, and the beam search in JavaScript picks the translation</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="350" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">The model in the visitor&#x27;s browser: a static Space and ONNX Runtime Web</text>
+<text x="14.0" y="62.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">huggingface.co/spaces/xmarva/perevod</text>
+<rect x="14.0" y="76.0" width="220.0" height="34.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="28.0" y="98.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">index.html, app.js</text>
+<rect x="14.0" y="120.0" width="220.0" height="34.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="28.0" y="142.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">tokenizer.json</text>
+<text x="222.0" y="142.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">1 MB</text>
+<rect x="14.0" y="164.0" width="220.0" height="34.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="28.0" y="186.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">encoder.onnx</text>
+<text x="222.0" y="186.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">26 MB</text>
+<rect x="14.0" y="208.0" width="220.0" height="34.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="28.0" y="230.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">decoder.onnx</text>
+<text x="222.0" y="230.0" text-anchor="end" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#5B6575">30 MB</text>
+<text x="14.0" y="262.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">downloaded once, then kept by the browser</text>
+<polyline points="240.0,170.0 300.0,170.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="306.0,62.0 746.0,62.0 746.0,330.0 306.0,330.0 306.0,62.0" fill="none" stroke="#5B6575" stroke-width="1.2" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="322.0" y="84.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">the visitor&#x27;s device</text>
+<rect x="322.0" y="98.0" width="180.0" height="36.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="412.0" y="120.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">tokenizer.js</text>
+<text x="512.0" y="121.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">English text → ids</text>
+<rect x="322.0" y="152.0" width="180.0" height="36.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="412.0" y="174.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">encoder, once</text>
+<polyline points="412.0,136.0 412.0,148.0" fill="none" stroke="#C27A0E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-data)"/>
+<rect x="322.0" y="206.0" width="180.0" height="36.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="412.0" y="228.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">decoder step</text>
+<polyline points="412.0,190.0 412.0,202.0" fill="none" stroke="#0F8C7E" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-enc)"/>
+<rect x="540.0" y="206.0" width="190.0" height="36.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="635.0" y="228.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">beam search, JS</text>
+<polyline points="506.0,216.0 536.0,216.0" fill="none" stroke="#D23F57" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-dec)"/>
+<polyline points="634.0,244.0 634.0,262.0 412.0,262.0 412.0,246.0" fill="none" stroke="#6A55D8" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<text x="340.0" y="286.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">four hypotheses, one token more each step</text>
+<text x="322.0" y="316.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">ONNX Runtime Web, in WebAssembly: no server</text>
+</svg>
