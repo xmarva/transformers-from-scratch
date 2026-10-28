@@ -1,0 +1,8 @@
+# only what the image needs: the code, its metadata and the lock files
+tests
+**/__pycache__
+.pytest_cache
+.ruff_cache
+dist
+build
+*.egg-info

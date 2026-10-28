@@ -27,6 +27,7 @@ class Translator:
         self.model = model.eval()
         self.tokenizer = tokenizer
         self.generation = generation
+        self.source = None  # where the weights came from; from_pretrained fills it in
 
     @classmethod
     def from_pretrained(cls, model=MODEL, revision=None, device=None):
@@ -37,8 +38,11 @@ class Translator:
         if model == MODEL and revision is None:
             revision = REVISION
         path = Path(model)
-        if not path.is_dir():
+        if path.is_dir():
+            source = str(path)
+        else:
             path = Path(snapshot_download(model, revision=revision, allow_patterns=FILES))
+            source = f"{model}@{path.name}"  # a snapshot's folder is named by its commit
         config = ModelConfig.from_dict(json.loads((path / "config.json").read_text()))
         settings = json.loads((path / "generation_config.json").read_text())
         network = Seq2Seq(config)
@@ -46,7 +50,10 @@ class Translator:
         if device is None:
             device = "cuda" if torch.cuda.is_available() else "cpu"
         tokenizer = Tokenizer.from_file(str(path / "tokenizer.json"))
-        return cls(network.to(device), tokenizer, GenerationConfig.from_dict(settings))
+        generation = GenerationConfig.from_dict(settings)
+        translator = cls(network.to(device), tokenizer, generation)
+        translator.source = source
+        return translator
 
     def translate(self, texts, beam_size=None):
         """Translate a string or a list of strings; beam_size=1 is greedy decoding."""

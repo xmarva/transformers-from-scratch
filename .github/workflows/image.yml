@@ -1,0 +1,60 @@
+name: image
+
+# perevod's Docker image. On pull requests that touch the package: build it twice and check
+# that the two builds are the same, bit for bit. On a release tag: the same, and publish it.
+on:
+  push:
+    tags: ["perevod-v*"]
+  pull_request:
+    paths: ["perevod/**", ".github/workflows/image.yml"]
+
+env:
+  IMAGE: ghcr.io/xmarva/perevod
+  PLATFORMS: linux/amd64,linux/arm64
+  # OCI media types in both builds, and no attestations: those record when and where a build
+  # ran, so no two builds have the same ones
+  OUTPUT: oci-mediatypes=true,rewrite-timestamp=true
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-qemu-action@v4  # runs the arm64 build on an x86 machine
+      - uses: docker/setup-buildx-action@v4
+        with:
+          driver-opts: image=moby/buildkit:v0.34.1  # a pinned builder writes the same bytes
+      - name: Settings from the commit
+        run: |
+          echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
+          version=$(sed -n 's/^__version__ = "\(.*\)"$/\1/p' perevod/src/perevod/__init__.py)
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "REVISION=$GITHUB_SHA" >> "$GITHUB_ENV"
+      - name: The tag matches the package's version
+        if: github.ref_type == 'tag'
+        run: test "$GITHUB_REF_NAME" = "perevod-v$VERSION"
+      - uses: docker/login-action@v4
+        if: github.ref_type == 'tag'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build, and push on a release tag
+        run: |
+          docker buildx build perevod --platform "$PLATFORMS" --provenance=false --sbom=false \
+            --build-arg SOURCE_DATE_EPOCH --build-arg VERSION --build-arg REVISION \
+            --output "type=image,name=$IMAGE:$VERSION,push=${{ github.ref_type == 'tag' }},$OUTPUT" \
+            --metadata-file first.json
+      - name: Build again from scratch, and compare
+        run: |
+          docker buildx build perevod --platform "$PLATFORMS" --provenance=false --sbom=false \
+            --no-cache --build-arg SOURCE_DATE_EPOCH --build-arg VERSION --build-arg REVISION \
+            --output "type=oci,dest=second.tar,$OUTPUT" --metadata-file second.json
+          first=$(jq -r '."containerimage.digest"' first.json)
+          second=$(jq -r '."containerimage.digest"' second.json)
+          echo "first build:  $first"
+          echo "second build: $second"
+          test "$first" = "$second"
