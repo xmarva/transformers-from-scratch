@@ -42,7 +42,7 @@
 #
 # **What you need**: a CPU, as in lessons 7 and 8. Not Docker: Kaggle and Colab don't have it, so the notebook
 # does by hand what Docker does, which turns out to be the best way to see what an image is. It downloads the
-# published image (about 365 MB) and runs in under ten minutes. On your own machine with Docker, the lesson also
+# published image (about 365 MB) and runs in a few minutes. On your own machine with Docker, the lesson also
 # shows the commands that build and run the image.
 
 # %% tags=["include:setup"]
@@ -265,8 +265,8 @@ print(result.stderr.strip().replace(str(WORK_DIR) + "/", ""))
 print("files downloaded:", list((WORK_DIR / "tampered").glob("*")))
 
 # %% [markdown]
-# pip refuses, names the package, and shows both hashes, the one the lock expects and the one it got. Nothing
-# is installed. The lock now pins the bytes of every file, not just a version number.
+# pip refuses, names the package, and shows the hashes the lock expects next to the one it got. Nothing is
+# kept, let alone installed. The lock now pins the bytes of every file, not just a version number.
 #
 # One more program runs during the install, and nobody asked for it by name: the **build backend**. To install
 # perevod from source, pip first builds a wheel with hatchling, the backend `pyproject.toml` names, and by default
@@ -873,12 +873,15 @@ display(table(pd.DataFrame(rows), digits=1))
 # Two different processors, one emulated, produced the same bytes, because nothing in that layer depends on when
 # or where it was made.
 #
-# The layer where pip installs perevod differs for a reason that took some digging. Running pip makes Python
-# import a few modules of its own standard library that the base image hadn't cached yet, and Python writes
-# their `.pyc` files into this layer, along with the folders they live in. Python's import system writes
-# timestamp headers no matter what `SOURCE_DATE_EPOCH` says, which only changes the default of `py_compile` and
-# `compileall`. The times are those of the standard library's files and folders, which differ between the two
-# base images; inside one architecture they're pinned along with the base, so two builds still agree.
+# Two small layers of ours differ for a reason that took some digging: both carry times inherited from the base
+# image, which was built separately, minutes apart, for each architecture. `useradd` copies the new user's
+# start-up files from `/etc/skel` with their original times. And running pip makes Python import a few modules
+# of its own standard library that the base image hadn't cached yet, so Python writes their `.pyc` files into
+# the layer that installs perevod. Python's import system writes timestamp headers no matter what
+# `SOURCE_DATE_EPOCH` says, which only changes the default of `py_compile` and `compileall`, and the timestamps
+# are those of the standard library's files. `rewrite-timestamp` only rewrites times later than
+# `SOURCE_DATE_EPOCH`, and these are earlier. Inside one architecture they're pinned along with the base, so
+# two builds still agree.
 #
 # There's a stronger test than CI's. CI builds twice on the same machine, minutes apart. The real promise of a
 # reproducible build is that anyone, anywhere, later, gets the same bytes. A day after the release, a rebuild
@@ -1046,7 +1049,8 @@ print(result.stdout.strip() or result.stderr[-2000:])
 # both ways, and compare.
 
 # %%
-# !{sys.executable} -m pip install -q "./perevod[test,serve]"
+PIP_INSTALL = [sys.executable, "-m", "pip", "install", "-q"]
+subprocess.run([*PIP_INSTALL, "./perevod[test,serve]"], check=True)
 importlib.invalidate_caches()
 
 import perevod
@@ -1079,6 +1083,11 @@ for a, b in zip(here, there, strict=True):
 print(f"identical translations: {same} of {len(sentences)}")
 
 # %% [markdown]
+# A different Python and a different PyTorch, and here every translation came out the same. That isn't
+# guaranteed. PyTorch's kernels change between versions, and so does the order of their arithmetic; when two
+# hypotheses in a beam are nearly tied, a difference in the last digit of a score picks a different one. The
+# image is how you stop wondering whether that will happen to you.
+#
 # Finally the image's own command, the server, started the same way, and asked the question that 0.3 added:
 #
 # (On Kaggle and Colab nothing else is listening on port 8009; on your machine, pick a free port.)
@@ -1093,18 +1102,23 @@ for _ in range(120):  # up to a minute for the server to start
         break
     except requests.ConnectionError:
         time.sleep(0.5)
-print(health)
 question = {"text": "Tom is afraid of the dark."}
 answer = requests.post("http://127.0.0.1:8009/translate", json=question)
-print(answer.json())
 server.terminate()
 server.wait()
+print(health)
+print(answer.json())
 
 # %% [markdown]
 # That's the image working, minus what Docker adds on top: its own process tree, network and hostname
 # (namespaces), limits on CPU and memory (cgroups), and a root filesystem the process can't see past. Our trick
-# shares all of those with the notebook, which is fine for a check and no way to run a service.
-#
+# shares all of those with the notebook, which is fine for a check and no way to run a service. The unpacked
+# image takes more than a gigabyte, so it goes:
+
+# %%
+shutil.rmtree(ROOT)
+
+# %% [markdown]
 # ## 8. The same model in a browser
 #
 # An image needs a machine to run on, and someone to pay for the machine. For a demo there's a cheaper place to
@@ -1204,7 +1218,8 @@ if __name__ == "__main__":
 ''')
 
 # %%
-# !{sys.executable} -m pip install -q onnx==1.23.2 onnxscript==0.7.2 onnxruntime==1.31.1
+ONNX = ["onnx==1.19.1", "onnxscript==0.7.2", "onnxruntime==1.31.1"]
+subprocess.run([*PIP_INSTALL, *ONNX], check=True)
 result = subprocess.run([sys.executable, "space/export_onnx.py", "--out", "space/model"],
                         capture_output=True, text=True, check=True)
 print(result.stdout.strip())
