@@ -29,8 +29,9 @@ perevod-server --port 8000 --demo
 Or from the image of a release, with the model inside, which needs no network to run:
 
 ```bash
-docker run --rm -p 8000:8000 ghcr.io/xmarva/perevod:0.3.0
-curl -X POST localhost:8000/translate -H "Content-Type: application/json" -d '{"text": "Hello!"}'
+docker run --rm -p 8000:8000 ghcr.io/xmarva/perevod:0.3.1
+curl -X POST localhost:8000/translate -H "Content-Type: application/json" \
+    -d '{"text": "Hello!"}'
 ```
 
 The model was trained on short everyday sentences from Tatoeba. Read its model card before
