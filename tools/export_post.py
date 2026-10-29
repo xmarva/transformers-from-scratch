@@ -41,11 +41,14 @@ import paragraphs  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://xmarva.github.io"
 COURSE_PAGE = "/teaching/"
-FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)-light\.png"([^>]*)>')
+# an image tag ends at the first ">" outside its quoted attributes: alt texts may contain "<bos>"
+FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)-light\.png"'
+                    r'((?:\s+[\w-]+="[^"]*")*)\s*/?>')
 # one image for both themes, like a screenshot of a page
 # terminal escape codes: colours and cursor control that pip and others print; Jupyter renders them, a post can't
 ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
-PICTURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)\.png"([^>]*)>')
+PICTURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)\.png"'
+                     r'((?:\s+[\w-]+="[^"]*")*)\s*/?>')
 ATTRIBUTE = re.compile(r'(\w+)="([^"]*)"')
 # code blocks, code spans, display math, and inline math, which may wrap onto the next line but not past a paragraph
 MATH = re.compile(r"(```.*?```|`[^`\n]*`|\$\$.*?\$\$|\$(?:[^$\n]|\n(?!\n))+?\$)", re.S)
