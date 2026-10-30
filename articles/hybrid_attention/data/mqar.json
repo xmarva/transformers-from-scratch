@@ -1,0 +1,833 @@
+{
+ "steps": 4000,
+ "batch": 64,
+ "d_model": 64,
+ "heads": 2,
+ "runs": [
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 4,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 64,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 58,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 8,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 59,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 58,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 16,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 59,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 59,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 32,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 79,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 79,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 64,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 179,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 179,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 128,
+   "rate": 0.001,
+   "accuracy": 0.008,
+   "seconds": 451,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Transformer",
+   "layers": [
+    "softmax",
+    "softmax",
+    "softmax",
+    "softmax"
+   ],
+   "pairs": 128,
+   "rate": 0.003,
+   "accuracy": 0.009,
+   "seconds": 450,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 4,
+   "rate": 0.001,
+   "accuracy": 0.892,
+   "seconds": 62,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 0.966,
+   "seconds": 62,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 8,
+   "rate": 0.001,
+   "accuracy": 0.443,
+   "seconds": 62,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 0.818,
+   "seconds": 61,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 16,
+   "rate": 0.001,
+   "accuracy": 0.014,
+   "seconds": 63,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 0.757,
+   "seconds": 63,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 32,
+   "rate": 0.001,
+   "accuracy": 0.004,
+   "seconds": 80,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 0.257,
+   "seconds": 81,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 64,
+   "rate": 0.001,
+   "accuracy": 0.002,
+   "seconds": 180,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 0.002,
+   "seconds": 180,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 128,
+   "rate": 0.001,
+   "accuracy": 0.002,
+   "seconds": 441,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Linear attention",
+   "layers": [
+    "linear",
+    "linear",
+    "linear",
+    "linear"
+   ],
+   "pairs": 128,
+   "rate": 0.003,
+   "accuracy": 0.002,
+   "seconds": 442,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 4,
+   "rate": 0.001,
+   "accuracy": 1.0,
+   "seconds": 115,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 115,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 8,
+   "rate": 0.001,
+   "accuracy": 0.97,
+   "seconds": 115,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 116,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 16,
+   "rate": 0.001,
+   "accuracy": 0.28,
+   "seconds": 114,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 0.71,
+   "seconds": 114,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 32,
+   "rate": 0.001,
+   "accuracy": 0.022,
+   "seconds": 137,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 0.363,
+   "seconds": 137,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 64,
+   "rate": 0.001,
+   "accuracy": 0.01,
+   "seconds": 271,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 0.129,
+   "seconds": 271,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "DeltaNet",
+   "layers": [
+    "delta",
+    "delta",
+    "delta",
+    "delta"
+   ],
+   "pairs": 128,
+   "rate": 0.001,
+   "accuracy": 0.005,
+   "seconds": 577,
+   "run": 1,
+   "device": "Tesla T4"
+  },
+  {
+   "model": "Gated DeltaNet",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 4487,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Gated DeltaNet",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 0.9833984375,
+   "seconds": 479,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Gated DeltaNet",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 0.1883544921875,
+   "seconds": 527,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Gated DeltaNet",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 0.0230712890625,
+   "seconds": 1288,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Gated DeltaNet",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 0.002105712890625,
+   "seconds": 7167,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention 2nd)",
+   "layers": [
+    "gated delta",
+    "softmax",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 3612,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention 2nd)",
+   "layers": [
+    "gated delta",
+    "softmax",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 374,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention 2nd)",
+   "layers": [
+    "gated delta",
+    "softmax",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 422,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention 2nd)",
+   "layers": [
+    "gated delta",
+    "softmax",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 1029,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention 2nd)",
+   "layers": [
+    "gated delta",
+    "softmax",
+    "gated delta",
+    "gated delta"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 3060,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 4,
+   "rate": 0.001,
+   "accuracy": 0.99951171875,
+   "seconds": 3594,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 8,
+   "rate": 0.001,
+   "accuracy": 0.99755859375,
+   "seconds": 399,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 16,
+   "rate": 0.001,
+   "accuracy": 0.25927734375,
+   "seconds": 419,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 32,
+   "rate": 0.001,
+   "accuracy": 0.0115966796875,
+   "seconds": 1017,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 64,
+   "rate": 0.001,
+   "accuracy": 0.001617431640625,
+   "seconds": 3054,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 4,
+   "rate": 0.003,
+   "accuracy": 1.0,
+   "seconds": 3594,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 8,
+   "rate": 0.003,
+   "accuracy": 0.372314453125,
+   "seconds": 374,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 16,
+   "rate": 0.003,
+   "accuracy": 0.0821533203125,
+   "seconds": 418,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 32,
+   "rate": 0.003,
+   "accuracy": 0.123046875,
+   "seconds": 996,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  },
+  {
+   "model": "Hybrid (attention on top)",
+   "layers": [
+    "gated delta",
+    "gated delta",
+    "gated delta",
+    "softmax"
+   ],
+   "pairs": 64,
+   "rate": 0.003,
+   "accuracy": 0.010589599609375,
+   "seconds": 3033,
+   "run": 2,
+   "device": "Apple GPU (MPS)"
+  }
+ ]
+}
