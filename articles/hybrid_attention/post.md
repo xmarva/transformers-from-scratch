@@ -208,7 +208,7 @@ At short contexts the gain is smaller than the headlines suggest. According to Q
 
 The costs are of three kinds. The first is quality on the tasks attention is best at, precise retrieval and multi-hop reasoning over long inputs: the deficits that sent MiniMax back to full attention. The second is engineering. Recurrent layers need their own kernels, and serving tricks built around a cache of separate tokens get harder when part of the model keeps a state that has absorbed all of them. Reusing the cache of a shared prompt needs copies of the state saved at chosen positions, and rolling back a rejected speculative token needs the state from a step earlier.
 
-The third is that the field keeps moving. Qwen3.8-Flash-Next replaced the full attention layers of its hybrid with sparse attention, and DeepSeek-V4 combines two kinds of compressed attention instead of adding recurrent layers ([DeepSeek-AI, 2026](https://arxiv.org/abs/2606.19348)). Both directions go after the same cache. A hybrid's way is to give most layers a memory of fixed size and to keep a few that can still read every token.
+The third is that the field keeps moving. Qwen3.8-Flash-Next replaced the full attention layers of its hybrid with sparse attention ([Qwen Team, 2026](https://huggingface.co/Qwen/Qwen3.8-Flash-Next)), and DeepSeek-V4 combines two kinds of compressed attention instead of adding recurrent layers ([DeepSeek-AI, 2026](https://arxiv.org/abs/2606.19348)). Both directions go after the same cache. A hybrid's way is to give most layers a memory of fixed size and to keep a few that can still read every token.
 
 ## References
 
@@ -234,6 +234,7 @@ The third is that the field keeps moving. Qwen3.8-Flash-Next replaced the full a
 - Gemma Team (2025). [Gemma 3 technical report](https://arxiv.org/abs/2503.19786). arXiv.
 - MiniMax (2025). [Why did MiniMax M2 end up as a full attention model?](https://huggingface.co/blog/MiniMax-AI/why-did-m2-end-up-as-a-full-attention-model) Hugging Face blog.
 - DeepSeek-AI (2024). [DeepSeek-V2: a strong, economical, and efficient mixture-of-experts language model](https://arxiv.org/abs/2405.04434). arXiv.
+- Qwen Team (2026). [Qwen3.8-Flash-Next model card](https://huggingface.co/Qwen/Qwen3.8-Flash-Next). Hugging Face.
 - DeepSeek-AI (2026). [DeepSeek-V4: towards highly efficient million-token context intelligence](https://arxiv.org/abs/2606.19348). arXiv.
 
 {% endraw %}
