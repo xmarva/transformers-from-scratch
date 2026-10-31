@@ -1,0 +1,11 @@
+{
+ "rows": 60092,
+ "responses": 10681650,
+ "experiment files": 76,
+ "go/no-go": {
+  "transcripts": 463,
+  "scored": 150517,
+  "scored equal to the instructed key": 150517,
+  "press nothing (never scored)": 16626
+ }
+}
