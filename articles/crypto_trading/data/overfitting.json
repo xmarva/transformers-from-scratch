@@ -1,0 +1,5092 @@
+{
+ "in_sample": [
+  "2021-01-01",
+  "2024-01-01"
+ ],
+ "out_of_sample": [
+  "2024-01-01",
+  "2026-10-30"
+ ],
+ "fee_bps": 5,
+ "rules": 66,
+ "coins": [
+  "BTCUSDT",
+  "ETHUSDT",
+  "BNBUSDT",
+  "SOLUSDT",
+  "XRPUSDT",
+  "ADAUSDT",
+  "DOGEUSDT",
+  "AVAXUSDT",
+  "LINKUSDT",
+  "LTCUSDT",
+  "TRXUSDT",
+  "DOTUSDT"
+ ],
+ "strategies": 792,
+ "points": [
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/24",
+   "in_sample": -0.3969,
+   "out_of_sample": -0.9611
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.2134,
+   "out_of_sample": -0.7866
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.0744,
+   "out_of_sample": -0.411
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/168",
+   "in_sample": -0.4232,
+   "out_of_sample": -0.08
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/336",
+   "in_sample": -0.0518,
+   "out_of_sample": 0.1905
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.4142,
+   "out_of_sample": 0.4035
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.7732,
+   "out_of_sample": 0.5474
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/24",
+   "in_sample": -0.336,
+   "out_of_sample": -0.1511
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.289,
+   "out_of_sample": -0.3587
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.1379,
+   "out_of_sample": -0.3711
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/168",
+   "in_sample": -0.3715,
+   "out_of_sample": 0.0621
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/336",
+   "in_sample": -0.1583,
+   "out_of_sample": 0.3209
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.2601,
+   "out_of_sample": 0.5687
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.7528,
+   "out_of_sample": 0.3832
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.204,
+   "out_of_sample": -0.8712
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.3792,
+   "out_of_sample": -0.2323
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/96",
+   "in_sample": -0.0792,
+   "out_of_sample": -0.0598
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/168",
+   "in_sample": -0.1982,
+   "out_of_sample": 0.1503
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/336",
+   "in_sample": -0.166,
+   "out_of_sample": 0.2169
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.0105,
+   "out_of_sample": 0.695
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.569,
+   "out_of_sample": 0.289
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -0.3646,
+   "out_of_sample": -0.3707
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.0302,
+   "out_of_sample": 0.2241
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/168",
+   "in_sample": -0.0734,
+   "out_of_sample": -0.1645
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/336",
+   "in_sample": -0.3704,
+   "out_of_sample": 0.1302
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.0422,
+   "out_of_sample": 0.5812
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.4337,
+   "out_of_sample": 0.5288
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 48/96",
+   "in_sample": -0.4081,
+   "out_of_sample": 0.174
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 48/168",
+   "in_sample": -0.123,
+   "out_of_sample": 0.1043
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.179,
+   "out_of_sample": 0.2013
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.1187,
+   "out_of_sample": 0.6169
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.6683,
+   "out_of_sample": 0.3991
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 72/96",
+   "in_sample": -0.6764,
+   "out_of_sample": -0.1378
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 72/168",
+   "in_sample": -0.2515,
+   "out_of_sample": -0.0557
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.0135,
+   "out_of_sample": 0.489
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.2101,
+   "out_of_sample": 0.7011
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.4519,
+   "out_of_sample": 0.3806
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.4231,
+   "out_of_sample": -0.4985
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 48",
+   "in_sample": -0.2529,
+   "out_of_sample": -0.4428
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 72",
+   "in_sample": -0.3756,
+   "out_of_sample": -0.0169
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 120",
+   "in_sample": 0.3017,
+   "out_of_sample": 0.0093
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.2546,
+   "out_of_sample": 0.5344
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.3652,
+   "out_of_sample": -0.0323
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 504",
+   "in_sample": -0.016,
+   "out_of_sample": -0.0362
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.4512,
+   "out_of_sample": 0.1388
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -1.4724,
+   "out_of_sample": -0.8325
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -1.0394,
+   "out_of_sample": -1.2412
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.9882,
+   "out_of_sample": -1.4002
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.5544,
+   "out_of_sample": -0.9775
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -1.0161,
+   "out_of_sample": -0.5726
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -1.2503,
+   "out_of_sample": -0.7871
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.6172,
+   "out_of_sample": -0.7366
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": -0.9096,
+   "out_of_sample": -0.3095
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": -0.5167,
+   "out_of_sample": -0.7421
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": 0.1448,
+   "out_of_sample": -0.364
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -0.3419,
+   "out_of_sample": -0.1305
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.2839,
+   "out_of_sample": -0.5937
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -1.3787,
+   "out_of_sample": -1.0003
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -1.079,
+   "out_of_sample": -1.1834
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -1.2969,
+   "out_of_sample": -1.2854
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.8082,
+   "out_of_sample": -0.7008
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.7377,
+   "out_of_sample": -0.9453
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.8306,
+   "out_of_sample": -0.7484
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.4151,
+   "out_of_sample": -0.213
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.5539,
+   "out_of_sample": -0.495
+  },
+  {
+   "coin": "BTCUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.7619,
+   "out_of_sample": -0.6264
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.3963,
+   "out_of_sample": -0.0275
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.2865,
+   "out_of_sample": -0.3601
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.5403,
+   "out_of_sample": -0.2781
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.1649,
+   "out_of_sample": -0.2377
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.74,
+   "out_of_sample": 0.7863
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.4995,
+   "out_of_sample": 0.8099
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.8274,
+   "out_of_sample": 0.9069
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.2813,
+   "out_of_sample": -0.171
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.1416,
+   "out_of_sample": -0.2487
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.2323,
+   "out_of_sample": 0.0497
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.2377,
+   "out_of_sample": -0.376
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.6021,
+   "out_of_sample": 0.4916
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.7691,
+   "out_of_sample": 0.6258
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.6634,
+   "out_of_sample": 0.9236
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.3797,
+   "out_of_sample": 0.2732
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 0.0341,
+   "out_of_sample": 0.2394
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.1538,
+   "out_of_sample": 0.0516
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.1613,
+   "out_of_sample": -0.0968
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.3751,
+   "out_of_sample": 0.3373
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.7474,
+   "out_of_sample": 0.5121
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.6786,
+   "out_of_sample": 1.0479
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -0.3187,
+   "out_of_sample": -0.4199
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.0056,
+   "out_of_sample": 0.1948
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.1664,
+   "out_of_sample": 0.1682
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.3051,
+   "out_of_sample": 0.2236
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.771,
+   "out_of_sample": 0.3275
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.5087,
+   "out_of_sample": 0.8717
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 48/96",
+   "in_sample": -0.3758,
+   "out_of_sample": 0.2476
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 48/168",
+   "in_sample": -0.0698,
+   "out_of_sample": 0.6442
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.6008,
+   "out_of_sample": -0.0697
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.8557,
+   "out_of_sample": 0.2524
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.5187,
+   "out_of_sample": 0.7354
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 72/96",
+   "in_sample": -0.2083,
+   "out_of_sample": -0.0351
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 72/168",
+   "in_sample": -0.1094,
+   "out_of_sample": -0.4621
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.5736,
+   "out_of_sample": 0.2279
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.4227,
+   "out_of_sample": -0.1251
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.2453,
+   "out_of_sample": 0.595
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.1854,
+   "out_of_sample": -0.1682
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.5328,
+   "out_of_sample": 0.266
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.0647,
+   "out_of_sample": 0.1354
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 120",
+   "in_sample": -0.1867,
+   "out_of_sample": 0.4045
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.0905,
+   "out_of_sample": 0.7265
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.842,
+   "out_of_sample": 0.2556
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.292,
+   "out_of_sample": 1.1395
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.3215,
+   "out_of_sample": 0.9613
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -1.1559,
+   "out_of_sample": -0.8849
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.9877,
+   "out_of_sample": -1.6146
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.9056,
+   "out_of_sample": -1.8369
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.0863,
+   "out_of_sample": -1.5903
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -0.5416,
+   "out_of_sample": -1.9421
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.7085,
+   "out_of_sample": -1.6225
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.019,
+   "out_of_sample": -0.6663
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.3361,
+   "out_of_sample": -1.1546
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": -0.9389,
+   "out_of_sample": -1.4373
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.2944,
+   "out_of_sample": -0.642
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -0.5725,
+   "out_of_sample": -0.4322
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.2314,
+   "out_of_sample": -0.5847
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -1.6198,
+   "out_of_sample": -1.0882
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -1.3679,
+   "out_of_sample": -1.1424
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -1.3371,
+   "out_of_sample": -1.7346
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.4148,
+   "out_of_sample": -0.9359
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.3711,
+   "out_of_sample": -0.8958
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.3071,
+   "out_of_sample": -1.3015
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.482,
+   "out_of_sample": -1.1095
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.2632,
+   "out_of_sample": -1.1197
+  },
+  {
+   "coin": "ETHUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.6499,
+   "out_of_sample": -1.251
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.3888,
+   "out_of_sample": -0.0329
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.5048,
+   "out_of_sample": -0.336
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 1.0381,
+   "out_of_sample": -0.3172
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.7485,
+   "out_of_sample": 0.0071
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.8669,
+   "out_of_sample": -0.4629
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 1.0035,
+   "out_of_sample": 0.1057
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.6925,
+   "out_of_sample": -0.3897
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.6704,
+   "out_of_sample": -0.5038
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.1849,
+   "out_of_sample": 0.26
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.955,
+   "out_of_sample": -0.1528
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.8941,
+   "out_of_sample": -0.1824
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.9028,
+   "out_of_sample": -0.3818
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.7762,
+   "out_of_sample": 0.3258
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.8129,
+   "out_of_sample": -0.4564
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.2155,
+   "out_of_sample": -0.1708
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.5986,
+   "out_of_sample": 0.6875
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.9723,
+   "out_of_sample": 0.0409
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.8487,
+   "out_of_sample": -0.0296
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.8573,
+   "out_of_sample": -0.5685
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.8824,
+   "out_of_sample": 0.1665
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.7679,
+   "out_of_sample": -0.3213
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -0.2577,
+   "out_of_sample": 0.2176
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.6968,
+   "out_of_sample": 0.0703
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.9488,
+   "out_of_sample": -0.0972
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.7352,
+   "out_of_sample": -0.3262
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.6596,
+   "out_of_sample": 0.0034
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.8572,
+   "out_of_sample": -0.3494
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.815,
+   "out_of_sample": -0.1283
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 0.7316,
+   "out_of_sample": 0.0213
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.7709,
+   "out_of_sample": -0.5149
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 1.1687,
+   "out_of_sample": -0.1881
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 1.1651,
+   "out_of_sample": -0.1242
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.6079,
+   "out_of_sample": -0.0364
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.7574,
+   "out_of_sample": 0.1259
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.7876,
+   "out_of_sample": -0.1697
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 1.4262,
+   "out_of_sample": -0.2492
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 1.3403,
+   "out_of_sample": 0.1061
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.4103,
+   "out_of_sample": 0.2097
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.7426,
+   "out_of_sample": -0.2527
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.7982,
+   "out_of_sample": -0.0002
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 120",
+   "in_sample": 0.8064,
+   "out_of_sample": -0.6337
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.4398,
+   "out_of_sample": -0.5534
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 336",
+   "in_sample": 1.0331,
+   "out_of_sample": 0.0575
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 504",
+   "in_sample": 1.4115,
+   "out_of_sample": -0.2857
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "breakout 720",
+   "in_sample": 1.2912,
+   "out_of_sample": 0.4339
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -0.6564,
+   "out_of_sample": -0.8037
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.4536,
+   "out_of_sample": -0.9231
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.8399,
+   "out_of_sample": -1.5888
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.6704,
+   "out_of_sample": -0.9488
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -0.9271,
+   "out_of_sample": -0.3853
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.6844,
+   "out_of_sample": -0.7528
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.2633,
+   "out_of_sample": 0.069
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": -0.2043,
+   "out_of_sample": -0.2356
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": -0.6566,
+   "out_of_sample": -0.2592
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.181,
+   "out_of_sample": 0.0
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -0.386,
+   "out_of_sample": 0.9595
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.2638,
+   "out_of_sample": 0.4029
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -1.1936,
+   "out_of_sample": -0.8852
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -1.2215,
+   "out_of_sample": -0.8556
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.7247,
+   "out_of_sample": -0.5134
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -1.0299,
+   "out_of_sample": -0.5861
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.7697,
+   "out_of_sample": -0.2121
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.6254,
+   "out_of_sample": -0.3458
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -1.1968,
+   "out_of_sample": -0.3945
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.8164,
+   "out_of_sample": -0.3511
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.8369,
+   "out_of_sample": -0.4556
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.689,
+   "out_of_sample": -0.258
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/48",
+   "in_sample": 0.6042,
+   "out_of_sample": -0.3991
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 1.3151,
+   "out_of_sample": 0.0849
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 1.2066,
+   "out_of_sample": -0.2111
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 1.2519,
+   "out_of_sample": 0.3685
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 1.18,
+   "out_of_sample": 0.6171
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 1.1437,
+   "out_of_sample": 0.5821
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.5149,
+   "out_of_sample": 0.3431
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/48",
+   "in_sample": 1.1709,
+   "out_of_sample": 0.0311
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 1.3338,
+   "out_of_sample": 0.0346
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 1.2173,
+   "out_of_sample": -0.2248
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 1.6902,
+   "out_of_sample": 0.3112
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 1.3088,
+   "out_of_sample": 0.5419
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 1.1205,
+   "out_of_sample": 0.5893
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.7239,
+   "out_of_sample": 0.4139
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 0.8456,
+   "out_of_sample": -0.111
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.9815,
+   "out_of_sample": -0.181
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 1.0341,
+   "out_of_sample": 0.1979
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 1.4766,
+   "out_of_sample": 0.1658
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 1.2951,
+   "out_of_sample": 0.4644
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 1.049,
+   "out_of_sample": 0.5238
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/48",
+   "in_sample": 0.5197,
+   "out_of_sample": -0.4078
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.6015,
+   "out_of_sample": -0.5105
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.8304,
+   "out_of_sample": -0.0865
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 1.2565,
+   "out_of_sample": 0.4702
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.8605,
+   "out_of_sample": 0.4586
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 1.086,
+   "out_of_sample": 0.6126
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 1.0176,
+   "out_of_sample": 0.4056
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 1.2767,
+   "out_of_sample": 0.4538
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 1.2101,
+   "out_of_sample": 0.4219
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 1.4027,
+   "out_of_sample": 0.2418
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 1.1282,
+   "out_of_sample": 0.5032
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 1.0655,
+   "out_of_sample": -0.1466
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 1.1304,
+   "out_of_sample": 0.3089
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 1.1413,
+   "out_of_sample": -0.0615
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 1.1062,
+   "out_of_sample": 0.4446
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.9234,
+   "out_of_sample": 0.4164
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 24",
+   "in_sample": 0.5094,
+   "out_of_sample": -0.0245
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.9337,
+   "out_of_sample": 0.053
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.6587,
+   "out_of_sample": -0.4548
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 120",
+   "in_sample": 1.5051,
+   "out_of_sample": 0.1375
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 168",
+   "in_sample": 1.0874,
+   "out_of_sample": 0.3458
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.9039,
+   "out_of_sample": 0.0098
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 504",
+   "in_sample": 1.5449,
+   "out_of_sample": 0.4464
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 720",
+   "in_sample": 1.4564,
+   "out_of_sample": -0.2332
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": 0.0319,
+   "out_of_sample": -0.2625
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.1129,
+   "out_of_sample": -0.3082
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.243,
+   "out_of_sample": -0.3771
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.1213,
+   "out_of_sample": -0.5693
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -0.3631,
+   "out_of_sample": -0.9033
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.4233,
+   "out_of_sample": -0.6309
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": 0.0029,
+   "out_of_sample": -0.0245
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.5248,
+   "out_of_sample": -0.4598
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": -0.1878,
+   "out_of_sample": -0.6124
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.5931,
+   "out_of_sample": -0.3981
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -0.1647,
+   "out_of_sample": -0.5735
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.1875,
+   "out_of_sample": 1.1506
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -1.3828,
+   "out_of_sample": -0.6763
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -1.2221,
+   "out_of_sample": -0.3908
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.7371,
+   "out_of_sample": -0.6951
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.6382,
+   "out_of_sample": -0.3274
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.2764,
+   "out_of_sample": 0.2291
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.2055,
+   "out_of_sample": -0.1366
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -1.4548,
+   "out_of_sample": -0.3522
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -1.1872,
+   "out_of_sample": -0.4075
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -1.0251,
+   "out_of_sample": -0.4181
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.0323,
+   "out_of_sample": 0.175
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.3854,
+   "out_of_sample": -0.1814
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.1761,
+   "out_of_sample": -0.0639
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.1352,
+   "out_of_sample": 0.631
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/336",
+   "in_sample": -0.0495,
+   "out_of_sample": 0.0517
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.5395,
+   "out_of_sample": 0.1852
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.2476,
+   "out_of_sample": 0.1348
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.2424,
+   "out_of_sample": 0.9149
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.0095,
+   "out_of_sample": 0.0968
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/96",
+   "in_sample": -0.0176,
+   "out_of_sample": 0.3283
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.1997,
+   "out_of_sample": 0.6456
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.1696,
+   "out_of_sample": -0.1109
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.5329,
+   "out_of_sample": 0.148
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.3528,
+   "out_of_sample": 0.2634
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.234,
+   "out_of_sample": 1.1296
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.0108,
+   "out_of_sample": 0.4399
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.3223,
+   "out_of_sample": 0.3238
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/168",
+   "in_sample": -0.0889,
+   "out_of_sample": 0.3511
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.2206,
+   "out_of_sample": 0.1117
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.6797,
+   "out_of_sample": 0.123
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.2487,
+   "out_of_sample": 0.1315
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -1.0047,
+   "out_of_sample": -0.0736
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/96",
+   "in_sample": -0.1856,
+   "out_of_sample": 0.3138
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.0856,
+   "out_of_sample": -0.0421
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.1442,
+   "out_of_sample": -0.2595
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.4711,
+   "out_of_sample": 0.1314
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.4313,
+   "out_of_sample": -0.1054
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.2924,
+   "out_of_sample": 0.361
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 48/168",
+   "in_sample": -0.0073,
+   "out_of_sample": 0.1287
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.6426,
+   "out_of_sample": -0.0522
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.4393,
+   "out_of_sample": -0.1748
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.2813,
+   "out_of_sample": -0.2346
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.5091,
+   "out_of_sample": -0.6654
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.5642,
+   "out_of_sample": 0.2915
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.4547,
+   "out_of_sample": 0.3503
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.3428,
+   "out_of_sample": 0.3959
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.3069,
+   "out_of_sample": 0.127
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.4188,
+   "out_of_sample": 0.4435
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 48",
+   "in_sample": -0.1572,
+   "out_of_sample": 0.4476
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 72",
+   "in_sample": -0.2075,
+   "out_of_sample": 0.5299
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 120",
+   "in_sample": -0.1485,
+   "out_of_sample": 0.3555
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 168",
+   "in_sample": -0.0734,
+   "out_of_sample": 0.0557
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.4001,
+   "out_of_sample": 0.2938
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.3284,
+   "out_of_sample": 0.2967
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.4263,
+   "out_of_sample": 0.3911
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": 0.0149,
+   "out_of_sample": -0.6232
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.2238,
+   "out_of_sample": -0.9122
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.4112,
+   "out_of_sample": -1.6555
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": 0.4372,
+   "out_of_sample": -0.1308
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.3299,
+   "out_of_sample": -1.0641
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": 0.2669,
+   "out_of_sample": -0.8947
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": 0.107,
+   "out_of_sample": 0.3593
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.0072,
+   "out_of_sample": -0.0225
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.1765,
+   "out_of_sample": -0.6946
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.3421,
+   "out_of_sample": -0.7525
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 0.8447,
+   "out_of_sample": 0.3066
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": 0.34,
+   "out_of_sample": 0.5225
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.803,
+   "out_of_sample": -1.6241
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.5084,
+   "out_of_sample": -1.5291
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.4185,
+   "out_of_sample": -1.1465
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.2323,
+   "out_of_sample": -0.9459
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.1926,
+   "out_of_sample": -0.8511
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": 0.1197,
+   "out_of_sample": -0.8632
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.1811,
+   "out_of_sample": -0.727
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.2178,
+   "out_of_sample": -0.907
+  },
+  {
+   "coin": "XRPUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.0195,
+   "out_of_sample": -0.6679
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.0854,
+   "out_of_sample": -0.7875
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/48",
+   "in_sample": 0.1884,
+   "out_of_sample": -0.3419
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.6246,
+   "out_of_sample": 0.4022
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.1198,
+   "out_of_sample": 0.43
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.7557,
+   "out_of_sample": 0.0221
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.4962,
+   "out_of_sample": -0.1315
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.3993,
+   "out_of_sample": -0.0008
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.4772,
+   "out_of_sample": -0.2318
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.1646,
+   "out_of_sample": -0.3498
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.7417,
+   "out_of_sample": 0.3121
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.1015,
+   "out_of_sample": 0.3212
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 1.0536,
+   "out_of_sample": -0.0183
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.827,
+   "out_of_sample": -0.0476
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.369,
+   "out_of_sample": -0.0449
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 0.3753,
+   "out_of_sample": 0.0523
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 0.0023,
+   "out_of_sample": 0.2572
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 1.0584,
+   "out_of_sample": 0.4838
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.1985,
+   "out_of_sample": 0.421
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.9771,
+   "out_of_sample": -0.031
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.6285,
+   "out_of_sample": -0.1342
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.4688,
+   "out_of_sample": -0.1668
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/48",
+   "in_sample": 0.0261,
+   "out_of_sample": 0.0626
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.5527,
+   "out_of_sample": 0.4724
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.2338,
+   "out_of_sample": 0.6007
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.8391,
+   "out_of_sample": -0.2996
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.5193,
+   "out_of_sample": -0.0689
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.3391,
+   "out_of_sample": -0.0357
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.3347,
+   "out_of_sample": 0.8223
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 0.1948,
+   "out_of_sample": 0.192
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 1.1391,
+   "out_of_sample": -0.3599
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.7158,
+   "out_of_sample": -0.3808
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.7151,
+   "out_of_sample": 0.1355
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.1125,
+   "out_of_sample": -0.2086
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.2636,
+   "out_of_sample": 0.3719
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 1.0061,
+   "out_of_sample": -0.3982
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.5859,
+   "out_of_sample": -0.0148
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.3996,
+   "out_of_sample": 0.1805
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.5023,
+   "out_of_sample": 0.1119
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.498,
+   "out_of_sample": 0.3482
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.1616,
+   "out_of_sample": 0.2213
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 120",
+   "in_sample": 0.3919,
+   "out_of_sample": 0.1857
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.5227,
+   "out_of_sample": 0.0756
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.523,
+   "out_of_sample": -0.4796
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.2163,
+   "out_of_sample": -0.296
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.1449,
+   "out_of_sample": -0.1443
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": 0.1395,
+   "out_of_sample": -0.6704
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.1222,
+   "out_of_sample": -0.4872
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.3464,
+   "out_of_sample": -1.0815
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.1489,
+   "out_of_sample": 0.0976
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.1914,
+   "out_of_sample": -0.8807
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.1532,
+   "out_of_sample": -0.9399
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.1145,
+   "out_of_sample": 0.3163
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.4876,
+   "out_of_sample": -0.2938
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.2621,
+   "out_of_sample": -0.6104
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": 1.1858,
+   "out_of_sample": 0.4157
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 0.6126,
+   "out_of_sample": 1.2636
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.5593,
+   "out_of_sample": 0.4305
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.4501,
+   "out_of_sample": -0.5188
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.7316,
+   "out_of_sample": -0.1404
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.3132,
+   "out_of_sample": -0.4719
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.1198,
+   "out_of_sample": -0.5089
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.1462,
+   "out_of_sample": -0.3981
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.4514,
+   "out_of_sample": -0.8328
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.7457,
+   "out_of_sample": -0.8406
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.4949,
+   "out_of_sample": -0.5811
+  },
+  {
+   "coin": "ADAUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.6043,
+   "out_of_sample": -0.3428
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 1.4553,
+   "out_of_sample": 0.3622
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/48",
+   "in_sample": 0.0154,
+   "out_of_sample": 0.3464
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.577,
+   "out_of_sample": 0.3792
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.7955,
+   "out_of_sample": 0.5813
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.5151,
+   "out_of_sample": 0.7608
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.4655,
+   "out_of_sample": 1.2405
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.3814,
+   "out_of_sample": 0.7608
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 1.4787,
+   "out_of_sample": 0.9129
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/48",
+   "in_sample": 0.0882,
+   "out_of_sample": 0.4142
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.9069,
+   "out_of_sample": 0.5185
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.7273,
+   "out_of_sample": 0.4284
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.6342,
+   "out_of_sample": 0.6969
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.4818,
+   "out_of_sample": 0.9635
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.5862,
+   "out_of_sample": 0.7044
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 1.8121,
+   "out_of_sample": 1.2101
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 0.2777,
+   "out_of_sample": 0.2234
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.9726,
+   "out_of_sample": 0.4034
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.9265,
+   "out_of_sample": 0.6759
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.657,
+   "out_of_sample": 0.8881
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.5973,
+   "out_of_sample": 1.0513
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.3896,
+   "out_of_sample": 0.723
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/48",
+   "in_sample": 0.3216,
+   "out_of_sample": 0.5314
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.936,
+   "out_of_sample": 0.2296
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.829,
+   "out_of_sample": 0.2514
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.6229,
+   "out_of_sample": 0.7824
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.5411,
+   "out_of_sample": 0.792
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.4602,
+   "out_of_sample": 0.8973
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.8321,
+   "out_of_sample": 0.1554
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 1.1346,
+   "out_of_sample": 0.3852
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.7223,
+   "out_of_sample": 0.3545
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.5175,
+   "out_of_sample": 0.8898
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.7039,
+   "out_of_sample": 0.8798
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.8767,
+   "out_of_sample": -0.216
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.6797,
+   "out_of_sample": 0.7399
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.5469,
+   "out_of_sample": 0.7007
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.6038,
+   "out_of_sample": 1.0822
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.8446,
+   "out_of_sample": 0.9572
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.085,
+   "out_of_sample": 0.4428
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.8349,
+   "out_of_sample": 0.5943
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.7161,
+   "out_of_sample": 0.5277
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 120",
+   "in_sample": 0.9592,
+   "out_of_sample": 0.2398
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.6612,
+   "out_of_sample": 0.4917
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.5594,
+   "out_of_sample": 0.4464
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.8802,
+   "out_of_sample": 0.8847
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.3879,
+   "out_of_sample": 0.3841
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -0.7997,
+   "out_of_sample": -1.1054
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.6477,
+   "out_of_sample": -1.0272
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.4855,
+   "out_of_sample": -1.3171
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.7179,
+   "out_of_sample": -1.0305
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -0.4282,
+   "out_of_sample": -0.8537
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.7554,
+   "out_of_sample": -0.9754
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.5381,
+   "out_of_sample": 0.1913
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": -0.409,
+   "out_of_sample": -0.2592
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": -0.3378,
+   "out_of_sample": -1.1184
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.9025,
+   "out_of_sample": -0.3608
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -1.0237,
+   "out_of_sample": 0.3905
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.6317,
+   "out_of_sample": 0.0576
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -1.4825,
+   "out_of_sample": -1.469
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -1.0337,
+   "out_of_sample": -1.1265
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.8878,
+   "out_of_sample": -1.1936
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.5636,
+   "out_of_sample": -0.768
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.3694,
+   "out_of_sample": -0.8
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.4453,
+   "out_of_sample": -0.6011
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.9032,
+   "out_of_sample": -0.4405
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.7111,
+   "out_of_sample": -0.5881
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.5682,
+   "out_of_sample": -0.826
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.4844,
+   "out_of_sample": -0.0835
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/48",
+   "in_sample": 1.0061,
+   "out_of_sample": -0.0231
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 1.4863,
+   "out_of_sample": 0.2446
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 1.0786,
+   "out_of_sample": -0.2442
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 1.7213,
+   "out_of_sample": 0.4036
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 1.5485,
+   "out_of_sample": 0.1818
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.8316,
+   "out_of_sample": 0.0867
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.804,
+   "out_of_sample": 0.2351
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/48",
+   "in_sample": 0.8985,
+   "out_of_sample": 0.3224
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 1.4963,
+   "out_of_sample": -0.1436
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 1.2666,
+   "out_of_sample": -0.5343
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 1.6954,
+   "out_of_sample": 0.0905
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 1.3805,
+   "out_of_sample": 0.4128
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.8247,
+   "out_of_sample": 0.1708
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 1.0803,
+   "out_of_sample": 0.2581
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 1.0783,
+   "out_of_sample": -0.1491
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 1.7213,
+   "out_of_sample": -0.4316
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 1.3571,
+   "out_of_sample": -0.1035
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 1.6199,
+   "out_of_sample": 0.2709
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 1.3922,
+   "out_of_sample": 0.0511
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.7304,
+   "out_of_sample": 0.1095
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/48",
+   "in_sample": 0.6459,
+   "out_of_sample": -0.1001
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 1.3154,
+   "out_of_sample": -0.2762
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.8938,
+   "out_of_sample": -0.8381
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 1.5542,
+   "out_of_sample": -0.0587
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 1.4774,
+   "out_of_sample": 0.1537
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.9121,
+   "out_of_sample": 0.2868
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 1.0651,
+   "out_of_sample": 0.0097
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 1.0427,
+   "out_of_sample": -0.012
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 1.5444,
+   "out_of_sample": 0.1494
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 1.289,
+   "out_of_sample": 0.5567
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.936,
+   "out_of_sample": 0.1568
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 1.1388,
+   "out_of_sample": -0.8321
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.7918,
+   "out_of_sample": -0.221
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 1.3858,
+   "out_of_sample": 0.0362
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.7341,
+   "out_of_sample": 0.593
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 1.0076,
+   "out_of_sample": -0.1015
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 24",
+   "in_sample": 0.4643,
+   "out_of_sample": -0.0862
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.7364,
+   "out_of_sample": 0.6066
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 72",
+   "in_sample": 1.375,
+   "out_of_sample": 0.3353
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 120",
+   "in_sample": 1.1276,
+   "out_of_sample": -0.3665
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 168",
+   "in_sample": 1.5443,
+   "out_of_sample": -0.0476
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 336",
+   "in_sample": 1.1873,
+   "out_of_sample": 0.3668
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.8445,
+   "out_of_sample": 0.6856
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.6508,
+   "out_of_sample": 0.0292
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": 0.2658,
+   "out_of_sample": -0.6814
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.0514,
+   "out_of_sample": -0.7011
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.405,
+   "out_of_sample": -1.0432
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": 0.6892,
+   "out_of_sample": -0.8192
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.6775,
+   "out_of_sample": -1.137
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.1033,
+   "out_of_sample": -1.2341
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": 0.857,
+   "out_of_sample": 0.2172
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.6042,
+   "out_of_sample": -0.736
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.5033,
+   "out_of_sample": -0.74
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": 1.1444,
+   "out_of_sample": 0.0
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 1.23,
+   "out_of_sample": -0.1828
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": -0.0181,
+   "out_of_sample": 0.1648
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.7545,
+   "out_of_sample": -0.9837
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.5051,
+   "out_of_sample": -1.1209
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.6794,
+   "out_of_sample": -1.0524
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -1.309,
+   "out_of_sample": -0.3532
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -1.1811,
+   "out_of_sample": -0.4066
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -1.0941,
+   "out_of_sample": -0.4552
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -1.4404,
+   "out_of_sample": -0.4476
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -1.4989,
+   "out_of_sample": -0.7163
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -1.4901,
+   "out_of_sample": -0.3551
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/24",
+   "in_sample": -0.2416,
+   "out_of_sample": 0.0161
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.2041,
+   "out_of_sample": -0.4821
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.1674,
+   "out_of_sample": -0.459
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.08,
+   "out_of_sample": -0.3249
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.3912,
+   "out_of_sample": 0.281
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.4034,
+   "out_of_sample": -0.0032
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 4/720",
+   "in_sample": -0.0733,
+   "out_of_sample": -0.3479
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/24",
+   "in_sample": -0.4358,
+   "out_of_sample": 0.2009
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.5059,
+   "out_of_sample": -0.0705
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/96",
+   "in_sample": -0.0235,
+   "out_of_sample": -0.5006
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.0514,
+   "out_of_sample": -0.4723
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.2776,
+   "out_of_sample": 0.1401
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.5124,
+   "out_of_sample": 0.0927
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 8/720",
+   "in_sample": -0.1783,
+   "out_of_sample": -0.1936
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/24",
+   "in_sample": -0.602,
+   "out_of_sample": 0.4561
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.5523,
+   "out_of_sample": -0.387
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.0885,
+   "out_of_sample": -0.4127
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.1562,
+   "out_of_sample": -0.3901
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.3197,
+   "out_of_sample": 0.0843
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.2245,
+   "out_of_sample": 0.1966
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 12/720",
+   "in_sample": -0.0528,
+   "out_of_sample": -0.1671
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -0.7035,
+   "out_of_sample": -1.0266
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.5681,
+   "out_of_sample": -0.4285
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.1055,
+   "out_of_sample": -0.3313
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.2887,
+   "out_of_sample": 0.0554
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.0911,
+   "out_of_sample": -0.0082
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 24/720",
+   "in_sample": -0.1165,
+   "out_of_sample": -0.1548
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.3586,
+   "out_of_sample": 0.0029
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 48/168",
+   "in_sample": -0.0404,
+   "out_of_sample": -0.1214
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.3592,
+   "out_of_sample": -0.0634
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.2629,
+   "out_of_sample": -0.5449
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.0689,
+   "out_of_sample": -0.3425
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.3609,
+   "out_of_sample": 0.0013
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 72/168",
+   "in_sample": -0.0875,
+   "out_of_sample": -0.292
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.2495,
+   "out_of_sample": -0.1739
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.0681,
+   "out_of_sample": -0.5222
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.2659,
+   "out_of_sample": -0.114
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.9694,
+   "out_of_sample": -0.4394
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 48",
+   "in_sample": -0.0506,
+   "out_of_sample": 0.1057
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.2096,
+   "out_of_sample": 0.0319
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 120",
+   "in_sample": -0.1357,
+   "out_of_sample": -0.0481
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.279,
+   "out_of_sample": -0.0148
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.024,
+   "out_of_sample": -0.5158
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 504",
+   "in_sample": -0.1544,
+   "out_of_sample": -0.1963
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "breakout 720",
+   "in_sample": -0.2827,
+   "out_of_sample": -0.2747
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -0.0548,
+   "out_of_sample": -0.4877
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": 0.015,
+   "out_of_sample": -0.4191
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.2728,
+   "out_of_sample": -0.5973
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": 1.0066,
+   "out_of_sample": -0.1068
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.3894,
+   "out_of_sample": -0.5831
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": 0.0664,
+   "out_of_sample": -0.618
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.1497,
+   "out_of_sample": 0.3894
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.9573,
+   "out_of_sample": 0.0568
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.5069,
+   "out_of_sample": -0.5177
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.1675,
+   "out_of_sample": 0.0
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": -0.0639,
+   "out_of_sample": 0.273
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": 0.6569,
+   "out_of_sample": 0.7604
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.4203,
+   "out_of_sample": -0.9014
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.2117,
+   "out_of_sample": -0.5366
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.2506,
+   "out_of_sample": -0.7143
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.3646,
+   "out_of_sample": -0.4245
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": 0.0918,
+   "out_of_sample": -0.4098
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.2371,
+   "out_of_sample": -0.0595
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.3589,
+   "out_of_sample": -0.0893
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.0379,
+   "out_of_sample": -0.1501
+  },
+  {
+   "coin": "LINKUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.1548,
+   "out_of_sample": -0.0985
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/24",
+   "in_sample": -0.641,
+   "out_of_sample": -1.1402
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.3368,
+   "out_of_sample": -1.0695
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/96",
+   "in_sample": -0.7493,
+   "out_of_sample": -0.1778
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.0475,
+   "out_of_sample": -1.5479
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.1578,
+   "out_of_sample": -0.4326
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.3827,
+   "out_of_sample": -0.497
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 4/720",
+   "in_sample": -0.0749,
+   "out_of_sample": -0.1021
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/24",
+   "in_sample": -0.3352,
+   "out_of_sample": -0.5519
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/48",
+   "in_sample": 0.1217,
+   "out_of_sample": -0.8495
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/96",
+   "in_sample": -0.3178,
+   "out_of_sample": -0.2445
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/168",
+   "in_sample": -0.0019,
+   "out_of_sample": -1.0808
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.2314,
+   "out_of_sample": -0.3592
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.3052,
+   "out_of_sample": -0.4741
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.038,
+   "out_of_sample": -0.1511
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/24",
+   "in_sample": -0.076,
+   "out_of_sample": -0.6927
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/48",
+   "in_sample": 0.3478,
+   "out_of_sample": -0.6665
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/96",
+   "in_sample": -0.0418,
+   "out_of_sample": -0.0552
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.0845,
+   "out_of_sample": -0.981
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.3302,
+   "out_of_sample": -0.6197
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.3973,
+   "out_of_sample": -0.5988
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 12/720",
+   "in_sample": -0.0172,
+   "out_of_sample": -0.1442
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -0.1128,
+   "out_of_sample": -0.8065
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/96",
+   "in_sample": -0.1275,
+   "out_of_sample": 0.0233
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.25,
+   "out_of_sample": -1.1283
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.1159,
+   "out_of_sample": -0.5545
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.3154,
+   "out_of_sample": -0.6711
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.1229,
+   "out_of_sample": -0.4418
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 48/96",
+   "in_sample": -0.4665,
+   "out_of_sample": -0.0613
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 0.2317,
+   "out_of_sample": -0.868
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.4906,
+   "out_of_sample": -0.7404
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.2898,
+   "out_of_sample": -1.0366
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.4302,
+   "out_of_sample": -0.9569
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 72/96",
+   "in_sample": -0.5299,
+   "out_of_sample": -0.9126
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 72/168",
+   "in_sample": -0.113,
+   "out_of_sample": -0.8525
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.6418,
+   "out_of_sample": -0.8173
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.6298,
+   "out_of_sample": -0.5721
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.5456,
+   "out_of_sample": -0.8651
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.194,
+   "out_of_sample": -1.2666
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 48",
+   "in_sample": -0.3096,
+   "out_of_sample": -0.5903
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 72",
+   "in_sample": -0.4674,
+   "out_of_sample": -0.2364
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 120",
+   "in_sample": -0.1635,
+   "out_of_sample": -1.4181
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 168",
+   "in_sample": 0.1826,
+   "out_of_sample": -0.5843
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 336",
+   "in_sample": -0.1114,
+   "out_of_sample": -0.8274
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 504",
+   "in_sample": -0.0529,
+   "out_of_sample": -0.6467
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "breakout 720",
+   "in_sample": -0.3938,
+   "out_of_sample": -0.5094
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -0.3865,
+   "out_of_sample": -0.1074
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.689,
+   "out_of_sample": -0.1471
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.091,
+   "out_of_sample": -0.4405
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.01,
+   "out_of_sample": -0.0984
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": -0.3405,
+   "out_of_sample": -0.2774
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": 0.1344,
+   "out_of_sample": -0.3051
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": -0.3358,
+   "out_of_sample": 0.0867
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.0415,
+   "out_of_sample": 0.3388
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.144,
+   "out_of_sample": 0.7308
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": 0.7213,
+   "out_of_sample": 0.0
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 0.3411,
+   "out_of_sample": 1.5278
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": 0.0731,
+   "out_of_sample": 0.4959
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.3563,
+   "out_of_sample": 0.2447
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.6478,
+   "out_of_sample": -0.1455
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.6198,
+   "out_of_sample": -0.0035
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": 0.0681,
+   "out_of_sample": 0.1453
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.0591,
+   "out_of_sample": -0.0243
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.0394,
+   "out_of_sample": -0.0208
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.1582,
+   "out_of_sample": -0.1195
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.4103,
+   "out_of_sample": 0.2037
+  },
+  {
+   "coin": "LTCUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.3946,
+   "out_of_sample": 0.384
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 0.1183,
+   "out_of_sample": 0.8686
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -1.1398,
+   "out_of_sample": 0.2724
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.393,
+   "out_of_sample": 0.5525
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/168",
+   "in_sample": -0.0916,
+   "out_of_sample": 0.1043
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/336",
+   "in_sample": -0.3122,
+   "out_of_sample": -0.3797
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/504",
+   "in_sample": -0.5231,
+   "out_of_sample": 0.0166
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 4/720",
+   "in_sample": -0.0395,
+   "out_of_sample": 0.1334
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.0686,
+   "out_of_sample": -0.0641
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.8908,
+   "out_of_sample": 0.2359
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.2697,
+   "out_of_sample": 0.1739
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/168",
+   "in_sample": -0.0079,
+   "out_of_sample": 0.2032
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/336",
+   "in_sample": -0.201,
+   "out_of_sample": -0.3736
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/504",
+   "in_sample": -0.1667,
+   "out_of_sample": 0.1256
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 8/720",
+   "in_sample": -0.0103,
+   "out_of_sample": 0.0242
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/24",
+   "in_sample": -0.5433,
+   "out_of_sample": 0.2405
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.3661,
+   "out_of_sample": 0.1347
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 0.1292,
+   "out_of_sample": 0.0573
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/168",
+   "in_sample": -0.0704,
+   "out_of_sample": -0.1169
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.1701,
+   "out_of_sample": 0.1089
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/504",
+   "in_sample": -0.1013,
+   "out_of_sample": -0.0808
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 12/720",
+   "in_sample": -0.018,
+   "out_of_sample": -0.0024
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/48",
+   "in_sample": -1.1682,
+   "out_of_sample": 0.7825
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.0239,
+   "out_of_sample": 0.3683
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.0416,
+   "out_of_sample": 0.6131
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.0026,
+   "out_of_sample": 0.1371
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.0085,
+   "out_of_sample": -0.0146
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 0.0528,
+   "out_of_sample": -0.0903
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 48/96",
+   "in_sample": 0.0415,
+   "out_of_sample": 0.4495
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 48/168",
+   "in_sample": -0.2861,
+   "out_of_sample": 0.1977
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.1448,
+   "out_of_sample": 0.4989
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.3227,
+   "out_of_sample": 0.1569
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.4669,
+   "out_of_sample": 0.2806
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.2473,
+   "out_of_sample": -0.0601
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 72/168",
+   "in_sample": -0.0346,
+   "out_of_sample": 0.2422
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.0592,
+   "out_of_sample": 0.4163
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.7489,
+   "out_of_sample": 0.2831
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.6389,
+   "out_of_sample": 0.0097
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.8711,
+   "out_of_sample": 0.9242
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.2869,
+   "out_of_sample": 0.8609
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 72",
+   "in_sample": 0.0845,
+   "out_of_sample": 0.9514
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 120",
+   "in_sample": -0.4167,
+   "out_of_sample": 0.9485
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 168",
+   "in_sample": -0.1473,
+   "out_of_sample": 0.1332
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.2105,
+   "out_of_sample": -0.1301
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.502,
+   "out_of_sample": 0.89
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "breakout 720",
+   "in_sample": -0.0508,
+   "out_of_sample": 0.344
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": -0.6382,
+   "out_of_sample": -2.4449
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.4963,
+   "out_of_sample": -3.1478
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.792,
+   "out_of_sample": -3.7954
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": 0.8553,
+   "out_of_sample": -0.8259
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.437,
+   "out_of_sample": -1.5707
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": -0.1804,
+   "out_of_sample": -2.1035
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": 1.3351,
+   "out_of_sample": 0.0682
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 1.0357,
+   "out_of_sample": -0.2578
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.5515,
+   "out_of_sample": -1.0455
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": 0.6807,
+   "out_of_sample": 0.3026
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 0.3432,
+   "out_of_sample": -0.0176
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": 0.9258,
+   "out_of_sample": 0.3562
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.9304,
+   "out_of_sample": -2.8008
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.5857,
+   "out_of_sample": -2.5799
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.4845,
+   "out_of_sample": -2.008
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": 0.0655,
+   "out_of_sample": -1.501
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.0329,
+   "out_of_sample": -1.5305
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": 0.4021,
+   "out_of_sample": -0.9711
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.3043,
+   "out_of_sample": -1.2712
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.233,
+   "out_of_sample": -1.089
+  },
+  {
+   "coin": "TRXUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.0236,
+   "out_of_sample": -1.1779
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/24",
+   "in_sample": -0.1535,
+   "out_of_sample": -0.368
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/48",
+   "in_sample": -0.175,
+   "out_of_sample": 0.3414
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 0.1943,
+   "out_of_sample": 0.2308
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/168",
+   "in_sample": 0.3125,
+   "out_of_sample": 0.5892
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 0.2877,
+   "out_of_sample": 0.0677
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 0.723,
+   "out_of_sample": 0.6628
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 4/720",
+   "in_sample": 0.6306,
+   "out_of_sample": 0.4198
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 0.0889,
+   "out_of_sample": -0.2157
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/48",
+   "in_sample": -0.0076,
+   "out_of_sample": 0.3232
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 0.0942,
+   "out_of_sample": 0.0441
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/168",
+   "in_sample": 0.4079,
+   "out_of_sample": 0.6699
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 0.1272,
+   "out_of_sample": -0.2396
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/504",
+   "in_sample": 0.7768,
+   "out_of_sample": 0.5585
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 8/720",
+   "in_sample": 0.9635,
+   "out_of_sample": 0.4455
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/24",
+   "in_sample": -0.2291,
+   "out_of_sample": -0.284
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/48",
+   "in_sample": -0.1881,
+   "out_of_sample": -0.0115
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/96",
+   "in_sample": -0.2032,
+   "out_of_sample": -0.1475
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/168",
+   "in_sample": 0.3413,
+   "out_of_sample": 0.2925
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 0.1022,
+   "out_of_sample": -0.2806
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/504",
+   "in_sample": 0.6985,
+   "out_of_sample": 0.4247
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 12/720",
+   "in_sample": 0.846,
+   "out_of_sample": 0.445
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/48",
+   "in_sample": 0.1091,
+   "out_of_sample": 0.1507
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/96",
+   "in_sample": 0.1553,
+   "out_of_sample": 0.2523
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/168",
+   "in_sample": 0.1395,
+   "out_of_sample": 0.1929
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 0.0932,
+   "out_of_sample": -0.4593
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 0.7585,
+   "out_of_sample": 0.3503
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 24/720",
+   "in_sample": 1.0068,
+   "out_of_sample": 0.1743
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 48/96",
+   "in_sample": -0.1092,
+   "out_of_sample": -0.1464
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 48/168",
+   "in_sample": 0.131,
+   "out_of_sample": -0.1553
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 0.3375,
+   "out_of_sample": -0.468
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 48/504",
+   "in_sample": 0.6464,
+   "out_of_sample": 0.3869
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 48/720",
+   "in_sample": 0.8884,
+   "out_of_sample": -0.0039
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 72/96",
+   "in_sample": 0.0799,
+   "out_of_sample": -0.4507
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 72/168",
+   "in_sample": 0.2189,
+   "out_of_sample": -0.3145
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 72/336",
+   "in_sample": 0.2695,
+   "out_of_sample": -0.7634
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 0.8399,
+   "out_of_sample": -0.0655
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "MA 72/720",
+   "in_sample": 0.4434,
+   "out_of_sample": 0.2888
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 24",
+   "in_sample": -0.7715,
+   "out_of_sample": 0.0077
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 48",
+   "in_sample": 0.2258,
+   "out_of_sample": 0.2634
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 72",
+   "in_sample": -0.2134,
+   "out_of_sample": 0.1352
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 120",
+   "in_sample": 0.193,
+   "out_of_sample": 0.173
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 168",
+   "in_sample": -0.0491,
+   "out_of_sample": -0.41
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 336",
+   "in_sample": 0.8968,
+   "out_of_sample": 0.3324
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 504",
+   "in_sample": 0.4675,
+   "out_of_sample": 0.4827
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "breakout 720",
+   "in_sample": 0.3645,
+   "out_of_sample": 0.3579
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 6 20/80",
+   "in_sample": 0.0983,
+   "out_of_sample": 0.1454
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 6 25/75",
+   "in_sample": -0.0133,
+   "out_of_sample": -0.2112
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 6 30/70",
+   "in_sample": -0.0057,
+   "out_of_sample": -0.5152
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 14 20/80",
+   "in_sample": -0.1097,
+   "out_of_sample": -0.1055
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 14 25/75",
+   "in_sample": 0.4277,
+   "out_of_sample": -0.2423
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 14 30/70",
+   "in_sample": 0.3422,
+   "out_of_sample": -0.4838
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 24 20/80",
+   "in_sample": 0.2015,
+   "out_of_sample": 0.785
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 24 25/75",
+   "in_sample": 0.2752,
+   "out_of_sample": 0.4878
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 24 30/70",
+   "in_sample": 0.7887,
+   "out_of_sample": -0.037
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 48 20/80",
+   "in_sample": -0.2199,
+   "out_of_sample": 0.6132
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 48 25/75",
+   "in_sample": 0.5734,
+   "out_of_sample": 0.7099
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "RSI 48 30/70",
+   "in_sample": 0.448,
+   "out_of_sample": 0.6585
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 24 x1.5",
+   "in_sample": -0.5414,
+   "out_of_sample": -0.5863
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 24 x2.0",
+   "in_sample": -0.3096,
+   "out_of_sample": -0.5097
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 24 x2.5",
+   "in_sample": -0.2011,
+   "out_of_sample": -0.0166
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 72 x1.5",
+   "in_sample": -0.4622,
+   "out_of_sample": -0.6913
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 72 x2.0",
+   "in_sample": -0.2452,
+   "out_of_sample": -0.919
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 72 x2.5",
+   "in_sample": -0.2808,
+   "out_of_sample": -0.8517
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 168 x1.5",
+   "in_sample": -0.681,
+   "out_of_sample": -0.5138
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 168 x2.0",
+   "in_sample": -0.361,
+   "out_of_sample": 0.0187
+  },
+  {
+   "coin": "DOTUSDT",
+   "rule": "bands 168 x2.5",
+   "in_sample": -0.2066,
+   "out_of_sample": 0.3728
+  }
+ ],
+ "rank_correlation": 0.44972039480179904,
+ "share_positive_in_sample": 0.5997474747474747,
+ "share_positive_out_of_sample": 0.44065656565656564,
+ "top": [
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 12/24",
+   "in_sample": 1.8120868630676847,
+   "out_of_sample": 1.2100546930757266
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/336",
+   "in_sample": 1.721306062197754,
+   "out_of_sample": 0.40364314803361123
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/96",
+   "in_sample": 1.7212578732155228,
+   "out_of_sample": -0.4316452994555495
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 1.6953546933844155,
+   "out_of_sample": 0.09054891561198548
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 8/336",
+   "in_sample": 1.6902246716694487,
+   "out_of_sample": 0.3111610482364114
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 1.6198914087303926,
+   "out_of_sample": 0.27093625859103077
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/336",
+   "in_sample": 1.554196228145768,
+   "out_of_sample": -0.05868107460242838
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/504",
+   "in_sample": 1.5484622741813348,
+   "out_of_sample": 0.1818309438760325
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 504",
+   "in_sample": 1.5448671276617694,
+   "out_of_sample": 0.44637354029659954
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 48/336",
+   "in_sample": 1.5444470544672602,
+   "out_of_sample": 0.14942797053937065
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "breakout 168",
+   "in_sample": 1.5443241911590864,
+   "out_of_sample": -0.0475806866307102
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 120",
+   "in_sample": 1.505109622246459,
+   "out_of_sample": 0.13753125414324655
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 8/96",
+   "in_sample": 1.4963298132118241,
+   "out_of_sample": -0.1436104445620368
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 4/96",
+   "in_sample": 1.486280662448809,
+   "out_of_sample": 0.24462506998048578
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 8/24",
+   "in_sample": 1.4787434686065002,
+   "out_of_sample": 0.9129074456145946
+  },
+  {
+   "coin": "AVAXUSDT",
+   "rule": "MA 24/504",
+   "in_sample": 1.477360673710725,
+   "out_of_sample": 0.1537468925675332
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "MA 12/336",
+   "in_sample": 1.476572665609777,
+   "out_of_sample": 0.16576217644626998
+  },
+  {
+   "coin": "SOLUSDT",
+   "rule": "breakout 720",
+   "in_sample": 1.45642289576214,
+   "out_of_sample": -0.23318279372078504
+  },
+  {
+   "coin": "DOGEUSDT",
+   "rule": "MA 4/24",
+   "in_sample": 1.4553230432474547,
+   "out_of_sample": 0.3621976244010738
+  },
+  {
+   "coin": "BNBUSDT",
+   "rule": "MA 72/504",
+   "in_sample": 1.4261895167070275,
+   "out_of_sample": -0.2492009859702186
+  }
+ ],
+ "top_decile_out_of_sample_mean": 0.14271857372485336,
+ "bottom_decile_out_of_sample_mean": -0.7533468032516645,
+ "best_deflated": {
+  "hours": 26266,
+  "probability_true_sharpe_positive": 0.34690418423077285,
+  "expected_max_sharpe_annual": 2.036030430245103
+ },
+ "noise": {
+  "trials": 20000,
+  "hours": 26265,
+  "mean_sharpe": -0.5484288081940224,
+  "std_sharpe": 0.5649886782897123,
+  "counts": [
+   1,
+   2,
+   5,
+   10,
+   20,
+   50,
+   100,
+   200,
+   500,
+   1000,
+   2000,
+   5000,
+   10000,
+   20000
+  ],
+  "best_empirical": [
+   -0.5484288081940224,
+   -0.2303132690915455,
+   0.10747806056444495,
+   0.3195852677580014,
+   0.5057977860172395,
+   0.7078898223782588,
+   0.8434898422151355,
+   0.948012900858611,
+   1.097555457670247,
+   1.2030591187560966,
+   1.3457272507812934,
+   1.441474640681265,
+   1.4777840837097336,
+   1.5602358729112271
+  ],
+  "best_theory": [
+   -0.5484288081940224,
+   -0.25477292319569517,
+   0.12537330017503656,
+   0.3412014049200994,
+   0.5254496649582062,
+   0.7376566679439897,
+   0.8813331757118131,
+   1.0140608874632053,
+   1.1762147115812378,
+   1.2906779934767898,
+   1.3992519281124722,
+   1.5350816849551019,
+   1.632803125840152,
+   1.7267370115883005
+  ],
+  "histogram": [
+   1,
+   0,
+   1,
+   4,
+   4,
+   7,
+   9,
+   16,
+   21,
+   24,
+   48,
+   66,
+   62,
+   93,
+   142,
+   174,
+   237,
+   266,
+   310,
+   374,
+   473,
+   546,
+   627,
+   661,
+   806,
+   815,
+   866,
+   969,
+   935,
+   1016,
+   1003,
+   989,
+   978,
+   921,
+   878,
+   847,
+   741,
+   650,
+   646,
+   516,
+   394,
+   383,
+   285,
+   270,
+   222,
+   171,
+   157,
+   112,
+   96,
+   60,
+   31,
+   26,
+   12,
+   18,
+   8,
+   3,
+   3,
+   4,
+   2,
+   1
+  ],
+  "edges": [
+   -2.7204,
+   -2.6491,
+   -2.5777,
+   -2.5064,
+   -2.435,
+   -2.3637,
+   -2.2923,
+   -2.221,
+   -2.1497,
+   -2.0783,
+   -2.007,
+   -1.9356,
+   -1.8643,
+   -1.7929,
+   -1.7216,
+   -1.6502,
+   -1.5789,
+   -1.5076,
+   -1.4362,
+   -1.3649,
+   -1.2935,
+   -1.2222,
+   -1.1508,
+   -1.0795,
+   -1.0081,
+   -0.9368,
+   -0.8655,
+   -0.7941,
+   -0.7228,
+   -0.6514,
+   -0.5801,
+   -0.5087,
+   -0.4374,
+   -0.3661,
+   -0.2947,
+   -0.2234,
+   -0.152,
+   -0.0807,
+   -0.0093,
+   0.062,
+   0.1334,
+   0.2047,
+   0.276,
+   0.3474,
+   0.4187,
+   0.4901,
+   0.5614,
+   0.6328,
+   0.7041,
+   0.7755,
+   0.8468,
+   0.9181,
+   0.9895,
+   1.0608,
+   1.1322,
+   1.2035,
+   1.2749,
+   1.3462,
+   1.4175,
+   1.4889,
+   1.5602
+  ]
+ }
+}

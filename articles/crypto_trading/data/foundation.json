@@ -1,0 +1,82 @@
+{
+ "test": [
+  "2026-01-01",
+  "2026-10-29"
+ ],
+ "context": 512,
+ "models": {
+  "chronos": {
+   "model": "amazon/chronos-2",
+   "coins": {
+    "BTCUSDT": {
+     "hours": 7248,
+     "hit_rate": 0.4925496688741722,
+     "share_forecast_up": 0.7057119205298014,
+     "r2_vs_zero": -0.019873911898202756,
+     "correlation": -0.005902137361890395,
+     "mean_abs_forecast": 0.01252626655629139,
+     "mean_abs_realized": 0.29196268901766,
+     "volatility_days": 301,
+     "r2_log_rv": 0.6712182142989189,
+     "r2_log_rv_har": 0.7696531684296607
+    },
+    "ETHUSDT": {
+     "hours": 7248,
+     "hit_rate": 0.4962748344370861,
+     "share_forecast_up": 0.7511037527593819,
+     "r2_vs_zero": -0.01889949199539842,
+     "correlation": 0.004303395416390192,
+     "mean_abs_forecast": 0.016565027593818987,
+     "mean_abs_realized": 0.3773433278145696,
+     "volatility_days": 301,
+     "r2_log_rv": 0.6416767141561974,
+     "r2_log_rv_har": 0.8309873705396441
+    },
+    "SOLUSDT": {
+     "hours": 7248,
+     "hit_rate": 0.492135761589404,
+     "share_forecast_up": 0.6550772626931567,
+     "r2_vs_zero": -0.002432363856762043,
+     "correlation": 0.007319347137146282,
+     "mean_abs_forecast": 0.01730335402869757,
+     "mean_abs_realized": 0.4360664528145695,
+     "volatility_days": 301,
+     "r2_log_rv": 0.661665506609876,
+     "r2_log_rv_har": 0.8869998623812998
+    }
+   }
+  },
+  "kronos": {
+   "model": "NeoQuasar/Kronos-small",
+   "coins": {
+    "BTCUSDT": {
+     "hours": 1812,
+     "hit_rate": 0.522075055187638,
+     "share_forecast_up": 0.45253863134657835,
+     "r2_vs_zero": -0.641698725250039,
+     "correlation": -0.04479558048514671,
+     "mean_abs_forecast": 0.2048776269315673,
+     "mean_abs_realized": 0.2778273289183223
+    },
+    "ETHUSDT": {
+     "hours": 1812,
+     "hit_rate": 0.5071743929359823,
+     "share_forecast_up": 0.4381898454746137,
+     "r2_vs_zero": -0.8807473369395724,
+     "correlation": -0.03928032376060658,
+     "mean_abs_forecast": 0.290848233995585,
+     "mean_abs_realized": 0.3590786092715232
+    },
+    "SOLUSDT": {
+     "hours": 1812,
+     "hit_rate": 0.49613686534216334,
+     "share_forecast_up": 0.46578366445916114,
+     "r2_vs_zero": -0.5167088737879331,
+     "correlation": -0.013657510485547511,
+     "mean_abs_forecast": 0.3045158940397351,
+     "mean_abs_realized": 0.4186428642384106
+    }
+   }
+  }
+ }
+}

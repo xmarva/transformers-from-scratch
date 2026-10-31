@@ -1,0 +1,4458 @@
+{
+ "prices": [
+  {
+   "date": "2018-01-01",
+   "close": 13380.0,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-01-15",
+   "close": 13539.93,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-02-01",
+   "close": 9224.52,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-02-15",
+   "close": 10000.09,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-03-01",
+   "close": 10920.0,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-03-15",
+   "close": 8240.98,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-04-01",
+   "close": 6813.01,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-04-15",
+   "close": 8355.0,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-05-01",
+   "close": 9071.48,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-05-15",
+   "close": 8462.0,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-06-01",
+   "close": 7521.01,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-06-15",
+   "close": 6388.9,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-07-01",
+   "close": 6356.81,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-07-15",
+   "close": 6353.01,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-08-01",
+   "close": 7604.58,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-08-15",
+   "close": 6267.16,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-09-01",
+   "close": 7200.01,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-09-15",
+   "close": 6514.96,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-10-01",
+   "close": 6611.61,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-10-15",
+   "close": 6752.5,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-11-01",
+   "close": 6410.0,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-11-15",
+   "close": 5753.4,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-12-01",
+   "close": 4190.02,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2018? Reply with the number only."
+  },
+  {
+   "date": "2018-12-15",
+   "close": 3211.72,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2018? Reply with the number only."
+  },
+  {
+   "date": "2019-01-01",
+   "close": 3797.14,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-01-15",
+   "close": 3553.06,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-02-01",
+   "close": 3462.07,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-02-15",
+   "close": 3602.47,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-03-01",
+   "close": 3823.0,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-03-15",
+   "close": 3923.76,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-04-01",
+   "close": 4144.56,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-04-15",
+   "close": 5024.95,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-05-01",
+   "close": 5383.2,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-05-15",
+   "close": 8169.87,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-06-01",
+   "close": 8544.07,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-06-15",
+   "close": 8808.7,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-07-01",
+   "close": 10624.93,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-07-15",
+   "close": 10838.72,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-08-01",
+   "close": 10374.99,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-08-15",
+   "close": 10293.93,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-09-01",
+   "close": 9724.98,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-09-15",
+   "close": 10302.01,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-10-01",
+   "close": 8292.44,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-10-15",
+   "close": 8159.29,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-11-01",
+   "close": 9231.61,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-11-15",
+   "close": 8471.73,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-12-01",
+   "close": 7390.89,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2019? Reply with the number only."
+  },
+  {
+   "date": "2019-12-15",
+   "close": 7118.59,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2019? Reply with the number only."
+  },
+  {
+   "date": "2020-01-01",
+   "close": 7200.85,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-01-15",
+   "close": 8821.41,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-02-01",
+   "close": 9384.61,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-02-15",
+   "close": 9904.72,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-03-01",
+   "close": 8531.88,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-03-15",
+   "close": 5361.3,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-04-01",
+   "close": 6642.92,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-04-15",
+   "close": 6621.24,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-05-01",
+   "close": 8826.96,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-05-15",
+   "close": 9316.42,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-06-01",
+   "close": 10200.77,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-06-15",
+   "close": 9426.02,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-07-01",
+   "close": 9232.0,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-07-15",
+   "close": 9197.6,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-08-01",
+   "close": 11801.17,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-08-15",
+   "close": 11852.4,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-09-01",
+   "close": 11921.97,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-09-15",
+   "close": 10785.31,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-10-01",
+   "close": 10619.13,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-10-15",
+   "close": 11505.12,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-11-01",
+   "close": 13761.5,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-11-15",
+   "close": 15957.0,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-12-01",
+   "close": 18764.96,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2020? Reply with the number only."
+  },
+  {
+   "date": "2020-12-15",
+   "close": 19426.43,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2020? Reply with the number only."
+  },
+  {
+   "date": "2021-01-01",
+   "close": 29331.69,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-01-15",
+   "close": 36742.22,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-02-01",
+   "close": 33526.37,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-02-15",
+   "close": 47911.1,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-03-01",
+   "close": 49587.03,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-03-15",
+   "close": 55605.2,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-04-01",
+   "close": 58720.44,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-04-15",
+   "close": 63159.98,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-05-01",
+   "close": 57800.37,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-05-15",
+   "close": 46762.99,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-06-01",
+   "close": 36693.09,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-06-15",
+   "close": 40144.04,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-07-01",
+   "close": 33504.69,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-07-15",
+   "close": 31880.0,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-08-01",
+   "close": 39845.44,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-08-15",
+   "close": 46973.82,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-09-01",
+   "close": 48810.52,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-09-15",
+   "close": 48121.41,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-10-01",
+   "close": 48141.61,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-10-15",
+   "close": 61672.42,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-11-01",
+   "close": 60911.11,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-11-15",
+   "close": 63606.74,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-12-01",
+   "close": 57184.07,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2021? Reply with the number only."
+  },
+  {
+   "date": "2021-12-15",
+   "close": 48864.98,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2021? Reply with the number only."
+  },
+  {
+   "date": "2022-01-01",
+   "close": 47722.65,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-01-15",
+   "close": 43084.29,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-02-01",
+   "close": 38694.59,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-02-15",
+   "close": 44544.86,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-03-01",
+   "close": 44421.2,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-03-15",
+   "close": 39280.33,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-04-01",
+   "close": 46283.49,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-04-15",
+   "close": 40551.9,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-05-01",
+   "close": 38468.35,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-05-15",
+   "close": 31328.89,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-06-01",
+   "close": 29805.83,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-06-15",
+   "close": 22583.72,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-07-01",
+   "close": 19279.8,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-07-15",
+   "close": 20830.04,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-08-01",
+   "close": 23268.01,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-08-15",
+   "close": 24094.82,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-09-01",
+   "close": 20131.46,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-09-15",
+   "close": 19701.88,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-10-01",
+   "close": 19310.95,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-10-15",
+   "close": 19069.39,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-11-01",
+   "close": 20483.62,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-11-15",
+   "close": 16900.57,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-12-01",
+   "close": 16977.37,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2022? Reply with the number only."
+  },
+  {
+   "date": "2022-12-15",
+   "close": 17356.34,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2022? Reply with the number only."
+  },
+  {
+   "date": "2023-01-01",
+   "close": 16616.75,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-01-15",
+   "close": 20871.5,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-02-01",
+   "close": 23732.66,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-02-15",
+   "close": 24324.05,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-03-01",
+   "close": 23628.97,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-03-15",
+   "close": 24285.66,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-04-01",
+   "close": 28452.73,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-04-15",
+   "close": 30295.09,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-05-01",
+   "close": 28068.26,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-05-15",
+   "close": 27162.14,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-06-01",
+   "close": 26817.93,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-06-15",
+   "close": 25598.49,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-07-01",
+   "close": 30585.9,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-07-15",
+   "close": 30289.52,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-08-01",
+   "close": 29705.99,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-08-15",
+   "close": 29200.0,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-09-01",
+   "close": 25805.05,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-09-15",
+   "close": 26600.0,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-10-01",
+   "close": 27992.57,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-10-15",
+   "close": 27154.15,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-11-01",
+   "close": 35421.43,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-11-15",
+   "close": 37858.2,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-12-01",
+   "close": 38682.52,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2023? Reply with the number only."
+  },
+  {
+   "date": "2023-12-15",
+   "close": 41940.3,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2023? Reply with the number only."
+  },
+  {
+   "date": "2024-01-01",
+   "close": 44179.55,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-01-15",
+   "close": 42511.1,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-02-01",
+   "close": 43082.94,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-02-15",
+   "close": 51880.0,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-03-01",
+   "close": 62387.9,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-03-15",
+   "close": 69499.85,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-04-01",
+   "close": 69649.8,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-04-15",
+   "close": 63419.99,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-05-01",
+   "close": 58364.97,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-05-15",
+   "close": 66206.5,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-06-01",
+   "close": 67766.85,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-06-15",
+   "close": 66228.25,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-07-01",
+   "close": 62899.99,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-07-15",
+   "close": 64724.14,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-08-01",
+   "close": 65354.02,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-08-15",
+   "close": 57541.06,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-09-01",
+   "close": 57301.86,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-09-15",
+   "close": 59132.0,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-10-01",
+   "close": 60805.78,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-10-15",
+   "close": 67074.14,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-11-01",
+   "close": 69496.01,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-11-15",
+   "close": 91032.07,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-12-01",
+   "close": 97185.18,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2024? Reply with the number only."
+  },
+  {
+   "date": "2024-12-15",
+   "close": 104463.99,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2024? Reply with the number only."
+  },
+  {
+   "date": "2025-01-01",
+   "close": 94591.79,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-01-15",
+   "close": 100497.35,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-02-01",
+   "close": 100635.65,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-02-15",
+   "close": 97569.66,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-03-01",
+   "close": 86064.53,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-03-15",
+   "close": 84338.44,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-04-01",
+   "close": 85158.34,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-04-15",
+   "close": 83643.99,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-05-01",
+   "close": 96489.91,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-05-15",
+   "close": 103763.71,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-06-01",
+   "close": 105642.93,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-06-15",
+   "close": 105594.01,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-07-01",
+   "close": 105681.14,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-07-15",
+   "close": 117758.09,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-08-01",
+   "close": 113297.93,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-08-15",
+   "close": 117342.05,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-09-01",
+   "close": 109237.42,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-09-15",
+   "close": 115349.71,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-10-01",
+   "close": 118594.99,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-10-15",
+   "close": 110763.28,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-11-01",
+   "close": 110098.1,
+   "question": "What was the closing price of Bitcoin in US dollars on November 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-11-15",
+   "close": 95596.24,
+   "question": "What was the closing price of Bitcoin in US dollars on November 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-12-01",
+   "close": 86286.01,
+   "question": "What was the closing price of Bitcoin in US dollars on December 1, 2025? Reply with the number only."
+  },
+  {
+   "date": "2025-12-15",
+   "close": 86432.08,
+   "question": "What was the closing price of Bitcoin in US dollars on December 15, 2025? Reply with the number only."
+  },
+  {
+   "date": "2026-01-01",
+   "close": 88839.04,
+   "question": "What was the closing price of Bitcoin in US dollars on January 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-01-15",
+   "close": 95604.8,
+   "question": "What was the closing price of Bitcoin in US dollars on January 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-02-01",
+   "close": 76968.21,
+   "question": "What was the closing price of Bitcoin in US dollars on February 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-02-15",
+   "close": 68832.58,
+   "question": "What was the closing price of Bitcoin in US dollars on February 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-03-01",
+   "close": 65776.47,
+   "question": "What was the closing price of Bitcoin in US dollars on March 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-03-15",
+   "close": 72815.24,
+   "question": "What was the closing price of Bitcoin in US dollars on March 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-04-01",
+   "close": 68113.92,
+   "question": "What was the closing price of Bitcoin in US dollars on April 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-04-15",
+   "close": 74809.99,
+   "question": "What was the closing price of Bitcoin in US dollars on April 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-05-01",
+   "close": 78231.13,
+   "question": "What was the closing price of Bitcoin in US dollars on May 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-05-15",
+   "close": 79113.21,
+   "question": "What was the closing price of Bitcoin in US dollars on May 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-06-01",
+   "close": 71408.9,
+   "question": "What was the closing price of Bitcoin in US dollars on June 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-06-15",
+   "close": 66328.74,
+   "question": "What was the closing price of Bitcoin in US dollars on June 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-07-01",
+   "close": 60024.0,
+   "question": "What was the closing price of Bitcoin in US dollars on July 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-07-15",
+   "close": 64756.28,
+   "question": "What was the closing price of Bitcoin in US dollars on July 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-08-01",
+   "close": 62823.64,
+   "question": "What was the closing price of Bitcoin in US dollars on August 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-08-15",
+   "close": 63086.01,
+   "question": "What was the closing price of Bitcoin in US dollars on August 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-09-01",
+   "close": 77439.0,
+   "question": "What was the closing price of Bitcoin in US dollars on September 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-09-15",
+   "close": 75644.48,
+   "question": "What was the closing price of Bitcoin in US dollars on September 15, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-10-01",
+   "close": 84880.05,
+   "question": "What was the closing price of Bitcoin in US dollars on October 1, 2026? Reply with the number only."
+  },
+  {
+   "date": "2026-10-15",
+   "close": 82245.93,
+   "question": "What was the closing price of Bitcoin in US dollars on October 15, 2026? Reply with the number only."
+  }
+ ],
+ "months": [
+  {
+   "month": "2018-01",
+   "up": false,
+   "return": -0.2501582052381244,
+   "question": "Did the price of Bitcoin go up or down during January 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-02",
+   "up": true,
+   "return": 0.004050519683814535,
+   "question": "Did the price of Bitcoin go up or down during February 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-03",
+   "up": false,
+   "return": -0.32951768027919703,
+   "question": "Did the price of Bitcoin go up or down during March 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-04",
+   "up": true,
+   "return": 0.3353740877625504,
+   "question": "Did the price of Bitcoin go up or down during April 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-05",
+   "up": false,
+   "return": -0.19046053378700645,
+   "question": "Did the price of Bitcoin go up or down during May 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-06",
+   "up": false,
+   "return": -0.14628437370157166,
+   "question": "Did the price of Bitcoin go up or down during June 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-07",
+   "up": true,
+   "return": 0.20983494703500916,
+   "question": "Did the price of Bitcoin go up or down during July 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-08",
+   "up": false,
+   "return": -0.09309617342286114,
+   "question": "Did the price of Bitcoin go up or down during August 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-09",
+   "up": false,
+   "return": -0.054860715910663105,
+   "question": "Did the price of Bitcoin go up or down during September 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-10",
+   "up": false,
+   "return": -0.03842711991271497,
+   "question": "Did the price of Bitcoin go up or down during October 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-11",
+   "up": false,
+   "return": -0.3657620218677857,
+   "question": "Did the price of Bitcoin go up or down during November 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2018-12",
+   "up": false,
+   "return": -0.08373996614967394,
+   "question": "Did the price of Bitcoin go up or down during December 2018? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-01",
+   "up": false,
+   "return": -0.07259175241027305,
+   "question": "Did the price of Bitcoin go up or down during January 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-02",
+   "up": true,
+   "return": 0.110535511487726,
+   "question": "Did the price of Bitcoin go up or down during February 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-03",
+   "up": true,
+   "return": 0.07611001418573604,
+   "question": "Did the price of Bitcoin go up or down during March 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-04",
+   "up": true,
+   "return": 0.2965094603979095,
+   "question": "Did the price of Bitcoin go up or down during April 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-05",
+   "up": true,
+   "return": 0.6078379043792204,
+   "question": "Did the price of Bitcoin go up or down during May 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-06",
+   "up": true,
+   "return": 0.26874342489772074,
+   "question": "Did the price of Bitcoin go up or down during June 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-07",
+   "up": false,
+   "return": -0.07126984273223935,
+   "question": "Did the price of Bitcoin go up or down during July 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-08",
+   "up": false,
+   "return": -0.048912110771953565,
+   "question": "Did the price of Bitcoin go up or down during August 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-09",
+   "up": false,
+   "return": -0.13539859837892576,
+   "question": "Did the price of Bitcoin go up or down during September 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-10",
+   "up": true,
+   "return": 0.1027234978900613,
+   "question": "Did the price of Bitcoin go up or down during October 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-11",
+   "up": false,
+   "return": -0.17492465142738367,
+   "question": "Did the price of Bitcoin go up or down during November 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2019-12",
+   "up": false,
+   "return": -0.04596460568902505,
+   "question": "Did the price of Bitcoin go up or down during December 2019? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-01",
+   "up": true,
+   "return": 0.2998736663039263,
+   "question": "Did the price of Bitcoin go up or down during January 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-02",
+   "up": false,
+   "return": -0.08866564238433239,
+   "question": "Did the price of Bitcoin go up or down during February 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-03",
+   "up": false,
+   "return": -0.24791960214040776,
+   "question": "Did the price of Bitcoin go up or down during March 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-04",
+   "up": true,
+   "return": 0.3446814883221745,
+   "question": "Did the price of Bitcoin go up or down during April 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-05",
+   "up": true,
+   "return": 0.09608700696055683,
+   "question": "Did the price of Bitcoin go up or down during May 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-06",
+   "up": false,
+   "return": -0.03278060427993712,
+   "question": "Did the price of Bitcoin go up or down during June 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-07",
+   "up": true,
+   "return": 0.24040028232049937,
+   "question": "Did the price of Bitcoin go up or down during July 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-08",
+   "up": true,
+   "return": 0.02770509533799248,
+   "question": "Did the price of Bitcoin go up or down during August 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-09",
+   "up": false,
+   "return": -0.0749319070072475,
+   "question": "Did the price of Bitcoin go up or down during September 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-10",
+   "up": true,
+   "return": 0.2797183524658542,
+   "question": "Did the price of Bitcoin go up or down during October 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-11",
+   "up": true,
+   "return": 0.428168370676528,
+   "question": "Did the price of Bitcoin go up or down during November 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2020-12",
+   "up": true,
+   "return": 0.4685124343326801,
+   "question": "Did the price of Bitcoin go up or down during December 2020? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-01",
+   "up": true,
+   "return": 0.14415030201949075,
+   "question": "Did the price of Bitcoin go up or down during January 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-02",
+   "up": true,
+   "return": 0.36390436884197186,
+   "question": "Did the price of Bitcoin go up or down during February 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-03",
+   "up": true,
+   "return": 0.30142220142565757,
+   "question": "Did the price of Bitcoin go up or down during March 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-04",
+   "up": false,
+   "return": -0.017811886337462002,
+   "question": "Did the price of Bitcoin go up or down during April 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-05",
+   "up": false,
+   "return": -0.35428925610810225,
+   "question": "Did the price of Bitcoin go up or down during May 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-06",
+   "up": false,
+   "return": -0.059290848372287264,
+   "question": "Did the price of Bitcoin go up or down during June 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-07",
+   "up": true,
+   "return": 0.18310258239406485,
+   "question": "Did the price of Bitcoin go up or down during July 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-08",
+   "up": true,
+   "return": 0.13600605665500054,
+   "question": "Did the price of Bitcoin go up or down during August 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-09",
+   "up": false,
+   "return": -0.06956959836640031,
+   "question": "Did the price of Bitcoin go up or down during September 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-10",
+   "up": true,
+   "return": 0.398769170387983,
+   "question": "Did the price of Bitcoin go up or down during October 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-11",
+   "up": false,
+   "return": -0.07095031305159238,
+   "question": "Did the price of Bitcoin go up or down during November 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2021-12",
+   "up": false,
+   "return": -0.18847277357764347,
+   "question": "Did the price of Bitcoin go up or down during December 2021? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-01",
+   "up": false,
+   "return": -0.16768811775252057,
+   "question": "Did the price of Bitcoin go up or down during January 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-02",
+   "up": true,
+   "return": 0.1220035926991776,
+   "question": "Did the price of Bitcoin go up or down during February 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-03",
+   "up": true,
+   "return": 0.05445644114921211,
+   "question": "Did the price of Bitcoin go up or down during March 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-04",
+   "up": false,
+   "return": -0.17313735735659175,
+   "question": "Did the price of Bitcoin go up or down during April 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-05",
+   "up": false,
+   "return": -0.15491990603441863,
+   "question": "Did the price of Bitcoin go up or down during May 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-06",
+   "up": false,
+   "return": -0.37290698668974354,
+   "question": "Did the price of Bitcoin go up or down during June 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-07",
+   "up": true,
+   "return": 0.16804105462734564,
+   "question": "Did the price of Bitcoin go up or down during July 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-08",
+   "up": false,
+   "return": -0.1392373435817651,
+   "question": "Did the price of Bitcoin go up or down during August 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-09",
+   "up": false,
+   "return": -0.03129223811248072,
+   "question": "Did the price of Bitcoin go up or down during September 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-10",
+   "up": true,
+   "return": 0.05499415372084404,
+   "question": "Did the price of Bitcoin go up or down during October 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-11",
+   "up": false,
+   "return": -0.16237090510152397,
+   "question": "Did the price of Bitcoin go up or down during November 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2022-12",
+   "up": false,
+   "return": -0.036195119450186386,
+   "question": "Did the price of Bitcoin go up or down during December 2022? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-01",
+   "up": true,
+   "return": 0.3979307718348002,
+   "question": "Did the price of Bitcoin go up or down during January 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-02",
+   "up": true,
+   "return": 0.000710914922424255,
+   "question": "Did the price of Bitcoin go up or down during February 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-03",
+   "up": true,
+   "return": 0.23005310357076048,
+   "question": "Did the price of Bitcoin go up or down during March 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-04",
+   "up": true,
+   "return": 0.026974891587529415,
+   "question": "Did the price of Bitcoin go up or down during April 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-05",
+   "up": false,
+   "return": -0.06919732728632955,
+   "question": "Did the price of Bitcoin go up or down during May 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-06",
+   "up": true,
+   "return": 0.11986799140768123,
+   "question": "Did the price of Bitcoin go up or down during June 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-07",
+   "up": false,
+   "return": -0.040684891047519045,
+   "question": "Did the price of Bitcoin go up or down during July 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-08",
+   "up": false,
+   "return": -0.11259721711465931,
+   "question": "Did the price of Bitcoin go up or down during August 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-09",
+   "up": true,
+   "return": 0.039388946670069425,
+   "question": "Did the price of Bitcoin go up or down during September 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-10",
+   "up": true,
+   "return": 0.2847359449547815,
+   "question": "Did the price of Bitcoin go up or down during October 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-11",
+   "up": true,
+   "return": 0.08903609925816491,
+   "question": "Did the price of Bitcoin go up or down during November 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2023-12",
+   "up": true,
+   "return": 0.1208680106754434,
+   "question": "Did the price of Bitcoin go up or down during December 2023? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-01",
+   "up": true,
+   "return": 0.007010286262421506,
+   "question": "Did the price of Bitcoin go up or down during January 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-02",
+   "up": true,
+   "return": 0.43567355565993426,
+   "question": "Did the price of Bitcoin go up or down during February 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-03",
+   "up": true,
+   "return": 0.1660210583897066,
+   "question": "Did the price of Bitcoin go up or down during March 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-04",
+   "up": false,
+   "return": -0.14882166823489495,
+   "question": "Did the price of Bitcoin go up or down during April 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-05",
+   "up": true,
+   "return": 0.11319900448312237,
+   "question": "Did the price of Bitcoin go up or down during May 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-06",
+   "up": false,
+   "return": -0.07059519239040668,
+   "question": "Did the price of Bitcoin go up or down during June 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-07",
+   "up": true,
+   "return": 0.029567158993315523,
+   "question": "Did the price of Bitcoin go up or down during July 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-08",
+   "up": false,
+   "return": -0.08748545522064743,
+   "question": "Did the price of Bitcoin go up or down during August 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-09",
+   "up": true,
+   "return": 0.07382237491477173,
+   "question": "Did the price of Bitcoin go up or down during September 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-10",
+   "up": true,
+   "return": 0.10997449926643355,
+   "question": "Did the price of Bitcoin go up or down during October 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-11",
+   "up": true,
+   "return": 0.37153554152171786,
+   "question": "Did the price of Bitcoin go up or down during November 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2024-12",
+   "up": false,
+   "return": -0.029375054909868026,
+   "question": "Did the price of Bitcoin go up or down during December 2024? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-01",
+   "up": true,
+   "return": 0.0946135761306317,
+   "question": "Did the price of Bitcoin go up or down during January 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-02",
+   "up": false,
+   "return": -0.17650783621446775,
+   "question": "Did the price of Bitcoin go up or down during February 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-03",
+   "up": false,
+   "return": -0.02133884149769405,
+   "question": "Did the price of Bitcoin go up or down during March 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-04",
+   "up": true,
+   "return": 0.14078726338131275,
+   "question": "Did the price of Bitcoin go up or down during April 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-05",
+   "up": true,
+   "return": 0.11064732616913742,
+   "question": "Did the price of Bitcoin go up or down during May 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-06",
+   "up": true,
+   "return": 0.024424649408730348,
+   "question": "Did the price of Bitcoin go up or down during June 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-07",
+   "up": true,
+   "return": 0.08042801211425488,
+   "question": "Did the price of Bitcoin go up or down during July 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-08",
+   "up": false,
+   "return": -0.06494009195252959,
+   "question": "Did the price of Bitcoin go up or down during August 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-09",
+   "up": true,
+   "return": 0.05360531786984035,
+   "question": "Did the price of Bitcoin go up or down during September 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-10",
+   "up": false,
+   "return": -0.03893872568554568,
+   "question": "Did the price of Bitcoin go up or down during October 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-11",
+   "up": false,
+   "return": -0.17560769509454643,
+   "question": "Did the price of Bitcoin go up or down during November 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2025-12",
+   "up": false,
+   "return": -0.030010845506861394,
+   "question": "Did the price of Bitcoin go up or down during December 2025? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-01",
+   "up": false,
+   "return": -0.10162362681181669,
+   "question": "Did the price of Bitcoin go up or down during January 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-02",
+   "up": false,
+   "return": -0.1494496710675456,
+   "question": "Did the price of Bitcoin go up or down during February 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-03",
+   "up": true,
+   "return": 0.019578261533035768,
+   "question": "Did the price of Bitcoin go up or down during March 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-04",
+   "up": true,
+   "return": 0.11806621358176872,
+   "question": "Did the price of Bitcoin go up or down during April 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-05",
+   "up": false,
+   "return": -0.03500065556317733,
+   "question": "Did the price of Bitcoin go up or down during May 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-06",
+   "up": false,
+   "return": -0.2042728823407971,
+   "question": "Did the price of Bitcoin go up or down during June 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-07",
+   "up": true,
+   "return": 0.07271967741929974,
+   "question": "Did the price of Bitcoin go up or down during July 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-08",
+   "up": true,
+   "return": 0.24954585843885968,
+   "question": "Did the price of Bitcoin go up or down during August 2026? Answer with one word: up or down."
+  },
+  {
+   "month": "2026-09",
+   "up": true,
+   "return": 0.06416680102859096,
+   "question": "Did the price of Bitcoin go up or down during September 2026? Answer with one word: up or down."
+  }
+ ],
+ "weeks": [
+  {
+   "start": "2018-01-01",
+   "up": true,
+   "return": 0.11379222720478332,
+   "question": "Did the price of Bitcoin go up or down between January 1, 2018 and January 8, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-01-08",
+   "up": false,
+   "return": -0.09143474870726742,
+   "question": "Did the price of Bitcoin go up or down between January 8, 2018 and January 15, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-01-15",
+   "up": false,
+   "return": -0.20530977634300918,
+   "question": "Did the price of Bitcoin go up or down between January 15, 2018 and January 22, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-01-22",
+   "up": true,
+   "return": 0.04562711139818121,
+   "question": "Did the price of Bitcoin go up or down between January 22, 2018 and January 29, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-01-29",
+   "up": false,
+   "return": -0.38316682961514537,
+   "question": "Did the price of Bitcoin go up or down between January 29, 2018 and February 5, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-02-05",
+   "up": true,
+   "return": 0.28285487443065493,
+   "question": "Did the price of Bitcoin go up or down between February 5, 2018 and February 12, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-02-12",
+   "up": true,
+   "return": 0.25272380096596647,
+   "question": "Did the price of Bitcoin go up or down between February 12, 2018 and February 19, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-02-19",
+   "up": false,
+   "return": -0.07432977674168384,
+   "question": "Did the price of Bitcoin go up or down between February 19, 2018 and February 26, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-02-26",
+   "up": true,
+   "return": 0.10945370011623412,
+   "question": "Did the price of Bitcoin go up or down between February 26, 2018 and March 5, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-03-05",
+   "up": false,
+   "return": -0.20278156102671552,
+   "question": "Did the price of Bitcoin go up or down between March 5, 2018 and March 12, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-03-12",
+   "up": false,
+   "return": -0.058188611967137316,
+   "question": "Did the price of Bitcoin go up or down between March 12, 2018 and March 19, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-03-19",
+   "up": false,
+   "return": -0.054159302325581415,
+   "question": "Did the price of Bitcoin go up or down between March 19, 2018 and March 26, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-03-26",
+   "up": false,
+   "return": -0.1325546486883208,
+   "question": "Did the price of Bitcoin go up or down between March 26, 2018 and April 2, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-04-02",
+   "up": false,
+   "return": -0.038730158730158726,
+   "question": "Did the price of Bitcoin go up or down between April 2, 2018 and April 9, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-04-09",
+   "up": true,
+   "return": 0.1890392055104737,
+   "question": "Did the price of Bitcoin go up or down between April 9, 2018 and April 16, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-04-16",
+   "up": true,
+   "return": 0.10776176329089449,
+   "question": "Did the price of Bitcoin go up or down between April 16, 2018 and April 23, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-04-23",
+   "up": true,
+   "return": 0.0349227278680011,
+   "question": "Did the price of Bitcoin go up or down between April 23, 2018 and April 30, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-04-30",
+   "up": true,
+   "return": 0.012869334988822256,
+   "question": "Did the price of Bitcoin go up or down between April 30, 2018 and May 7, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-05-07",
+   "up": false,
+   "return": -0.07492365189535499,
+   "question": "Did the price of Bitcoin go up or down between May 7, 2018 and May 14, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-05-14",
+   "up": false,
+   "return": -0.03256249898999697,
+   "question": "Did the price of Bitcoin go up or down between May 14, 2018 and May 21, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-05-21",
+   "up": false,
+   "return": -0.15298929514009862,
+   "question": "Did the price of Bitcoin go up or down between May 21, 2018 and May 28, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-05-28",
+   "up": true,
+   "return": 0.0546555852937034,
+   "question": "Did the price of Bitcoin go up or down between May 28, 2018 and June 4, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-06-04",
+   "up": false,
+   "return": -0.08214238012555097,
+   "question": "Did the price of Bitcoin go up or down between June 4, 2018 and June 11, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-06-11",
+   "up": false,
+   "return": -0.023215948777648432,
+   "question": "Did the price of Bitcoin go up or down between June 11, 2018 and June 18, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-06-18",
+   "up": false,
+   "return": -0.06859780170012186,
+   "question": "Did the price of Bitcoin go up or down between June 18, 2018 and June 25, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-06-25",
+   "up": true,
+   "return": 0.05810780550223926,
+   "question": "Did the price of Bitcoin go up or down between June 25, 2018 and July 2, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-07-02",
+   "up": true,
+   "return": 0.007079054735317669,
+   "question": "Did the price of Bitcoin go up or down between July 2, 2018 and July 9, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-07-09",
+   "up": true,
+   "return": 0.009190768103847002,
+   "question": "Did the price of Bitcoin go up or down between July 9, 2018 and July 16, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-07-16",
+   "up": true,
+   "return": 0.1483873366699635,
+   "question": "Did the price of Bitcoin go up or down between July 16, 2018 and July 23, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-07-23",
+   "up": true,
+   "return": 0.058659424090889534,
+   "question": "Did the price of Bitcoin go up or down between July 23, 2018 and July 30, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-07-30",
+   "up": false,
+   "return": -0.15159189226221936,
+   "question": "Did the price of Bitcoin go up or down between July 30, 2018 and August 6, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-08-06",
+   "up": false,
+   "return": -0.09927727035452971,
+   "question": "Did the price of Bitcoin go up or down between August 6, 2018 and August 13, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-08-13",
+   "up": true,
+   "return": 0.001359193769161049,
+   "question": "Did the price of Bitcoin go up or down between August 13, 2018 and August 20, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-08-20",
+   "up": true,
+   "return": 0.1045270542491894,
+   "question": "Did the price of Bitcoin go up or down between August 20, 2018 and August 27, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-08-27",
+   "up": true,
+   "return": 0.05129518979133385,
+   "question": "Did the price of Bitcoin go up or down between August 27, 2018 and September 3, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-09-03",
+   "up": false,
+   "return": -0.1309400221946243,
+   "question": "Did the price of Bitcoin go up or down between September 3, 2018 and September 10, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-09-10",
+   "up": false,
+   "return": -0.010030101394169932,
+   "question": "Did the price of Bitcoin go up or down between September 10, 2018 and September 17, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-09-17",
+   "up": true,
+   "return": 0.05324315976628724,
+   "question": "Did the price of Bitcoin go up or down between September 17, 2018 and September 24, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-09-24",
+   "up": true,
+   "return": 0.0045917351805619955,
+   "question": "Did the price of Bitcoin go up or down between September 24, 2018 and October 1, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-10-01",
+   "up": true,
+   "return": 0.009286694163751497,
+   "question": "Did the price of Bitcoin go up or down between October 1, 2018 and October 8, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-10-08",
+   "up": true,
+   "return": 0.011912165574455846,
+   "question": "Did the price of Bitcoin go up or down between October 8, 2018 and October 15, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-10-15",
+   "up": false,
+   "return": -0.025368382080710905,
+   "question": "Did the price of Bitcoin go up or down between October 15, 2018 and October 22, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-10-22",
+   "up": false,
+   "return": -0.03596608521242328,
+   "question": "Did the price of Bitcoin go up or down between October 22, 2018 and October 29, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-10-29",
+   "up": true,
+   "return": 0.01962171959965331,
+   "question": "Did the price of Bitcoin go up or down between October 29, 2018 and November 5, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-11-05",
+   "up": false,
+   "return": -0.0024609714963232943,
+   "question": "Did the price of Bitcoin go up or down between November 5, 2018 and November 12, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-11-12",
+   "up": false,
+   "return": -0.23911719538142306,
+   "question": "Did the price of Bitcoin go up or down between November 12, 2018 and November 19, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-11-19",
+   "up": false,
+   "return": -0.21340602806907494,
+   "question": "Did the price of Bitcoin go up or down between November 19, 2018 and November 26, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-11-26",
+   "up": true,
+   "return": 0.005647040546838733,
+   "question": "Did the price of Bitcoin go up or down between November 26, 2018 and December 3, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-12-03",
+   "up": false,
+   "return": -0.11615057633734205,
+   "question": "Did the price of Bitcoin go up or down between December 3, 2018 and December 10, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-12-10",
+   "up": true,
+   "return": 0.022197105637249193,
+   "question": "Did the price of Bitcoin go up or down between December 10, 2018 and December 17, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-12-17",
+   "up": true,
+   "return": 0.14218256637067284,
+   "question": "Did the price of Bitcoin go up or down between December 17, 2018 and December 24, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-12-24",
+   "up": false,
+   "return": -0.07612505956821469,
+   "question": "Did the price of Bitcoin go up or down between December 24, 2018 and December 31, 2018? Answer with one word: up or down."
+  },
+  {
+   "start": "2018-12-31",
+   "up": true,
+   "return": 0.07360447217046096,
+   "question": "Did the price of Bitcoin go up or down between December 31, 2018 and January 7, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-01-07",
+   "up": false,
+   "return": -0.08787935956935689,
+   "question": "Did the price of Bitcoin go up or down between January 7, 2019 and January 14, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-01-14",
+   "up": false,
+   "return": -0.027354533395475555,
+   "question": "Did the price of Bitcoin go up or down between January 14, 2019 and January 21, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-01-21",
+   "up": false,
+   "return": -0.02629788199268479,
+   "question": "Did the price of Bitcoin go up or down between January 21, 2019 and January 28, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-01-28",
+   "up": true,
+   "return": 0.00846497677736835,
+   "question": "Did the price of Bitcoin go up or down between January 28, 2019 and February 4, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-02-04",
+   "up": true,
+   "return": 0.048460681100247927,
+   "question": "Did the price of Bitcoin go up or down between February 4, 2019 and February 11, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-02-11",
+   "up": true,
+   "return": 0.07368392062901918,
+   "question": "Did the price of Bitcoin go up or down between February 11, 2019 and February 18, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-02-18",
+   "up": false,
+   "return": -0.018129584979223234,
+   "question": "Did the price of Bitcoin go up or down between February 18, 2019 and February 25, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-02-25",
+   "up": false,
+   "return": -0.029420677548120056,
+   "question": "Did the price of Bitcoin go up or down between February 25, 2019 and March 4, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-03-04",
+   "up": true,
+   "return": 0.04207197265362139,
+   "question": "Did the price of Bitcoin go up or down between March 4, 2019 and March 11, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-03-11",
+   "up": true,
+   "return": 0.030013353617745597,
+   "question": "Did the price of Bitcoin go up or down between March 11, 2019 and March 18, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-03-18",
+   "up": false,
+   "return": -0.012962001700181358,
+   "question": "Did the price of Bitcoin go up or down between March 18, 2019 and March 25, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-03-25",
+   "up": true,
+   "return": 0.05295570257004378,
+   "question": "Did the price of Bitcoin go up or down between March 25, 2019 and April 1, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-04-01",
+   "up": true,
+   "return": 0.26355994363696,
+   "question": "Did the price of Bitcoin go up or down between April 1, 2019 and April 8, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-04-08",
+   "up": false,
+   "return": -0.040472416887853524,
+   "question": "Did the price of Bitcoin go up or down between April 8, 2019 and April 15, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-04-15",
+   "up": true,
+   "return": 0.06610812047881076,
+   "question": "Did the price of Bitcoin go up or down between April 15, 2019 and April 22, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-04-22",
+   "up": false,
+   "return": -0.022213345180450816,
+   "question": "Did the price of Bitcoin go up or down between April 22, 2019 and April 29, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-04-29",
+   "up": true,
+   "return": 0.09729598674338602,
+   "question": "Did the price of Bitcoin go up or down between April 29, 2019 and May 6, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-05-06",
+   "up": true,
+   "return": 0.35542704239368517,
+   "question": "Did the price of Bitcoin go up or down between May 6, 2019 and May 13, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-05-13",
+   "up": true,
+   "return": 0.01892510438714834,
+   "question": "Did the price of Bitcoin go up or down between May 13, 2019 and May 20, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-05-20",
+   "up": true,
+   "return": 0.10306809521110094,
+   "question": "Did the price of Bitcoin go up or down between May 20, 2019 and May 27, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-05-27",
+   "up": false,
+   "return": -0.07314716684634637,
+   "question": "Did the price of Bitcoin go up or down between May 27, 2019 and June 3, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-06-03",
+   "up": false,
+   "return": -0.016396371531157583,
+   "question": "Did the price of Bitcoin go up or down between June 3, 2019 and June 10, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-06-10",
+   "up": true,
+   "return": 0.16676082803545134,
+   "question": "Did the price of Bitcoin go up or down between June 10, 2019 and June 17, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-06-17",
+   "up": true,
+   "return": 0.18709872063010802,
+   "question": "Did the price of Bitcoin go up or down between June 17, 2019 and June 24, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-06-24",
+   "up": false,
+   "return": -0.039040970136362096,
+   "question": "Did the price of Bitcoin go up or down between June 24, 2019 and July 1, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-07-01",
+   "up": true,
+   "return": 0.15187582412307665,
+   "question": "Did the price of Bitcoin go up or down between July 1, 2019 and July 8, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-07-08",
+   "up": false,
+   "return": -0.11438236399588197,
+   "question": "Did the price of Bitcoin go up or down between July 8, 2019 and July 15, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-07-15",
+   "up": false,
+   "return": -0.04598421215789317,
+   "question": "Did the price of Bitcoin go up or down between July 15, 2019 and July 22, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-07-22",
+   "up": false,
+   "return": -0.08052659929924733,
+   "question": "Did the price of Bitcoin go up or down between July 22, 2019 and July 29, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-07-29",
+   "up": true,
+   "return": 0.24413629460097352,
+   "question": "Did the price of Bitcoin go up or down between July 29, 2019 and August 5, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-08-05",
+   "up": false,
+   "return": -0.036581901798999006,
+   "question": "Did the price of Bitcoin go up or down between August 5, 2019 and August 12, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-08-12",
+   "up": false,
+   "return": -0.042167131153870385,
+   "question": "Did the price of Bitcoin go up or down between August 12, 2019 and August 19, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-08-19",
+   "up": false,
+   "return": -0.04977215969159576,
+   "question": "Did the price of Bitcoin go up or down between August 19, 2019 and August 26, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-08-26",
+   "up": false,
+   "return": -0.0031092578755814726,
+   "question": "Did the price of Bitcoin go up or down between August 26, 2019 and September 2, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-09-02",
+   "up": false,
+   "return": -0.0035667311411990976,
+   "question": "Did the price of Bitcoin go up or down between September 2, 2019 and September 9, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-09-09",
+   "up": false,
+   "return": -0.005028573868886443,
+   "question": "Did the price of Bitcoin go up or down between September 9, 2019 and September 16, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-09-16",
+   "up": false,
+   "return": -0.05355998404106399,
+   "question": "Did the price of Bitcoin go up or down between September 16, 2019 and September 23, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-09-23",
+   "up": false,
+   "return": -0.14562704527300363,
+   "question": "Did the price of Bitcoin go up or down between September 23, 2019 and September 30, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-09-30",
+   "up": false,
+   "return": -0.011973208964766835,
+   "question": "Did the price of Bitcoin go up or down between September 30, 2019 and October 7, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-10-07",
+   "up": true,
+   "return": 0.01930503816197393,
+   "question": "Did the price of Bitcoin go up or down between October 7, 2019 and October 14, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-10-14",
+   "up": false,
+   "return": -0.018079346445940447,
+   "question": "Did the price of Bitcoin go up or down between October 14, 2019 and October 21, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-10-21",
+   "up": true,
+   "return": 0.12295190959917135,
+   "question": "Did the price of Bitcoin go up or down between October 21, 2019 and October 28, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-10-28",
+   "up": true,
+   "return": 0.020446185500709424,
+   "question": "Did the price of Bitcoin go up or down between October 28, 2019 and November 4, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-11-04",
+   "up": false,
+   "return": -0.07027098958305611,
+   "question": "Did the price of Bitcoin go up or down between November 4, 2019 and November 11, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-11-11",
+   "up": false,
+   "return": -0.06253098782014077,
+   "question": "Did the price of Bitcoin go up or down between November 11, 2019 and November 18, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-11-18",
+   "up": false,
+   "return": -0.13162057218794776,
+   "question": "Did the price of Bitcoin go up or down between November 18, 2019 and November 25, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-11-25",
+   "up": true,
+   "return": 0.025980474205894222,
+   "question": "Did the price of Bitcoin go up or down between November 25, 2019 and December 2, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-12-02",
+   "up": true,
+   "return": 0.006081477541306501,
+   "question": "Did the price of Bitcoin go up or down between December 2, 2019 and December 9, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-12-09",
+   "up": false,
+   "return": -0.06089956722226464,
+   "question": "Did the price of Bitcoin go up or down between December 9, 2019 and December 16, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-12-16",
+   "up": true,
+   "return": 0.0617218923577858,
+   "question": "Did the price of Bitcoin go up or down between December 16, 2019 and December 23, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-12-23",
+   "up": false,
+   "return": -0.009715610987428125,
+   "question": "Did the price of Bitcoin go up or down between December 23, 2019 and December 30, 2019? Answer with one word: up or down."
+  },
+  {
+   "start": "2019-12-30",
+   "up": true,
+   "return": 0.07065967430306386,
+   "question": "Did the price of Bitcoin go up or down between December 30, 2019 and January 6, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-01-06",
+   "up": true,
+   "return": 0.0454163444186646,
+   "question": "Did the price of Bitcoin go up or down between January 6, 2020 and January 13, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-01-13",
+   "up": true,
+   "return": 0.06559651013397705,
+   "question": "Did the price of Bitcoin go up or down between January 13, 2020 and January 20, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-01-20",
+   "up": true,
+   "return": 0.030688412295266865,
+   "question": "Did the price of Bitcoin go up or down between January 20, 2020 and January 27, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-01-27",
+   "up": true,
+   "return": 0.043184617129026215,
+   "question": "Did the price of Bitcoin go up or down between January 27, 2020 and February 3, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-02-03",
+   "up": true,
+   "return": 0.06022121684330162,
+   "question": "Did the price of Bitcoin go up or down between February 3, 2020 and February 10, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-02-10",
+   "up": false,
+   "return": -0.014802326065309734,
+   "question": "Did the price of Bitcoin go up or down between February 10, 2020 and February 17, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-02-17",
+   "up": false,
+   "return": -0.005138058932619094,
+   "question": "Did the price of Bitcoin go up or down between February 17, 2020 and February 24, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-02-24",
+   "up": false,
+   "return": -0.07672742599778581,
+   "question": "Did the price of Bitcoin go up or down between February 24, 2020 and March 2, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-03-02",
+   "up": false,
+   "return": -0.11052646928181409,
+   "question": "Did the price of Bitcoin go up or down between March 2, 2020 and March 9, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-03-09",
+   "up": false,
+   "return": -0.365819363999662,
+   "question": "Did the price of Bitcoin go up or down between March 9, 2020 and March 16, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-03-16",
+   "up": true,
+   "return": 0.2860108531170398,
+   "question": "Did the price of Bitcoin go up or down between March 16, 2020 and March 23, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-03-23",
+   "up": false,
+   "return": -0.01127671319296586,
+   "question": "Did the price of Bitcoin go up or down between March 23, 2020 and March 30, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-03-30",
+   "up": true,
+   "return": 0.14630347273699718,
+   "question": "Did the price of Bitcoin go up or down between March 30, 2020 and April 6, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-04-06",
+   "up": false,
+   "return": -0.06712097027244568,
+   "question": "Did the price of Bitcoin go up or down between April 6, 2020 and April 13, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-04-13",
+   "up": false,
+   "return": -0.0016203781564835262,
+   "question": "Did the price of Bitcoin go up or down between April 13, 2020 and April 20, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-04-20",
+   "up": true,
+   "return": 0.13883310409077132,
+   "question": "Did the price of Bitcoin go up or down between April 20, 2020 and April 27, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-04-27",
+   "up": true,
+   "return": 0.14114387584216326,
+   "question": "Did the price of Bitcoin go up or down between April 27, 2020 and May 4, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-05-04",
+   "up": false,
+   "return": -0.03499114062732456,
+   "question": "Did the price of Bitcoin go up or down between May 4, 2020 and May 11, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-05-11",
+   "up": true,
+   "return": 0.1369394686924752,
+   "question": "Did the price of Bitcoin go up or down between May 11, 2020 and May 18, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-05-18",
+   "up": false,
+   "return": -0.08563653118524583,
+   "question": "Did the price of Bitcoin go up or down between May 18, 2020 and May 25, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-05-25",
+   "up": true,
+   "return": 0.1461088608874932,
+   "question": "Did the price of Bitcoin go up or down between May 25, 2020 and June 1, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-06-01",
+   "up": false,
+   "return": -0.04105180295213007,
+   "question": "Did the price of Bitcoin go up or down between June 1, 2020 and June 8, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-06-08",
+   "up": false,
+   "return": -0.036392316098634137,
+   "question": "Did the price of Bitcoin go up or down between June 8, 2020 and June 15, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-06-15",
+   "up": true,
+   "return": 0.02754821228896187,
+   "question": "Did the price of Bitcoin go up or down between June 15, 2020 and June 22, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-06-22",
+   "up": false,
+   "return": -0.050913254502260696,
+   "question": "Did the price of Bitcoin go up or down between June 22, 2020 and June 29, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-06-29",
+   "up": true,
+   "return": 0.01649594889780448,
+   "question": "Did the price of Bitcoin go up or down between June 29, 2020 and July 6, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-07-06",
+   "up": false,
+   "return": -0.010870914578027024,
+   "question": "Did the price of Bitcoin go up or down between July 6, 2020 and July 13, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-07-13",
+   "up": false,
+   "return": -0.008854632128119544,
+   "question": "Did the price of Bitcoin go up or down between July 13, 2020 and July 20, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-07-20",
+   "up": true,
+   "return": 0.20404157724560545,
+   "question": "Did the price of Bitcoin go up or down between July 20, 2020 and July 27, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-07-27",
+   "up": true,
+   "return": 0.017212211105026798,
+   "question": "Did the price of Bitcoin go up or down between July 27, 2020 and August 3, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-08-03",
+   "up": true,
+   "return": 0.0599929945337756,
+   "question": "Did the price of Bitcoin go up or down between August 3, 2020 and August 10, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-08-10",
+   "up": true,
+   "return": 0.032642109759419835,
+   "question": "Did the price of Bitcoin go up or down between August 10, 2020 and August 17, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-08-17",
+   "up": false,
+   "return": -0.04339421535314736,
+   "question": "Did the price of Bitcoin go up or down between August 17, 2020 and August 24, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-08-24",
+   "up": false,
+   "return": -0.008400435811443452,
+   "question": "Did the price of Bitcoin go up or down between August 24, 2020 and August 31, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-08-31",
+   "up": false,
+   "return": -0.10953851277864901,
+   "question": "Did the price of Bitcoin go up or down between August 31, 2020 and September 7, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-09-07",
+   "up": true,
+   "return": 0.028759023043464893,
+   "question": "Did the price of Bitcoin go up or down between September 7, 2020 and September 14, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-09-14",
+   "up": false,
+   "return": -0.023852650497527716,
+   "question": "Did the price of Bitcoin go up or down between September 14, 2020 and September 21, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-09-21",
+   "up": true,
+   "return": 0.026772977819418342,
+   "question": "Did the price of Bitcoin go up or down between September 21, 2020 and September 28, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-09-28",
+   "up": true,
+   "return": 0.008983631447665008,
+   "question": "Did the price of Bitcoin go up or down between September 28, 2020 and October 5, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-10-05",
+   "up": true,
+   "return": 0.06820104501302326,
+   "question": "Did the price of Bitcoin go up or down between October 5, 2020 and October 12, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-10-12",
+   "up": true,
+   "return": 0.019362869472816735,
+   "question": "Did the price of Bitcoin go up or down between October 12, 2020 and October 19, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-10-19",
+   "up": true,
+   "return": 0.11068572697713575,
+   "question": "Did the price of Bitcoin go up or down between October 19, 2020 and October 26, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-10-26",
+   "up": true,
+   "return": 0.038091691892318424,
+   "question": "Did the price of Bitcoin go up or down between October 26, 2020 and November 2, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-11-02",
+   "up": true,
+   "return": 0.1313005696943843,
+   "question": "Did the price of Bitcoin go up or down between November 2, 2020 and November 9, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-11-09",
+   "up": true,
+   "return": 0.09036553693435923,
+   "question": "Did the price of Bitcoin go up or down between November 9, 2020 and November 16, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-11-16",
+   "up": true,
+   "return": 0.09898723013694855,
+   "question": "Did the price of Bitcoin go up or down between November 16, 2020 and November 23, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-11-23",
+   "up": true,
+   "return": 0.07229257404181189,
+   "question": "Did the price of Bitcoin go up or down between November 23, 2020 and November 30, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-11-30",
+   "up": false,
+   "return": -0.02685689944135483,
+   "question": "Did the price of Bitcoin go up or down between November 30, 2020 and December 7, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-12-07",
+   "up": true,
+   "return": 0.005542889043089749,
+   "question": "Did the price of Bitcoin go up or down between December 7, 2020 and December 14, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-12-14",
+   "up": true,
+   "return": 0.1788276326535272,
+   "question": "Did the price of Bitcoin go up or down between December 14, 2020 and December 21, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-12-21",
+   "up": true,
+   "return": 0.19189065353387003,
+   "question": "Did the price of Bitcoin go up or down between December 21, 2020 and December 28, 2020? Answer with one word: up or down."
+  },
+  {
+   "start": "2020-12-28",
+   "up": true,
+   "return": 0.18129272388135487,
+   "question": "Did the price of Bitcoin go up or down between December 28, 2020 and January 4, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-01-04",
+   "up": true,
+   "return": 0.10678017337992074,
+   "question": "Did the price of Bitcoin go up or down between January 4, 2021 and January 11, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-01-11",
+   "up": true,
+   "return": 0.03465099180979103,
+   "question": "Did the price of Bitcoin go up or down between January 11, 2021 and January 18, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-01-18",
+   "up": false,
+   "return": -0.11948998765262564,
+   "question": "Did the price of Bitcoin go up or down between January 18, 2021 and January 25, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-01-25",
+   "up": true,
+   "return": 0.039441995151019205,
+   "question": "Did the price of Bitcoin go up or down between January 25, 2021 and February 1, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-02-01",
+   "up": true,
+   "return": 0.38323564406167443,
+   "question": "Did the price of Bitcoin go up or down between February 1, 2021 and February 8, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-02-08",
+   "up": true,
+   "return": 0.03312634623018873,
+   "question": "Did the price of Bitcoin go up or down between February 8, 2021 and February 15, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-02-15",
+   "up": true,
+   "return": 0.12891730726282646,
+   "question": "Did the price of Bitcoin go up or down between February 15, 2021 and February 22, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-02-22",
+   "up": false,
+   "return": -0.08321009205979846,
+   "question": "Did the price of Bitcoin go up or down between February 22, 2021 and March 1, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-03-01",
+   "up": true,
+   "return": 0.05622720296012895,
+   "question": "Did the price of Bitcoin go up or down between March 1, 2021 and March 8, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-03-08",
+   "up": true,
+   "return": 0.06167101701054145,
+   "question": "Did the price of Bitcoin go up or down between March 8, 2021 and March 15, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-03-15",
+   "up": false,
+   "return": -0.027370641594670952,
+   "question": "Did the price of Bitcoin go up or down between March 15, 2021 and March 22, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-03-22",
+   "up": true,
+   "return": 0.0656805942690204,
+   "question": "Did the price of Bitcoin go up or down between March 22, 2021 and March 29, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-03-29",
+   "up": true,
+   "return": 0.025930559775082962,
+   "question": "Did the price of Bitcoin go up or down between March 29, 2021 and April 5, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-04-05",
+   "up": true,
+   "return": 0.012345850219152688,
+   "question": "Did the price of Bitcoin go up or down between April 5, 2021 and April 12, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-04-12",
+   "up": false,
+   "return": -0.0706124290010024,
+   "question": "Did the price of Bitcoin go up or down between April 12, 2021 and April 19, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-04-19",
+   "up": false,
+   "return": -0.029330539315235438,
+   "question": "Did the price of Bitcoin go up or down between April 19, 2021 and April 26, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-04-26",
+   "up": true,
+   "return": 0.0586651565820806,
+   "question": "Did the price of Bitcoin go up or down between April 26, 2021 and May 3, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-05-03",
+   "up": false,
+   "return": -0.02367088401677886,
+   "question": "Did the price of Bitcoin go up or down between May 3, 2021 and May 10, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-05-10",
+   "up": false,
+   "return": -0.21997400751825547,
+   "question": "Did the price of Bitcoin go up or down between May 10, 2021 and May 17, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-05-17",
+   "up": false,
+   "return": -0.1089105067660372,
+   "question": "Did the price of Bitcoin go up or down between May 17, 2021 and May 24, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-05-24",
+   "up": false,
+   "return": -0.039758440819985696,
+   "question": "Did the price of Bitcoin go up or down between May 24, 2021 and May 31, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-05-31",
+   "up": false,
+   "return": -0.0993460803069538,
+   "question": "Did the price of Bitcoin go up or down between May 31, 2021 and June 7, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-06-07",
+   "up": true,
+   "return": 0.20753862793526268,
+   "question": "Did the price of Bitcoin go up or down between June 7, 2021 and June 14, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-06-14",
+   "up": false,
+   "return": -0.21984638771220166,
+   "question": "Did the price of Bitcoin go up or down between June 14, 2021 and June 21, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-06-21",
+   "up": true,
+   "return": 0.09130204660518393,
+   "question": "Did the price of Bitcoin go up or down between June 21, 2021 and June 28, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-06-28",
+   "up": false,
+   "return": -0.023329542433676353,
+   "question": "Did the price of Bitcoin go up or down between June 28, 2021 and July 5, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-07-05",
+   "up": false,
+   "return": -0.01791354978044024,
+   "question": "Did the price of Bitcoin go up or down between July 5, 2021 and July 12, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-07-12",
+   "up": false,
+   "return": -0.0679120236784464,
+   "question": "Did the price of Bitcoin go up or down between July 12, 2021 and July 19, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-07-19",
+   "up": true,
+   "return": 0.20745858010710228,
+   "question": "Did the price of Bitcoin go up or down between July 19, 2021 and July 26, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-07-26",
+   "up": true,
+   "return": 0.05129815025672979,
+   "question": "Did the price of Bitcoin go up or down between July 26, 2021 and August 2, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-08-02",
+   "up": true,
+   "return": 0.18150640316625544,
+   "question": "Did the price of Bitcoin go up or down between August 2, 2021 and August 9, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-08-09",
+   "up": false,
+   "return": -0.007612629558043316,
+   "question": "Did the price of Bitcoin go up or down between August 9, 2021 and August 16, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-08-16",
+   "up": true,
+   "return": 0.07815815198222098,
+   "question": "Did the price of Bitcoin go up or down between August 16, 2021 and August 23, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-08-23",
+   "up": false,
+   "return": -0.050636456494745685,
+   "question": "Did the price of Bitcoin go up or down between August 23, 2021 and August 30, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-08-30",
+   "up": true,
+   "return": 0.1209160948097936,
+   "question": "Did the price of Bitcoin go up or down between August 30, 2021 and September 6, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-09-06",
+   "up": false,
+   "return": -0.14665017212929532,
+   "question": "Did the price of Bitcoin go up or down between September 6, 2021 and September 13, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-09-13",
+   "up": false,
+   "return": -0.04283664284047006,
+   "question": "Did the price of Bitcoin go up or down between September 13, 2021 and September 20, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-09-20",
+   "up": false,
+   "return": -0.02018499326523726,
+   "question": "Did the price of Bitcoin go up or down between September 20, 2021 and September 27, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-09-27",
+   "up": true,
+   "return": 0.16792491105609253,
+   "question": "Did the price of Bitcoin go up or down between September 27, 2021 and October 4, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-10-04",
+   "up": true,
+   "return": 0.16752503913666517,
+   "question": "Did the price of Bitcoin go up or down between October 4, 2021 and October 11, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-10-11",
+   "up": true,
+   "return": 0.07896960833528355,
+   "question": "Did the price of Bitcoin go up or down between October 11, 2021 and October 18, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-10-18",
+   "up": true,
+   "return": 0.017238231867716447,
+   "question": "Did the price of Bitcoin go up or down between October 18, 2021 and October 25, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-10-25",
+   "up": false,
+   "return": -0.03436448834298944,
+   "question": "Did the price of Bitcoin go up or down between October 25, 2021 and November 1, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-11-01",
+   "up": true,
+   "return": 0.10859628071135141,
+   "question": "Did the price of Bitcoin go up or down between November 1, 2021 and November 8, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-11-08",
+   "up": false,
+   "return": -0.058038383237940305,
+   "question": "Did the price of Bitcoin go up or down between November 8, 2021 and November 15, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-11-15",
+   "up": false,
+   "return": -0.11570409047846186,
+   "question": "Did the price of Bitcoin go up or down between November 15, 2021 and November 22, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-11-22",
+   "up": true,
+   "return": 0.027184829532787225,
+   "question": "Did the price of Bitcoin go up or down between November 22, 2021 and November 29, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-11-29",
+   "up": false,
+   "return": -0.12694368360701846,
+   "question": "Did the price of Bitcoin go up or down between November 29, 2021 and December 6, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-12-06",
+   "up": false,
+   "return": -0.07412822509531747,
+   "question": "Did the price of Bitcoin go up or down between December 6, 2021 and December 13, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-12-13",
+   "up": true,
+   "return": 0.0045267141656542,
+   "question": "Did the price of Bitcoin go up or down between December 13, 2021 and December 20, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-12-20",
+   "up": true,
+   "return": 0.08072786553143008,
+   "question": "Did the price of Bitcoin go up or down between December 20, 2021 and December 27, 2021? Answer with one word: up or down."
+  },
+  {
+   "start": "2021-12-27",
+   "up": false,
+   "return": -0.08392937163125946,
+   "question": "Did the price of Bitcoin go up or down between December 27, 2021 and January 3, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-01-03",
+   "up": false,
+   "return": -0.09954786300679719,
+   "question": "Did the price of Bitcoin go up or down between January 3, 2022 and January 10, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-01-10",
+   "up": true,
+   "return": 0.009065218259362462,
+   "question": "Did the price of Bitcoin go up or down between January 10, 2022 and January 17, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-01-17",
+   "up": false,
+   "return": -0.13130467503380205,
+   "question": "Did the price of Bitcoin go up or down between January 17, 2022 and January 24, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-01-24",
+   "up": true,
+   "return": 0.04927803471598069,
+   "question": "Did the price of Bitcoin go up or down between January 24, 2022 and January 31, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-01-31",
+   "up": true,
+   "return": 0.13968086848693284,
+   "question": "Did the price of Bitcoin go up or down between January 31, 2022 and February 7, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-02-07",
+   "up": false,
+   "return": -0.029745672843447202,
+   "question": "Did the price of Bitcoin go up or down between February 7, 2022 and February 14, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-02-14",
+   "up": false,
+   "return": -0.1299555152654437,
+   "question": "Did the price of Bitcoin go up or down between February 14, 2022 and February 21, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-02-21",
+   "up": true,
+   "return": 0.16622928564943495,
+   "question": "Did the price of Bitcoin go up or down between February 21, 2022 and February 28, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-02-28",
+   "up": false,
+   "return": -0.11983317886932343,
+   "question": "Did the price of Bitcoin go up or down between February 28, 2022 and March 7, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-03-07",
+   "up": true,
+   "return": 0.04431320416973783,
+   "question": "Did the price of Bitcoin go up or down between March 7, 2022 and March 14, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-03-14",
+   "up": true,
+   "return": 0.03354761884956314,
+   "question": "Did the price of Bitcoin go up or down between March 14, 2022 and March 21, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-03-21",
+   "up": true,
+   "return": 0.14925912602357183,
+   "question": "Did the price of Bitcoin go up or down between March 21, 2022 and March 28, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-03-28",
+   "up": false,
+   "return": -0.011495640802924978,
+   "question": "Did the price of Bitcoin go up or down between March 28, 2022 and April 4, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-04-04",
+   "up": false,
+   "return": -0.15135214277387699,
+   "question": "Did the price of Bitcoin go up or down between April 4, 2022 and April 11, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-04-11",
+   "up": true,
+   "return": 0.03214433430431485,
+   "question": "Did the price of Bitcoin go up or down between April 11, 2022 and April 18, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-04-18",
+   "up": false,
+   "return": -0.00919214737434959,
+   "question": "Did the price of Bitcoin go up or down between April 18, 2022 and April 25, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-04-25",
+   "up": false,
+   "return": -0.04702212037377851,
+   "question": "Did the price of Bitcoin go up or down between April 25, 2022 and May 2, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-05-02",
+   "up": false,
+   "return": -0.2193073305860378,
+   "question": "Did the price of Bitcoin go up or down between May 2, 2022 and May 9, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-05-09",
+   "up": false,
+   "return": -0.006726224061395891,
+   "question": "Did the price of Bitcoin go up or down between May 9, 2022 and May 16, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-05-16",
+   "up": false,
+   "return": -0.02560285679759755,
+   "question": "Did the price of Bitcoin go up or down between May 16, 2022 and May 23, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-05-23",
+   "up": true,
+   "return": 0.09018023542425668,
+   "question": "Did the price of Bitcoin go up or down between May 23, 2022 and May 30, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-05-30",
+   "up": false,
+   "return": -0.011379513975765088,
+   "question": "Did the price of Bitcoin go up or down between May 30, 2022 and June 6, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-06-06",
+   "up": false,
+   "return": -0.28322639458644505,
+   "question": "Did the price of Bitcoin go up or down between June 6, 2022 and June 13, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-06-13",
+   "up": false,
+   "return": -0.08509294756488184,
+   "question": "Did the price of Bitcoin go up or down between June 13, 2022 and June 20, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-06-20",
+   "up": true,
+   "return": 0.008198255167107593,
+   "question": "Did the price of Bitcoin go up or down between June 20, 2022 and June 27, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-06-27",
+   "up": false,
+   "return": -0.0243870573352567,
+   "question": "Did the price of Bitcoin go up or down between June 27, 2022 and July 4, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-07-04",
+   "up": false,
+   "return": -0.013495276653171295,
+   "question": "Did the price of Bitcoin go up or down between July 4, 2022 and July 11, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-07-11",
+   "up": true,
+   "return": 0.12367352397687603,
+   "question": "Did the price of Bitcoin go up or down between July 11, 2022 and July 18, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-07-18",
+   "up": false,
+   "return": -0.05000227347902031,
+   "question": "Did the price of Bitcoin go up or down between July 18, 2022 and July 25, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-07-25",
+   "up": true,
+   "return": 0.0918361026516945,
+   "question": "Did the price of Bitcoin go up or down between July 25, 2022 and August 1, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-08-01",
+   "up": true,
+   "return": 0.023293354266222144,
+   "question": "Did the price of Bitcoin go up or down between August 1, 2022 and August 8, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-08-08",
+   "up": true,
+   "return": 0.011962200755984975,
+   "question": "Did the price of Bitcoin go up or down between August 8, 2022 and August 15, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-08-15",
+   "up": false,
+   "return": -0.11184935185238976,
+   "question": "Did the price of Bitcoin go up or down between August 15, 2022 and August 22, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-08-22",
+   "up": false,
+   "return": -0.05206116123352389,
+   "question": "Did the price of Bitcoin go up or down between August 22, 2022 and August 29, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-08-29",
+   "up": false,
+   "return": -0.024100192598442316,
+   "question": "Did the price of Bitcoin go up or down between August 29, 2022 and September 5, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-09-05",
+   "up": true,
+   "return": 0.13127852728011136,
+   "question": "Did the price of Bitcoin go up or down between September 5, 2022 and September 12, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-09-12",
+   "up": false,
+   "return": -0.12764570404907372,
+   "question": "Did the price of Bitcoin go up or down between September 12, 2022 and September 19, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-09-19",
+   "up": false,
+   "return": -0.015826364512090407,
+   "question": "Did the price of Bitcoin go up or down between September 19, 2022 and September 26, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-09-26",
+   "up": true,
+   "return": 0.02086872042696486,
+   "question": "Did the price of Bitcoin go up or down between September 26, 2022 and October 3, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-10-03",
+   "up": false,
+   "return": -0.02533027528544396,
+   "question": "Did the price of Bitcoin go up or down between October 3, 2022 and October 10, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-10-10",
+   "up": true,
+   "return": 0.021847838188321367,
+   "question": "Did the price of Bitcoin go up or down between October 10, 2022 and October 17, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-10-17",
+   "up": false,
+   "return": -0.011260438693678543,
+   "question": "Did the price of Bitcoin go up or down between October 17, 2022 and October 24, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-10-24",
+   "up": true,
+   "return": 0.06006398437225169,
+   "question": "Did the price of Bitcoin go up or down between October 24, 2022 and October 31, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-10-31",
+   "up": true,
+   "return": 0.004899286214163023,
+   "question": "Did the price of Bitcoin go up or down between October 31, 2022 and November 7, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-11-07",
+   "up": false,
+   "return": -0.19288256642544643,
+   "question": "Did the price of Bitcoin go up or down between November 7, 2022 and November 14, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-11-14",
+   "up": false,
+   "return": -0.0504330465610795,
+   "question": "Did the price of Bitcoin go up or down between November 14, 2022 and November 21, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-11-21",
+   "up": true,
+   "return": 0.027350108894773406,
+   "question": "Did the price of Bitcoin go up or down between November 21, 2022 and November 28, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-11-28",
+   "up": true,
+   "return": 0.04647160811970208,
+   "question": "Did the price of Bitcoin go up or down between November 28, 2022 and December 5, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-12-05",
+   "up": true,
+   "return": 0.014350759002378366,
+   "question": "Did the price of Bitcoin go up or down between December 5, 2022 and December 12, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-12-12",
+   "up": false,
+   "return": -0.04479707237084851,
+   "question": "Did the price of Bitcoin go up or down between December 12, 2022 and December 19, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-12-19",
+   "up": true,
+   "return": 0.029230093534352575,
+   "question": "Did the price of Bitcoin go up or down between December 19, 2022 and December 26, 2022? Answer with one word: up or down."
+  },
+  {
+   "start": "2022-12-26",
+   "up": false,
+   "return": -0.014570265240058888,
+   "question": "Did the price of Bitcoin go up or down between December 26, 2022 and January 2, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-01-02",
+   "up": true,
+   "return": 0.030312117829743634,
+   "question": "Did the price of Bitcoin go up or down between January 2, 2023 and January 9, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-01-09",
+   "up": true,
+   "return": 0.23328264911580132,
+   "question": "Did the price of Bitcoin go up or down between January 9, 2023 and January 16, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-01-16",
+   "up": true,
+   "return": 0.08169680892490905,
+   "question": "Did the price of Bitcoin go up or down between January 16, 2023 and January 23, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-01-23",
+   "up": false,
+   "return": -0.003940400891062956,
+   "question": "Did the price of Bitcoin go up or down between January 23, 2023 and January 30, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-01-30",
+   "up": false,
+   "return": -0.002787592300935615,
+   "question": "Did the price of Bitcoin go up or down between January 30, 2023 and February 6, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-02-06",
+   "up": false,
+   "return": -0.04342884706965655,
+   "question": "Did the price of Bitcoin go up or down between February 6, 2023 and February 13, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-02-13",
+   "up": true,
+   "return": 0.14091275040794127,
+   "question": "Did the price of Bitcoin go up or down between February 13, 2023 and February 20, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-02-20",
+   "up": false,
+   "return": -0.05434744104789435,
+   "question": "Did the price of Bitcoin go up or down between February 20, 2023 and February 27, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-02-27",
+   "up": false,
+   "return": -0.04606188721395155,
+   "question": "Did the price of Bitcoin go up or down between February 27, 2023 and March 6, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-03-06",
+   "up": true,
+   "return": 0.0760142793395806,
+   "question": "Did the price of Bitcoin go up or down between March 6, 2023 and March 13, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-03-13",
+   "up": true,
+   "return": 0.14944047893543355,
+   "question": "Did the price of Bitcoin go up or down between March 13, 2023 and March 20, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-03-20",
+   "up": false,
+   "return": -0.021362333094370523,
+   "question": "Did the price of Bitcoin go up or down between March 20, 2023 and March 27, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-03-27",
+   "up": true,
+   "return": 0.024888193177415197,
+   "question": "Did the price of Bitcoin go up or down between March 27, 2023 and April 3, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-04-03",
+   "up": true,
+   "return": 0.06609136690647488,
+   "question": "Did the price of Bitcoin go up or down between April 3, 2023 and April 10, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-04-10",
+   "up": false,
+   "return": -0.006986794361437232,
+   "question": "Did the price of Bitcoin go up or down between April 10, 2023 and April 17, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-04-17",
+   "up": false,
+   "return": -0.06521652706550096,
+   "question": "Did the price of Bitcoin go up or down between April 17, 2023 and April 24, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-04-24",
+   "up": true,
+   "return": 0.020258493624170315,
+   "question": "Did the price of Bitcoin go up or down between April 24, 2023 and May 1, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-05-01",
+   "up": false,
+   "return": -0.014232089912235346,
+   "question": "Did the price of Bitcoin go up or down between May 1, 2023 and May 8, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-05-08",
+   "up": false,
+   "return": -0.018311245269489573,
+   "question": "Did the price of Bitcoin go up or down between May 8, 2023 and May 15, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-05-15",
+   "up": false,
+   "return": -0.011518606413191246,
+   "question": "Did the price of Bitcoin go up or down between May 15, 2023 and May 22, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-05-22",
+   "up": true,
+   "return": 0.033041121788413674,
+   "question": "Did the price of Bitcoin go up or down between May 22, 2023 and May 29, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-05-29",
+   "up": false,
+   "return": -0.07240305158564198,
+   "question": "Did the price of Bitcoin go up or down between May 29, 2023 and June 5, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-06-05",
+   "up": true,
+   "return": 0.006879222020973019,
+   "question": "Did the price of Bitcoin go up or down between June 5, 2023 and June 12, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-06-12",
+   "up": true,
+   "return": 0.03625373911559815,
+   "question": "Did the price of Bitcoin go up or down between June 12, 2023 and June 19, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-06-19",
+   "up": true,
+   "return": 0.12753670697930852,
+   "question": "Did the price of Bitcoin go up or down between June 19, 2023 and June 26, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-06-26",
+   "up": true,
+   "return": 0.029344862344675038,
+   "question": "Did the price of Bitcoin go up or down between June 26, 2023 and July 3, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-07-03",
+   "up": false,
+   "return": -0.02389989793363767,
+   "question": "Did the price of Bitcoin go up or down between July 3, 2023 and July 10, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-07-10",
+   "up": false,
+   "return": -0.008995589507545976,
+   "question": "Did the price of Bitcoin go up or down between July 10, 2023 and July 17, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-07-17",
+   "up": false,
+   "return": -0.03190324507266573,
+   "question": "Did the price of Bitcoin go up or down between July 17, 2023 and July 24, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-07-24",
+   "up": true,
+   "return": 0.0019107843641286149,
+   "question": "Did the price of Bitcoin go up or down between July 24, 2023 and July 31, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-07-31",
+   "up": false,
+   "return": -0.0007248843315174058,
+   "question": "Did the price of Bitcoin go up or down between July 31, 2023 and August 7, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-08-07",
+   "up": true,
+   "return": 0.007526943561787958,
+   "question": "Did the price of Bitcoin go up or down between August 7, 2023 and August 14, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-08-14",
+   "up": false,
+   "return": -0.11226318706204674,
+   "question": "Did the price of Bitcoin go up or down between August 14, 2023 and August 21, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-08-21",
+   "up": false,
+   "return": -0.0002648609173985239,
+   "question": "Did the price of Bitcoin go up or down between August 21, 2023 and August 28, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-08-28",
+   "up": false,
+   "return": -0.011254977029096502,
+   "question": "Did the price of Bitcoin go up or down between August 28, 2023 and September 4, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-09-04",
+   "up": false,
+   "return": -0.025691144047747194,
+   "question": "Did the price of Bitcoin go up or down between September 4, 2023 and September 11, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-09-11",
+   "up": true,
+   "return": 0.06358623858023749,
+   "question": "Did the price of Bitcoin go up or down between September 11, 2023 and September 18, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-09-18",
+   "up": false,
+   "return": -0.01710228225977295,
+   "question": "Did the price of Bitcoin go up or down between September 18, 2023 and September 25, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-09-25",
+   "up": true,
+   "return": 0.04522746980495196,
+   "question": "Did the price of Bitcoin go up or down between September 25, 2023 and October 2, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-10-02",
+   "up": true,
+   "return": 0.0034774214925088476,
+   "question": "Did the price of Bitcoin go up or down between October 2, 2023 and October 9, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-10-09",
+   "up": true,
+   "return": 0.033006742993506366,
+   "question": "Did the price of Bitcoin go up or down between October 9, 2023 and October 16, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-10-16",
+   "up": true,
+   "return": 0.1603187702231308,
+   "question": "Did the price of Bitcoin go up or down between October 16, 2023 and October 23, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-10-23",
+   "up": true,
+   "return": 0.042477787262711786,
+   "question": "Did the price of Bitcoin go up or down between October 23, 2023 and October 30, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-10-30",
+   "up": true,
+   "return": 0.016573298761150435,
+   "question": "Did the price of Bitcoin go up or down between October 30, 2023 and November 6, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-11-06",
+   "up": true,
+   "return": 0.04042790508156546,
+   "question": "Did the price of Bitcoin go up or down between November 6, 2023 and November 13, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-11-13",
+   "up": true,
+   "return": 0.027037048311805867,
+   "question": "Did the price of Bitcoin go up or down between November 13, 2023 and November 20, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-11-20",
+   "up": false,
+   "return": -0.005502983007724227,
+   "question": "Did the price of Bitcoin go up or down between November 20, 2023 and November 27, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-11-27",
+   "up": true,
+   "return": 0.12749881184769096,
+   "question": "Did the price of Bitcoin go up or down between November 27, 2023 and December 4, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-12-04",
+   "up": false,
+   "return": -0.017568008458935247,
+   "question": "Did the price of Bitcoin go up or down between December 4, 2023 and December 11, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-12-11",
+   "up": true,
+   "return": 0.03404325461658919,
+   "question": "Did the price of Bitcoin go up or down between December 11, 2023 and December 18, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-12-18",
+   "up": true,
+   "return": 0.021527833127821694,
+   "question": "Did the price of Bitcoin go up or down between December 18, 2023 and December 25, 2023? Answer with one word: up or down."
+  },
+  {
+   "start": "2023-12-25",
+   "up": true,
+   "return": 0.01384748943974623,
+   "question": "Did the price of Bitcoin go up or down between December 25, 2023 and January 1, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-01-01",
+   "up": true,
+   "return": 0.062732418053149,
+   "question": "Did the price of Bitcoin go up or down between January 1, 2024 and January 8, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-01-08",
+   "up": false,
+   "return": -0.0945653174029798,
+   "question": "Did the price of Bitcoin go up or down between January 8, 2024 and January 15, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-01-15",
+   "up": false,
+   "return": -0.06923085970487708,
+   "question": "Did the price of Bitcoin go up or down between January 15, 2024 and January 22, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-01-22",
+   "up": true,
+   "return": 0.09438632511811318,
+   "question": "Did the price of Bitcoin go up or down between January 22, 2024 and January 29, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-01-29",
+   "up": false,
+   "return": -0.013717389446847417,
+   "question": "Did the price of Bitcoin go up or down between January 29, 2024 and February 5, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-02-05",
+   "up": true,
+   "return": 0.16878458019092135,
+   "question": "Did the price of Bitcoin go up or down between February 5, 2024 and February 12, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-02-12",
+   "up": true,
+   "return": 0.037210768938285455,
+   "question": "Did the price of Bitcoin go up or down between February 12, 2024 and February 19, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-02-19",
+   "up": true,
+   "return": 0.052182599503657334,
+   "question": "Did the price of Bitcoin go up or down between February 19, 2024 and February 26, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-02-26",
+   "up": true,
+   "return": 0.2527557310523241,
+   "question": "Did the price of Bitcoin go up or down between February 26, 2024 and March 4, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-03-04",
+   "up": true,
+   "return": 0.05615576422312851,
+   "question": "Did the price of Bitcoin go up or down between March 4, 2024 and March 11, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-03-11",
+   "up": false,
+   "return": -0.06198984157462528,
+   "question": "Did the price of Bitcoin go up or down between March 11, 2024 and March 18, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-03-18",
+   "up": true,
+   "return": 0.033575215733651076,
+   "question": "Did the price of Bitcoin go up or down between March 18, 2024 and March 25, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-03-25",
+   "up": false,
+   "return": -0.003294361291590997,
+   "question": "Did the price of Bitcoin go up or down between March 25, 2024 and April 1, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-04-01",
+   "up": true,
+   "return": 0.028287231262688506,
+   "question": "Did the price of Bitcoin go up or down between April 1, 2024 and April 8, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-04-08",
+   "up": false,
+   "return": -0.11449329796146335,
+   "question": "Did the price of Bitcoin go up or down between April 8, 2024 and April 15, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-04-15",
+   "up": true,
+   "return": 0.05360029227377683,
+   "question": "Did the price of Bitcoin go up or down between April 15, 2024 and April 22, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-04-22",
+   "up": false,
+   "return": -0.044198594059323026,
+   "question": "Did the price of Bitcoin go up or down between April 22, 2024 and April 29, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-04-29",
+   "up": false,
+   "return": -0.010973131243541157,
+   "question": "Did the price of Bitcoin go up or down between April 29, 2024 and May 6, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-05-06",
+   "up": false,
+   "return": -0.0035638300146013657,
+   "question": "Did the price of Bitcoin go up or down between May 6, 2024 and May 13, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-05-13",
+   "up": true,
+   "return": 0.13515298995489022,
+   "question": "Did the price of Bitcoin go up or down between May 13, 2024 and May 20, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-05-20",
+   "up": false,
+   "return": -0.02813555070904683,
+   "question": "Did the price of Bitcoin go up or down between May 20, 2024 and May 27, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-05-27",
+   "up": false,
+   "return": -0.00902307333484742,
+   "question": "Did the price of Bitcoin go up or down between May 27, 2024 and June 3, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-06-03",
+   "up": true,
+   "return": 0.010610391818619114,
+   "question": "Did the price of Bitcoin go up or down between June 3, 2024 and June 10, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-06-10",
+   "up": false,
+   "return": -0.043653580672993963,
+   "question": "Did the price of Bitcoin go up or down between June 10, 2024 and June 17, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-06-17",
+   "up": false,
+   "return": -0.09339286629908161,
+   "question": "Did the price of Bitcoin go up or down between June 17, 2024 and June 24, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-06-24",
+   "up": true,
+   "return": 0.0432334936054255,
+   "question": "Did the price of Bitcoin go up or down between June 24, 2024 and July 1, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-07-01",
+   "up": false,
+   "return": -0.09833658161153913,
+   "question": "Did the price of Bitcoin go up or down between July 1, 2024 and July 8, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-07-08",
+   "up": true,
+   "return": 0.14122496104179127,
+   "question": "Did the price of Bitcoin go up or down between July 8, 2024 and July 15, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-07-15",
+   "up": true,
+   "return": 0.04338211369050238,
+   "question": "Did the price of Bitcoin go up or down between July 15, 2024 and July 22, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-07-22",
+   "up": false,
+   "return": -0.011066159588615676,
+   "question": "Did the price of Bitcoin go up or down between July 22, 2024 and July 29, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-07-29",
+   "up": false,
+   "return": -0.19114979795519005,
+   "question": "Did the price of Bitcoin go up or down between July 29, 2024 and August 5, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-08-05",
+   "up": true,
+   "return": 0.09862916269351363,
+   "question": "Did the price of Bitcoin go up or down between August 5, 2024 and August 12, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-08-12",
+   "up": true,
+   "return": 0.0015478551102472426,
+   "question": "Did the price of Bitcoin go up or down between August 12, 2024 and August 19, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-08-19",
+   "up": true,
+   "return": 0.05712627337500109,
+   "question": "Did the price of Bitcoin go up or down between August 19, 2024 and August 26, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-08-26",
+   "up": false,
+   "return": -0.058915077824107986,
+   "question": "Did the price of Bitcoin go up or down between August 26, 2024 and September 2, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-09-02",
+   "up": false,
+   "return": -0.03534677340390069,
+   "question": "Did the price of Bitcoin go up or down between September 2, 2024 and September 9, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-09-09",
+   "up": true,
+   "return": 0.020546088846814525,
+   "question": "Did the price of Bitcoin go up or down between September 9, 2024 and September 16, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-09-16",
+   "up": true,
+   "return": 0.08805443502498278,
+   "question": "Did the price of Bitcoin go up or down between September 16, 2024 and September 23, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-09-23",
+   "up": false,
+   "return": -0.00019576889734274072,
+   "question": "Did the price of Bitcoin go up or down between September 23, 2024 and September 30, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-09-30",
+   "up": false,
+   "return": -0.017426685588382562,
+   "question": "Did the price of Bitcoin go up or down between September 30, 2024 and October 7, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-10-07",
+   "up": true,
+   "return": 0.06203378117768077,
+   "question": "Did the price of Bitcoin go up or down between October 7, 2024 and October 14, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-10-14",
+   "up": true,
+   "return": 0.019573727312772737,
+   "question": "Did the price of Bitcoin go up or down between October 14, 2024 and October 21, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-10-21",
+   "up": true,
+   "return": 0.038361619234907884,
+   "question": "Did the price of Bitcoin go up or down between October 21, 2024 and October 28, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-10-28",
+   "up": false,
+   "return": -0.03019058431687638,
+   "question": "Did the price of Bitcoin go up or down between October 28, 2024 and November 4, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-11-04",
+   "up": true,
+   "return": 0.306528768381906,
+   "question": "Did the price of Bitcoin go up or down between November 4, 2024 and November 11, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-11-11",
+   "up": true,
+   "return": 0.02048653331000505,
+   "question": "Did the price of Bitcoin go up or down between November 11, 2024 and November 18, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-11-18",
+   "up": true,
+   "return": 0.028142993329506982,
+   "question": "Did the price of Bitcoin go up or down between November 18, 2024 and November 25, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-11-25",
+   "up": true,
+   "return": 0.03043339098662612,
+   "question": "Did the price of Bitcoin go up or down between November 25, 2024 and December 2, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-12-02",
+   "up": true,
+   "return": 0.014981643482690377,
+   "question": "Did the price of Bitcoin go up or down between December 2, 2024 and December 9, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-12-09",
+   "up": true,
+   "return": 0.09028072256322628,
+   "question": "Did the price of Bitcoin go up or down between December 9, 2024 and December 16, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-12-16",
+   "up": false,
+   "return": -0.10538686798418917,
+   "question": "Did the price of Bitcoin go up or down between December 16, 2024 and December 23, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-12-23",
+   "up": false,
+   "return": -0.022021370453050526,
+   "question": "Did the price of Bitcoin go up or down between December 23, 2024 and December 30, 2024? Answer with one word: up or down."
+  },
+  {
+   "start": "2024-12-30",
+   "up": true,
+   "return": 0.10177111077942569,
+   "question": "Did the price of Bitcoin go up or down between December 30, 2024 and January 6, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-01-06",
+   "up": false,
+   "return": -0.07531133968989279,
+   "question": "Did the price of Bitcoin go up or down between January 6, 2025 and January 13, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-01-13",
+   "up": true,
+   "return": 0.0817032858347233,
+   "question": "Did the price of Bitcoin go up or down between January 13, 2025 and January 20, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-01-20",
+   "up": false,
+   "return": -0.0017326421149380655,
+   "question": "Did the price of Bitcoin go up or down between January 20, 2025 and January 27, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-01-27",
+   "up": false,
+   "return": -0.007389195616931854,
+   "question": "Did the price of Bitcoin go up or down between January 27, 2025 and February 3, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-02-03",
+   "up": false,
+   "return": -0.03846597187050593,
+   "question": "Did the price of Bitcoin go up or down between February 3, 2025 and February 10, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-02-10",
+   "up": false,
+   "return": -0.01694350925097421,
+   "question": "Did the price of Bitcoin go up or down between February 10, 2025 and February 17, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-02-17",
+   "up": false,
+   "return": -0.04413363959072869,
+   "question": "Did the price of Bitcoin go up or down between February 17, 2025 and February 24, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-02-24",
+   "up": false,
+   "return": -0.05824251514534551,
+   "question": "Did the price of Bitcoin go up or down between February 24, 2025 and March 3, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-03-03",
+   "up": false,
+   "return": -0.08843303242693368,
+   "question": "Did the price of Bitcoin go up or down between March 3, 2025 and March 10, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-03-10",
+   "up": true,
+   "return": 0.06888619833156606,
+   "question": "Did the price of Bitcoin go up or down between March 10, 2025 and March 17, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-03-17",
+   "up": true,
+   "return": 0.041520399409451514,
+   "question": "Did the price of Bitcoin go up or down between March 17, 2025 and March 24, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-03-24",
+   "up": false,
+   "return": -0.05655147491101542,
+   "question": "Did the price of Bitcoin go up or down between March 24, 2025 and March 31, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-03-31",
+   "up": false,
+   "return": -0.041026887822303015,
+   "question": "Did the price of Bitcoin go up or down between March 31, 2025 and April 7, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-04-07",
+   "up": true,
+   "return": 0.06857147332524538,
+   "question": "Did the price of Bitcoin go up or down between April 7, 2025 and April 14, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-04-14",
+   "up": true,
+   "return": 0.03457377199952982,
+   "question": "Did the price of Bitcoin go up or down between April 14, 2025 and April 21, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-04-21",
+   "up": true,
+   "return": 0.08564068630470034,
+   "question": "Did the price of Bitcoin go up or down between April 21, 2025 and April 28, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-04-28",
+   "up": false,
+   "return": -0.002920708910256642,
+   "question": "Did the price of Bitcoin go up or down between April 28, 2025 and May 5, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-05-05",
+   "up": true,
+   "return": 0.0850557056371084,
+   "question": "Did the price of Bitcoin go up or down between May 5, 2025 and May 12, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-05-12",
+   "up": true,
+   "return": 0.027068627973646064,
+   "question": "Did the price of Bitcoin go up or down between May 12, 2025 and May 19, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-05-19",
+   "up": true,
+   "return": 0.03657206801615609,
+   "question": "Did the price of Bitcoin go up or down between May 19, 2025 and May 26, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-05-26",
+   "up": false,
+   "return": -0.032684304506820805,
+   "question": "Did the price of Bitcoin go up or down between May 26, 2025 and June 2, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-06-02",
+   "up": true,
+   "return": 0.04161263594746134,
+   "question": "Did the price of Bitcoin go up or down between June 2, 2025 and June 9, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-06-09",
+   "up": false,
+   "return": -0.03145651189310805,
+   "question": "Did the price of Bitcoin go up or down between June 9, 2025 and June 16, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-06-16",
+   "up": false,
+   "return": -0.013676730446774865,
+   "question": "Did the price of Bitcoin go up or down between June 16, 2025 and June 23, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-06-23",
+   "up": true,
+   "return": 0.017207845563153468,
+   "question": "Did the price of Bitcoin go up or down between June 23, 2025 and June 30, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-06-30",
+   "up": true,
+   "return": 0.010419752395085302,
+   "question": "Did the price of Bitcoin go up or down between June 30, 2025 and July 7, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-07-07",
+   "up": true,
+   "return": 0.10694555311355836,
+   "question": "Did the price of Bitcoin go up or down between July 7, 2025 and July 14, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-07-14",
+   "up": false,
+   "return": -0.020534010095694888,
+   "question": "Did the price of Bitcoin go up or down between July 14, 2025 and July 21, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-07-21",
+   "up": true,
+   "return": 0.005809830537238048,
+   "question": "Did the price of Bitcoin go up or down between July 21, 2025 and July 28, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-07-28",
+   "up": false,
+   "return": -0.025472055775288882,
+   "question": "Did the price of Bitcoin go up or down between July 28, 2025 and August 4, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-08-04",
+   "up": true,
+   "return": 0.0315585507213374,
+   "question": "Did the price of Bitcoin go up or down between August 4, 2025 and August 11, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-08-11",
+   "up": false,
+   "return": -0.020718113341084865,
+   "question": "Did the price of Bitcoin go up or down between August 11, 2025 and August 18, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-08-18",
+   "up": false,
+   "return": -0.052613139540236165,
+   "question": "Did the price of Bitcoin go up or down between August 18, 2025 and August 25, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-08-25",
+   "up": false,
+   "return": -0.007942460030234688,
+   "question": "Did the price of Bitcoin go up or down between August 25, 2025 and September 1, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-09-01",
+   "up": true,
+   "return": 0.025886825228937038,
+   "question": "Did the price of Bitcoin go up or down between September 1, 2025 and September 8, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-09-08",
+   "up": true,
+   "return": 0.02930864461706828,
+   "question": "Did the price of Bitcoin go up or down between September 8, 2025 and September 15, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-09-15",
+   "up": false,
+   "return": -0.02339598426385292,
+   "question": "Did the price of Bitcoin go up or down between September 15, 2025 and September 22, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-09-22",
+   "up": true,
+   "return": 0.014744388842033329,
+   "question": "Did the price of Bitcoin go up or down between September 22, 2025 and September 29, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-09-29",
+   "up": true,
+   "return": 0.09051178896766343,
+   "question": "Did the price of Bitcoin go up or down between September 29, 2025 and October 6, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-10-06",
+   "up": false,
+   "return": -0.07614833287795597,
+   "question": "Did the price of Bitcoin go up or down between October 6, 2025 and October 13, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-10-13",
+   "up": false,
+   "return": -0.040236788635534815,
+   "question": "Did the price of Bitcoin go up or down between October 13, 2025 and October 20, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-10-20",
+   "up": true,
+   "return": 0.03234861477784423,
+   "question": "Did the price of Bitcoin go up or down between October 20, 2025 and October 27, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-10-27",
+   "up": false,
+   "return": -0.06594308094154955,
+   "question": "Did the price of Bitcoin go up or down between October 27, 2025 and November 3, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-11-03",
+   "up": false,
+   "return": -0.005365863086659872,
+   "question": "Did the price of Bitcoin go up or down between November 3, 2025 and November 10, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-11-10",
+   "up": false,
+   "return": -0.13013718465221535,
+   "question": "Did the price of Bitcoin go up or down between November 10, 2025 and November 17, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-11-17",
+   "up": false,
+   "return": -0.04245647732031865,
+   "question": "Did the price of Bitcoin go up or down between November 17, 2025 and November 24, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-11-24",
+   "up": false,
+   "return": -0.022808604438436686,
+   "question": "Did the price of Bitcoin go up or down between November 24, 2025 and December 1, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-12-01",
+   "up": true,
+   "return": 0.05039438027091525,
+   "question": "Did the price of Bitcoin go up or down between December 1, 2025 and December 8, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-12-08",
+   "up": false,
+   "return": -0.04636498704574887,
+   "question": "Did the price of Bitcoin go up or down between December 8, 2025 and December 15, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-12-15",
+   "up": true,
+   "return": 0.025322889371631296,
+   "question": "Did the price of Bitcoin go up or down between December 15, 2025 and December 22, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-12-22",
+   "up": false,
+   "return": -0.015613266367857759,
+   "question": "Did the price of Bitcoin go up or down between December 22, 2025 and December 29, 2025? Answer with one word: up or down."
+  },
+  {
+   "start": "2025-12-29",
+   "up": true,
+   "return": 0.07591469366312253,
+   "question": "Did the price of Bitcoin go up or down between December 29, 2025 and January 5, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-01-05",
+   "up": false,
+   "return": -0.02731214490221634,
+   "question": "Did the price of Bitcoin go up or down between January 5, 2026 and January 12, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-01-12",
+   "up": true,
+   "return": 0.014620542804629322,
+   "question": "Did the price of Bitcoin go up or down between January 12, 2026 and January 19, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-01-19",
+   "up": false,
+   "return": -0.04624715268106783,
+   "question": "Did the price of Bitcoin go up or down between January 19, 2026 and January 26, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-01-26",
+   "up": false,
+   "return": -0.1087582068360381,
+   "question": "Did the price of Bitcoin go up or down between January 26, 2026 and February 2, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-02-02",
+   "up": false,
+   "return": -0.10922989369510083,
+   "question": "Did the price of Bitcoin go up or down between February 2, 2026 and February 9, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-02-09",
+   "up": false,
+   "return": -0.017758846844791787,
+   "question": "Did the price of Bitcoin go up or down between February 9, 2026 and February 16, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-02-16",
+   "up": false,
+   "return": -0.0614931132491624,
+   "question": "Did the price of Bitcoin go up or down between February 16, 2026 and February 23, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-02-23",
+   "up": true,
+   "return": 0.06455763902572409,
+   "question": "Did the price of Bitcoin go up or down between February 23, 2026 and March 2, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-03-02",
+   "up": false,
+   "return": -0.0057809044478530636,
+   "question": "Did the price of Bitcoin go up or down between March 2, 2026 and March 9, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-03-09",
+   "up": true,
+   "return": 0.0942906083923114,
+   "question": "Did the price of Bitcoin go up or down between March 9, 2026 and March 16, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-03-16",
+   "up": false,
+   "return": -0.05312462483977032,
+   "question": "Did the price of Bitcoin go up or down between March 16, 2026 and March 23, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-03-23",
+   "up": false,
+   "return": -0.05795072239549437,
+   "question": "Did the price of Bitcoin go up or down between March 23, 2026 and March 30, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-03-30",
+   "up": true,
+   "return": 0.030783996435787886,
+   "question": "Did the price of Bitcoin go up or down between March 30, 2026 and April 6, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-04-06",
+   "up": true,
+   "return": 0.08081385942301389,
+   "question": "Did the price of Bitcoin go up or down between April 6, 2026 and April 13, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-04-13",
+   "up": true,
+   "return": 0.01912145168123991,
+   "question": "Did the price of Bitcoin go up or down between April 13, 2026 and April 20, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-04-20",
+   "up": true,
+   "return": 0.020178407528279374,
+   "question": "Did the price of Bitcoin go up or down between April 20, 2026 and April 27, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-04-27",
+   "up": true,
+   "return": 0.03217846095943555,
+   "question": "Did the price of Bitcoin go up or down between April 27, 2026 and May 4, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-05-04",
+   "up": true,
+   "return": 0.023599000313169194,
+   "question": "Did the price of Bitcoin go up or down between May 4, 2026 and May 11, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-05-11",
+   "up": false,
+   "return": -0.058030977795148764,
+   "question": "Did the price of Bitcoin go up or down between May 11, 2026 and May 18, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-05-18",
+   "up": true,
+   "return": 0.00415756136831491,
+   "question": "Did the price of Bitcoin go up or down between May 18, 2026 and May 25, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-05-25",
+   "up": false,
+   "return": -0.0764738267926558,
+   "question": "Did the price of Bitcoin go up or down between May 25, 2026 and June 1, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-06-01",
+   "up": false,
+   "return": -0.11655283865176469,
+   "question": "Did the price of Bitcoin go up or down between June 1, 2026 and June 8, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-06-08",
+   "up": true,
+   "return": 0.05140206248645707,
+   "question": "Did the price of Bitcoin go up or down between June 8, 2026 and June 15, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-06-15",
+   "up": false,
+   "return": -0.03480738515461024,
+   "question": "Did the price of Bitcoin go up or down between June 15, 2026 and June 22, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-06-22",
+   "up": false,
+   "return": -0.058728513163306295,
+   "question": "Did the price of Bitcoin go up or down between June 22, 2026 and June 29, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-06-29",
+   "up": true,
+   "return": 0.0627579956989861,
+   "question": "Did the price of Bitcoin go up or down between June 29, 2026 and July 6, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-07-06",
+   "up": false,
+   "return": -0.026662182111057753,
+   "question": "Did the price of Bitcoin go up or down between July 6, 2026 and July 13, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-07-13",
+   "up": true,
+   "return": 0.04685991004663226,
+   "question": "Did the price of Bitcoin go up or down between July 13, 2026 and July 20, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-07-20",
+   "up": false,
+   "return": -0.0229812011276902,
+   "question": "Did the price of Bitcoin go up or down between July 20, 2026 and July 27, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-07-27",
+   "up": false,
+   "return": -0.0036994246489655547,
+   "question": "Did the price of Bitcoin go up or down between July 27, 2026 and August 3, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-08-03",
+   "up": true,
+   "return": 0.007084540302267017,
+   "question": "Did the price of Bitcoin go up or down between August 3, 2026 and August 10, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-08-10",
+   "up": true,
+   "return": 0.0087867736772278,
+   "question": "Did the price of Bitcoin go up or down between August 10, 2026 and August 17, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-08-17",
+   "up": true,
+   "return": 0.22408460285656284,
+   "question": "Did the price of Bitcoin go up or down between August 17, 2026 and August 24, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-08-24",
+   "up": false,
+   "return": -0.005208832456143231,
+   "question": "Did the price of Bitcoin go up or down between August 24, 2026 and August 31, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-08-31",
+   "up": true,
+   "return": 0.006753770522219815,
+   "question": "Did the price of Bitcoin go up or down between August 31, 2026 and September 7, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-09-07",
+   "up": false,
+   "return": -0.011664474205622999,
+   "question": "Did the price of Bitcoin go up or down between September 7, 2026 and September 14, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-09-14",
+   "up": true,
+   "return": 0.10782549152242349,
+   "question": "Did the price of Bitcoin go up or down between September 14, 2026 and September 21, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-09-21",
+   "up": false,
+   "return": -0.03601927961209883,
+   "question": "Did the price of Bitcoin go up or down between September 21, 2026 and September 28, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-09-28",
+   "up": true,
+   "return": 0.027148020700835884,
+   "question": "Did the price of Bitcoin go up or down between September 28, 2026 and October 5, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-10-05",
+   "up": false,
+   "return": -0.04566879961924686,
+   "question": "Did the price of Bitcoin go up or down between October 5, 2026 and October 12, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-10-12",
+   "up": true,
+   "return": 0.0010800244349418175,
+   "question": "Did the price of Bitcoin go up or down between October 12, 2026 and October 19, 2026? Answer with one word: up or down."
+  },
+  {
+   "start": "2026-10-19",
+   "up": false,
+   "return": -0.021819317926637494,
+   "question": "Did the price of Bitcoin go up or down between October 19, 2026 and October 26, 2026? Answer with one word: up or down."
+  }
+ ]
+}
