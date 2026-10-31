@@ -1,0 +1,37 @@
+{
+ "device": "Tesla T4",
+ "batch": 32,
+ "length": 256,
+ "steps": [
+  {
+   "model": "Dense",
+   "dispatch": "dense",
+   "seconds": 0.14376694249995126
+  },
+  {
+   "model": "Dense, 4x wider",
+   "dispatch": "dense",
+   "seconds": 0.30704966550047175
+  },
+  {
+   "model": "MoE, 8 experts",
+   "dispatch": "batched",
+   "seconds": 0.1878011300000253
+  },
+  {
+   "model": "MoE, 8 experts",
+   "dispatch": "loop",
+   "seconds": 0.18907616050000797
+  },
+  {
+   "model": "MoE, 32 experts",
+   "dispatch": "batched",
+   "seconds": 0.2530700320003234
+  },
+  {
+   "model": "MoE, 32 experts",
+   "dispatch": "loop",
+   "seconds": 0.30705870949987
+  }
+ ]
+}
