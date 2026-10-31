@@ -6,4 +6,5 @@ package_release = "perevod-v0.2.0"  # the tag of the package this lesson writes
 published = true
 published_on = 2026-10-27
 description = "Put a Transformer behind an HTTP API and measure it the way users meet it: a KV cache in beam search, int8 quantization that doesn't pay off, FastAPI and asyncio, open-loop load tests, queueing theory checked against the measurements, dynamic batching, and a Gradio page."
+categories = ["system-design"]  # on the site, besides machine-learning
 tags = "fastapi, inference, load-testing, queueing-theory"
