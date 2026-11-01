@@ -1,0 +1,8 @@
+number = 2
+short_title = "RoBERTa→ModernBERT"
+cover_alt = "Lesson 2 cover: from RoBERTa to ModernBERT. Four encoders in a row, each with the one thing it changed: the training recipe, the training task, the attention, and the whole block"
+gpu = true
+published = false
+published_on = 2026-11-02
+description = "What seven years did to BERT: RoBERTa's training recipe, ELECTRA's replaced-token detection, DeBERTa's disentangled attention and ModernBERT's LLM-era block, each written in PyTorch and checked against the real weights, and the four compared on triaging GitHub issues of projects they never saw."
+tags = "roberta, electra, deberta, modernbert, nlp"

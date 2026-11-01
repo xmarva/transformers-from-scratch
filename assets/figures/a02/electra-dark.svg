@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="Replaced token detection. A sentence has some tokens masked; a small generator fills each mask with a plausible word, sometimes the right one; the discriminator reads the result and labels every token as original or replaced, so it learns from all of them">
+<title>Replaced token detection. A sentence has some tokens masked; a small generator fills each mask with a plausible word, sometimes the right one; the discriminator reads the result and labels every token as original or replaced, so it learns from all of them</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="330" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">ELECTRA: a small model fills the gaps, the big one spots the fakes</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the generator guessed arm64 right, so that token counts as original</text>
+<text x="14.0" y="94.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">text</text>
+<rect x="170.0" y="74.0" width="96.0" height="30.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="218.0" y="93.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">the</text>
+<rect x="274.0" y="74.0" width="96.0" height="30.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="322.0" y="93.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">build</text>
+<rect x="378.0" y="74.0" width="96.0" height="30.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="426.0" y="93.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">fails</text>
+<rect x="482.0" y="74.0" width="96.0" height="30.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="530.0" y="93.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">on</text>
+<rect x="586.0" y="74.0" width="96.0" height="30.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="634.0" y="93.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">arm64</text>
+<polyline points="150.0,106.0 150.0,132.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="14.0" y="156.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">masked</text>
+<rect x="170.0" y="136.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="218.0" y="155.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="274.0" y="136.0" width="96.0" height="30.0" rx="9" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="322.0" y="155.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">[MASK]</text>
+<rect x="378.0" y="136.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="426.0" y="155.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">fails</text>
+<rect x="482.0" y="136.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="530.0" y="155.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">on</text>
+<rect x="586.0" y="136.0" width="96.0" height="30.0" rx="9" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="634.0" y="155.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">[MASK]</text>
+<polyline points="150.0,168.0 150.0,194.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="14.0" y="218.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">generator&#x27;s guess</text>
+<rect x="170.0" y="198.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="218.0" y="217.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="274.0" y="198.0" width="96.0" height="30.0" rx="9" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="322.0" y="217.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">test</text>
+<rect x="378.0" y="198.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="426.0" y="217.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">fails</text>
+<rect x="482.0" y="198.0" width="96.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="530.0" y="217.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">on</text>
+<rect x="586.0" y="198.0" width="96.0" height="30.0" rx="9" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="634.0" y="217.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">arm64</text>
+<polyline points="150.0,230.0 150.0,256.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<text x="14.0" y="280.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">discriminator says</text>
+<rect x="170.0" y="260.0" width="96.0" height="30.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="218.0" y="279.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">original</text>
+<rect x="274.0" y="260.0" width="96.0" height="30.0" rx="9" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="322.0" y="279.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F7A1AE" xml:space="preserve">replaced</text>
+<rect x="378.0" y="260.0" width="96.0" height="30.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="426.0" y="279.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">original</text>
+<rect x="482.0" y="260.0" width="96.0" height="30.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="530.0" y="279.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">original</text>
+<rect x="586.0" y="260.0" width="96.0" height="30.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="634.0" y="279.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">original</text>
+<text x="14.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">loss: the generator&#x27;s masked LM + 50 × the discriminator&#x27;s yes/no, at every token</text>
+</svg>

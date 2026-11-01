@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="DeBERTa&#x27;s attention score between two tokens as the sum of three terms: content to content, as in BERT; content to position, the query of the first token against the embedding of their relative distance; and position to content, the key of the second token against the distance seen from the other side">
+<title>DeBERTa&#x27;s attention score between two tokens as the sum of three terms: content to content, as in BERT; content to position, the query of the first token against the embedding of their relative distance; and position to content, the key of the second token against the distance seen from the other side</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">DeBERTa: an attention score in three parts</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">token i looks at token j; δ is their distance, put into one of 256 buckets</text>
+<rect x="14.0" y="76.0" width="200.0" height="40.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="114.0" y="100.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">content → content</text>
+<text x="232.0" y="94.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">q of word i · k of word j</text>
+<text x="232.0" y="112.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">what i looks for, what j is</text>
+<text x="110.0" y="130.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">+</text>
+<rect x="14.0" y="134.0" width="200.0" height="40.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="114.0" y="158.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#C4B9FF" xml:space="preserve">content → position</text>
+<text x="232.0" y="152.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">q of word i · k of distance i→j</text>
+<text x="232.0" y="170.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">what i looks for at that distance</text>
+<text x="110.0" y="188.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">+</text>
+<rect x="14.0" y="192.0" width="200.0" height="40.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="114.0" y="216.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#C4B9FF" xml:space="preserve">position → content</text>
+<text x="232.0" y="210.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">k of word j · q of distance j→i</text>
+<text x="232.0" y="228.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">what j offers at that distance</text>
+<rect x="14.0" y="254.0" width="732.0" height="32.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="380.0" y="274.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">sum ÷ √(3 · head size), then softmax over j, as usual</text>
+</svg>
