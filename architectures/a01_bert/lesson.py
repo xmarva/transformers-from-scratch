@@ -490,9 +490,11 @@ print(f"  became another:  {1 - became_mask - unchanged:.1%}")
 # Google's own data generator picked exactly 15% of each sequence rather than tossing a coin per token; the coin
 # is what most libraries do today, and it makes no difference that anyone has measured.
 #
+# The share picked is a little under 15% because `[CLS]` and `[SEP]` are never picked.
+#
 # The loss is cross-entropy over the vocabulary at the picked positions. On a text BERT has never seen, the first
-# paragraph of this lesson, here is what four days of pre-training bought, against the same network with random
-# weights:
+# paragraph of this lesson, here is what four days of pre-training bought, against the same network as it was before
+# training: weights drawn at random with a standard deviation of 0.02, the way BERT's were initialised.
 
 # %%
 def masked_lm_loss(model, ids, special, repeats=20):
@@ -510,7 +512,19 @@ def masked_lm_loss(model, ids, special, repeats=20):
     return sum(losses) / len(losses)
 
 
-untrained = MaskedLM(config).to(device).eval()
+def init_like_bert(module):  # how BERT started: small random weights
+    if isinstance(module, (nn.Linear, nn.Embedding)):
+        nn.init.normal_(module.weight, std=0.02)
+    if isinstance(module, nn.Linear) and module.bias is not None:
+        nn.init.zeros_(module.bias)
+    if isinstance(module, nn.LayerNorm):
+        nn.init.ones_(module.weight)
+        nn.init.zeros_(module.bias)
+
+
+untrained = MaskedLM(config)
+untrained.apply(init_like_bert)
+untrained = untrained.to(device).eval()
 print(f"random weights:  loss {masked_lm_loss(untrained, ids, special):.2f}")
 print(f"BERT's weights:  loss {masked_lm_loss(mlm, ids, special):.2f}")
 print(f"guessing uniformly among {len(tokenizer):,} tokens: {math.log(len(tokenizer)):.2f}")
@@ -518,8 +532,8 @@ del untrained
 
 # %% [markdown]
 # A loss of $L$ means the model gives the right word a probability of $e^{-L}$ on average, in the geometric sense.
-# The random network is about as good as picking from the dictionary blindfolded. BERT gives the hidden word a
-# sizeable probability most of the time, on a text written after it was trained.
+# The untrained network is no better than picking from the dictionary blindfolded. BERT gives the hidden word a
+# sizeable probability most of the time, on a text written years after it was trained.
 #
 # That makes BERT a strange kind of oracle: ask it to fill a blank, and you see what it absorbed from books and
 # Wikipedia. Petroni and colleagues used exactly this to show that BERT holds "relational knowledge competitive with
@@ -554,13 +568,17 @@ table(pd.DataFrame({"probe": [kind for kind, _ in PROBES],
                     "BERT's top three": [fill_mask(text) for _, text in PROBES]}))
 
 # %% [markdown]
-# The facts and the common sense come out well, and so does the grammar: the verb agrees with *keys* or *key*, not
-# with the noun right next to it, which takes knowing which word is the subject. Negation is where it breaks. A robin
-# is not a bird, says BERT, and birds cannot fly. Kassner and Schütze found this across models and put it in the
-# title of their paper, "Birds Can Talk, But Cannot Fly": pre-trained models "do not distinguish between negated
-# ('Birds cannot [MASK]') and non-negated ('Birds can [MASK]') cloze questions"
-# ([Kassner & Schütze, 2020](https://arxiv.org/abs/1911.03343)). Filling a blank rewards knowing which words go
-# together, and *robin*, *bird* and *fly* go together whether or not there is a *not*.
+# The knowledge is patchy in a revealing way. BERT is sure about Lisbon and the knife, and has no idea where Dante was
+# born: a fact that is stated less often in so many words. The grammar is right, and it is the impressive row. The
+# verb agrees with *keys* or *key*, the subject, and not with *cabinet* or *cabinets*, the noun right next to it, so
+# the model must know which word the verb belongs to.
+#
+# Negation is where it breaks. To BERT a robin is above all a robin, and it is *more* sure that birds cannot fly than
+# that they can. Kassner and Schütze found this across models and put it in the title of their paper, "Birds Can
+# Talk, But Cannot Fly": pre-trained models "do not distinguish between negated ('Birds cannot [MASK]') and
+# non-negated ('Birds can [MASK]') cloze questions" ([Kassner & Schütze, 2020](https://arxiv.org/abs/1911.03343)).
+# Filling a blank rewards knowing which words go together, and *birds* and *fly* go together whether or not there
+# is a *not* between them.
 #
 # The same oracle shows what else came with the books. Give BERT a sentence about a person with a job and ask for
 # the pronoun:
@@ -883,17 +901,7 @@ class Tagger(nn.Module):
         return self.classify(self.dropout(h))
 
 
-def init_like_bert(module):  # BERT's initialisation, for the network trained from scratch
-    if isinstance(module, (nn.Linear, nn.Embedding)):
-        nn.init.normal_(module.weight, std=0.02)
-    if isinstance(module, nn.Linear) and module.bias is not None:
-        nn.init.zeros_(module.bias)
-    if isinstance(module, nn.LayerNorm):
-        nn.init.ones_(module.weight)
-        nn.init.zeros_(module.bias)
-
-
-def new_tagger(pretrained):
+def new_tagger(pretrained):  # random weights are initialised as in section 5
     masked_lm, _ = load_masked_lm("google-bert/bert-base-cased")
     tagger = Tagger(masked_lm.bert, len(LABELS))
     if not pretrained:
