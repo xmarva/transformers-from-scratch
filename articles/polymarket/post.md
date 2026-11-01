@@ -44,7 +44,7 @@ Shares trade in an order book, as on a stock exchange: buyers post bids, sellers
 
 Why should that price be a probability? Because of a simple argument about money. If you believe Democrats win the Senate with probability $q$, a Yes share bought at price $p$ is worth $q \cdot 1 + (1 - q) \cdot 0 = q$ to you on average. You buy when $q > p$ and sell when $q < p$. The price stops moving where nobody with money left is willing to push it either way.
 
-That argument has holes, and economists have spent twenty years mapping them. **The price is a compromise between traders, not anyone's belief.** With logarithmic utility it equals the traders' average belief, and for other reasonable preferences it stays close to it between about 20 and 80 cents ([Wolfers & Zitzewitz, 2006](https://www.nber.org/papers/w12200)); for risk-neutral traders with different beliefs, a price of 75 cents is compatible with an average belief anywhere from 56% to 94% ([Manski, 2006](https://doi.org/10.1016/j.econlet.2006.01.004)). Money tied up in a bet until December could have earned interest. Since March 2026 most categories charge the taker a fee ([Polymarket, 2026](https://docs.polymarket.com/trading/fees)). And the dollar arrives only if the event is resolved the way you expect, by a process with its own failures. Whether the price works as a probability despite all that is an empirical question, and the rest of this post answers it with data.
+That argument has holes, and economists have spent twenty years mapping them. The price is a compromise between traders, not anyone's belief. With logarithmic utility it equals the traders' average belief, and for other reasonable preferences it stays close to it between about 20 and 80 cents ([Wolfers & Zitzewitz, 2006](https://www.nber.org/papers/w12200)); for risk-neutral traders with different beliefs, a price of 75 cents is compatible with an average belief anywhere from 56% to 94% ([Manski, 2006](https://doi.org/10.1016/j.econlet.2006.01.004)). Money tied up in a bet until December could have earned interest. Since March 2026 most categories charge the taker a fee ([Polymarket, 2026](https://docs.polymarket.com/trading/fees)). And the dollar arrives only if the event is resolved the way you expect, by a process with its own failures. Whether the price works as a probability despite all that is an empirical question, and the rest of this post answers it with data.
 
 ## How to check a forecaster
 
@@ -54,7 +54,7 @@ A forecaster who said 70% is not wrong when the event fails to happen, but a for
 
 The picture that shows calibration is the *reliability diagram*. Take all the forecasts, group them by value (all forecasts between 60% and 70%, say), and for each group plot the average forecast against the share of events that happened. A calibrated forecaster's points fall on the diagonal. If you have ever trained a classifier and checked whether its predicted probabilities can be trusted, you have drawn this picture already; modern neural networks are famously overconfident on it ([Guo et al., 2017](https://proceedings.mlr.press/v70/guo17a.html)), and how to bin the forecasts is a small science of its own ([Dimitriadis et al., 2021](https://doi.org/10.1073/pnas.2016191118)).
 
-**Calibration is not enough.** A forecaster who always announces the *base rate*, the share of all events that happen, is perfectly calibrated and perfectly useless. About 34% of Polymarket's markets resolve Yes, so saying "34%" about every market is calibrated: of all the markets you said it about, 34% happened. What a good forecaster adds is *resolution*, forecasts that move away from the base rate in the right direction, high for the events that happen and low for those that don't.
+Calibration is not enough. A forecaster who always announces the *base rate*, the share of all events that happen, is perfectly calibrated and perfectly useless. About 34% of Polymarket's markets resolve Yes, so saying "34%" about every market is calibrated: of all the markets you said it about, 34% happened. What a good forecaster adds is *resolution*, forecasts that move away from the base rate in the right direction, high for the events that happen and low for those that don't.
 
 ### The Brier score
 
@@ -86,7 +86,7 @@ The three charts below put this on real data. All three forecasters see the same
 
 [[forecasters]]
 
-The market's own prices score 0.079. Both copies score worse, 0.084 for the bold one and 0.089 for the timid one, and they fail in opposite ways. The bold copy's points lie above the diagonal on the left and below it on the right: when it says 5%, the event happens more often than that, because it took a modest forecast and inflated its confidence. The timid copy bends the other way. Neither copy knows anything the market didn't, and that is the point of the exercise. **Distorting a calibrated forecaster in either direction only makes its score worse.** The base-rate forecaster says 25% about everything, the share of these markets that resolved Yes, and scores 0.186, more than twice the market's error.
+The market's own prices score 0.079. Both copies score worse, 0.084 for the bold one and 0.089 for the timid one, and they fail in opposite ways. The bold copy's points lie above the diagonal on the left and below it on the right: when it says 5%, the event happens more often than that, because it took a modest forecast and inflated its confidence. The timid copy bends the other way. Neither copy knows anything the market didn't, and that is the point of the exercise. Distorting a calibrated forecaster in either direction only makes its score worse. The base-rate forecaster says 25% about everything, the share of these markets that resolved Yes, and scores 0.186, more than twice the market's error.
 
 ## Why one election proves nothing
 
@@ -96,7 +96,7 @@ The case people quote as proof is the 2024 US presidential election. On the eve 
 
 The market's best-known trader that year, a Frenchman the press called Théo, had bet more than &#36;30 million on Trump across several accounts. He told the Wall Street Journal he had "absolutely no political agenda" ([WSJ, 2024](https://tovima.com/wsj/the-trump-betting-whale-speaks-out-i-have-absolutely-no-political-agenda)), and later turned out to have commissioned his own polls, asking people not whom they would vote for but whom their neighbours would ([CBS News, 2025](https://www.cbsnews.com/news/french-whale-made-over-80-million-on-polymarket-betting-on-trump-election-win-60-minutes/)). He made tens of millions of dollars, and he was right.
 
-Think about what that shows. A forecaster who put 59% on the winner scores $0.41^2 \approx 0.17$ for that election; one who put 50% scores $0.25$. A single draw from a coin that lands heads 59% of the time says almost nothing about the coin, and the same arithmetic run on Brazil a week ago says almost nothing in the other direction. **One outcome cannot separate a good forecaster from a lucky one.**
+Think about what that shows. A forecaster who put 59% on the winner scores $0.41^2 \approx 0.17$ for that election; one who put 50% scores $0.25$. A single draw from a coin that lands heads 59% of the time says almost nothing about the coin, and the same arithmetic run on Brazil a week ago says almost nothing in the other direction. One outcome cannot separate a good forecaster from a lucky one.
 
 Thousands can.
 
@@ -126,7 +126,7 @@ Market lists come from the Gamma API (`events/keyset`), prices from the order-bo
 
 The forecast I score is the price of a market's first outcome (Yes, in a Yes/No market) a fixed time before the market closed: a week, mostly, and a day, a month or three months where I compare horizons. The close comes after the outcome is known, typically hours after a match ends or a day or two after an election, so a week before the close is before the event itself.
 
-**A market counts as a forecast only if at least &#36;1,000 had been traded in it in the week before.** This matters more than it sounds. Most markets on Polymarket are created, barely traded and resolved, and the price history of such a market is the middle of an almost empty order book. One football market in my sample, on whether a Bundesliga match would have five goals or more, stood at 48 cents a week before the game; most matches end with fewer, this one did too, and over its whole life the market traded &#36;134. That price is not a forecast of a high-scoring game. A bid at one cent and an ask at 95 cents would give it. The test uses only what was known at the time, the trades of that week, which I took from Polymarket's public trades API.
+A market counts as a forecast only if at least &#36;1,000 had been traded in it in the week before. This matters more than it sounds. Most markets on Polymarket are created, barely traded and resolved, and the price history of such a market is the middle of an almost empty order book. One football market in my sample, on whether a Bundesliga match would have five goals or more, stood at 48 cents a week before the game; most matches end with fewer, this one did too, and over its whole life the market traded &#36;134. That price is not a forecast of a high-scoring game. A bid at one cent and an ask at 95 cents would give it. The test uses only what was known at the time, the trades of that week, which I took from Polymarket's public trades API.
 
 ## Calibration: a week out, prices are off by 1.8 points
 
@@ -138,7 +138,7 @@ The points sit close to the diagonal. Of the 18,157 markets with real trading a 
 
 <p class="takeaway" markdown="1">When a liquid market says 70%, read it as about 70%, and remember that 70 means it fails three times in ten.</p>
 
-The small deviations have a shape. Between 55 and 85 cents events happened a little more often than priced (60% of the markets at 55 cents, 82% of those at 75), while contracts at 2 to 5 cents happened less often than priced, 2.3% of the time against a price of 3.2. **The prices are slightly compressed toward the middle: favourites a little too cheap, longshots a little too dear.** That is the pattern economic theory predicts for traders who like long shots or dislike tying up money, and it is what a Princeton thesis on 188,509 Polymarket markets found too ([Walker, 2026](https://theses-dissertations.princeton.edu/handle/88435/dsp01mw22v8973)).
+The small deviations have a shape. Between 55 and 85 cents events happened a little more often than priced (60% of the markets at 55 cents, 82% of those at 75), while contracts at 2 to 5 cents happened less often than priced, 2.3% of the time against a price of 3.2. The prices are slightly compressed toward the middle: favourites a little too cheap, longshots a little too dear. That is the pattern economic theory predicts for traders who like long shots or dislike tying up money, and it is what a Princeton thesis on 188,509 Polymarket markets found too ([Walker, 2026](https://theses-dissertations.princeton.edu/handle/88435/dsp01mw22v8973)).
 
 The right panel shows something just as important: where the forecasts are. Almost half of these markets are priced below 5 cents a week before they close. Most questions on Polymarket are of the form "will this specific thing happen", most of them don't happen, and the market knows. Those confident, correct and uninteresting forecasts are a large part of every headline accuracy figure.
 
@@ -146,7 +146,7 @@ The right panel shows something just as important: where the forecasts are. Almo
 
 Polymarket advertises its record on a page titled "How accurate is Polymarket?": 98.7% accurate four hours before resolution, 90.3% a month before ([Polymarket, 2026](https://polymarket.com/accuracy)). Accuracy there means the share of markets where the leading outcome won. It sounds like a hard bar to clear. The same page notes that 78.3% of its markets resolve No, and explains why: "There are usually more ways for something not to happen than to happen in one exact way".
 
-**A forecaster who answers "No" to every question without reading it is therefore 78% accurate on Polymarket's own sample.** The left half of the next chart shows what that does to the comparison on mine.
+A forecaster who answers "No" to every question without reading it is therefore 78% accurate on Polymarket's own sample. The left half of the next chart shows what that does to the comparison on mine.
 
 [[accuracy]]
 
@@ -168,7 +168,7 @@ Information arrives over time. The Brier score of markets that lived at least tw
 
 [[convergence]]
 
-Sixty days before the close, the 3,492 markets that lived that long and were traded a month out already score 0.084, well below the base rate's 0.150. The score falls steadily, to 0.056 a month out and 0.033 a week out, and drops again in the last days, when scheduled events (a vote, a match, a data release) take place. The lower panel counts the markets already priced at the extremes, below a cent or above 99 cents: a quarter of them at sixty days, more than half a week out, three quarters at the end. **A market at 99.5 cents is not a forecast any more; it is a receipt waiting to be cashed.**
+Sixty days before the close, the 3,492 markets that lived that long and were traded a month out already score 0.084, well below the base rate's 0.150. The score falls steadily, to 0.056 a month out and 0.033 a week out, and drops again in the last days, when scheduled events (a vote, a match, a data release) take place. The lower panel counts the markets already priced at the extremes, below a cent or above 99 cents: a quarter of them at sixty days, more than half a week out, three quarters at the end. A market at 99.5 cents is not a forecast any more; it is a receipt waiting to be cashed.
 
 ## The volume trap: why big markets seem to underprice longshots
 
@@ -184,7 +184,7 @@ The left panel is an artefact, and the reason is in what volume counts. A market
 
 <p class="flow"><span>a longshot starts winning</span><span>everyone trades it</span><span>its volume grows</span><span>"big markets underprice longshots"</span></p>
 
-**So sorting markets by total volume quietly sorts them by whether the unlikely happened.** In statistics this is *selection on a consequence of the outcome*, the same family of error as look-ahead bias in a backtest, which I wrote about in the post on [AI crypto trading bots](/blog/2026/ai-crypto-trading/). Polymarket's own accuracy page breaks its Brier scores down by volume in exactly this way.
+So sorting markets by total volume quietly sorts them by whether the unlikely happened. In statistics this is *selection on a consequence of the outcome*, the same family of error as look-ahead bias in a backtest, which I wrote about in the post on [AI crypto trading bots](/blog/2026/ai-crypto-trading/). Polymarket's own accuracy page breaks its Brier scores down by volume in exactly this way.
 
 <div class="callout callout-warn" markdown="1">
 <p class="callout-label">Trap</p>
@@ -192,7 +192,7 @@ The left panel is an artefact, and the reason is in what volume counts. A market
 Never filter, group or weight markets by their total volume, or by anything else that is counted after the forecast. Use what was known when the price was set: the dollars traded in the week before, the order book at the time, the topic.
 </div>
 
-The right panel is the honest version, because *the week before a forecast is over when the forecast is made*. It says something useful. **In thin markets longshots are overpriced, and the more a market trades, the closer to fair they become.** That is why the rest of this post, like the calibration above, uses the test of &#36;1,000 traded in the week before and never groups markets by their total volume.
+The right panel is the honest version, because *the week before a forecast is over when the forecast is made*. It says something useful. In thin markets longshots are overpriced, and the more a market trades, the closer to fair they become. That is why the rest of this post, like the calibration above, uses the test of &#36;1,000 traded in the week before and never groups markets by their total volume.
 
 ## Longshots lose, favourites earn a little
 
@@ -202,7 +202,7 @@ To look for it on Polymarket, I treated both sides of every market as a contract
 
 [[returns]]
 
-**The bias is there, and it lives at the extremes.** Contracts priced between 2 and 5 cents a week before the close won 2.1% of the time while costing 3.2 cents on average, so buying them lost 39% of the stake, with a 95% interval from −53% to −22%. The cheapest band, under 2 cents, lost 22%, with an interval wide enough to include zero. At the other end, contracts at 95 to 98 cents won 97.8% of the time and returned 1.15% in the week, and those at 98 to 99.5 cents returned 0.35%; both intervals stay above zero. Between 5 and 95 cents the averages cannot be told apart from zero.
+The bias is there, and it lives at the extremes. Contracts priced between 2 and 5 cents a week before the close won 2.1% of the time while costing 3.2 cents on average, so buying them lost 39% of the stake, with a 95% interval from −53% to −22%. The cheapest band, under 2 cents, lost 22%, with an interval wide enough to include zero. At the other end, contracts at 95 to 98 cents won 97.8% of the time and returned 1.15% in the week, and those at 98 to 99.5 cents returned 0.35%; both intervals stay above zero. Between 5 and 95 cents the averages cannot be told apart from zero.
 
 <p class="takeaway" markdown="1">Longshots under 5 cents lose a quarter to two fifths of the stake; favourites above 95 cents earn a fraction of a percent a week, before costs.</p>
 
@@ -226,7 +226,7 @@ For contracts between 40 and 95 cents the median cost is about 2% of the price. 
 
 On top of the spread comes the fee. Since 30 March 2026 a taker on most categories pays $r \cdot p(1 - p)$ per share, where $p$ is the price and the rate $r$ is 0.04 for politics, 0.05 for sports and most other categories and 0.07 for crypto; makers pay nothing, and geopolitical markets are free ([Polymarket, 2026](https://docs.polymarket.com/trading/fees)). As a share of the money paid that is $r(1 - p)$: about 5% of the stake for a 5-cent sports contract, a quarter of a percent for a 95-cent one. Many of the busiest markets ran with the fee switched off on the day I looked, so the rate has to be checked market by market.
 
-**Put together, a longshot buyer who crosses the spread gives up between a tenth and two thirds of the stake before the event even happens.** A favourite buyer gives up a couple of percent, more than the whole edge the previous chart found: after half the spread the 95–98 cent band goes from +1.15% to −0.9% a week, and the 98–99.5 cent band from +0.35% to −0.3%. The diamonds on that chart show it.
+Put together, a longshot buyer who crosses the spread gives up between a tenth and two thirds of the stake before the event even happens. A favourite buyer gives up a couple of percent, more than the whole edge the previous chart found: after half the spread the 95–98 cent band goes from +1.15% to −0.9% a week, and the 98–99.5 cent band from +0.35% to −0.3%. The diamonds on that chart show it.
 
 <div class="callout" markdown="1">
 <p class="callout-label">For traders</p>
@@ -248,7 +248,7 @@ Crypto deserves a chart of its own, because its errors have a cause that has not
 
 Most crypto markets ask about one number, the price of Bitcoin or Ether on a date. Take the close calls, markets priced between 30 and 70 cents a week out, and orient each so that Yes means the price went up. In the months when Bitcoin rose, the bet on rising prices won 63% of the time; in the months when it fell, 32%. Its price a week before was about 50 cents in both. Across fifteen months, the share of winning bullish bets and Bitcoin's monthly return have a correlation of 0.78.
 
-The market was not wrong in any useful sense: a week before the close nobody knew which way Bitcoin would go, and 50 cents was a fair price for a coin toss. But a dozen such markets in one month are not a dozen tosses. **They are one toss recorded a dozen times.** A calibration chart of crypto markets mostly shows whether the period studied was a good one for Bitcoin. Calibration needs independent questions, which is why I resample whole events rather than markets, and why even that understates the uncertainty for crypto.
+The market was not wrong in any useful sense: a week before the close nobody knew which way Bitcoin would go, and 50 cents was a fair price for a coin toss. But a dozen such markets in one month are not a dozen tosses. They are one toss recorded a dozen times. A calibration chart of crypto markets mostly shows whether the period studied was a good one for Bitcoin. Calibration needs independent questions, which is why I resample whole events rather than markets, and why even that understates the uncertainty for crypto.
 
 ## Long-dated favourites and the price of waiting
 
@@ -278,7 +278,7 @@ fits the outcomes better. With $b = 0$, a slope $a > 1$ means the prices should 
 
 Fitted on the markets that closed before July 2025, the correction has a slope of 1.12 a week before the close and 1.18 a month before: the prices should have been a little bolder, the same compression the calibration chart showed, and close to Walker's 1.112. Applied to the 13,618 markets that closed later, it changes the Brier score a week out by −0.0001, with a 95% interval from −0.0009 to +0.0008, and a month out by −0.0003. In other words, *nothing*.
 
-**The bias is real on average, but too small and too unstable over time for a formula to turn it into a better forecast, let alone a profit after the spread.**
+The bias is real on average, but too small and too unstable over time for a formula to turn it into a better forecast, let alone a profit after the spread.
 
 <div class="callout" markdown="1">
 <p class="callout-label">For engineers</p>
@@ -288,7 +288,7 @@ The same discipline applies to any recalibration of a model: fit it on the past,
 
 ## Insiders: when the market knows too early
 
-**The most impressive forecasts on Polymarket are sometimes not forecasts at all.**
+The most impressive forecasts on Polymarket are sometimes not forecasts at all.
 
 ### The Nobel Peace Prize
 
@@ -328,11 +328,11 @@ That summer a market with hundreds of millions of dollars traded asked whether V
 
 In May 2026 Bloomberg found that nine wallets held about half of the UMA votes cast in Polymarket disputes over three years ([Bloomberg, 2026](https://www.bloomberglinea.com/cripto/las-disputas-en-polymarket-exponen-el-lado-oscuro-de-los-mercados-de-prediccion/)).
 
-The platform has been narrowing the problem: since September 2025 only whitelisted proposers can propose outcomes, which cut disputes by two thirds in the first month ([UMA, 2025](https://blog.uma.xyz/articles/managed-proposers-update)), crypto price markets now settle from Chainlink prices without a vote, and a new contract system that can combine several oracles is due to switch on for new markets this week ([The Block, 2026](https://www.theblock.co/news/business/2026-10-06-polymarket-rolls-out-v2-upgrade-with-single-erc-1155-positions-contract-pusd-collateral-417804)). **For a trader, resolution risk is a cost like the spread, small on most markets and large on exactly the ones with ambiguous wording.**
+The platform has been narrowing the problem: since September 2025 only whitelisted proposers can propose outcomes, which cut disputes by two thirds in the first month ([UMA, 2025](https://blog.uma.xyz/articles/managed-proposers-update)), crypto price markets now settle from Chainlink prices without a vote, and a new contract system that can combine several oracles is due to switch on for new markets this week ([The Block, 2026](https://www.theblock.co/news/business/2026-10-06-polymarket-rolls-out-v2-upgrade-with-single-erc-1155-positions-contract-pusd-collateral-417804)). For a trader, resolution risk is a cost like the spread, small on most markets and large on exactly the ones with ambiguous wording.
 
 ## Wash trading: volume that isn't
 
-**Volume is the number every article about Polymarket leads with, and it is the least reliable number on the platform.**
+Volume is the number every article about Polymarket leads with, and it is the least reliable number on the platform.
 
 Researchers at Columbia classified nearly 25% of Polymarket's historical volume as consistent with *wash trading*, traders buying from and selling to themselves without changing their position; it peaked at nearly 60% of weekly volume in December 2024, and in sports markets it reached 45% of all-time volume ([Sirolly et al., 2025](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5714122)).
 
@@ -342,7 +342,7 @@ Neither changes the prices this post studies: a wash trade moves money in a circ
 
 ## What a Polymarket price is worth
 
-As a probability, a Polymarket price on a market people actually trade is about as good as public forecasts get. A week before the close the prices were calibrated to within 1.8 percentage points on average, and on the markets open for at least a month they removed 70% of the base-rate forecaster's error a week out and 82% a day out. **When a liquid market says 70%, the honest reading is "about 70%", give or take a few points.**
+As a probability, a Polymarket price on a market people actually trade is about as good as public forecasts get. A week before the close the prices were calibrated to within 1.8 percentage points on average, and on the markets open for at least a month they removed 70% of the base-rate forecaster's error a week out and 82% a day out. When a liquid market says 70%, the honest reading is "about 70%", give or take a few points.
 
 That is a statement about many markets, not about one. The Senate at 71.5 cents is a single draw, and so was Brazil at 80. A calibrated price is still wrong three times in ten when it says 70, which is what 70 means.
 
@@ -350,7 +350,7 @@ The weak spots are where theory and the data agree they should be. Thin markets 
 
 For a trader the useful findings are modest and specific. The mispricing that survives is at the tails: contracts under 5 cents lose a quarter to two fifths of the stake on average, and near-certain favourites earn a fraction of a percent a week, more when they are bought a month or more before the close. It is about the size of the spread and the fee, which is why it survives. Nothing in the data suggests a general bias that a formula could exploit, and a two-number correction fitted on the past made the future no better. The people who make money on Polymarket, according to a study of 588 million trades, are mostly the ones who post limit orders and let others cross the spread; the top 1% of profitable accounts took 76.5% of the profits ([Akey et al., 2026](https://ideas.repec.org/p/cpr/ceprdp/21615.html)).
 
-For an engineer the lessons are the ones from evaluating any model, sharpened by a market's habits. Accuracy flatters when the classes are unbalanced, and most questions resolve No. Comparisons across horizons are confounded by which questions exist at each horizon, so they have to be made on the same questions. **And a filter on anything that depends on the outcome, a market's total volume included, manufactures effects that aren't there.** The trap that caught my first sample is the most transferable thing in this post.
+For an engineer the lessons are the ones from evaluating any model, sharpened by a market's habits. Accuracy flatters when the classes are unbalanced, and most questions resolve No. Comparisons across horizons are confounded by which questions exist at each horizon, so they have to be made on the same questions. And a filter on anything that depends on the outcome, a market's total volume included, manufactures effects that aren't there. The trap that caught my first sample is the most transferable thing in this post.
 
 ## References
 

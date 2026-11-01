@@ -187,11 +187,10 @@ has blocks for the quick pass, styled in its `_sass/_components.scss`, with live
 - **Takeaway** (`p.takeaway`): one sentence after a chart or section, a finding with its number, not a slogan.
 - **Flow** (`p.flow`): a chain of three to five short steps; the last, the consequence, is drawn in red.
 - **Pull quote** (`blockquote.pull` with `cite`): one per post, for a sentence worth reading twice.
-- **Bold and italics** are the only marks inside a sentence; highlighters, coloured or underlined words, inline
-  bars and labels were tried and look garish. In posts, bold is a whole sentence, the one in a section a skimming
-  reader must not miss, rarely more than one per section, never a fragment or a lone number. Italics introduce a new term
-  and carry a stressed word; lessons keep bold definitions. Names of layers, functions, files and APIs go in
-  code: `RMSNorm`, `prices-history`.
+- **Italics** are the only mark inside a sentence: a new term where it is defined, a word that carries the stress.
+  Highlighters, coloured or underlined words, inline bars and labels and bold sentences were all tried in posts
+  and look garish or cheap; lessons keep bold definitions. Names of layers, functions, files and APIs go in code:
+  `RMSNorm`, `prices-history`.
 - **Pointer** (`a.arrow-link`): a link the reader is invited to follow to another section or post.
 
 The rule for all of them is scarcity: a page where everything is highlighted has nothing highlighted. Look at the
