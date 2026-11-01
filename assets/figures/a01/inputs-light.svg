@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="BERT&#x27;s input for two sentences: each token&#x27;s vector is the sum of a word embedding, a learned position embedding for positions 0 to 511, and a segment embedding A or B, followed by LayerNorm">
+<title>BERT&#x27;s input for two sentences: each token&#x27;s vector is the sum of a word embedding, a learned position embedding for positions 0 to 511, and a segment embedding A or B, followed by LayerNorm</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Each token goes in as the sum of three learned vectors</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">then LayerNorm and dropout; [CLS] opens the input, [SEP] closes each sentence</text>
+<text x="14.0" y="92.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">word</text>
+<text x="14.0" y="138.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">+ position</text>
+<text x="14.0" y="184.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">+ segment</text>
+<rect x="120.0" y="72.0" width="55.1" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="147.6" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">[CLS]</text>
+<rect x="120.0" y="118.0" width="55.1" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="147.6" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">0</text>
+<rect x="120.0" y="164.0" width="55.1" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="147.6" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="181.1" y="72.0" width="52.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="207.1" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">the</text>
+<rect x="181.1" y="118.0" width="52.0" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="207.1" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">1</text>
+<rect x="181.1" y="164.0" width="52.0" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="207.1" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="239.1" y="72.0" width="52.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="265.1" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">bank</text>
+<rect x="239.1" y="118.0" width="52.0" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="265.1" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">2</text>
+<rect x="239.1" y="164.0" width="52.0" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="265.1" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="297.1" y="72.0" width="62.9" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="328.6" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">raised</text>
+<rect x="297.1" y="118.0" width="62.9" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="328.6" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">3</text>
+<rect x="297.1" y="164.0" width="62.9" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="328.6" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="366.0" y="72.0" width="55.1" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="393.6" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">rates</text>
+<rect x="366.0" y="118.0" width="55.1" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="393.6" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">4</text>
+<rect x="366.0" y="164.0" width="55.1" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="393.6" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="427.2" y="72.0" width="55.1" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="454.7" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">[SEP]</text>
+<rect x="427.2" y="118.0" width="55.1" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="454.7" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">5</text>
+<rect x="427.2" y="164.0" width="55.1" height="30.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="454.7" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">A</text>
+<rect x="488.3" y="72.0" width="55.1" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="515.8" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">river</text>
+<rect x="488.3" y="118.0" width="55.1" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="515.8" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">6</text>
+<rect x="488.3" y="164.0" width="55.1" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="515.8" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">B</text>
+<rect x="549.4" y="72.0" width="52.0" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="575.4" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">bank</text>
+<rect x="549.4" y="118.0" width="52.0" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="575.4" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">7</text>
+<rect x="549.4" y="164.0" width="52.0" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="575.4" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">B</text>
+<rect x="607.4" y="72.0" width="55.1" height="30.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="635.0" y="91.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">[SEP]</text>
+<rect x="607.4" y="118.0" width="55.1" height="30.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="635.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">8</text>
+<rect x="607.4" y="164.0" width="55.1" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="635.0" y="183.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">B</text>
+<text x="14.0" y="232.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">= input</text>
+<rect x="120.0" y="212.0" width="542.5" height="30.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="391.3" y="231.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">the sum, LayerNorm, dropout: what layer 1 reads</text>
+<text x="120.0" y="272.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">each box is a learned vector of 768 numbers; position 0 to 511, segment A or B</text>
+</svg>

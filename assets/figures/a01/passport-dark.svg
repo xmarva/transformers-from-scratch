@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 472" width="760" height="472" role="img" aria-label="BERT&#x27;s passport. Published October 2018 by Google. Type: encoder. Pre-training objective: masked language modelling and next sentence prediction. Attention: bidirectional, full. Positions: learned, up to 512. Normalisation: LayerNorm after each sublayer. Activation: GELU. Sizes: base 110 million parameters, 12 layers, width 768; large 340 million, 24 layers, width 1024. Best at: classification, tagging, retrieval">
+<title>BERT&#x27;s passport. Published October 2018 by Google. Type: encoder. Pre-training objective: masked language modelling and next sentence prediction. Attention: bidirectional, full. Positions: learned, up to 512. Normalisation: LayerNorm after each sublayer. Activation: GELU. Sizes: base 110 million parameters, 12 layers, width 768; large 340 million, 24 layers, width 1024. Best at: classification, tagging, retrieval</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="472" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">BERT: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">October 2018, Google (Devlin, Chang, Lee, Toutanova)</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">encoder only: reads the whole input at once, generates nothing</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">pre-training</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">masked language model (15% of tokens) + next sentence prediction</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">attention</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">bidirectional, full; 12 heads per layer in base</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">positions</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">learned, at most 512 tokens</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">normalisation</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">LayerNorm after each sublayer (post-norm)</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">activation</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">GELU in the feed-forward network, 3,072 wide</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">vocabulary</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">WordPiece: 30,522 uncased, 28,996 cased</text>
+<text x="14.0" y="361.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">sizes</text>
+<rect x="190.0" y="342.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="361.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">base: 12 layers, 768 wide, 110M; large: 24 layers, 1024 wide, 340M</text>
+<text x="14.0" y="395.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">good at</text>
+<rect x="190.0" y="376.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="395.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">classification, tagging tokens, search: fast, small, runs on a CPU</text>
+<text x="14.0" y="429.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">not for</text>
+<rect x="190.0" y="410.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="429.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">generating text, inputs over 512 tokens without windows</text>
+</svg>

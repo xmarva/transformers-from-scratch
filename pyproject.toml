@@ -59,6 +59,8 @@ known-first-party = ["build", "citations", "paragraphs", "tfs", "tools"]
 "lessons/**/*.py" = ["E402", "I001", "F821", "E501", "B905"]
 # the setup cell imports helpers for the lesson cells that follow it
 "lessons/_shared/*.py" = ["E402", "I001", "F821", "E501", "B905", "F401"]
+"architectures/**/*.py" = ["E402", "I001", "F821", "E501", "B905"]
+"architectures/_shared/*.py" = ["E402", "I001", "F821", "E501", "B905", "F401"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

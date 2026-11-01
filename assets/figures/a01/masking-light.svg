@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="The 80/10/10 rule. Of all tokens, 15% are picked for prediction. Of those, 80% are replaced with the MASK token, 10% with a random word, and 10% are left unchanged; the model must predict the original word at all of them">
+<title>The 80/10/10 rule. Of all tokens, 15% are picked for prediction. Of those, 80% are replaced with the MASK token, 10% with a random word, and 10% are left unchanged; the model must predict the original word at all of them</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">How BERT hides words: 15% picked, then 80 / 10 / 10</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">highlighted: the positions picked for prediction; the loss looks only at them</text>
+<text x="14.0" y="92.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">original</text>
+<rect x="110.0" y="72.0" width="39.5" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="129.8" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">the</text>
+<rect x="154.5" y="72.0" width="47.3" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="178.2" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">bank</text>
+<rect x="206.8" y="72.0" width="62.9" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="238.3" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">raised</text>
+<rect x="274.8" y="72.0" width="39.5" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="294.5" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">its</text>
+<rect x="319.3" y="72.0" width="55.1" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="346.8" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">rates</text>
+<rect x="379.4" y="72.0" width="55.1" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="407.0" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">again</text>
+<rect x="439.5" y="72.0" width="55.1" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="467.1" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">after</text>
+<rect x="499.6" y="72.0" width="39.5" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="519.4" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">the</text>
+<rect x="544.2" y="72.0" width="55.1" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="571.7" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">river</text>
+<rect x="604.3" y="72.0" width="70.7" height="30.0" rx="7" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="639.6" y="91.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">flooded</text>
+<text x="14.0" y="152.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">input</text>
+<rect x="110.0" y="132.0" width="39.5" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="129.8" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">the</text>
+<rect x="154.5" y="132.0" width="62.9" height="30.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="186.0" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">[MASK]</text>
+<rect x="222.4" y="132.0" width="62.9" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="253.9" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">raised</text>
+<rect x="290.4" y="132.0" width="39.5" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="310.1" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">its</text>
+<rect x="334.9" y="132.0" width="55.1" height="30.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="362.4" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">piano</text>
+<rect x="395.0" y="132.0" width="55.1" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="422.6" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">again</text>
+<rect x="455.1" y="132.0" width="55.1" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="482.7" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">after</text>
+<rect x="515.2" y="132.0" width="39.5" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="535.0" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">the</text>
+<rect x="559.8" y="132.0" width="55.1" height="30.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="587.3" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">river</text>
+<rect x="619.9" y="132.0" width="70.7" height="30.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="655.2" y="151.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">flooded</text>
+<text x="14.0" y="209.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">80%</text>
+<rect x="110.0" y="190.0" width="90.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="155.0" y="208.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">[MASK]</text>
+<text x="214.0" y="209.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">→ predict &#x27;bank&#x27;: replaced with the mask token</text>
+<text x="14.0" y="243.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">10%</text>
+<rect x="110.0" y="224.0" width="90.0" height="28.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="155.0" y="242.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">piano</text>
+<text x="214.0" y="243.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">→ predict &#x27;rates&#x27;: replaced with a random word</text>
+<text x="14.0" y="277.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="600" fill="#8A5508">10%</text>
+<rect x="110.0" y="258.0" width="90.0" height="28.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="155.0" y="276.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">river</text>
+<text x="214.0" y="277.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">→ predict &#x27;river&#x27;: left as it is, but still predicted</text>
+</svg>
