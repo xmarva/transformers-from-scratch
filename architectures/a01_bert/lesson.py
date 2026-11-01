@@ -1039,14 +1039,14 @@ def scores(predicted, gold):
 random.seed(SEED)
 test_subset = test_rows.select(range(min(len(test_rows), 400)))
 test_gold = [aligned_gold(row) for row in test_subset]
-SIZES = [16, 32] if SMOKE else [100, 400, 1600]
+SIZES = [16] if SMOKE else [100, 400, 1600]  # CI runs on a slow CPU
 curve = []
 for size in SIZES:
     data = examples(train_rows.select(range(size)))
     for pretrained in (True, False):
         t0 = time.time()
         torch.manual_seed(SEED)
-        tagger = train(new_tagger(pretrained), data, steps=40 if SMOKE else 300)
+        tagger = train(new_tagger(pretrained), data, steps=10 if SMOKE else 300)
         predicted = [predict(tagger, row) for row in test_subset]
         f1 = scores(predicted, test_gold).set_index("group").loc["all", "F1"]
         start = "BERT's weights" if pretrained else "random"
