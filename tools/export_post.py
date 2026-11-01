@@ -1,8 +1,9 @@
 """Export executed lessons as posts for the course's site, xmarva.github.io (Jekyll, al-folio).
 
-For every lesson it writes
-    _posts/<published_on>-transformers-from-scratch-NN-<name>.md
-    assets/posts/tfs/NN/   the cover, the lesson's figures (light and dark) and every image the notebook produced
+For every lesson it writes (the prefixes come from the lesson's course, tools/courses.py)
+    _posts/<published_on>-transformers-from-scratch-NN-<name>.md   or -transformer-architectures-NN-<name>.md
+    assets/posts/tfs/NN/ or assets/posts/arch/NN/   the cover, the lesson's figures (light and dark) and every
+                                                    image the notebook produced
 
 What changes on the way from notebook to post:
 - the notebook header (cover and badges) becomes front matter and a line of links to Kaggle, Colab and the course;
@@ -16,6 +17,7 @@ What changes on the way from notebook to post:
 
 Usage:
     uv run python tools/export_post.py 01 02 03 --site ../../websites/xmarva.github.io
+    uv run python tools/export_post.py a01 --site ../../websites/xmarva.github.io
 
 The executed notebooks are read from build/executed/<lesson>.ipynb (tools/run.py, tools/kaggle_run.py).
 """
@@ -34,6 +36,8 @@ import nbformat
 import tomllib
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from courses import code, course_of, lesson_dirs  # noqa: E402
+
 import build  # noqa: E402
 import citations  # noqa: E402
 import paragraphs  # noqa: E402
@@ -42,12 +46,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_URL = "https://xmarva.github.io"
 COURSE_PAGE = "/teaching/"
 # an image tag ends at the first ">" outside its quoted attributes: alt texts may contain "<bos>"
-FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)-light\.png"'
+FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/([a-z]?\d\d)/([\w-]+)-light\.png"'
                     r'((?:\s+[\w-]+="[^"]*")*)\s*/?>')
 # one image for both themes, like a screenshot of a page
 # terminal escape codes: colours and cursor control that pip and others print; Jupyter renders them, a post can't
 ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
-PICTURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/(\d\d)/([\w-]+)\.png"'
+PICTURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/([a-z]?\d\d)/([\w-]+)\.png"'
                      r'((?:\s+[\w-]+="[^"]*")*)\s*/?>')
 ATTRIBUTE = re.compile(r'(\w+)="([^"]*)"')
 # code blocks, code spans, display math, and inline math, which may wrap onto the next line but not past a paragraph
@@ -57,16 +61,14 @@ TITLE = re.compile(r"""(?:set_title|title=|title\s*=)\(?\s*f?["']([^"'{}]+)["']"
 
 def lessons() -> dict[str, tuple[Path, dict]]:
     found = {}
-    for folder in sorted((ROOT / "lessons").iterdir()):
-        toml = folder / "lesson.toml"
-        if toml.exists():
-            found[folder.name[:2]] = (folder, tomllib.loads(toml.read_text(encoding="utf-8")))
+    for folder in lesson_dirs():
+        found[code(folder)] = (folder, tomllib.loads((folder / "lesson.toml").read_text(encoding="utf-8")))
     return found
 
 
 def post_slug(folder: Path) -> str:
     number, name = folder.name.split("_", 1)
-    return f"transformers-from-scratch-{number}-{name.replace('_', '-')}"
+    return f"{course_of(folder).post}-{number.lstrip('abcdefghijklmnopqrstuvwxyz')}-{name.replace('_', '-')}"
 
 
 def post_url(folder: Path, meta: dict) -> str:
@@ -165,9 +167,10 @@ def output_blocks(cell, assets: Path, web: str, counter: list[int]) -> list[str]
 
 
 def links_line(folder: Path, meta: dict) -> str:
-    url = build.links(folder.name, meta)
+    course = course_of(folder)
+    url = build.links(folder.name, meta, course)
     return (
-        f'<p class="tfs-links"><strong>{build.COURSE}</strong> · lesson {meta["number"]} of {build.TOTAL_LESSONS} · '
+        f'<p class="tfs-links"><strong>{course.title}</strong> · lesson {meta["number"]} of {course.lessons} · '
         f'<a href="{COURSE_PAGE}">all lessons</a> · <a href="{url["kaggle"]}">run on Kaggle</a> · '
         f'<a href="{url["colab"]}">open in Colab</a> · <a href="{url["github"]}">code on GitHub</a></p>'
     )
@@ -190,10 +193,12 @@ def neighbours(number: str, exported: dict[str, tuple[Path, dict]]) -> str:
 
 def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> Path:
     folder, meta = exported[number]
+    course = course_of(folder)
     notebook_path = ROOT / "build" / "executed" / f"{folder.name}.ipynb"
     nb = nbformat.read(notebook_path, as_version=4)
-    assets = site / "assets" / "posts" / "tfs" / number
-    web = f"/assets/posts/tfs/{number}"
+    folder_on_site = f"{meta['number']:02d}"
+    assets = site / "assets" / "posts" / course.key / folder_on_site
+    web = f"/assets/posts/{course.key}/{folder_on_site}"
     if assets.exists():
         shutil.rmtree(assets)
     assets.mkdir(parents=True)
@@ -220,9 +225,9 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         "---",
         "layout: post",
         f'title: "{title}"',
-        f"date: {meta['published_on']} {9 + int(number):02d}:00:00",
+        f"date: {meta['published_on']} {9 + meta['number']:02d}:00:00",
         f'description: "{meta["description"]}"',
-        f"tags: [transformers-from-scratch, {meta['tags']}]",
+        f"tags: [{course.post}, {meta['tags']}]",
         "categories: machine-learning",
         f"thumbnail: {web}/cover.png",
         f"og_image: {SITE_URL}{web}/cover.png",
