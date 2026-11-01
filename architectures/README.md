@@ -27,7 +27,7 @@ number in the text comes from an output of the notebook. The course shares the t
 |---|---|---|---|
 | a01 | **BERT**: masked language modelling and fine-tuning. Google Search, 2019; cloze tests; why "bidirectional" needed a mask | embeddings (token, segment, position), the encoder with post-norm and GELU, the MLM head; bert-base weights; the 80/10/10 mask; what BERT knows and its biases, probed through its own predictions; what its heads look at | a detector of personal data in financial documents (gretelai/synthetic_pii_finance_multilingual, Apache-2.0), with 512-token windows over long documents, against a regex baseline |
 | a02 | **From RoBERTa to ModernBERT**: what seven years did to BERT. RoBERTa's recipe, DeBERTa, ELECTRA, ModernBERT | DeBERTa's disentangled attention, ELECTRA's replaced-token detection, ModernBERT's alternating local and global attention; their weights; ELECTRA against MLM on the same small budget | one hard classification task, three generations of encoders, accuracy against speed |
-| a03 | **Text embeddings and search**: Sentence-BERT, cross-encoders, ColBERT | mean pooling, InfoNCE with in-batch negatives, MaxSim; a bi-encoder trained briefly; a reranker | a semantic search engine over arXiv abstracts, recall@k with and without reranking |
+| a03 | **Embeddings and search**: Sentence-BERT, cross-encoders, ColBERT | BM25, mean pooling, InfoNCE with in-batch negatives, MaxSim; MiniLM, bge, a cross-encoder and ColBERTv2 in our code; a bi-encoder trained from scratch and one adapted to the corpus | a literature search over 58,000 ML and NLP papers (LitSearch): recall@k, time and index size of every method, fusion and reranking |
 
 ## Part 2. Decoders and the encoder–decoder: models that generate
 

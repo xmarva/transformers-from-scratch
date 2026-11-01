@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" width="760" height="372" role="img" aria-label="Three ways to score a query against a document. A cross-encoder reads the two texts joined into one input and outputs a relevance score: one full pass of the encoder for every pair. A bi-encoder, Sentence-BERT, encodes each text separately into one vector and compares the vectors by cosine, so the documents can be encoded before any query arrives. Late interaction, ColBERT, also encodes them separately but keeps one vector per token and sums, over the query&#x27;s tokens, the best match in the document">
+<title>Three ways to score a query against a document. A cross-encoder reads the two texts joined into one input and outputs a relevance score: one full pass of the encoder for every pair. A bi-encoder, Sentence-BERT, encodes each text separately into one vector and compares the vectors by cosine, so the documents can be encoded before any query arrives. Late interaction, ColBERT, also encodes them separately but keeps one vector per token and sums, over the query&#x27;s tokens, the best match in the document</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="372" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Three ways to score a query against a document</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">only the last two can read the documents before the query arrives</text>
+<text x="14.0" y="84.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">cross-encoder</text>
+<text x="14.0" y="102.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">both texts in one input</text>
+<text x="262.0" y="84.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">bi-encoder</text>
+<text x="262.0" y="102.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">Sentence-BERT, 2019</text>
+<text x="510.0" y="84.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">late interaction</text>
+<text x="510.0" y="102.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">ColBERT, 2020</text>
+<rect x="14.0" y="118.0" width="236.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="132.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">query [SEP] document</text>
+<polyline points="132.0,149.0 132.0,167.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="168.0" width="236.0" height="44.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="132.0" y="194.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<polyline points="132.0,213.0 132.0,279.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="280.0" width="236.0" height="32.0" rx="9" fill="#9C8CF5" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="132.0" y="300.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">relevance score</text>
+<rect x="262.0" y="118.0" width="112.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="318.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">query</text>
+<polyline points="318.0,149.0 318.0,167.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="262.0" y="168.0" width="112.0" height="44.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="318.0" y="194.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<polyline points="318.0,213.0 318.0,229.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="282.0" y="230.0" width="72.0" height="26.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="318.0" y="247.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">vector</text>
+<polyline points="318.0,257.0 318.0,279.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="386.0" y="118.0" width="112.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="442.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">document</text>
+<polyline points="442.0,149.0 442.0,167.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="386.0" y="168.0" width="112.0" height="44.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="442.0" y="194.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<polyline points="442.0,213.0 442.0,229.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="406.0" y="230.0" width="72.0" height="26.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="442.0" y="247.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">vector</text>
+<polyline points="442.0,257.0 442.0,279.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="262.0" y="280.0" width="236.0" height="32.0" rx="9" fill="#9C8CF5" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="380.0" y="300.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">cosine of two vectors</text>
+<rect x="510.0" y="118.0" width="112.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="566.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">query</text>
+<polyline points="566.0,149.0 566.0,167.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="510.0" y="168.0" width="112.0" height="44.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="566.0" y="194.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<polyline points="566.0,213.0 566.0,229.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="520.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="536.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="552.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="568.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="584.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="600.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<polyline points="566.0,257.0 566.0,279.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="634.0" y="118.0" width="112.0" height="30.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="690.0" y="137.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">document</text>
+<polyline points="690.0,149.0 690.0,167.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="634.0" y="168.0" width="112.0" height="44.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="690.0" y="194.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<polyline points="690.0,213.0 690.0,229.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="644.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="660.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="676.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="692.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="708.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<rect x="724.0" y="230.0" width="12.0" height="26.0" rx="3" fill="#F0B04A"/>
+<polyline points="690.0,257.0 690.0,279.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="510.0" y="280.0" width="236.0" height="32.0" rx="9" fill="#9C8CF5" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="628.0" y="300.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">sum of best matches</text>
+<text x="14.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">one full encoder pass</text>
+<text x="14.0" y="354.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">for every query–document pair</text>
+<text x="262.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">documents encoded once,</text>
+<text x="262.0" y="354.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">one vector each, before the query</text>
+<text x="510.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">documents encoded once,</text>
+<text x="510.0" y="354.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">one vector for every token</text>
+</svg>
