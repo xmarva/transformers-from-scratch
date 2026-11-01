@@ -22,7 +22,10 @@ MAX_WORDS = 60  # a paragraph longer than this is split...
 MAX_SENTENCES = 3  # ...and so is one with more sentences than this
 HARD_WORDS = 85  # no piece longer than this, unless it is a single sentence
 
-SKIP = re.compile(r"^(#|[-*+] |\d+[.)] |>|\||<|\$\$|```|\[\[|\{[%:]|!\[|\s{4}|\t)")
+# an HTML block is left alone, but a paragraph may open with an inline tag (a case's name, a key figure)
+SKIP = re.compile(
+    r"^(#|[-*+] |\d+[.)] |>|\||<(?!(?:a|b|i|s|em|strong|span|mark|code|sup|sub)\b)|\$\$|```|\[\[|\{[%:]|!\[|\s{4}|\t)"
+)
 PROTECT = re.compile(
     r"(<sup\b.*?</sup>|<[^>]+>|`[^`]*`|\$\$.*?\$\$|\$[^$\n]+\$|!?\[[^\]]*\]\([^)\s]*\))",
     re.S,
