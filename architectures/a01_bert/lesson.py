@@ -60,7 +60,7 @@ from transformers import AutoTokenizer, BertForMaskedLM
 
 import warnings
 
-# mixed precision skips an optimizer step when a gradient overflows, which PyTorch reports as a warning
+# mixed precision skips a step when a gradient overflows; PyTorch reports it as a warning
 warnings.filterwarnings("ignore", message="Detected call of `lr_scheduler.step")
 SMOKE = env.smoke()  # CI runs the lesson on a small slice; you run it in full
 device = "cuda" if torch.cuda.is_available() else "cpu"
