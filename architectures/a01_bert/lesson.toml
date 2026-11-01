@@ -3,5 +3,6 @@ short_title = "BERT"
 cover_alt = "Lesson 1 cover: BERT from scratch. A sentence with one word hidden behind a mask, and arrows from the words on both sides of it, left and right, pointing at the gap"
 gpu = true
 published = false
+published_on = 2026-11-01
 description = "BERT written in PyTorch from scratch and loaded with Google's weights: why reading in both directions needed a mask, what BERT knows and what its attention heads do, and a detector of personal data in long financial documents, against regular expressions."
 tags = "bert, nlp, transformer, pytorch, ner"

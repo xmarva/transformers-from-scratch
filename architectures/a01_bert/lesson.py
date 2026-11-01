@@ -615,7 +615,9 @@ plt.show()
 
 # %% [markdown]
 # Nothing in the sentence says anything about the person's gender, and the dashed line is where a model with no
-# opinion would put every job. BERT has opinions, and they are the statistics of its training text. Kurita and
+# opinion would put every job. BERT has opinions. Receptionists, nurses and hairdressers are *she*; engineers, pilots
+# and programmers are *he*; and most jobs, the doctor and the teacher among them, lean *he*. These are the statistics
+# of its training text. Kurita and
 # colleagues measured them this way, with templates and the masked word's probabilities, and showed that such
 # associations carry into the models fine-tuned from BERT
 # ([Kurita et al., 2019](https://arxiv.org/abs/1906.07337)). It is worth remembering when a BERT-based classifier
@@ -670,11 +672,12 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
-# Several patterns are visible at a glance. In the middle and upper layers many heads put most of their attention on
-# `[SEP]`, a token that carries no information about any particular word. Clark and colleagues suggested that a
-# head with nothing useful to do in a given context parks its attention there, a no-op: softmax has to send the
-# weight somewhere. The first layers have heads that almost only look one token back or one token ahead, which is
-# how a model without any built-in notion of order puts neighbouring words together. Here is the most devoted
+# The layers divide the work. In layers 2 to 4 attention gathers on `[CLS]`; in layers 5 to 10 almost every head
+# sends much of it to `[SEP]`, a token that carries no information about any particular word; the last two layers
+# spread out again. Clark and colleagues suggested that a head with nothing useful to do in a given context parks its
+# attention on `[SEP]`, a no-op: softmax has to send the weight somewhere. The first layers also have heads that look
+# almost only one token back or one token ahead, which is how a model with no built-in notion of order puts
+# neighbouring words together. Here is the most devoted
 # previous-token head on one sentence:
 
 # %%
@@ -1070,10 +1073,12 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# This is the chart that changed NLP in 2018. With a hundred documents the pre-trained network already finds most of
-# the personal data, and the random one has barely learned to say `O`. With sixteen times more data the random
-# network improves, but it is still far behind the pre-trained one trained on the smallest set. The four days of
-# Google's TPUs are not in the architecture: the two networks are identical. They are in the weights.
+# This is the chart that changed NLP in 2018. With a hundred documents the pre-trained network already gets about
+# half of the spans exactly right. The random one gets almost none, and sixteen times more documents barely move it:
+# it spends its 300 updates learning that most tokens are `O`, while the pre-trained one starts from a model of
+# English and only has to learn what a name or an IBAN looks like in these documents. With far more updates and data
+# the random network would get further; pre-training paid for those in advance. The four days of Google's TPUs are
+# not in the architecture, since the two networks are identical. They are in the weights.
 #
 # Now the real model, on all the training documents:
 
@@ -1146,7 +1151,7 @@ comparison = pd.DataFrame({"spans": bert_scores["spans"],
                            "BERT F1": bert_scores["F1"],
                            "regex F1": regex_scores["F1"].where(
                                regex_scores.index.isin(list(PATTERNS) + ["all"]))})
-display(table(comparison.reset_index()))
+display(table(comparison.reset_index().fillna("—")))  # no regex for that group
 print(f"BERT tagged {len(test_all):,} documents in {seconds:.0f} s, "
       f"{len(test_all) / seconds:.0f} documents a second")
 
@@ -1165,11 +1170,17 @@ ax.legend(frameon=False, loc="upper left", bbox_to_anchor=(1, 1))
 plt.show()
 
 # %% [markdown]
-# The regular expressions are not useless: where data has a strict shape they are cheap, explainable and often
-# precise. But they can't tell a phone number from an invoice number of the same shape, a date of birth from a
-# delivery date, and they find nothing at all where the shape is language, which is where most of the personal data
-# in these documents is. BERT reads the context: *Full Name:* before a string makes it a person, *Ship to* before a
-# line makes it an address.
+# Look at emails first: there the regular expression beats the model. An email address has a strict shape, and a
+# pattern matches it character by character, while BERT reads tokens and now and then stops a piece short. Everywhere
+# else the model is ahead, by the most on bank details, card numbers, ID numbers and dates. The regular expressions
+# lose there on both counts: they miss every format nobody wrote a pattern for, a passport number, an account number
+# without a country code, a date spelled out in words, and they flag strings of the right shape that are nobody's
+# personal data. And for people, companies and addresses, most of the personal data in these documents, there is no
+# pattern to compare with at all. BERT reads the context: *Full Name:* before a string makes it a person, *Ship to*
+# before a line makes it an address.
+#
+# In practice the two are combined: patterns for the few strict shapes, where they are exact and easy to audit, and
+# the model for everything else.
 #
 # Here is the model at work on a test document it has never seen, everything it found replaced by its group:
 
@@ -1197,6 +1208,9 @@ display(highlight(demo["generated_text"][:1200], demo_spans))
 print(redact(demo["generated_text"][:1200], demo_spans))
 
 # %% [markdown]
+# One mistake is in plain sight: in "Monthly Income" the model took *Monthly* for a date, a word it has seen next to
+# dates many times.
+#
 # Two caveats belong next to any number above. The test documents come from the same generator as the training ones,
 # with the same templates and the same habits, so the scores are an upper bound for real documents, which will be
 # messier. And a share of the "errors" are the annotation's, as we saw in section 7. Before a model like this masks
@@ -1208,10 +1222,10 @@ print(redact(demo["generated_text"][:1200], demo_spans))
 #
 # BERT was overtaken years ago on every leaderboard, and it is still everywhere. For the jobs it was built for,
 # classifying text and labelling tokens, a fine-tuned encoder of a hundred million parameters is usually as accurate
-# as a large language model asked nicely, and it is two or three orders of magnitude cheaper: our tagger read
-# thousands of documents in the time a 70-billion-parameter model would write a few paragraphs. It reads the whole
-# input at once instead of producing text token by token, its output is a label rather than prose that must be
-# parsed, and it runs on a CPU if it has to.
+# as a large language model asked nicely, and far cheaper: our tagger went through almost three thousand documents
+# in under a minute on a free T4, while a 70-billion-parameter model has more than six hundred times as many weights
+# to run for every token it writes. BERT reads the whole input at once instead of producing text token by token, its
+# output is a label rather than prose that must be parsed, and it runs on a CPU if it has to.
 #
 # Where it is the wrong tool: anything that needs generation, anything longer than 512 tokens that can't be cut into
 # windows, and languages it didn't see in pre-training (multilingual BERT covers 104 languages, worse than the
