@@ -22,14 +22,14 @@
 # 1. Write BM25, the formula every neural retriever still has to beat, and see how far counting words goes.
 # 2. See why an encoder's own vectors are useless for search, and fix that the way Sentence-BERT does: train a
 #    bi-encoder with in-batch negatives, on nothing but the titles and abstracts of the papers themselves.
-# 3. Load the most downloaded model on the Hugging Face Hub into the same code and find out what a billion training
-#    pairs buy.
+# 3. Load the most downloaded model on the Hugging Face Hub into the same code, find out what a billion training
+#    pairs buy, and adapt it to the corpus in ten minutes.
 # 4. Write a cross-encoder reranker and ColBERT's late interaction, and check both against the real weights.
 # 5. Assemble a search engine from the pieces, and measure what each costs in quality, time and memory.
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. The notebook downloads five small encoders and the titles and abstracts of 64,000 papers, and trains
-# two encoders for ten minutes each; on a T4 it runs in about 50 minutes.
+# two encoders for ten minutes each; on a T4 it runs in about 45 minutes.
 
 # %% tags=["include:setup"]
 
@@ -455,7 +455,7 @@ plt.show()
 # BERT, ELMo and GPT-2: their representations are **anisotropic**, "occupying a narrow cone in the vector space"
 # instead of spreading in all directions.
 #
-# So what does the search return? Mostly the same papers, whatever the question:
+# So what does it return? Here are the papers it puts first most often:
 
 # %%
 top5 = base_scores.topk(5, dim=1).indices
@@ -466,10 +466,11 @@ for paper, count in Counter(top5.flatten().tolist()).most_common(3):
     print(f"{count:>4} questions get: {name[:72]}")
 
 # %% [markdown]
-# A few papers that happen to lie near the middle of the crowd are close to everything, and they come first for any
-# question. Retrieval people call them **hubs**. Nothing in masked language modelling asked the model to put texts
-# with similar meanings close together and the rest far apart; its vectors are good for the next layer, not for
-# being compared with each other. To compare, the encoder has to be trained to compare.
+# Most top fives differ, but a few papers turn up everywhere: *Why Neural Translations are the Right Length* is among
+# the five best answers to 82 of the 593 questions, whatever they ask about. Such points sit near the middle of the
+# crowd and are close to everything; retrieval people call them **hubs**. Nothing in masked language modelling asked
+# the model to put texts with similar meanings close together and the rest far apart; its vectors are good for the
+# next layer, not for being compared with each other. To compare, the encoder has to be trained to compare.
 
 # %% [markdown]
 # ## 4. Sentence-BERT: teaching an encoder to compare
@@ -578,8 +579,9 @@ student_docs, student_scores = dense_search("MiniLM-L6, trained here", student)
 #
 # Here is the similarity matrix of eight papers the model trained on, as it looks after training. Six of the eight
 # titles find their own abstract, on the diagonal. The misses are telling: SPREADING VECTORS FOR SIMILARITY SEARCH
-# shares hardly a word with its abstract, which is about quantizers for indexing, and two papers on federated
-# learning come out close to each other, which is what a search engine should want.
+# shares hardly a word with its abstract, which is about quantizers for indexing. And the bright cells off the
+# diagonal are not noise: the two papers on federated learning, rows 3 and 5, come out close to each other's
+# abstracts, which is what a search engine should want.
 
 # %%
 sample = both[:8]
@@ -633,14 +635,17 @@ del reference
 minilm_docs, minilm_scores = dense_search("all-MiniLM-L6-v2", minilm)
 
 # %% [markdown]
-# Ten points above our ten-minute model, and still three below BM25. Before going further, one more thing that
-# costs nothing to check: the model was trained with mean pooling. Here it is read with the `[CLS]` vector instead,
-# the other common choice:
+# Ten points above our ten-minute model, and still three below BM25: 750 times more of our task, and a billion other
+# pairs, bought ten points. Before going further, one more thing that costs nothing to check. The model was trained
+# with mean pooling; here it is read with the `[CLS]` vector instead, the other common choice:
 
 # %%
 _ = dense_search("all-MiniLM-L6-v2, [CLS] instead of the mean", minilm, "cls")
 
 # %% [markdown]
+# Twelve points gone, without an error or a warning: the vectors look like vectors, and the search still works, only
+# worse. A model is its weights and its pooling, and the card says which pooling.
+#
 # The most practical question of the section is the next one. We have a general model trained on a billion pairs,
 # and a corpus with 55,000 pairs of its own. Does a few minutes of the same training on our titles and abstracts,
 # starting from all-MiniLM-L6-v2 instead of from scratch, adapt it to this corpus?
@@ -655,6 +660,10 @@ print(f"adapted in {time.time() - start:.0f} s; in the last 50 steps a title fou
 adapted_docs, adapted_scores = dense_search("all-MiniLM-L6-v2, adapted here", adapted)
 
 # %% [markdown]
+# From 0.42 to 0.51 in ten minutes of the same training, and now above BM25. The general model brought what a billion
+# pairs teach about language; our pairs showed it what this corpus's titles and abstracts look like. This is the
+# cheapest improvement in the lesson, and it is open to anyone with a corpus: no labels, no questions, one T4.
+#
 # **BGE** models from the Beijing Academy of Artificial Intelligence are a newer generation of the same idea
 # ([Xiao et al., 2023](https://arxiv.org/abs/2309.07597)): BERT's architecture again, with pre-training aimed at
 # retrieval, contrastive training on a larger and cleaner collection, and a final round on labelled data. The base
@@ -673,8 +682,12 @@ _ = dense_search("bge-base-en-v1.5, mean pooling, no instruction", bge,
                  tok=bge_tokenizer)
 
 # %% [markdown]
-# The second line is the same model used the way all-MiniLM-L6-v2 is used. Nothing fails, nothing warns, the
-# vectors look like vectors, and the search is worse. Read the model card before you index a million documents.
+# bge-base-en-v1.5, with twice the layers and twice the width, scores 0.50: the same as the small model adapted to
+# our corpus, with an index twice the size and three times the time per question. The second line holds a surprise.
+# Used against its card's advice, with mean pooling and no instruction, bge does no worse. Its card warns only of "a
+# slight degradation" without the instruction, and here even that is lost in the noise, while all-MiniLM-L6-v2 read
+# with `[CLS]` lost twelve points. Pooling matters for one model and not for another, and you can't know which
+# without checking.
 
 # %%
 table(pd.DataFrame(results))
@@ -761,6 +774,10 @@ def rerank(name, scores, depth=50, max_length=320):
 reranked_minilm = rerank("all-MiniLM-L6-v2 → reranker", minilm_scores.to(device))
 
 # %% [markdown]
+# The reranker lifts all-MiniLM-L6-v2 from 0.42 to 0.54: reading each of the 50 candidates together with the
+# question, it puts the right paper in the first five for about 70 more questions. It also takes 131 ms per question,
+# five hundred times as long as the search that found the candidates. That is the trade a reranker always offers.
+#
 # ## 7. ColBERT: a vector for every token
 #
 # Between the two extremes sits **late interaction**, from Omar Khattab and Matei Zaharia at Stanford
@@ -859,6 +876,11 @@ print(", ".join(f"{q}→{d_tokens[shown[j]]}" for q, j in zip(q_tokens[2:n_words
                                                           similarity.argmax(1)[2:-1])))
 
 # %% [markdown]
+# Most question tokens find their namesakes, piece by piece: *di*, *##sti*, *##llation* find the *di*, *##sti*,
+# *##lling* of *TinyBERT: Distilling BERT*, and *language* and *models* find themselves. Some matches are about
+# meaning rather than spelling: *large* finds *tiny*. The question's filler words, *are*, *there*, *on*, *to*,
+# settle for whatever filler is nearest; they add a little to every paper's score and decide nothing.
+#
 # Now the whole corpus. The index keeps up to 180 vectors of 128 numbers for every paper. On a GPU we can afford to
 # search it exhaustively: for every question, MaxSim against every paper, in blocks.
 
@@ -894,6 +916,11 @@ if device == "cuda":
 evaluate("ColBERTv2", colbert_scores, time.time() - start, n_vectors * 128 * 2)
 
 # %% [markdown]
+# ColBERTv2 lands between the small and the large single-vector models: 0.47, above BM25 and all-MiniLM-L6-v2, below
+# bge and the adapted MiniLM. Its price is the index, eight million vectors and 2 GB in float16, more than twenty
+# times bge's, and 14 ms per question even on a GPU. Like the reranker, it learned what relevant means from MS MARCO's
+# web queries, not from questions about papers.
+#
 # ## 8. A search engine
 #
 # Each method has seen the questions its own way, and their mistakes differ. BM25 cannot know that *compressing a
@@ -928,8 +955,15 @@ evaluate("BM25 + MiniLM adapted + reranker, fused", engine_scores, 0, 0)
 table(pd.DataFrame(results).drop(columns=["ms per question", "index, MB"]))
 
 # %% [markdown]
+# Fusion is the best deal in the table. BM25 + all-MiniLM-L6-v2 reaches 0.53, eleven points above the model alone
+# and eight above BM25, from two rankings that each find what the other misses. Even our ten-minute model, at 0.32
+# on its own, lifts BM25 by two points. With the adapted MiniLM the hybrid reaches 0.56, as much as bge with BM25.
+# The reranker on top of that hybrid changes nothing at five: on candidates this good, its judgement, learned from
+# Bing queries, is no better than the hybrid's. Fused with the hybrid's order, the two judgements together give the
+# best result of the lesson, 0.59 at five and 0.73 at twenty.
+#
 # Fusion and reranking add no index of their own, so their cost in the table is the cost of their parts. The whole
-# picture, quality against the time a question takes:
+# picture, quality against the time a question takes and the memory its index needs:
 
 # %%
 frame = pd.DataFrame(results).set_index("method")
@@ -964,6 +998,10 @@ right.set_title("Quality against memory")
 plt.show()
 
 # %% [markdown]
+# The search engine is alone at the top of both charts. Almost all of its time is the reranker's, about 130 ms per
+# question on a T4; everything else answers in a millisecond or less, except ColBERT, which also needs twenty times
+# the memory of anything else here.
+#
 # Where the methods disagree is more instructive than the averages. For every question we find the rank of its first
 # right paper under BM25 and under the adapted MiniLM, and look at the questions where one of them finds the paper
 # at once and the other buries it.
@@ -986,6 +1024,14 @@ print(f"BM25 in the top 3, MiniLM below 50: {len(words_win)} questions; "
 display(table(pd.concat([words_win.head(3), meaning_wins.head(3)])))
 
 # %% [markdown]
+# BM25 wins when a question hangs on a rare, exact term: *zero-shot lip reading*, *prediction entropy*, *a single
+# forward pass*. The adapted model wins on paraphrase: the question about networks that "translate text passages
+# into related questions" wants *Learning to Ask: Neural Question Generation for Reading Comprehension*, whose
+# words the question doesn't use. Fusion keeps most of both, though not all: QuAC falls from second place under
+# MiniLM to 23rd in the engine, dragged down by BM25's 155th. The last question in the table is about this lesson.
+# It asks which study showed that mean pooling beats `[CLS]` for sentence similarity, and the paper it wants is
+# Sentence-BERT: 59th for BM25, 3rd for the adapted MiniLM.
+#
 # ## 9. Your own search engine
 #
 # Everything is in place for the practical result of the lesson: a function that takes a question in plain words
@@ -1022,25 +1068,35 @@ for question in [
         print(f"   {rank}. {title}")
 
 # %% [markdown]
+# Three of five come back first. ELECTRA appears twice because the corpus holds the paper twice, a duplicate that
+# the same embeddings would catch in a deduplication pass. The DeBERTa question returns an earlier paper on relative
+# positions, Shaw et al.'s, and other position encodings, but not DeBERTa itself. The question about the narrow cone
+# misses Ethayarajh's paper, which is in the corpus; the engine prefers papers on BERT's semantics that share more of
+# the question's words.
+#
 # ## 10. Which one to use today
 #
 # The lesson's table is a small version of what retrieval benchmarks keep finding. BM25 is a baseline that refuses
 # to lose by much, and it is never the right thing to throw away: it finds names, numbers, codes and rare terms that
 # an embedding smears into their neighbourhood. A bi-encoder catches paraphrase and meaning, and costs one vector per
-# document. Fusing the two is nearly free and usually better than either. A cross-encoder on the top few dozen is
-# the most reliable way to buy a few more points, paid for in latency on every query. ColBERT gets much of the
-# reranker's precision at first-stage speed, and pays in memory; ColBERTv2's residual compression cuts that index
+# document. Fusing the two is nearly free and usually better than either. A cross-encoder on the top few dozen buys
+# more, paid for in latency on every query: here it lifted a weak retriever by twelve points, and a strong hybrid
+# only once its order was fused with the hybrid's. ColBERT puts token-level matching into the first stage, and pays
+# in memory; ColBERTv2's residual compression cuts that index
 # "by 6–10×", and the PLAID engine searches it up to "7× on a GPU and 45× on a CPU" faster than vanilla ColBERTv2
 # ([Santhanam et al., 2022](https://arxiv.org/abs/2205.09707)).
 #
 # Choosing an embedding model is now a matter of reading a leaderboard such as MTEB
 # ([Muennighoff et al., 2022](https://arxiv.org/abs/2210.07316)) and then checking on your own data, because the
 # leaderboard's tasks are not yours. Since 2024 its top places have mostly gone not to encoders but to decoders,
-# large language models such as NV-Embed and Qwen3-Embedding turned into embedders by the same contrastive recipe;
-# the next lessons are about decoders.
+# large language models such as NV-Embed and Qwen3-Embedding turned into embedders by the same contrastive recipe.
+# On LitSearch itself the best embedder in the paper was one of them, the 7-billion-parameter GritLM, with 74.8%
+# recall@5 on the specific questions. The next lessons are about decoders.
 #
-# The cheapest win in the lesson was the one that needed no labels: training on the corpus's own titles and
-# abstracts. If your documents have that kind of structure, use it before you buy a bigger model.
+# Two results of the lesson are worth taking to your own projects. The largest gain from a single step came from ten
+# minutes of training a general model on the corpus's own titles and abstracts, with no labels and no queries; if
+# your documents have that kind of structure, use it before you buy a bigger model. And the model card is part of
+# the model: the same weights read with the wrong pooling lost twelve points without a word of warning.
 #
 # Sentence-BERT's passport, and the family tree with this lesson's branch:
 #
