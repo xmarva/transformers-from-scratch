@@ -58,6 +58,10 @@ from safetensors.torch import load_file
 from tfs.viz import heatmap
 from transformers import AutoTokenizer, BertForMaskedLM
 
+import warnings
+
+# mixed precision skips an optimizer step when a gradient overflows, which PyTorch reports as a warning
+warnings.filterwarnings("ignore", message="Detected call of `lr_scheduler.step")
 SMOKE = env.smoke()  # CI runs the lesson on a small slice; you run it in full
 device = "cuda" if torch.cuda.is_available() else "cpu"
 assert device == "cuda" or SMOKE, "This lesson fine-tunes BERT seven times: use a GPU."
@@ -931,7 +935,9 @@ def batches(data, size, shuffle):
         yield ids.to(device), labels.to(device)
 
 
-def train(tagger, data, epochs=2, lr=5e-5, batch_size=16):
+def train(tagger, data, epochs=2, lr=5e-5, batch_size=16, steps=None):
+    if steps:  # a fixed number of updates, however much data there is
+        epochs = math.ceil(steps / math.ceil(len(data) / batch_size))
     steps = epochs * math.ceil(len(data) / batch_size)
     warmup = max(1, steps // 10)
     optimizer = torch.optim.AdamW(tagger.parameters(), lr=lr, weight_decay=0.01)
@@ -1023,7 +1029,8 @@ def scores(predicted, gold):
 
 # %% [markdown]
 # First the experiment that explains why BERT mattered. The same network is fine-tuned twice on the same documents:
-# once starting from Google's weights, once from random ones. We repeat it with more and more training documents.
+# once starting from Google's weights, once from random ones, each with the same 300 updates of the weights. We
+# repeat it with more and more training documents.
 
 # %%
 random.seed(SEED)
@@ -1036,7 +1043,7 @@ for size in SIZES:
     for pretrained in (True, False):
         t0 = time.time()
         torch.manual_seed(SEED)
-        tagger = train(new_tagger(pretrained), data, epochs=3)
+        tagger = train(new_tagger(pretrained), data, steps=40 if SMOKE else 300)
         predicted = [predict(tagger, row) for row in test_subset]
         f1 = scores(predicted, test_gold).set_index("group").loc["all", "F1"]
         start = "BERT's weights" if pretrained else "random"
@@ -1139,7 +1146,7 @@ comparison = pd.DataFrame({"spans": bert_scores["spans"],
                            "BERT F1": bert_scores["F1"],
                            "regex F1": regex_scores["F1"].where(
                                regex_scores.index.isin(list(PATTERNS) + ["all"]))})
-table(comparison.reset_index())
+display(table(comparison.reset_index()))
 print(f"BERT tagged {len(test_all):,} documents in {seconds:.0f} s, "
       f"{len(test_all) / seconds:.0f} documents a second")
 
@@ -1177,10 +1184,12 @@ def redact(text, spans):
     return "".join(out)
 
 
-# a test document with something of every common group in its first 1,200 characters
+# a test document with something of every common group in its first 1,200 characters,
+# and none of the generator's unfilled template fields, such as "[Graduation Date]"
 for k in range(len(test_all)):
     early = [s for s in bert_found[k] if s[1] <= 1200]
-    if {"PERSON", "COMPANY", "ADDRESS", "DATE"} <= {s[2] for s in early}:
+    filled = "[" not in test_all[k]["generated_text"][:1200]
+    if filled and {"PERSON", "COMPANY", "ADDRESS", "DATE"} <= {s[2] for s in early}:
         break
 demo, demo_spans = test_all[k], early
 print(demo["document_type"])
