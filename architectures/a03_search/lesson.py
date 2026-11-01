@@ -68,8 +68,10 @@ half = torch.float16 if device == "cuda" else torch.float32  # what indexes are 
 # LitSearch is a benchmark built at Princeton from the way researchers look for papers
 # ([Ajith et al., 2024](https://arxiv.org/abs/2407.18940)). Some of its 597 questions were written by GPT-4 from
 # paragraphs of real papers that cite other work, and ask for the paper behind the citation; the others were
-# written by the authors of recent ACL and ICLR papers about their own papers. Experts checked or edited every one.
-# The corpus is 64,183 machine-learning and NLP papers, and each question names the one or few papers it is after.
+# written by authors of ACL 2023 and ICLR 2024 papers about their own papers. The benchmark's authors checked every
+# question by hand. The corpus is 64,183 papers from the ACL Anthology and ICLR, and each question names the one or
+# few papers it is after. The benchmark was not built to flatter anyone: in its paper, Google Search and research
+# tools lagged behind the best neural retriever "by up to 32 recall points".
 #
 # The corpus files also hold the full text of every paper, more than a gigabyte of it. We need only titles and
 # abstracts, and Parquet stores every column separately, so we read just those three columns straight from the
@@ -146,8 +148,10 @@ def evaluate(name, scores, seconds, index_bytes):
 #
 # Before any neural network, search engines scored a document by the words it shares with the query, and the
 # formula most of them settled on is **BM25**, from Stephen Robertson's Okapi system at City University London in
-# the 1990s. It is still the default ranking of Lucene, Elasticsearch and OpenSearch, and the first baseline in
-# every retrieval paper. For a query $q$ and a document $d$:
+# the 1990s; its report for TREC-3 says, with no ceremony, "we in effect combined BM11 and BM15 into a single
+# function BM25" ([Robertson et al., 1995](https://trec.nist.gov/pubs/trec3/papers/city.ps.gz)). Thirty years later
+# it is the default ranking of Lucene, Elasticsearch and OpenSearch, and the first baseline in every retrieval
+# paper. For a query $q$ and a document $d$:
 #
 # $$\text{BM25}(q, d) = \sum_{w \in q} \text{IDF}(w) \cdot
 # \frac{f(w, d)\,(k_1 + 1)}{f(w, d) + k_1 \left(1 - b + b\,\frac{|d|}{\text{avgdl}}\right)},
@@ -250,7 +254,9 @@ evaluate("BM25", bm25_scores, time.time() - start, postings * 8)  # int32 id + f
 #
 # The obvious way to turn an encoder into a search engine is to average the vectors it computes for the tokens of a
 # text and compare the averages by cosine. Reimers and Gurevych tried it with BERT and found that it "yields rather
-# bad sentence embeddings, often worse than averaging GloVe embeddings". Let's see why.
+# bad sentence embeddings, often worse than averaging GloVe embeddings". On their semantic similarity tests, averaged
+# BERT vectors scored 54.8, BERT's `[CLS]` vector 29.2, and plain averaged GloVe word vectors from 2014 scored 61.3.
+# Let's see why.
 #
 # We take **MiniLM-L6**, a small encoder with BERT's architecture. Microsoft distilled a 12-layer, 384-wide MiniLM
 # from a larger model ([Wang et al., 2020](https://arxiv.org/abs/2002.10957)), and Nils Reimers, the same one, cut it
@@ -443,8 +449,9 @@ plt.show()
 
 # %% [markdown]
 # Two random papers have a cosine of about 0.8 here, and a question with the paper it asks for is barely closer.
-# All the vectors crowd into a narrow cone, a property of contextual representations that
-# [Ethayarajh (2019)](https://arxiv.org/abs/1909.00512) measured in BERT, ELMo and GPT-2 and called **anisotropy**.
+# All the vectors crowd together. [Ethayarajh (2019)](https://arxiv.org/abs/1909.00512) found the same in almost
+# every layer of BERT, ELMo and GPT-2: their representations are **anisotropic**, "occupying a narrow cone in the
+# vector space" instead of spreading in all directions.
 # Nothing in masked language modelling asked the model to put texts with similar meanings close together and the
 # rest far apart; the vectors are good for predicting the next layer's job, not for being compared with each other.
 # To compare, the encoder has to be trained to compare.
@@ -456,9 +463,10 @@ plt.show()
 # calls it siamese), with mean pooling on top. All the novelty is in the training. In 2019 it learned from pairs of
 # sentences labelled by people as entailment, contradiction or neutral, the SNLI and MultiNLI datasets. Today the
 # standard is **contrastive training with in-batch negatives**, which needs no labels at all, only pairs of texts
-# that belong together: a question and its answer, a title and its abstract
-# ([Henderson et al., 2017](https://arxiv.org/abs/1705.00652);
-# [Karpukhin et al., 2020](https://arxiv.org/abs/2004.04906)).
+# that belong together: a question and its answer, a title and its abstract. Google's Smart Reply team put it in one
+# sentence: "we use the responses of other examples in a training batch ... as negative responses"
+# ([Henderson et al., 2017](https://arxiv.org/abs/1705.00652)), and Dense Passage Retrieval made the trick standard
+# for search ([Karpukhin et al., 2020](https://arxiv.org/abs/2004.04906)).
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a03/inbatch-light.png" width="760" alt="Training with in-batch negatives. A batch holds the titles and abstracts of four papers. Every title is compared with every abstract; for each title, its own abstract is the right answer and the other abstracts of the batch are wrong ones, so the loss is cross-entropy over each row of the similarity matrix">
 #
@@ -468,7 +476,8 @@ plt.show()
 # $$\mathcal{L} = -\frac{1}{B} \sum_{i=1}^{B} \log
 # \frac{\exp\left(s \cdot \cos(t_i, a_i)\right)}{\sum_{j=1}^{B} \exp\left(s \cdot \cos(t_i, a_j)\right)}$$
 #
-# This loss has many names: InfoNCE, the multiple negatives ranking loss, NT-Xent. The scale $s = 20$, a temperature
+# This loss has many names: InfoNCE ([van den Oord et al., 2018](https://arxiv.org/abs/1807.03748)), the multiple
+# negatives ranking loss, NT-Xent. The scale $s = 20$, a temperature
 # of 0.05, is what the sentence-transformers library uses by default: cosines live in $[-1, 1]$, and without the
 # scale the softmax over them would be almost flat.
 #
@@ -577,11 +586,12 @@ plt.show()
 # %% [markdown]
 # ## 5. What a billion pairs buy
 #
-# **all-MiniLM-L6-v2** is the most downloaded sentence-embedding model on the Hugging Face Hub. Its model card says
+# **all-MiniLM-L6-v2** is not just the most popular embedding model: with 184 million downloads in the month before
+# this lesson was written, it is the most downloaded model of any kind on the Hugging Face Hub. Its model card says
 # it started from exactly our `nreimers/MiniLM-L6-H384-uncased` and was trained with the same loss, on 1,170,060,424
 # pairs from 290 sources: Reddit, Stack Exchange, WikiAnswers, PAQ, and 41,769,185 titles with their abstracts from
-# the S2ORC corpus of scientific papers, which is our task at seven hundred times our scale. It trained for 100,000
-# steps of 1,024 pairs on a TPU v3-8.
+# the S2ORC corpus of scientific papers, which is our task at 750 times our scale. It trained for 100,000 steps of
+# 1,024 pairs on a TPU v3-8.
 #
 # Same architecture, same starting point, same loss; only the data differ. Its weights load into our code, and the
 # check against Hugging Face's `BertModel`:
@@ -606,8 +616,9 @@ minilm_docs, minilm_scores = dense_search("all-MiniLM-L6-v2", minilm)
 # **BGE** models from the Beijing Academy of Artificial Intelligence are a newer generation of the same idea
 # ([Xiao et al., 2023](https://arxiv.org/abs/2309.07597)): BERT's architecture again, with pre-training aimed at
 # retrieval, contrastive training on a larger and cleaner collection, and a final round on labelled data. The base
-# size has 12 layers and 768 dimensions. Its model card asks for two things that are easy to miss: the embedding is
-# the vector of `[CLS]`, not the mean, and a query, though not a document, starts with an instruction.
+# size has 12 layers and 768 dimensions. Its model card says two things that are easy to miss: the embedding is the
+# vector of `[CLS]`, not the mean, and a query, though not a document, should start with an instruction; without
+# it, the card promises "a slight degradation".
 
 # %%
 BGE = "BAAI/bge-base-en-v1.5"
@@ -629,19 +640,20 @@ table(pd.DataFrame(results))
 # ## 6. The cross-encoder: reading the question and the paper together
 #
 # A bi-encoder never sees the query and the document at the same time; it compares two summaries written
-# independently. A **cross-encoder** is plain BERT used the way lesson 1 used it for pairs of sentences: the query
-# and the document go in as one input, `[CLS] query [SEP] document [SEP]`, the two parts marked by their segment
-# ids, and every token of the query attends to every token of the document in every layer. On top sits a classifier
-# that turns the `[CLS]` vector into one number, a relevance score.
+# independently. A **cross-encoder** is plain BERT reading a pair of texts, in the input format of lesson 1: the
+# query and the document go in as one sequence, `[CLS] query [SEP] document [SEP]`, the two parts marked by their
+# segment ids, and every token of the query attends to every token of the document in every layer. On top sits a
+# classifier that turns the `[CLS]` vector into one number, a relevance score.
 #
-# It is the most accurate of the three architectures and the most expensive: nothing can be computed before the
-# query arrives. Scoring all 58,000 papers for one question would take 58,000 passes of the encoder. So a
-# cross-encoder is used as a **reranker**: a fast retriever proposes a few dozen candidates and the cross-encoder
-# reorders them.
+# Putting BERT on top of BM25 this way was one of the first places where BERT took over search
+# ([Nogueira & Cho, 2019](https://arxiv.org/abs/1901.04085)). It is the most accurate of the three architectures and
+# the most expensive: nothing can be computed before the query arrives. Scoring all 58,000 papers for one question
+# would take 58,000 passes of the encoder. So a cross-encoder is used as a **reranker**: a fast retriever proposes a
+# few dozen candidates and the cross-encoder reorders them.
 #
-# We take `cross-encoder/ms-marco-MiniLM-L6-v2`, the same six-layer MiniLM trained on MS MARCO, a million Bing queries
-# with the passages people clicked. Besides the encoder it has BERT's **pooler**, a dense layer with tanh on the
-# `[CLS]` vector, and the classifier with a single output.
+# We take `cross-encoder/ms-marco-MiniLM-L6-v2`, the same six-layer MiniLM trained on MS MARCO: real Bing queries,
+# each with the passages that human editors marked as containing the answer. Besides the encoder it has BERT's
+# **pooler**, a dense layer with tanh on the `[CLS]` vector, and the classifier with a single output.
 
 # %%
 class CrossEncoder(nn.Module):
@@ -713,7 +725,8 @@ reranked_minilm = rerank("all-MiniLM-L6-v2 → reranker", minilm_scores.to(devic
 # document separately, so the documents can be indexed in advance. Unlike it, ColBERT keeps a vector for every
 # token, shrunk by a linear layer from 768 dimensions to 128 and normalised. The query and the document meet only at
 # the very end, in **MaxSim**: every query token finds the document token most similar to it, and the document's
-# score is the sum of these best matches.
+# score is the sum of these best matches. Against a BERT reranker, the paper reported search "two
+# orders-of-magnitude faster and requiring four orders-of-magnitude fewer FLOPs per query".
 #
 # $$\text{score}(q, d) = \sum_{i \in q} \max_{j \in d} \cos(q_i, d_j)$$
 #
@@ -764,7 +777,7 @@ def colbert_queries(texts, length=32):
                               truncation=True, max_length=length,
                               return_tensors="pt").to(device)
     ids, attended = batch["input_ids"], batch["attention_mask"]
-    ids[:, 1] = Q_MARKER  # the ". " held its place
+    ids[:, 1] = Q_MARKER  # the original ColBERT code's trick: ". " held the marker's place
     ids[ids == colbert_tokenizer.pad_token_id] = colbert_tokenizer.mask_token_id
     with torch.autocast(device, dtype=torch.float16, enabled=device == "cuda"):
         return colbert(ids, attended == 0).to(half), ids
@@ -962,12 +975,14 @@ for question in [
 # document. Fusing the two is nearly free and usually better than either. A cross-encoder on the top few dozen is
 # the most reliable way to buy a few more points, paid for in latency on every query. ColBERT gets much of the
 # reranker's precision at first-stage speed, and pays in memory; ColBERTv2's residual compression cuts that index
-# several times, and the PLAID engine makes it fast on CPUs.
+# "by 6–10×", and the PLAID engine searches it up to "7× on a GPU and 45× on a CPU" faster than vanilla ColBERTv2
+# ([Santhanam et al., 2022](https://arxiv.org/abs/2205.09707)).
 #
 # Choosing an embedding model is now a matter of reading a leaderboard such as MTEB
 # ([Muennighoff et al., 2022](https://arxiv.org/abs/2210.07316)) and then checking on your own data, because the
-# leaderboard's tasks are not yours. Many of the models at its top today are no longer encoders but decoders, large
-# language models turned into embedders by the same contrastive recipe; the next lessons are about decoders.
+# leaderboard's tasks are not yours. Since 2024 its top places have mostly gone not to encoders but to decoders,
+# large language models such as NV-Embed and Qwen3-Embedding turned into embedders by the same contrastive recipe;
+# the next lessons are about decoders.
 #
 # The cheapest win in the lesson was the one that needed no labels: training on the corpus's own titles and
 # abstracts. If your documents have that kind of structure, use it before you buy a bigger model.
@@ -983,14 +998,16 @@ for question in [
 #
 # - Reimers, N., & Gurevych, I. (2019). [Sentence-BERT: sentence embeddings using Siamese BERT-networks](https://arxiv.org/abs/1908.10084). *EMNLP-IJCNLP 2019*.
 # - Ajith, A., Xia, M., Chevalier, A., Goyal, T., Chen, D., & Gao, T. (2024). [LitSearch: a retrieval benchmark for scientific literature search](https://arxiv.org/abs/2407.18940). *EMNLP 2024*.
-# - Robertson, S. E., Walker, S., Jones, S., Hancock-Beaulieu, M., & Gatford, M. (1994). [Okapi at TREC-3](https://trec.nist.gov/pubs/trec3/papers/city.ps.gz). *TREC-3*.
+# - Robertson, S. E., Walker, S., Jones, S., Hancock-Beaulieu, M., & Gatford, M. (1995). [Okapi at TREC-3](https://trec.nist.gov/pubs/trec3/papers/city.ps.gz). *The Third Text REtrieval Conference (TREC-3)*, NIST SP 500-226.
 # - Wang, W., Wei, F., Dong, L., Bao, H., Yang, N., & Zhou, M. (2020). [MiniLM: deep self-attention distillation for task-agnostic compression of pre-trained transformers](https://arxiv.org/abs/2002.10957). *NeurIPS 2020*.
 # - Ethayarajh, K. (2019). [How contextual are contextualized word representations? Comparing the geometry of BERT, ELMo, and GPT-2 embeddings](https://arxiv.org/abs/1909.00512). *EMNLP-IJCNLP 2019*.
 # - Henderson, M., Al-Rfou, R., Strope, B., Sung, Y., Lukács, L., Guo, R., Kumar, S., Miklos, B., & Kurzweil, R. (2017). [Efficient natural language response suggestion for Smart Reply](https://arxiv.org/abs/1705.00652). arXiv:1705.00652.
+# - van den Oord, A., Li, Y., & Vinyals, O. (2018). [Representation learning with contrastive predictive coding](https://arxiv.org/abs/1807.03748). arXiv:1807.03748.
 # - Karpukhin, V., Oğuz, B., Min, S., Lewis, P., Wu, L., Edunov, S., Chen, D., & Yih, W. (2020). [Dense passage retrieval for open-domain question answering](https://arxiv.org/abs/2004.04906). *EMNLP 2020*.
-# - Xiao, S., Liu, Z., Zhang, P., & Muennighoff, N. (2023). [C-Pack: packaged resources to advance general Chinese embedding](https://arxiv.org/abs/2309.07597). arXiv:2309.07597.
+# - Xiao, S., Liu, Z., Zhang, P., Muennighoff, N., Lian, D., & Nie, J.-Y. (2023). [C-Pack: packed resources for general Chinese embeddings](https://arxiv.org/abs/2309.07597). *SIGIR 2024*.
 # - Nogueira, R., & Cho, K. (2019). [Passage re-ranking with BERT](https://arxiv.org/abs/1901.04085). arXiv:1901.04085.
 # - Khattab, O., & Zaharia, M. (2020). [ColBERT: efficient and effective passage search via contextualized late interaction over BERT](https://arxiv.org/abs/2004.12832). *SIGIR 2020*.
 # - Santhanam, K., Khattab, O., Saad-Falcon, J., Potts, C., & Zaharia, M. (2022). [ColBERTv2: effective and efficient retrieval via lightweight late interaction](https://arxiv.org/abs/2112.01488). *NAACL 2022*.
+# - Santhanam, K., Khattab, O., Potts, C., & Zaharia, M. (2022). [PLAID: an efficient engine for late interaction retrieval](https://arxiv.org/abs/2205.09707). *CIKM 2022*.
 # - Cormack, G. V., Clarke, C. L. A., & Büttcher, S. (2009). [Reciprocal rank fusion outperforms Condorcet and individual rank learning methods](https://doi.org/10.1145/1571941.1572114). *SIGIR 2009*.
 # - Muennighoff, N., Tazi, N., Magne, L., & Reimers, N. (2022). [MTEB: massive text embedding benchmark](https://arxiv.org/abs/2210.07316). *EACL 2023*.

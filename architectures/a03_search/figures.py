@@ -91,7 +91,7 @@ def bm25() -> Figure:
         fig.box(14, y, 130, 44, role=role, label=name)
         fig.text(162, y + 19, formula, kind="mono")
         fig.text(162, y + 38, meaning, kind="note")
-    fig.text(14, 280, "k1 = 1.2 and b = 0.75 are the usual defaults; no training, no GPU, one inverted index",
+    fig.text(14, 280, "k1 = 1.2 and b = 0.75 are Lucene's defaults; no training, no GPU, one inverted index",
              kind="body")
     return fig
 

@@ -22,5 +22,5 @@
 <text x="79.0" y="224.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">length</text>
 <text x="162.0" y="217.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">… = 1 − b + b · length / average</text>
 <text x="162.0" y="236.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">a long abstract needs more hits for the same score</text>
-<text x="14.0" y="280.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">k1 = 1.2 and b = 0.75 are the usual defaults; no training, no GPU, one inverted index</text>
+<text x="14.0" y="280.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">k1 = 1.2 and b = 0.75 are Lucene&#x27;s defaults; no training, no GPU, one inverted index</text>
 </svg>
