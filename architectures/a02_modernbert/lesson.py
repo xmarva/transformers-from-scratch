@@ -186,7 +186,8 @@ del reference
 # RoBERTa's other visible change is its tokenizer. BERT's WordPiece splits text into characters it knows, and a
 # character it doesn't know becomes `[UNK]`, the same token for an emoji, a Chinese name and a Greek letter. RoBERTa
 # borrowed GPT-2's **byte-level BPE**: the text is first turned into bytes, and any byte sequence can be spelled out
-# with 256 byte tokens, so nothing is ever unknown. The `Ġ` you'll see marks a token that starts with a space.
+# with 256 byte tokens, so nothing is ever unknown. The `Ġ` you'll see marks a token that starts with a space, and
+# pairs like `Ã¯` are the two bytes of one character, *ï*, printed one by one.
 
 # %%
 bert_tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
@@ -543,6 +544,17 @@ for name, steps, encoder in [("none, random weights", 0, untrained),
 table(pd.DataFrame(race))
 
 # %% [markdown]
+# The probe column first. Averaged vectors of an untrained encoder are a bag of random word vectors, and a linear
+# classifier on top already does far better than chance: which words an issue contains says a lot about its kind. Eight
+# minutes of pre-training didn't make either encoder's frozen vectors better than that.
+#
+# Fine-tuning on few labels is where pre-training shows. The masked language model starts far ahead of random weights,
+# the effect of lesson 1 at a tiny scale. ELECTRA, in our race, did not: its discriminator fine-tuned no better than
+# random weights. The paper's smallest ELECTRA trained for four days on a GPU, some seven hundred times our budget,
+# with a generator narrower than its discriminator, while ours is one layer of the same width; its advantage is
+# measured there. A race this short says what happens in the first eight minutes, and in them the simpler task won.
+# It is RoBERTa's lesson again: an idea is only as good as the recipe it is trained with, and ours is a sketch.
+#
 # ## 3. DeBERTa: positions as vectors of their own
 #
 # BERT adds a position vector to each word vector at the input, and from then on a token is one vector that mixes
@@ -919,8 +931,10 @@ table(pd.DataFrame(results))
 
 # %% [markdown]
 # The table needs a second look before any conclusion: each number comes from one run, one random seed, and a test
-# set of 1,600 issues, so differences of a point or two are within the noise. With that in mind, the order shows how
-# much of the progress since 2018 is the recipe and the task rather than the block.
+# set of 1,600 issues, so differences of a point or two are within the noise. With that in mind, the order is the
+# order of history. RoBERTa gains on BERT with exactly the same block, from its training alone; DeBERTa-v3 and
+# ModernBERT add a little more and tie with each other. On this GPU they also cost the same, about half the speed of
+# BERT; ModernBERT's speed comes from FlashAttention and unpadding, which a T4 can't use.
 #
 # Now the thing only ModernBERT can do here. BERT, RoBERTa and DeBERTa-v3 were trained on 512 tokens at most, while
 # ModernBERT was trained on 8,192. Issues are long, with logs and stack traces, so we let it read four times more:
@@ -950,6 +964,15 @@ heatmap(confusions[best], rows=KINDS, cols=KINDS, annotate=True, fmt="{:.2f}", c
 plt.show()
 
 # %% [markdown]
+# Reading four times more of each issue changed nothing. ModernBERT trained four times longer and classified four
+# times slower for the same score: the title and the first paragraph decide what an issue is, and the stack trace
+# below them adds nothing to that decision. Long context earns its price where the answer is spread through a
+# document, like the personal data of lesson 1's bank documents, not here.
+#
+# The errors that remain gather in one place: almost a third of the bugs were taken for questions. A bug report often
+# is a question, "is this expected?", and the projects' own labels don't agree on where one ends and the other
+# begins.
+#
 # ## 6. Which one to use today
 #
 # Encoders are not a museum piece. On the day this lesson was written, the four most downloaded models on the
@@ -957,7 +980,7 @@ plt.show()
 # a hundred million times in a month ([Hugging Face, 2026](https://huggingface.co/models?sort=downloads)). The next
 # lesson is about exactly those.
 #
-# For a new project that needs an encoder, ModernBERT is the default: it reads long inputs, it was trained on code as
+# For a new project that needs an encoder, ModernBERT is a good default: it reads long inputs, it was trained on code as
 # well as prose, and it is fast where FlashAttention is available. DeBERTa-v3 remains a strong choice for short
 # English text when the last point of accuracy matters more than speed, and years of Kaggle competitions have worn
 # smooth every way of fine-tuning it. RoBERTa and BERT are worth knowing because half the models on the Hub are
