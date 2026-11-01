@@ -462,7 +462,8 @@ top5 = base_scores.topk(5, dim=1).indices
 n_papers = top5.unique().numel()
 print(f"{n_papers} different papers fill the top five of {len(questions)} questions")
 for paper, count in Counter(top5.flatten().tolist()).most_common(3):
-    print(f"{count:>4} questions get: {re.sub(chr(10), ' ', titles[paper])[:72]}")
+    name = re.sub(r"\s+", " ", titles[paper] or "(no title) " + texts[paper])
+    print(f"{count:>4} questions get: {name[:72]}")
 
 # %% [markdown]
 # A few papers that happen to lie near the middle of the crowd are close to everything, and they come first for any
@@ -565,15 +566,20 @@ for ax in (left, right):
 plt.show()
 
 # %% [markdown]
-# By the end of training a title finds its own abstract among 128 almost every time. That is the training task;
-# whether it carries over to questions the model has never seen is what the evaluation says.
+# Within a few hundred steps a title finds its own abstract among 128 nine times out of ten. That is the training
+# task; whether it carries over to questions the model has never seen is what the evaluation says.
 
 # %%
 student_docs, student_scores = dense_search("MiniLM-L6, trained here", student)
 
 # %% [markdown]
-# Here is the similarity matrix of eight papers the model trained on, as it looks after training: the diagonal,
-# each title with its own abstract, stands out from the rest of its row.
+# From nothing to a third of the questions in ten minutes, without a single question in the training data. It is
+# still well below BM25, and the reasons are plain: titles are not questions, and 55,000 pairs are not many.
+#
+# Here is the similarity matrix of eight papers the model trained on, as it looks after training. Six of the eight
+# titles find their own abstract, on the diagonal. The misses are telling: SPREADING VECTORS FOR SIMILARITY SEARCH
+# shares hardly a word with its abstract, which is about quantizers for indexing, and two papers on federated
+# learning come out close to each other, which is what a search engine should want.
 
 # %%
 sample = both[:8]
@@ -593,8 +599,8 @@ axes[0].legend(loc="upper left", fontsize=8)
 plt.show()
 
 # %% [markdown]
-# The cone has opened. Random pairs of papers now spread around a low cosine, and the questions, which the model
-# never saw during training, sit to the right of them. The model learned what makes two texts in this corpus mean
+# The cone has opened. Random pairs of papers now spread around zero, and the questions, which the model never saw
+# during training, sit to the right of them, around 0.5. The model learned what makes two texts in this corpus mean
 # the same thing, from the corpus alone.
 
 # %% [markdown]
@@ -607,8 +613,8 @@ plt.show()
 # the S2ORC corpus of scientific papers, which is our task at 750 times our scale. It trained for 100,000 steps of
 # 1,024 pairs on a TPU v3-8.
 #
-# Same architecture, same starting point, same loss; only the data differ. Its weights load into our code, and the
-# check against Hugging Face's `BertModel`:
+# Same architecture, same starting point, same loss; only the data differ. So the comparison with our model shows
+# what the data buy. Its weights load into our code, and the check against Hugging Face's `BertModel`:
 
 # %%
 MINILM = "sentence-transformers/all-MiniLM-L6-v2"
@@ -915,9 +921,10 @@ for name, scores in [("MiniLM-L6, trained here", student_scores),
                      ("all-MiniLM-L6-v2, adapted here", adapted_scores),
                      ("bge-base-en-v1.5", bge_scores)]:
     evaluate(f"BM25 + {name}", fuse(bm25_gpu, scores), 0, 0)
-hybrid = fuse(bm25_gpu, bge_scores)
-final = rerank("BM25 + bge-base-en-v1.5 → reranker", hybrid)
-evaluate("BM25 + bge-base-en-v1.5 + reranker, fused", fuse(hybrid, final), 0, 0)
+hybrid = fuse(bm25_gpu, adapted_scores)
+reranked = rerank("BM25 + MiniLM adapted → reranker", hybrid)
+engine_scores = fuse(hybrid, reranked, depth=50)  # the reranker's order and the hybrid's
+evaluate("BM25 + MiniLM adapted + reranker, fused", engine_scores, 0, 0)
 table(pd.DataFrame(results).drop(columns=["ms per question", "index, MB"]))
 
 # %% [markdown]
@@ -929,8 +936,9 @@ frame = pd.DataFrame(results).set_index("method")
 single = ["BM25", "MiniLM-L6, trained here", "all-MiniLM-L6-v2",
           "all-MiniLM-L6-v2, adapted here", "bge-base-en-v1.5", "ColBERTv2"]
 points = {name: frame.loc[name] for name in single}
-engine = "BM25 + bge-base-en-v1.5 → reranker"
-parts = frame.loc[["BM25", "bge-base-en-v1.5", engine]].sum()
+parts = frame.loc[["BM25", "all-MiniLM-L6-v2, adapted here",
+                   "BM25 + MiniLM adapted → reranker"]].sum()
+engine = "BM25 + MiniLM adapted + reranker, fused"
 points["the search engine"] = pd.Series({"recall@5": frame.loc[engine, "recall@5"],
                                          "ms per question": parts["ms per question"],
                                          "index, MB": parts["index, MB"]})
@@ -957,8 +965,8 @@ plt.show()
 
 # %% [markdown]
 # Where the methods disagree is more instructive than the averages. For every question we find the rank of its first
-# right paper under BM25 and under the best embedding model, and look at the questions where one of them finds the
-# paper at once and the other buries it.
+# right paper under BM25 and under the adapted MiniLM, and look at the questions where one of them finds the paper
+# at once and the other buries it.
 
 # %%
 def first_rank(scores):
@@ -969,10 +977,11 @@ def first_rank(scores):
 
 
 ranks = pd.DataFrame({"question": questions, "BM25": first_rank(bm25_gpu),
-                      "bge": first_rank(bge_scores), "engine": first_rank(final)})
-words_win = ranks[(ranks["BM25"] <= 3) & (ranks["bge"] > 50)]
-meaning_wins = ranks[(ranks["bge"] <= 3) & (ranks["BM25"] > 50)]
-print(f"BM25 in the top 3, bge below 50: {len(words_win)} questions; "
+                      "MiniLM": first_rank(adapted_scores),
+                      "engine": first_rank(engine_scores)})
+words_win = ranks[(ranks["BM25"] <= 3) & (ranks["MiniLM"] > 50)]
+meaning_wins = ranks[(ranks["MiniLM"] <= 3) & (ranks["BM25"] > 50)]
+print(f"BM25 in the top 3, MiniLM below 50: {len(words_win)} questions; "
       f"the other way round: {len(meaning_wins)}")
 display(table(pd.concat([words_win.head(3), meaning_wins.head(3)])))
 
@@ -986,14 +995,18 @@ display(table(pd.concat([words_win.head(3), meaning_wins.head(3)])))
 @torch.no_grad()
 def search(question, k=5, depth=50):
     words_ranked = torch.from_numpy(bm25.scores(question)).to(device)[None]
-    meaning = embed(bge, [question], 64, "cls", INSTRUCTION, tok=bge_tokenizer) @ bge_docs.T
+    meaning = embed(adapted, [question], 64) @ adapted_docs.T
     candidates = fuse(words_ranked, meaning).topk(depth, dim=1).indices[0].tolist()
     batch = reranker_tokenizer([question] * depth, [texts[j] for j in candidates],
                                padding=True, truncation="only_second", max_length=320,
                                return_tensors="pt").to(device)
     padding = batch["attention_mask"] == 0
     logits = reranker(batch["input_ids"], padding, batch["token_type_ids"])
-    best = logits.topk(k).indices.tolist()
+    # fuse the two orders, as above: the candidates' own and the reranker's
+    by_reranker = logits.argsort(descending=True).argsort()
+    by_hybrid = torch.arange(depth, device=device)
+    score = 1 / (61 + by_hybrid) + 1 / (61 + by_reranker)
+    best = score.topk(k).indices.tolist()
     return [re.sub(r"\s+", " ", titles[candidates[j]])[:110] for j in best]
 
 
