@@ -169,6 +169,33 @@ A notebook is read as much as it is run, so every output is designed:
   them in our style with "adapted from".
 - Screenshots (W&B, Gradio, Grafana) are taken at one size, in one theme, with the same frame.
 
+## Post components
+
+Long posts (`articles/*/post.md`, exported to the site with `tools/export_article.py`) are read twice: a quick
+pass through the summary, headings, charts and marked lines, then a slow one through everything else. The site
+has blocks for the quick pass, styled in its `_sass/_components.scss`, with live examples and markup on its
+`/components/` page. They are plain HTML in the markdown; `markdown="1"` renders the markdown inside.
+
+- **Summary** (`aside.tldr`, label "In short"): first in a post that runs past a few screens. Three or four
+  sentences a reader could stop after, and up to three `.stat` numbers, each with its unit and what it measures.
+- **Headings** state the finding or answer the question: "Calibration: a week out, prices are off by 1.8
+  points", not "Calibration". `###` only splits a section longer than about five screens.
+- **Method** (`details.method`): sampling, full derivations, assumptions. Closed by default; the summary line says
+  what is inside. The main text must read whole without it.
+- **Callouts**: `callout-key` for the point of a section, `callout-warn` for an easy mistake, a plain `callout` for
+  an aside with its own label ("For traders", "For engineers"). One per section at most.
+- **Takeaway** (`p.takeaway`): one sentence after a chart or section, a finding with its number, not a slogan.
+- **Flow** (`p.flow`): a chain of three to five short steps; the last, the consequence, is drawn in red.
+- **Pull quote** (`blockquote.pull` with `cite`): one per post, for a sentence worth reading twice.
+- **Italics** are the only mark inside a sentence: a new term where it is defined, a word that carries the stress.
+  Highlighters, coloured or underlined words, inline bars and labels and bold sentences were all tried in posts
+  and look garish or cheap; lessons keep bold definitions. Names of layers, functions, files and APIs go in code:
+  `RMSNorm`, `prices-history`.
+- **Pointer** (`a.arrow-link`): a link the reader is invited to follow to another section or post.
+
+The rule for all of them is scarcity: a page where everything is highlighted has nothing highlighted. Look at the
+post in light and dark at 1280 and 390 px before the PR.
+
 ## Covers
 
 - 1200 × 630, dark background, the site's red. Notebook tab, title of two to four words, a hook question,
