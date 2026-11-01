@@ -62,7 +62,8 @@ finally:
 
 
 def kaggle(*args: str) -> str:
-    result = subprocess.run(["uvx", "kaggle", *args], capture_output=True, text=True, check=True)
+    # the newest Kaggle CLI imports six without depending on it
+    result = subprocess.run(["uvx", "--with", "six", "kaggle", *args], capture_output=True, text=True, check=True)
     return result.stdout
 
 

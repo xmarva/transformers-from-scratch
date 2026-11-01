@@ -1,12 +1,12 @@
 """Render a lesson's static figures and covers to SVG and PNG.
 
-A lesson can define lessons/NN_name/figures.py with
+A lesson can define <course folder>/<code>_name/figures.py (lessons/01_tokenization, architectures/a01_bert) with
     FIGURES = {"name": function returning a tools.figures.lib.Figure}
     COVERS = {"en": function returning the cover SVG, "ru": ...}
 
 Outputs (committed, the notebooks link to them on GitHub):
-    assets/figures/NN/<name>-light.{svg,png}, <name>-dark.{svg,png}
-    assets/covers/NN-<lang>.{svg,png}
+    assets/figures/<code>/<name>-light.{svg,png}, <name>-dark.{svg,png}
+    assets/covers/<code>-<lang>.{svg,png}
 
 PNGs are rendered at 2x by headless Chrome with the bundled IBM Plex fonts. Set CHROME=/path/to/chrome if it
 isn't found automatically.
@@ -37,6 +37,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from tools.courses import code, lesson_dirs  # noqa: E402
 from tools.figures.cover import H as COVER_H  # noqa: E402
 from tools.figures.cover import W as COVER_W  # noqa: E402
 from tools.figures.cover import check_latin  # noqa: E402
@@ -106,7 +107,7 @@ def load(lesson_dir: Path):
 
 def render_lesson(lesson_dir: Path, assets: Path) -> list[Path]:
     module = load(lesson_dir)
-    number = lesson_dir.name[:2]
+    number = code(lesson_dir)
     written = []
     for name, make in getattr(module, "FIGURES", {}).items():
         fig = make()
@@ -186,7 +187,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if not args.lessons:
         parser.error("name the lessons to render")
-    for d in sorted((ROOT / "lessons").iterdir()):
+    for d in lesson_dirs():
         if (d / "figures.py").exists() and any(d.name.startswith(p) for p in args.lessons):
             for path in render_lesson(d, ROOT / "assets"):
                 print(f"rendered {path.relative_to(ROOT)}")

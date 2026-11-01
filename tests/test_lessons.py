@@ -6,8 +6,11 @@ import jupytext
 import pytest
 import tomllib
 
-LESSONS = Path(__file__).resolve().parents[1] / "lessons"
-SOURCES = sorted(LESSONS.glob("*/lesson.py")) + sorted((LESSONS / "_shared").glob("*.py"))
+ROOT = Path(__file__).resolve().parents[1]
+LESSONS = ROOT / "lessons"  # the first course, the one that builds the perevod package
+SOURCES = []
+for course in ("lessons", "architectures"):  # the folders of the two courses, tools/courses.py
+    SOURCES += sorted((ROOT / course).glob("*/lesson.py")) + sorted((ROOT / course / "_shared").glob("*.py"))
 MAX_CODE_LINE = 92  # what a Kaggle or Colab cell shows without a horizontal scrollbar
 
 

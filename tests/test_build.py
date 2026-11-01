@@ -80,8 +80,8 @@ def test_ref_moves_images_and_helpers_to_the_same_branch(built):
 
 
 def test_kaggle_titles_fit_kaggles_limit():
-    for toml in sorted((Path(__file__).resolve().parents[1] / "lessons").glob("*/lesson.toml")):
-        meta = build.tomllib.loads(toml.read_text(encoding="utf-8"))
-        assert len(build.kaggle_title(meta)) <= build.KAGGLE_TITLE_MAX
+    for folder in build.lesson_dirs():  # every course's lessons
+        meta = build.tomllib.loads((folder / "lesson.toml").read_text(encoding="utf-8"))
+        assert len(build.kaggle_title(meta, build.course_of(folder))) <= build.KAGGLE_TITLE_MAX
     with pytest.raises(ValueError, match="at most 50"):
         build.kaggle_title({"number": 3, "short_title": "A title far too long for a Kaggle notebook"})
