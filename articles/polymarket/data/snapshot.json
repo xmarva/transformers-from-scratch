@@ -1,0 +1,66 @@
+{
+ "taken": "2026-10-31T23:19:03+00:00",
+ "events": {
+  "house": {
+   "title": "Which party will win the House in 2026?",
+   "volume": 34477832.871341005,
+   "endDate": "2026-11-04T04:59:00Z",
+   "markets": [
+    {
+     "question": "Will the Democratic Party control the House after the 2026 Midterm elections?",
+     "outcome": "Democratic Party",
+     "price": 0.945,
+     "bestBid": 0.94,
+     "bestAsk": 0.95,
+     "volume": 18934217.507493
+    },
+    {
+     "question": "Will the Republican Party control the House after the 2026 Midterm elections?",
+     "outcome": "Republican Party",
+     "price": 0.055,
+     "bestBid": 0.05,
+     "bestAsk": 0.06,
+     "volume": 15543615.363848003
+    }
+   ]
+  },
+  "senate": {
+   "title": "Which party will win the Senate in 2026?",
+   "volume": 13487621.270116,
+   "endDate": "2026-11-04T04:59:00Z",
+   "markets": [
+    {
+     "question": "Will the Democratic Party control the Senate after the 2026 Midterm elections?",
+     "outcome": "Democratic Party",
+     "price": 0.715,
+     "bestBid": 0.71,
+     "bestAsk": 0.72,
+     "volume": 7093839.184906999
+    },
+    {
+     "question": "Will the Republican Party control the Senate after the 2026 Midterm elections?",
+     "outcome": "Republican Party",
+     "price": 0.285,
+     "bestBid": 0.28,
+     "bestAsk": 0.29,
+     "volume": 6393782.085209001
+    }
+   ]
+  },
+  "cex": {
+   "title": "Major CEX insolvent in 2026?",
+   "volume": 139639.111478,
+   "endDate": "2027-01-01T05:00:00Z",
+   "markets": [
+    {
+     "question": "Major CEX insolvent in 2026?",
+     "outcome": "Major CEX insolvent in 2026?",
+     "price": 0.0445,
+     "bestBid": 0.044,
+     "bestAsk": 0.045,
+     "volume": 139639.111478
+    }
+   ]
+  }
+ }
+}
