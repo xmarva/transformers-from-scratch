@@ -40,7 +40,7 @@ BACK_REFERENCES = re.compile(
     r"But|And|Or|So|Yet|Then|Thus|Hence|Still|Also|Instead|Otherwise|Here|There|Which|Its|The same|In turn|"
     r"In other words|That is|For example|For instance|Even|Only|Again)\b"
 )
-SENTENCE_END = re.compile(r"(?<=[.!?…])([\"”’)\]]*)(\s+)(?=[\"“‘(\[A-Z0-9\x00])")
+SENTENCE_END = re.compile(r"(?<=[.!?…])([\"”’)\]*_]*)(\s+)(?=[\"“‘(\[A-Z0-9\x00*_])")
 
 
 def _mask(text: str) -> tuple[str, list[str]]:

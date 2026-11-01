@@ -187,16 +187,12 @@ has blocks for the quick pass, styled in its `_sass/_components.scss`, with live
 - **Takeaway** (`p.takeaway`): one sentence after a chart or section, a finding with its number, not a slogan.
 - **Flow** (`p.flow`): a chain of three to five short steps; the last, the consequence, is drawn in red.
 - **Pull quote** (`blockquote.pull` with `cite`): one per post, for a sentence worth reading twice.
-- **Marks**: `<mark>` for the phrase that carries a paragraph, `.underline` for a term or a contrast, a few per
-  post. In posts, bold is the one sentence a skimming reader must not miss and italics introduce a new term,
-  since bold is already taken; lessons keep bold definitions. Names of layers, functions, files and APIs go in
+- **Bold and italics** are the only marks inside a sentence; highlighters, coloured or underlined words, inline
+  bars and labels were tried and look garish. In posts, bold is a whole sentence, the one in a section a skimming
+  reader must not miss, rarely more than one per section, never a fragment or a lone number. Italics introduce a new term
+  and carry a stressed word; lessons keep bold definitions. Names of layers, functions, files and APIs go in
   code: `RMSNorm`, `prices-history`.
 - **Pointer** (`a.arrow-link`): a link the reader is invited to follow to another section or post.
-- **Inside a sentence**, smaller than any block: `<b>` sets the figure or name a paragraph is about in medium
-  weight (one or two per paragraph, never every number); `<b class="pct" style="--p:25">25%</b>` adds a word-sized
-  bar to a share of a whole; `<span class="shift"><s>+1.15%</s><b>−0.9%</b></span>` shows a value before and after;
-  `<span class="kicker">Wash trades</span>` opens a paragraph with the name of its case, like a dateline, when a
-  section runs through several cases or steps. The paragraph must read whole without its kicker.
 
 The rule for all of them is scarcity: a page where everything is highlighted has nothing highlighted. Look at the
 post in light and dark at 1280 and 390 px before the PR.
