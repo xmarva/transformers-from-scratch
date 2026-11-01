@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="BM25&#x27;s score of a document for a query is a sum over the query&#x27;s words of three factors: how rare the word is in the collection, the inverse document frequency; how often it occurs in the document, with returns that diminish, controlled by k1; and the document&#x27;s length relative to the average, controlled by b, so that long documents don&#x27;t win by repeating everything">
+<title>BM25&#x27;s score of a document for a query is a sum over the query&#x27;s words of three factors: how rare the word is in the collection, the inverse document frequency; how often it occurs in the document, with returns that diminish, controlled by k1; and the document&#x27;s length relative to the average, controlled by b, so that long documents don&#x27;t win by repeating everything</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="300" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">BM25: a sum over the query&#x27;s words</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">each word that the query and the document share adds three factors multiplied together</text>
+<rect x="14.0" y="74.0" width="130.0" height="44.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="79.0" y="100.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">rarity</text>
+<text x="162.0" y="93.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">IDF(word)</text>
+<text x="162.0" y="112.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">a word in every paper, like &#x27;model&#x27;, is worth almost nothing</text>
+<rect x="14.0" y="136.0" width="130.0" height="44.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="79.0" y="162.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">repetition</text>
+<text x="162.0" y="155.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">tf · (k1 + 1) / (tf + k1 · …)</text>
+<text x="162.0" y="174.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the 2nd occurrence counts, the 20th barely does</text>
+<rect x="14.0" y="198.0" width="130.0" height="44.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="79.0" y="224.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">length</text>
+<text x="162.0" y="217.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">… = 1 − b + b · length / average</text>
+<text x="162.0" y="236.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">a long abstract needs more hits for the same score</text>
+<text x="14.0" y="280.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">k1 = 1.2 and b = 0.75 are the usual defaults; no training, no GPU, one inverted index</text>
+</svg>
