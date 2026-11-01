@@ -29,7 +29,7 @@
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. The notebook downloads five small encoders and the titles and abstracts of 64,000 papers, and trains
-# one encoder for a few minutes; on a T4 it runs in about 40 minutes.
+# two encoders for ten minutes each; on a T4 it runs in about 50 minutes.
 
 # %% tags=["include:setup"]
 
@@ -418,8 +418,8 @@ base_docs, base_scores = dense_search("MiniLM-L6, as pre-trained", base)
 print(f"{len(texts):,} papers encoded in {time.time() - start:.0f} s")
 
 # %% [markdown]
-# Far below BM25. The histogram shows why: the cosines of random pairs of papers and the cosines of questions with
-# the papers they want.
+# Not one of the 593 questions finds its paper, not even in the top twenty. The histogram shows why: the cosines of
+# random pairs of papers next to the cosines of questions with the papers they want.
 
 # %%
 def cosines(docs, found, n=4000):
@@ -448,13 +448,27 @@ ax.legend(loc="upper left")
 plt.show()
 
 # %% [markdown]
-# Two random papers have a cosine of about 0.8 here, and a question with the paper it asks for is barely closer.
-# All the vectors crowd together. [Ethayarajh (2019)](https://arxiv.org/abs/1909.00512) found the same in almost
-# every layer of BERT, ELMo and GPT-2: their representations are **anisotropic**, "occupying a narrow cone in the
-# vector space" instead of spreading in all directions.
-# Nothing in masked language modelling asked the model to put texts with similar meanings close together and the
-# rest far apart; the vectors are good for predicting the next layer's job, not for being compared with each other.
-# To compare, the encoder has to be trained to compare.
+# Two random abstracts have a cosine of about 0.95, and a question with the paper it asks for only about 0.85. By
+# this model's measure a question is further from its own answer than any abstract is from any other abstract: the
+# vectors say "this is an abstract" or "this is a question" much louder than what the text is about. All of them
+# crowd together. [Ethayarajh (2019)](https://arxiv.org/abs/1909.00512) found the same in almost every layer of
+# BERT, ELMo and GPT-2: their representations are **anisotropic**, "occupying a narrow cone in the vector space"
+# instead of spreading in all directions.
+#
+# So what does the search return? Mostly the same papers, whatever the question:
+
+# %%
+top5 = base_scores.topk(5, dim=1).indices
+n_papers = top5.unique().numel()
+print(f"{n_papers} different papers fill the top five of {len(questions)} questions")
+for paper, count in Counter(top5.flatten().tolist()).most_common(3):
+    print(f"{count:>4} questions get: {re.sub(chr(10), ' ', titles[paper])[:72]}")
+
+# %% [markdown]
+# A few papers that happen to lie near the middle of the crowd are close to everything, and they come first for any
+# question. Retrieval people call them **hubs**. Nothing in masked language modelling asked the model to put texts
+# with similar meanings close together and the rest far apart; its vectors are good for the next layer, not for
+# being compared with each other. To compare, the encoder has to be trained to compare.
 
 # %% [markdown]
 # ## 4. Sentence-BERT: teaching an encoder to compare
@@ -613,6 +627,28 @@ del reference
 minilm_docs, minilm_scores = dense_search("all-MiniLM-L6-v2", minilm)
 
 # %% [markdown]
+# Ten points above our ten-minute model, and still three below BM25. Before going further, one more thing that
+# costs nothing to check: the model was trained with mean pooling. Here it is read with the `[CLS]` vector instead,
+# the other common choice:
+
+# %%
+_ = dense_search("all-MiniLM-L6-v2, [CLS] instead of the mean", minilm, "cls")
+
+# %% [markdown]
+# The most practical question of the section is the next one. We have a general model trained on a billion pairs,
+# and a corpus with 55,000 pairs of its own. Does a few minutes of the same training on our titles and abstracts,
+# starting from all-MiniLM-L6-v2 instead of from scratch, adapt it to this corpus?
+
+# %%
+adapted, _ = load_encoder(MINILM)
+start = time.time()
+adapted, adapted_log = train_bi_encoder(adapted, lr=2e-5)
+found = adapted_log[-50:, 1].mean()
+print(f"adapted in {time.time() - start:.0f} s; in the last 50 steps a title found "
+      f"its abstract {found:.0%} of the time")
+adapted_docs, adapted_scores = dense_search("all-MiniLM-L6-v2, adapted here", adapted)
+
+# %% [markdown]
 # **BGE** models from the Beijing Academy of Artificial Intelligence are a newer generation of the same idea
 # ([Xiao et al., 2023](https://arxiv.org/abs/2309.07597)): BERT's architecture again, with pre-training aimed at
 # retrieval, contrastive training on a larger and cleaner collection, and a final round on labelled data. The base
@@ -627,7 +663,8 @@ bge, _ = load_encoder(BGE)
 bge_tokenizer = AutoTokenizer.from_pretrained(BGE)
 bge_docs, bge_scores = dense_search("bge-base-en-v1.5", bge, "cls", INSTRUCTION,
                                    tok=bge_tokenizer)
-_ = dense_search("bge-base-en-v1.5, mean pooling, no instruction", bge, tok=bge_tokenizer)
+_ = dense_search("bge-base-en-v1.5, mean pooling, no instruction", bge,
+                 tok=bge_tokenizer)
 
 # %% [markdown]
 # The second line is the same model used the way all-MiniLM-L6-v2 is used. Nothing fails, nothing warns, the
@@ -873,11 +910,14 @@ def fuse(*rankings, k=60, depth=100):
 
 
 bm25_gpu = bm25_scores.to(device)
-for name, scores in [("all-MiniLM-L6-v2", minilm_scores), ("bge-base-en-v1.5", bge_scores),
-                     ("MiniLM-L6, trained here", student_scores)]:
+for name, scores in [("MiniLM-L6, trained here", student_scores),
+                     ("all-MiniLM-L6-v2", minilm_scores),
+                     ("all-MiniLM-L6-v2, adapted here", adapted_scores),
+                     ("bge-base-en-v1.5", bge_scores)]:
     evaluate(f"BM25 + {name}", fuse(bm25_gpu, scores), 0, 0)
 hybrid = fuse(bm25_gpu, bge_scores)
 final = rerank("BM25 + bge-base-en-v1.5 → reranker", hybrid)
+evaluate("BM25 + bge-base-en-v1.5 + reranker, fused", fuse(hybrid, final), 0, 0)
 table(pd.DataFrame(results).drop(columns=["ms per question", "index, MB"]))
 
 # %% [markdown]
@@ -886,8 +926,8 @@ table(pd.DataFrame(results).drop(columns=["ms per question", "index, MB"]))
 
 # %%
 frame = pd.DataFrame(results).set_index("method")
-single = ["BM25", "all-MiniLM-L6-v2", "bge-base-en-v1.5", "MiniLM-L6, trained here",
-          "ColBERTv2"]
+single = ["BM25", "MiniLM-L6, trained here", "all-MiniLM-L6-v2",
+          "all-MiniLM-L6-v2, adapted here", "bge-base-en-v1.5", "ColBERTv2"]
 points = {name: frame.loc[name] for name in single}
 engine = "BM25 + bge-base-en-v1.5 → reranker"
 parts = frame.loc[["BM25", "bge-base-en-v1.5", engine]].sum()
@@ -901,8 +941,10 @@ for name, row in points.items():
     color = special.get(name, COLORS["enc"])
     for ax, x in ((left, row["ms per question"]), (right, row["index, MB"])):
         ax.scatter(x, row["recall@5"], s=55, color=color, zorder=3)
-        ax.annotate(name, (x, row["recall@5"]), xytext=(5, 4), textcoords="offset points",
-                    fontsize=8)
+        left_side = name in ("all-MiniLM-L6-v2, adapted here", "BM25")
+        ax.annotate(name, (x, row["recall@5"]), xytext=(-6 if left_side else 6, 4),
+                    textcoords="offset points", fontsize=8,
+                    ha="right" if left_side else "left")
 for ax in (left, right):
     ax.set_xscale("log")
     ax.margins(x=0.3)
