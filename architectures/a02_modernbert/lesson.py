@@ -47,6 +47,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from huggingface_hub import hf_hub_download
+from IPython.display import display
 from safetensors.torch import load_file
 from tfs.viz import heatmap
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
@@ -398,6 +399,7 @@ def pretrain(task, minutes):
     optimizer = torch.optim.AdamW(params, lr=5e-4, weight_decay=0.01)
     step_fn = mlm_step if task == "mlm" else electra_step
     generator = torch.Generator().manual_seed(SEED)
+    scaler = torch.amp.GradScaler(enabled=device == "cuda")  # float16 gradients in range
     steps, start = 0, time.time()
     while time.time() - start < minutes * 60:
         for group in optimizer.param_groups:
@@ -406,9 +408,11 @@ def pretrain(task, minutes):
         with torch.autocast(device, dtype=torch.float16, enabled=device == "cuda"):
             loss = step_fn(models, batch, generator)
         optimizer.zero_grad(set_to_none=True)
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(optimizer)
         nn.utils.clip_grad_norm_(params, 1.0)
-        optimizer.step()
+        scaler.step(optimizer)
+        scaler.update()
         steps += 1
     return encoder.eval(), steps
 
@@ -421,9 +425,11 @@ print(f"{MINUTES} minutes each: masked LM made {mlm_steps:,} steps, "
 
 # %% [markdown]
 # ELECTRA's step is more expensive, since it runs two encoders, so in the same minutes it makes fewer steps. What
-# each pre-trained encoder is worth shows when we teach it the job: telling bugs from feature requests, questions and
-# documentation. A small labelled set from the training projects, a test set from the five unseen ones, and the same
-# short fine-tuning for each encoder, with a third one that starts from random weights.
+# each pre-trained encoder learned shows in two ways. First, without any training of the encoder: its vectors for
+# whole issues, frozen, and a linear classifier on top that tells bugs from feature requests, questions and
+# documentation. Second, the way encoders are used in practice: fine-tuned, with only a hundred labelled issues of
+# each kind, since pre-training matters most when labels are scarce. A third encoder starts from random weights.
+# All the labelled issues come from the training projects, and the test issues from the five unseen ones.
 
 # %%
 def balanced(frame, per_kind, seed):
@@ -436,9 +442,10 @@ def balanced(frame, per_kind, seed):
 
 seen = issues[issues["repo"].isin(TRAIN_REPOS)]
 unseen = issues[issues["repo"].isin(TEST_REPOS)]
-small_train = balanced(seen, 16 if SMOKE else 1000, SEED)
+probe_train = balanced(seen, 16 if SMOKE else 1000, SEED)
+few_train = balanced(seen, 8 if SMOKE else 100, SEED + 2)
 small_test = balanced(unseen, 8 if SMOKE else 300, SEED)
-print(f"{len(small_train)} training issues, "
+print(f"{len(probe_train)} issues for the probe, {len(few_train)} for fine-tuning, "
       f"{len(small_test)} test issues from unseen projects")
 
 
@@ -460,46 +467,79 @@ def confusion(truth, predicted):  # rows: the actual kind, columns: what the mod
     return counts / np.maximum(1, counts.sum(axis=1, keepdims=True))
 
 
-def tiny_classifier_f1(encoder, epochs=3):
+def batches(frame, size, shuffle):
+    order = np.random.permutation(len(frame)) if shuffle else np.arange(len(frame))
+    for k in range(0, len(frame), size):
+        rows = frame.iloc[order[k:k + size]]
+        enc = bert_tokenizer(list(rows["text"]), truncation=True, max_length=128,
+                             padding=True, return_tensors="pt")
+        labels = torch.tensor([KINDS.index(x) for x in rows["kind"]])
+        yield enc["input_ids"].to(device), labels.to(device)
+
+
+def pooled(encoder, ids):  # the mean of the last layer over real tokens
+    real = (ids != 0).unsqueeze(-1).float()
+    return (encoder(ids, ids == 0) * real).sum(1) / real.sum(1)
+
+
+@torch.no_grad()
+def frozen_features(encoder, frame):
+    encoder.eval()
+    xs, ys = [], []
+    for ids, labels in batches(frame, 64, shuffle=False):
+        xs.append(pooled(encoder, ids))
+        ys.append(labels)
+    return torch.cat(xs), torch.cat(ys)
+
+
+def probe_f1(encoder):
+    x, y = frozen_features(encoder, probe_train)
+    x_test, y_test = frozen_features(encoder, small_test)
+    mean, std = x.mean(0), x.std(0) + 1e-6
+    torch.manual_seed(SEED)
+    linear = nn.Linear(x.shape[1], len(KINDS)).to(device)
+    optimizer = torch.optim.Adam(linear.parameters(), lr=1e-2, weight_decay=1e-4)
+    for _ in range(300):  # the whole set at once: it is small
+        loss = F.cross_entropy(linear((x - mean) / std), y)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    predicted = linear((x_test - mean) / std).argmax(-1)
+    return macro_f1(y_test.tolist(), predicted.tolist())
+
+
+def fine_tuned_f1(encoder, epochs=8):
+    encoder = encoder.train()
     torch.manual_seed(SEED)
     head = nn.Linear(256, len(KINDS)).to(device)
     params = list(encoder.parameters()) + list(head.parameters())
     optimizer = torch.optim.AdamW(params, lr=1e-4, weight_decay=0.01)
-
-    def batches(frame, shuffle):
-        order = np.random.permutation(len(frame)) if shuffle else np.arange(len(frame))
-        for k in range(0, len(frame), 32):
-            rows = frame.iloc[order[k:k + 32]]
-            enc = bert_tokenizer(list(rows["text"]), truncation=True, max_length=128,
-                                 padding=True, return_tensors="pt")
-            labels = torch.tensor([KINDS.index(x) for x in rows["kind"]])
-            yield enc["input_ids"].to(device), labels.to(device)
-
-    encoder.train()
     for _ in range(epochs):
-        for ids, labels in batches(small_train, shuffle=True):
-            logits = head(encoder(ids, ids == 0)[:, 0])  # the [CLS] position
-            loss = F.cross_entropy(logits, labels)
+        for ids, labels in batches(few_train, 32, shuffle=True):
+            loss = F.cross_entropy(head(pooled(encoder, ids)), labels)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
     encoder.eval()
     predicted, truth = [], []
     with torch.no_grad():
-        for ids, labels in batches(small_test, shuffle=False):
-            predicted += head(encoder(ids, ids == 0)[:, 0]).argmax(-1).tolist()
+        for ids, labels in batches(small_test, 64, shuffle=False):
+            predicted += head(pooled(encoder, ids)).argmax(-1).tolist()
             truth += labels.tolist()
     return macro_f1(truth, predicted)
 
 
 untrained = Encoder(TINY)
 untrained.apply(init_like_bert)
+untrained = untrained.to(device)
 race = []
-for name, steps, encoder in [("none, random weights", 0, untrained.to(device)),
+for name, steps, encoder in [("none, random weights", 0, untrained),
                              ("masked LM", mlm_steps, mlm_encoder),
                              ("ELECTRA", electra_steps, electra_encoder)]:
-    f1 = tiny_classifier_f1(encoder)
-    race.append({"pre-training": name, "steps": steps, "macro F1": f1})
+    probe = probe_f1(encoder)  # before fine-tuning changes the weights
+    fine = fine_tuned_f1(encoder)
+    race.append({"pre-training": name, "steps": steps, "frozen + linear probe": probe,
+                 "fine-tuned on 400 issues": fine})
 table(pd.DataFrame(race))
 
 # %% [markdown]
@@ -889,8 +929,7 @@ table(pd.DataFrame(results))
 LONG = f"ModernBERT, {4 * TOKENS:,} tokens"
 long_result, confusions[LONG] = fine_tune("ModernBERT", 4 * TOKENS, LONG, batch_size=8)
 results.append(long_result)
-frame = pd.DataFrame(results)
-table(frame)
+display(table(pd.DataFrame(results)))
 
 fig, ax = plt.subplots(figsize=(6.4, 3.8))
 for row in results:
