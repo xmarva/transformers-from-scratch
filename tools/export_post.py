@@ -166,6 +166,12 @@ def output_blocks(cell, assets: Path, web: str, counter: list[int]) -> list[str]
     return blocks
 
 
+def categories(meta: dict) -> str:
+    """The post's categories on the site: machine-learning, then those in the lesson's `categories`, if any."""
+    extra = meta.get("categories", [])
+    return f"[{', '.join(['machine-learning', *extra])}]" if extra else "machine-learning"
+
+
 def links_line(folder: Path, meta: dict) -> str:
     course = course_of(folder)
     url = build.links(folder.name, meta, course)
@@ -228,7 +234,7 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         f"date: {meta['published_on']} {9 + meta['number']:02d}:00:00",
         f'description: "{meta["description"]}"',
         f"tags: [{course.post}, {meta['tags']}]",
-        "categories: machine-learning",
+        f"categories: {categories(meta)}",
         f"thumbnail: {web}/cover.png",
         f"og_image: {SITE_URL}{web}/cover.png",
         "stylesheets: [/assets/css/tfs-course.css]",
