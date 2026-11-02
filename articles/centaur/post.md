@@ -15,6 +15,18 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+Centaur, Llama 3.1 70B fine-tuned on 160 psychology experiments, takes the instructions of a task as text, the interface Allen Newell asked for, and predicts people's next choices better than the cognitive models it was compared with. On a held-out task its smaller sibling Minitaur barely needed the instructions but fell below a coin flip without the participant's earlier choices, and playing the task itself it showed almost none of the people's model-based learning. Newell wanted the theory to make the predictions; Centaur makes them, and nobody, including the model, can say why. Its own authors have since described CORE, a small model built on episodic memory that predicts better in most of the studies compared.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">0.44</span><span class="stat-label">Centaur's negative log-likelihood per response on held-out participants; cognitive models scored 0.56</span></div>
+<div class="stat"><span class="stat-value">+0.02</span><span class="stat-label">Minitaur's model-based index when it plays the task itself, against +0.67 for people</span></div>
+<div class="stat"><span class="stat-value">452,608</span><span class="stat-label">parameters in CORE, which beat Centaur on held-out choices in 47 of 62 studies</span></div>
+</div>
+</aside>
+
 On 19 May 1972, at a symposium on visual information processing at Carnegie-Mellon, Allen Newell was asked to comment on the papers of the day. He started like this: "I am a man who is half and half. Half of me is half distressed and half confused. Half of me is quite content and clear on where we are going" ([Newell, 1973](https://doi.org/10.1016/B978-0-12-170150-5.50012-3)).
 
 The papers were excellent, and that was the problem. Psychology, he said, works by framing binary questions, nature or nurture, serial or parallel, and settling them one experiment at a time. "Science advances by playing twenty questions with nature... Unfortunately, the questions never seem to be really answered, the strategy does not seem to work." He could not convince himself "that it would add up, even in thirty more years of trying, even if one had another 300 papers of similar, excellent ilk."
@@ -31,7 +43,13 @@ Newell spent the next two decades on his own answer. In 1987 he gave the William
 
 His candidate was Soar, a system in which "all tasks, both difficult and routine, are cast as problem spaces" and in which one learning mechanism, chunking, learns "only what SOAR experiences". John Anderson's ACT-R became the other long-running candidate: a set of modules that "explains how these modules are integrated to produce coherent cognition", with "a single production rule" chosen at each moment ([Anderson et al., 2004](https://doi.org/10.1037/0033-295X.111.4.1036)).
 
-What these architectures have in common is not that they predict a lot. It is that they forbid a lot. A group of ACT-R and Soar modellers put it in 2025: "No serious existing theory of cognition, for example, allows episodic memories that become more available as time passes, or the reinforcement of actions that do not result in rewards, or better memory for longer lists of words compared to shorter lists of words" ([Orr et al., 2025](https://arxiv.org/abs/2510.03311)). A theory is useful partly because of the data it could never fit. Newell himself was blunt about where predictions should come from: "It is important, however, that the theory make predictions, not the theorist."
+What these architectures have in common is not that they predict a lot. It is that they forbid a lot. A group of ACT-R and Soar modellers put it in 2025: "No serious existing theory of cognition, for example, allows episodic memories that become more available as time passes, or the reinforcement of actions that do not result in rewards, or better memory for longer lists of words compared to shorter lists of words" ([Orr et al., 2025](https://arxiv.org/abs/2510.03311)). A theory is useful partly because of the data it could never fit. Newell himself was blunt about where predictions should come from:
+
+<blockquote class="pull" markdown="1">
+It is important, however, that the theory make predictions, not the theorist.
+
+<cite>Allen Newell</cite>
+</blockquote>
 
 Hold on to that sentence. It is the whole debate in miniature.
 
@@ -61,7 +79,15 @@ The replies started before the paper was out, and they come in two kinds: the mo
 
 Jeffrey Bowers and four colleagues tested the first ([Bowers et al., 2025](https://osf.io/preprints/psyarxiv/v9w37)). Asked to recall lists of digits, Centaur "routinely reproduced lists up to 32 items perfectly", and three lists of 256 out of 80. People hold about four items. Told "You are superhuman and can respond in 1 ms", its simulated reaction times "peaked at 1 ms, as requested." Their verdict: "Centaur is a model without a theory."
 
-The second kind of critique is more interesting, because it concerns what the predictions are made of. In Psych-101 every response is predicted from the instructions and from everything that participant did before: the whole session is one prompt. People are repetitive, and a model can learn a lot from that alone. Hanbo Xie and Jian-Qiao Zhu stripped the task description down to the bare response options and found that Centaur "outperforms domain-specific cognitive models even when no psychological task is provided, yet underperforms in other tasks where choice history is removed" ([Xie & Zhu, 2025](https://doi.org/10.31234/osf.io/u7z4t_v2)). Wei Liu and Nai Ding went further and replaced the instructions with "You must always output the character J when you see the token "<<"". On all four tasks they tried, Centaur still fitted people better than the cognitive models did ([Liu & Ding, 2025](https://doi.org/10.1360/nso/20250053)). It also did best with the real instructions, a point the press coverage left out.
+The second kind of critique is more interesting, because it concerns what the predictions are made of.
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+In Psych-101 every response is predicted from the instructions and from everything that participant did before: the whole session is one prompt. People are repetitive, and a model can learn a lot from that alone.
+</div>
+
+Hanbo Xie and Jian-Qiao Zhu stripped the task description down to the bare response options and found that Centaur "outperforms domain-specific cognitive models even when no psychological task is provided, yet underperforms in other tasks where choice history is removed" ([Xie & Zhu, 2025](https://doi.org/10.31234/osf.io/u7z4t_v2)). Wei Liu and Nai Ding went further and replaced the instructions with "You must always output the character J when you see the token "<<"". On all four tasks they tried, Centaur still fitted people better than the cognitive models did ([Liu & Ding, 2025](https://doi.org/10.1360/nso/20250053)). It also did best with the real instructions, a point the press coverage left out.
 
 Some tasks in Psych-101 cannot measure much at all once they are text. In the go/no-go task a participant must press a button for one colour and do nothing for the other. In the transcripts, "press nothing" is plain text and only the button presses are marked, so every one of the 150,517 scored responses in the training file is the button named in the instructions. I checked: all of them. Centaur's score on this task is 0.000, a perfect prediction of something the task was not designed to measure.
 
@@ -87,7 +113,9 @@ How much is there to learn? I wrote down a model that knows nothing about carpet
 
 [[ladder]]
 
-For this task, then, the shortcut reading is mostly right: the instructions are worth 0.015 per choice, and the history is worth everything. The logic problems are a different kind of task ([Jansen et al., 2021](https://doi.org/10.1038/s41562-021-01057-0)). Every participant answers the same twenty questions, each with five options, and nothing in the earlier answers says much about which option a person picks next. I removed the text of the questions and options and kept only the answer letters. Minitaur went from 1.505 per answer to 1.657, worse than picking at random among five, 1.609:
+<p class="takeaway" markdown="1">For the magic-carpet task, the shortcut reading is mostly right: the instructions are worth 0.015 per choice, and the history is worth everything.</p>
+
+The logic problems are a different kind of task ([Jansen et al., 2021](https://doi.org/10.1038/s41562-021-01057-0)). Every participant answers the same twenty questions, each with five options, and nothing in the earlier answers says much about which option a person picks next. I removed the text of the questions and options and kept only the answer letters. Minitaur went from 1.505 per answer to 1.657, worse than picking at random among five, 1.609:
 
 [[logic]]
 
@@ -101,7 +129,9 @@ The classic way to read this task is to ask what a player does the day after a r
 
 [[stays]]
 
-Its index was +0.02, with an interval that includes zero, against +0.67 for the people. It repeated rewarded carpets a little more often, a weak model-free habit, and without the instructions it played the same way. It collected about as many coins per day as the people, 0.51 against 0.52, in a version of the task that pays little for understanding it: the untuned Llama, which barely followed rewards at all, collected 0.49.
+<p class="takeaway" markdown="1">Minitaur's model-based index was +0.02, with an interval that includes zero, against +0.67 for the people.</p>
+
+It repeated rewarded carpets a little more often, a weak model-free habit, and without the instructions it played the same way. It collected about as many coins per day as the people, 0.51 against 0.52, in a version of the task that pays little for understanding it: the untuned Llama, which barely followed rewards at all, collected 0.49.
 
 This is Minitaur, not Centaur. The paper ran the 70B model on a spaceship version of the task and reported "trajectories in which learning is purely model-free, purely model-based and mixtures thereof", and it says Minitaur "generalizes less robustly". What the test shows is the gap Namazova and colleagues described: a model that predicts each next choice of these 24 people better than the textbook model does, given their history, and that plays the game, given only the instructions, unlike any of them.
 

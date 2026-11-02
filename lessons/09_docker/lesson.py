@@ -153,15 +153,23 @@ print("gone:", sorted(set(first) - set(last)))
 print("new: ", sorted(set(last) - set(first)))
 
 # %% [markdown]
-# Same `pyproject.toml`, three programs. PyTorch moves by several releases, and each of them changes kernels,
-# defaults and warnings. huggingface-hub, which downloads the model, jumps two major versions. And these are
-# only the packages perevod names: behind them, nearly every package it pulls in changed version too, and some
-# were replaced outright, an HTTP library by another. None of this is a bug. It's what a range asks for.
+# → Same `pyproject.toml`, three programs: of the packages installed both a year ago and on the release day, 24
+# are at different versions.
+#
+# PyTorch moves by several releases, and each of them changes kernels, defaults and warnings. huggingface-hub,
+# which downloads the model, jumps two major versions. And these are only the packages perevod names: behind them,
+# nearly every package it pulls in changed version too, and some were replaced outright, an HTTP library by
+# another. None of this is a bug. It's what a range asks for.
 #
 # For a library, that's the deal. For a service, it's a gamble: the server you test today and the one that
 # restarts next month install different code. Donald Stufft, who maintained pip and PyPI for years, drew the line
-# in 2013: "While a library tends to want to have wide open ended version specifiers an application wants very
-# specific dependencies" ([setup.py vs requirements.txt](https://caremad.io/posts/2013/07/setup-vs-requirement/)).
+# in 2013 ([setup.py vs requirements.txt](https://caremad.io/posts/2013/07/setup-vs-requirement/)):
+#
+# > While a library tends to want to have wide open ended version specifiers an application wants very specific
+# > dependencies.
+# >
+# > — Donald Stufft
+#
 # perevod is both. It keeps the ranges in `pyproject.toml` for people who install it as a library, and the
 # service is deployed from a second file that pins every package: a **lock file**.
 #
@@ -404,9 +412,10 @@ display(table(pd.DataFrame(rows), digits=1))
 # lists the manifests. Every level names the next one by its hash, so the digest at the top fixes every byte
 # below it. `FROM python:3.12-slim@sha256:…` pins the whole base image down to the last file.
 #
-# `FROM python:3.12-slim` pins nothing. A tag is a pointer, and Docker says so plainly: "Image tags are mutable,
-# meaning a publisher can update a tag to point to a new image"
-# ([Docker: build best practices](https://docs.docker.com/build/building/best-practices/#pin-base-image-versions)).
+# > **Trap.** `FROM python:3.12-slim` pins nothing. A tag is a pointer, and Docker says so plainly: "Image tags are
+# > mutable, meaning a publisher can update a tag to point to a new image"
+# > ([Docker: build best practices](https://docs.docker.com/build/building/best-practices/#pin-base-image-versions)).
+#
 # The official images are rebuilt whenever Debian or Python ships a fix; the maintainers "strive to publish
 # updated images at least monthly for Debian" ([docker-library FAQ](https://github.com/docker-library/faq)).
 # Compare today's tag with the digest perevod's Dockerfile pins, which was the tag's target the day the
@@ -711,11 +720,12 @@ build
 #
 # ## 6. Build twice, publish once
 #
-# Reproducibility that nobody checks decays: one day a step starts writing a timestamp, and nobody notices until
-# the day it matters. So the CI job that publishes the image also checks it. On every pull request that touches
-# the package it builds the image twice, the second time without any cache, and compares the two digests. On a
-# release tag it does the same and pushes the first build to the GitHub Container Registry, `ghcr.io`, as
-# `ghcr.io/xmarva/perevod:<version>`.
+# > **Key point.** Reproducibility that nobody checks decays: one day a step starts writing a timestamp, and nobody
+# > notices until the day it matters. So the CI job that publishes the image also checks it.
+#
+# On every pull request that touches the package it builds the image twice, the second time without any cache, and
+# compares the two digests. On a release tag it does the same and pushes the first build to the GitHub Container
+# Registry, `ghcr.io`, as `ghcr.io/xmarva/perevod:<version>`.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/09/ci-light.png" width="760" alt="The image job in GitHub Actions. A pull request or a release tag starts it. It builds the image for x86-64 and ARM, then builds it again from scratch, and compares the two digests; if they differ, the job fails. On a release tag, the first build is pushed to ghcr.io/xmarva/perevod with the package's version as its tag">
 #
@@ -1003,8 +1013,8 @@ print(len(names), "AI coding agents, starting with", names[:4])
 # build downloads from a server, except the build itself. perevod 0.3.1 keeps the model in a folder of its own
 # and deletes everything else under `~/.cache` in the same step, which is the line you saw in the Dockerfile.
 #
-# The lesson in it is general: a step that runs a program records everything that program writes, not only what
-# you asked for. Look inside a layer at least once.
+# > **Key point.** The lesson in it is general: a step that runs a program records everything that program writes,
+# > not only what you asked for. Look inside a layer at least once.
 #
 # Now run the image. A container is, at heart, a process that sees the image's folder as its whole filesystem.
 # Docker arranges that with the kernel's namespaces, which a notebook can't use, but there's a simpler trick
@@ -1311,12 +1321,14 @@ for sentence, translation in list(zip(sentences, through_onnx))[:3]:
 # Word for word. The page itself is three small files in the course repository's
 # [`space/`](https://github.com/xmarva/transformers-from-scratch/tree/main/space) folder, and only one of them
 # is about the page. `translate.js` is the function above in JavaScript. `tokenizer.js` rewrites the tokenizer of
-# lesson 1, whose `tokenizer.json` the page loads as it is, and it had one trap worth knowing. The tokenizer
-# splits text into words with the regular expression `\w+`, and in the Rust library behind Hugging Face's
-# `tokenizers`, `\w` matches letters of every alphabet. In JavaScript it matches only `[A-Za-z0-9_]`, even with the
-# Unicode flag, so a word like "naïve" or "Москва" would come apart. The JavaScript version spells the classes
-# out, `[\p{Alphabetic}\p{M}\p{Nd}\p{Pc}\p{Join_Control}]`, and a script in the same folder checks it against the
-# original on every English sentence of the test set, id for id.
+# lesson 1, whose `tokenizer.json` the page loads as it is, and it had one trap worth knowing.
+#
+# > **Trap.** The tokenizer splits text into words with the regular expression `\w+`, and in the Rust library
+# > behind Hugging Face's `tokenizers`, `\w` matches letters of every alphabet. In JavaScript it matches only
+# > `[A-Za-z0-9_]`, even with the Unicode flag, so a word like "naïve" or "Москва" would come apart.
+#
+# The JavaScript version spells the classes out, `[\p{Alphabetic}\p{M}\p{Nd}\p{Pc}\p{Join_Control}]`, and a script
+# in the same folder checks it against the original on every English sentence of the test set, id for id.
 #
 # The rest is a static Space: a `README.md` whose header says `sdk: static`, uploaded with the two graphs:
 #

@@ -193,6 +193,13 @@ has blocks for the quick pass, styled in its `_sass/_components.scss`, with live
   `RMSNorm`, `prices-history`.
 - **Pointer** (`a.arrow-link`): a link the reader is invited to follow to another section or post.
 
+Lessons ask for the same blocks in plain notebook markdown, which `tools/export_post.py` turns into them on the
+way to the site: a quotation that opens with a label, `> **Key point.** …` (`Trap.` or `Pitfall.` for a warning,
+any other label for an aside), is a callout; a quotation whose last line names its author, `> — Robertson`, is the
+pull quote; a paragraph that starts with `→ ` is a takeaway; a paragraph of three to five short steps joined by
+` → ` and nothing else is a flow. In Kaggle and Colab they still read as a quotation, an arrow and a chain. A
+lesson has no summary at the top: its *What you'll do* list does that job.
+
 The rule for all of them is scarcity: a page where everything is highlighted has nothing highlighted. Look at the
 post in light and dark at 1280 and 390 px before the PR.
 

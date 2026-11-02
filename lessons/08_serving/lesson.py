@@ -505,9 +505,10 @@ speed = pd.DataFrame(rows)
 display(table(speed))
 
 # %% [markdown]
-# The same translations, word for word, and faster, by more on the news. That's the $T^2$ at work: Tatoeba's
-# sentences are short, and a few steps of recomputation are cheap; a news sentence runs for dozens of steps, and the
-# recomputation dominates. The step times of section 2 show it directly:
+# → The same translations, word for word, 4.54 times faster on Tatoeba and 18.16 times faster on the news.
+#
+# That's the $T^2$ at work: Tatoeba's sentences are short, and a few steps of recomputation are cheap; a news
+# sentence runs for dozens of steps, and the recomputation dominates. The step times of section 2 show it directly:
 
 # %%
 with torch.inference_mode():
@@ -572,13 +573,15 @@ print(f"int8:    {int8_seconds:.1f} s, chrF {int8_chrf:.1f}, {changed} of {len(s
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/step-flops-light.png" width="760" alt="Multiply-adds of one decoding step of the published model: the output projection onto 16,000 tokens is the largest single part, larger than all attention projections together; dynamic quantization converts only the nn.Linear layers and leaves the output projection, which reuses the embedding matrix, in float32">
 #
-# The output projection onto the 16,000 tokens of the vocabulary does 59% of the multiply-adds of a step, and it
-# isn't an `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches it. Even if int8
-# made every `nn.Linear` free, more than half of the work would stay in float32. What quantization does touch are
-# 256-wide layers, too small for integer arithmetic to win back the cost of measuring and scaling the input at
-# every call. On a model this size, on this CPU, quantization costs quality and buys nothing, so perevod 0.2.0
-# doesn't use it. (PyTorch is moving quantization to its `torchao` library, and the cell prints a deprecation
-# warning saying so; the arithmetic won't change with the API.)
+# > **Key point.** The output projection onto the 16,000 tokens of the vocabulary does 59% of the multiply-adds of
+# > a step, and it isn't an `nn.Linear`: the model reuses the embedding matrix there, so quantization never touches
+# > it.
+#
+# Even if int8 made every `nn.Linear` free, more than half of the work would stay in float32. What quantization
+# does touch are 256-wide layers, too small for integer arithmetic to win back the cost of measuring and scaling
+# the input at every call. On a model this size, on this CPU, quantization costs quality and buys nothing, so
+# perevod 0.2.0 doesn't use it. (PyTorch is moving quantization to its `torchao` library, and the cell prints a
+# deprecation warning saying so; the arithmetic won't change with the API.)
 #
 # ## 5. Batches and threads
 #
@@ -600,11 +603,13 @@ by_batch = pd.DataFrame(rows)
 display(table(by_batch, digits=1))
 
 # %% [markdown]
-# From one sentence to sixteen, the throughput grows four times, from 18 sentences a second to 72, and a batch of
-# sixteen takes four times as long as a single sentence, not sixteen times. That's the fact the second half of
-# this lesson is built on: one translation of sixteen sentences costs about as much as four translations of one.
-# Past sixteen the gain flattens. A batch of 64 gives 83 sentences a second instead of 72 and takes three quarters
-# of a second, which every sentence in it waits for. The server's batches will stop at sixteen.
+# → From one sentence to sixteen, the throughput grows four times, from 18 sentences a second to 72, and a batch
+# of sixteen takes four times as long as a single sentence, not sixteen times.
+#
+# That's the fact the second half of this lesson is built on: one translation of sixteen sentences costs about as
+# much as four translations of one. Past sixteen the gain flattens. A batch of 64 gives 83 sentences a second
+# instead of 72 and takes three quarters of a second, which every sentence in it waits for. The server's batches
+# will stop at sixteen.
 #
 # One more knob: threads. PyTorch splits a matrix multiplication between CPU threads, and more isn't always better:
 
@@ -950,11 +955,12 @@ for path, operations in spec["paths"].items():
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/08/omission-light.png" width="760" alt="A server stalls for one second. Users arriving at their own pace keep sending during the stall, and a quarter of their requests are slow. A closed-loop tester waits for its answer and sends nothing during the stall, so it records one slow request in thirty-two and reports a service that is almost never slow">
 #
-# When the server stalls, a tester that waits for each answer stops sending, so it records one slow request where
-# real users, who don't coordinate with the server, would have produced dozens. The fix is an **open-loop** test:
-# decide in advance when every request is sent, independently of the answers, and measure each latency from the
-# moment the request was *supposed* to go. [wrk2](https://github.com/giltene/wrk2), which Tene wrote for exactly
-# this, and the arrival-rate executors of
+# > **Trap.** When the server stalls, a tester that waits for each answer stops sending, so it records one slow
+# > request where real users, who don't coordinate with the server, would have produced dozens.
+#
+# The fix is an **open-loop** test: decide in advance when every request is sent, independently of the answers, and
+# measure each latency from the moment the request was *supposed* to go. [wrk2](https://github.com/giltene/wrk2),
+# which Tene wrote for exactly this, and the arrival-rate executors of
 # [k6](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/open-vs-closed/) work that way. Users
 # arriving independently at an average rate $\lambda$ are well described by a **Poisson process**, whose gaps
 # between arrivals are exponentially distributed with mean $1/\lambda$:
@@ -1052,9 +1058,10 @@ for load in LOADS:
 
 # %% [markdown]
 # At a fifth of its capacity the server answers in about its service time: the median request takes 59 ms. The
-# tail moves first. At 60% the median has grown by 40% and the 90th percentile has doubled; at 95% the median is
-# seven times the median service time, and one request in ten waits nearly a second, though the model works
-# exactly as fast as before. The time went into the queue.
+# tail moves first. At 60% the median has grown by 40% and the 90th percentile has doubled.
+#
+# → At 95% the median is seven times the median service time, and one request in ten waits nearly a second, though
+# the model works exactly as fast as before: the time went into the queue.
 #
 # One point is out of line: the test at 80% load came out worse than the one at 90%, with a median of a quarter of
 # a second and one request in ten waiting a second and a half. Keep it in mind; the next pages explain it.
@@ -1259,17 +1266,19 @@ plt.show()
 # of `max_wait`. At 95% the median falls from 366 ms to 104 and the 90th percentile from 874 ms to 228. And the
 # server now takes loads it couldn't take at all: at one and a half times the old capacity the median is 162 ms, at
 # twice 265 ms. At two and a half times the latency climbs, and at three the queue grows for as long as the test
-# lasts. The capacity grew about two and a half times, inside the forecast and short of section 5's fourfold,
-# because a batch waits for its longest sentence.
+# lasts.
+#
+# → The capacity grew about two and a half times, inside the forecast and short of section 5's fourfold, because a
+# batch waits for its longest sentence.
 #
 # Two settings remain to choose, and the measurements above say how. `max_wait` is added latency when the server is
 # idle, and it hardly matters under load, because the queue fills batches while the model works: keep it a small
 # fraction of the service time. `max_batch` belongs where section 5's throughput flattens. Past that point a bigger
 # batch adds little throughput, and every request in it waits for all of it.
 #
-# One thing this server doesn't do. Its queue has no limit, so beyond capacity the latency grows for as long as the
-# overload lasts, and the last points of the plot measure the length of the test more than the server. A
-# production service caps its queue and answers 503, "try later", to the requests it can't take.
+# > **In practice.** One thing this server doesn't do. Its queue has no limit, so beyond capacity the latency grows
+# > for as long as the overload lasts, and the last points of the plot measure the length of the test more than the
+# > server. A production service caps its queue and answers 503, "try later", to the requests it can't take.
 #
 # Large language model servers take the same idea further. A request to an LLM generates hundreds of tokens, and
 # waiting for a whole batch to finish would hold short answers behind long ones, so vLLM and its predecessors

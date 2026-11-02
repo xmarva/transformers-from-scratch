@@ -11,6 +11,7 @@ What changes on the way from notebook to post:
 - a figure from the repository is shown in its light or dark version, following the site's theme;
 - tables keep their structure but take the site's colours; text outputs are set apart from code;
 - the body is wrapped in {% raw %} so that Liquid leaves Python's braces alone;
+- a few markdown conventions of the notebooks become the site's post components (see components());
 - citations become numbers that lead to the references, and long paragraphs are split (tools/citations.py,
   tools/paragraphs.py);
 - links to the previous and next lessons close the post.
@@ -57,6 +58,10 @@ ATTRIBUTE = re.compile(r'(\w+)="([^"]*)"')
 # code blocks, code spans, display math, and inline math, which may wrap onto the next line but not past a paragraph
 MATH = re.compile(r"(```.*?```|`[^`\n]*`|\$\$.*?\$\$|\$(?:[^$\n]|\n(?!\n))+?\$)", re.S)
 TITLE = re.compile(r"""(?:set_title|title=|title\s*=)\(?\s*f?["']([^"'{}]+)["']""")
+# the post components a notebook can ask for (components()): a labelled quotation is a callout, of this kind
+CALLOUTS = {"Key point": " callout-key", "Trap": " callout-warn", "Pitfall": " callout-warn"}
+LABELLED = re.compile(r"\A\*\*([^*\n]{2,40}?)\.\*\*\s+(.+)\Z", re.S)
+FLOW = re.compile(r"\A[^\s→*`$<>#|-][^→\n*`$<>|]{0,60}(?: → [^→\n*`$<>|]{1,60}){2,4}\Z")
 
 
 def lessons() -> dict[str, tuple[Path, dict]]:
@@ -113,12 +118,51 @@ def picture(match: re.Match, assets: Path, web: str) -> str:
     return f'<img class="tfs-figure" src="{web}/{name}.png" {extra} loading="lazy">'
 
 
+def component(block: str) -> str:
+    lines = block.split("\n")
+    if all(line.startswith(">") for line in lines):
+        inner = "\n".join(re.sub(r"^> ?", "", line) for line in lines).strip()
+        labelled = LABELLED.match(inner)
+        if labelled:
+            label, text = labelled.groups()
+            kind = CALLOUTS.get(label, "")
+            return (f'<div class="callout{kind}" markdown="1">\n<p class="callout-label">{html.escape(label)}</p>\n\n'
+                    f"{text.strip()}\n</div>")
+        quote, _, cite = inner.rpartition("\n")
+        if cite.startswith("— ") and quote.strip():
+            return f'<blockquote class="pull" markdown="1">\n{quote.strip()}\n\n<cite>{cite[2:]}</cite>\n</blockquote>'
+        return block
+    if block.startswith("→ "):
+        return f'<p class="takeaway" markdown="1">{block[2:].strip()}</p>'
+    if FLOW.match(block):
+        return '<p class="flow">' + "".join(f"<span>{step}</span>" for step in block.split(" → ")) + "</p>"
+    return block
+
+
+def components(source: str) -> str:
+    """The notebook's own ways of marking a passage, as the site's post components (_sass/_components.scss there):
+        > **Key point.** Text        a callout: "Key point" the point of a section, "Trap" or "Pitfall" an easy
+                                     mistake, any other label ("For engineers") an aside under that label
+        > A quotation.               a pull quote, when its last line names who said it
+        > — Author
+        → One sentence.              the takeaway of a chart or a section
+        a step → a step → a result   a flow: a paragraph of three to five short steps and nothing else
+    In a notebook they read as a quotation, an arrow and a chain; code blocks are left alone."""
+    pieces = re.split(r"(\n{2,})", source)
+    fenced = False
+    for index in range(0, len(pieces), 2):
+        if not fenced:
+            pieces[index] = component(pieces[index])
+        fenced ^= pieces[index].count("```") % 2 == 1
+    return "".join(pieces)
+
+
 def markdown_cell(source: str, assets: Path, web: str, first: bool) -> str:
     if first:  # the lesson's title is the post's title
         source = re.sub(r"\A# [^\n]*\n+", "", source)
     source = FIGURE.sub(lambda match: figure(match, assets, web), source)
     source = PICTURE.sub(lambda match: picture(match, assets, web), source)
-    return inline_math(source)
+    return inline_math(components(source))
 
 
 def fenced(code: str) -> str:
@@ -164,6 +208,12 @@ def output_blocks(cell, assets: Path, web: str, counter: list[int]) -> list[str]
             raise SystemExit(f"the notebook has an error in a cell: {output.ename}")
     flush()
     return blocks
+
+
+def categories(meta: dict) -> str:
+    """The post's categories on the site: machine-learning, then those in the lesson's `categories`, if any."""
+    extra = meta.get("categories", [])
+    return f"[{', '.join(['machine-learning', *extra])}]" if extra else "machine-learning"
 
 
 def links_line(folder: Path, meta: dict) -> str:
@@ -228,7 +278,7 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         f"date: {meta['published_on']} {9 + meta['number']:02d}:00:00",
         f'description: "{meta["description"]}"',
         f"tags: [{course.post}, {meta['tags']}]",
-        "categories: machine-learning",
+        f"categories: {categories(meta)}",
         f"thumbnail: {web}/cover.png",
         f"og_image: {SITE_URL}{web}/cover.png",
         "stylesheets: [/assets/css/tfs-course.css]",

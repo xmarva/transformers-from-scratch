@@ -246,7 +246,9 @@ bm25_scores = torch.from_numpy(np.stack([bm25.scores(q) for q in questions]))
 evaluate("BM25", bm25_scores, time.time() - start, postings * 8)  # int32 id + float32 count
 
 # %% [markdown]
-# With no training, no GPU and two parameters, the right paper is in the top five for almost half the questions.
+# → With no training, no GPU and two parameters, BM25 puts the right paper in the top five for almost half the
+# questions, a recall@5 of 0.45.
+#
 # That is the number every model below has to beat, and the answer to anyone who says keyword search is dead.
 
 # %% [markdown]
@@ -468,9 +470,11 @@ for paper, count in Counter(top5.flatten().tolist()).most_common(3):
 # %% [markdown]
 # Most top fives differ, but a few papers turn up everywhere: *Why Neural Translations are the Right Length* is among
 # the five best answers to 82 of the 593 questions, whatever they ask about. Such points sit near the middle of the
-# crowd and are close to everything; retrieval people call them **hubs**. Nothing in masked language modelling asked
-# the model to put texts with similar meanings close together and the rest far apart; its vectors are good for the
-# next layer, not for being compared with each other. To compare, the encoder has to be trained to compare.
+# crowd and are close to everything; retrieval people call them **hubs**.
+#
+# > **Key point.** Nothing in masked language modelling asked the model to put texts with similar meanings close
+# > together and the rest far apart; its vectors are good for the next layer, not for being compared with each other.
+# > To compare, the encoder has to be trained to compare.
 
 # %% [markdown]
 # ## 4. Sentence-BERT: teaching an encoder to compare
@@ -497,10 +501,12 @@ for paper, count in Counter(top5.flatten().tolist()).most_common(3):
 # of 0.05, is what the sentence-transformers library uses by default: cosines live in $[-1, 1]$, and without the
 # scale the softmax over them would be almost flat.
 #
-# Our pairs are the titles and abstracts of the corpus itself, and that is the practical point. A company that wants
-# search over its own documents rarely has thousands of labelled queries, but it always has documents, and documents
-# have structure: titles and bodies, questions and answers in a support system, a function's docstring and its code.
-# We use no question of LitSearch for training, only the papers we are going to search.
+# Our pairs are the titles and abstracts of the corpus itself, and that is the practical point. We use no question of
+# LitSearch for training, only the papers we are going to search.
+#
+# > **In practice.** A company that wants search over its own documents rarely has thousands of labelled queries, but
+# > it always has documents, and documents have structure: titles and bodies, questions and answers in a support
+# > system, a function's docstring and its code.
 
 # %%
 both = [i for i, (t, a) in enumerate(zip(titles, papers["abstract"])) if t and a.strip()]
@@ -643,8 +649,8 @@ minilm_docs, minilm_scores = dense_search("all-MiniLM-L6-v2", minilm)
 _ = dense_search("all-MiniLM-L6-v2, [CLS] instead of the mean", minilm, "cls")
 
 # %% [markdown]
-# Twelve points gone, without an error or a warning: the vectors look like vectors, and the search still works, only
-# worse. A model is its weights and its pooling, and the card says which pooling.
+# > **Trap.** Twelve points gone, without an error or a warning: the vectors look like vectors, and the search still
+# > works, only worse. A model is its weights and its pooling, and the card says which pooling.
 #
 # The most practical question of the section is the next one. We have a general model trained on a billion pairs,
 # and a corpus with 55,000 pairs of its own. Does a few minutes of the same training on our titles and abstracts,
@@ -660,9 +666,11 @@ print(f"adapted in {time.time() - start:.0f} s; in the last 50 steps a title fou
 adapted_docs, adapted_scores = dense_search("all-MiniLM-L6-v2, adapted here", adapted)
 
 # %% [markdown]
-# From 0.42 to 0.51 in ten minutes of the same training, and now above BM25. The general model brought what a billion
-# pairs teach about language; our pairs showed it what this corpus's titles and abstracts look like. This is the
-# cheapest improvement in the lesson, and it is open to anyone with a corpus: no labels, no questions, one T4.
+# → Ten minutes of the same training took all-MiniLM-L6-v2 from 0.42 to 0.51, above BM25.
+#
+# The general model brought what a billion pairs teach about language; our pairs showed it what this corpus's titles
+# and abstracts look like. This is the cheapest improvement in the lesson, and it is open to anyone with a corpus: no
+# labels, no questions, one T4.
 #
 # **BGE** models from the Beijing Academy of Artificial Intelligence are a newer generation of the same idea
 # ([Xiao et al., 2023](https://arxiv.org/abs/2309.07597)): BERT's architecture again, with pre-training aimed at
@@ -774,9 +782,11 @@ def rerank(name, scores, depth=50, max_length=320):
 reranked_minilm = rerank("all-MiniLM-L6-v2 → reranker", minilm_scores.to(device))
 
 # %% [markdown]
-# The reranker lifts all-MiniLM-L6-v2 from 0.42 to 0.54: reading each of the 50 candidates together with the
-# question, it puts the right paper in the first five for about 70 more questions. It also takes 131 ms per question,
-# five hundred times as long as the search that found the candidates. That is the trade a reranker always offers.
+# → The reranker lifts all-MiniLM-L6-v2 from 0.42 to 0.54: reading each of the 50 candidates together with the
+# question, it puts the right paper in the first five for about 70 more questions.
+#
+# It also takes 131 ms per question, five hundred times as long as the search that found the candidates. That is the
+# trade a reranker always offers.
 #
 # ## 7. ColBERT: a vector for every token
 #
@@ -959,8 +969,10 @@ table(pd.DataFrame(results).drop(columns=["ms per question", "index, MB"]))
 # and eight above BM25, from two rankings that each find what the other misses. Even our ten-minute model, at 0.32
 # on its own, lifts BM25 by two points. With the adapted MiniLM the hybrid reaches 0.56, as much as bge with BM25.
 # The reranker on top of that hybrid changes nothing at five: on candidates this good, its judgement, learned from
-# Bing queries, is no better than the hybrid's. Fused with the hybrid's order, the two judgements together give the
-# best result of the lesson, 0.59 at five and 0.73 at twenty.
+# Bing queries, is no better than the hybrid's.
+#
+# → Fused with the hybrid's order, the two judgements together give the best result of the lesson, 0.59 at five and
+# 0.73 at twenty.
 #
 # Fusion and reranking add no index of their own, so their cost in the table is the cost of their parts. The whole
 # picture, quality against the time a question takes and the memory its index needs:

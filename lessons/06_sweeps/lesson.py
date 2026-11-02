@@ -206,8 +206,14 @@ run.finish()
 # ## 3. The learning rate first
 #
 # Of all the settings, the learning rate matters most, and it comes with the most quoted sentence of the field's
-# folklore: "This is often the single most important hyper-parameter and one should always make sure that it has
-# been tuned" ([Bengio, 2012](https://arxiv.org/abs/1206.5533)). Before searching for it, find out where to search.
+# folklore ([Bengio, 2012](https://arxiv.org/abs/1206.5533)):
+#
+# > This is often the single most important hyper-parameter and one should always make sure that it has been
+# > tuned (up to approximately a factor of 2).
+# >
+# > — Yoshua Bengio
+#
+# Before searching for it, find out where to search.
 #
 # A **learning-rate range test** finds the range in one short run. [Smith (2017)](https://arxiv.org/abs/1506.01186)
 # raised the learning rate linearly and watched the accuracy; the version most people use, from the fastai
@@ -265,10 +271,12 @@ for name, (rates, losses) in ranges.items():
 
 # %% [markdown]
 # Both models learn fastest around the same learning rate, a few times $10^{-3}$, well above lesson 3's peak. The
-# difference is where they break. The 2017 design falls apart at a learning rate many times lower than lesson 5's
-# design does. That is pre-norm's gift, which lesson 5's ablation couldn't see: not a better model, a wider range
-# of learning rates that work, which makes a model easier to tune and harder to break. At Llama's scale, where a
-# diverged run costs millions, that is the point.
+# difference is where they break.
+#
+# > **Key point.** The 2017 design falls apart at a learning rate many times lower than lesson 5's design does.
+# > That is pre-norm's gift, which lesson 5's ablation couldn't see: not a better model, a wider range of learning
+# > rates that work, which makes a model easier to tune and harder to break. At Llama's scale, where a diverged run
+# > costs millions, that is the point.
 #
 # ## 4. Random search
 #
@@ -406,9 +414,11 @@ table(pd.DataFrame(rows), digits=4)
 # %% [markdown]
 # Watch the order change between rungs. After half an epoch the leaders are the fast starters: high learning
 # rates, short warm-ups, small batches, which get more steps into the same half epoch. The configuration that
-# wins at the end needn't be among them. Decisions made on short runs favour whatever pays off early; the problem
-# has a name, short-horizon bias ([Wu et al., 2018](https://arxiv.org/abs/1803.02021)), and it is the price of
-# stopping early. Keeping a third at every rung rather than a tenth is our insurance against it.
+# wins at the end needn't be among them.
+#
+# > **Trap.** Decisions made on short runs favour whatever pays off early; the problem has a name, short-horizon
+# > bias ([Wu et al., 2018](https://arxiv.org/abs/1803.02021)), and it is the price of stopping early. Keeping a
+# > third at every rung rather than a tenth is our insurance against it.
 #
 # ## 6. What mattered
 #
@@ -524,12 +534,14 @@ rows.append({"model": "tuned", "validation loss": ours.loc["tuned", "validation 
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# Three runs of lesson 5's recipe sit within about a thousandth of COMET of each other, and the tuned model is
+# → Three runs of lesson 5's recipe sit within about a thousandth of COMET of each other, and the tuned model is
 # above all of them by more than they differ among themselves: the two thousandths come from the hyperparameters,
-# not from the seed. That is about half of what lesson 5's four changes to the architecture bought over the 2017
-# design trained the same way. The validation loss moved much further than COMET did: a lower loss doesn't turn
-# one for one into better translations. A search doesn't replace a better model. It replaces a habit: lesson
-# 5 trained a new architecture with the numbers of 2017, and they turned out to be close to right, not right.
+# not from the seed.
+#
+# The gain is about half of what lesson 5's four changes to the architecture bought over the 2017 design trained
+# the same way. The validation loss moved much further than COMET did: a lower loss doesn't turn one for one into
+# better translations. A search doesn't replace a better model. It replaces a habit: lesson 5 trained a new
+# architecture with the numbers of 2017, and they turned out to be close to right, not right.
 #
 # One number escaped the search: twenty epochs, lesson 3's budget, inherited and never searched over. The last
 # three epochs printed above show the loss had stopped falling, so this time twenty was enough.
@@ -630,11 +642,15 @@ else:
 
 # %% [markdown]
 # Six runs give a Gaussian process little to model; Bayesian optimization pays off over dozens of trials, not a
-# handful. Two details from W&B's own source are worth knowing. The model is a Gaussian process with a Matérn
-# kernel, choosing by expected improvement. And the "hyperband" of the configuration is a simpler rule than the
-# paper's: when a run reports its metric for the $n$-th time, it is stopped if it is worse than the best third of
-# the runs that got that far. The lines above the table are that rule at work: the controller stopped the runs it
-# judged hopeless after a report or two, and their GPU time went to the next configuration.
+# handful.
+#
+# > **For engineers.** Two details from W&B's own source are worth knowing. The model is a Gaussian process with a
+# > Matérn kernel, choosing by expected improvement. And the "hyperband" of the configuration is a simpler rule than
+# > the paper's: when a run reports its metric for the $n$-th time, it is stopped if it is worse than the best third
+# > of the runs that got that far.
+#
+# The lines above the table are that rule at work: the controller stopped the runs it judged hopeless after a
+# report or two, and their GPU time went to the next configuration.
 #
 # One thing here is not reproducible. W&B's controller has no seed, so the sweep proposes other configurations
 # every time the notebook runs, and its table changes with them; everything else in the lesson comes out the same.

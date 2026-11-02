@@ -180,10 +180,13 @@ print("working in", Path.cwd())
 # folder sits at the top of the project, `perevod/perevod/`. In the **src layout** it sits one level down,
 # `perevod/src/perevod/`. The extra folder looks like bureaucracy, and it is there to stop one specific accident.
 #
-# Python looks for modules in the folders of `sys.path`, in order, and the current folder comes first. Run the
-# tests with `python -m pytest` from the project folder of a flat layout, and `import perevod` finds the source
-# folder right there, never the copy pip installed. Your tests pass; the package your users install may be missing
-# a file, a module, or a dependency, and nothing tells you. The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
+# Python looks for modules in the folders of `sys.path`, in order, and the current folder comes first.
+#
+# > **Trap.** Run the tests with `python -m pytest` from the project folder of a flat layout, and `import perevod`
+# > finds the source folder right there, never the copy pip installed. Your tests pass; the package your users
+# > install may be missing a file, a module, or a dependency, and nothing tells you.
+#
+# The [Python Packaging User Guide](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/)
 # puts it as "the src layout helps prevent accidental usage of the in-development copy of the code".
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/07/import-path-light.png" width="760" alt="How Python finds import perevod when pytest runs in the project folder. The current folder comes first in the search path. In a flat layout the folder holds perevod/ itself, so the tests import the source and never the installed copy. In the src layout the source sits in src/, not on the path, so the tests import what pip installed">
@@ -647,11 +650,14 @@ display(table(pd.DataFrame({
 # %% [markdown]
 # The notebooks' model checks `pos == "rope"` to decide whether to rotate queries and keys, and `"RoPE"` is not
 # `"rope"`. So it runs with no idea of word order at all. Some of its sentences fall apart; others are fluent
-# Russian that says something else, like the sister who became two. That's the worst kind of failure: no error,
-# plausible output. Removing the switches removes this bug, and the
-# config adds a second line of defence. A package checks its config when it reads it, and stops with a message in
-# the terms the user wrote. A frozen dataclass does that in a few lines: it lists the allowed fields, refuses unknown
-# ones, and checks the values in `__post_init__`, which runs right after the fields are set:
+# Russian that says something else, like the sister who became two.
+#
+# "RoPE" instead of "rope" → queries and keys never rotated → no idea of word order → no error, plausible output
+#
+# That's the worst kind of failure. Removing the switches removes this bug, and the config adds a second line of
+# defence. A package checks its config when it reads it, and stops with a message in the terms the user wrote. A
+# frozen dataclass does that in a few lines: it lists the allowed fields, refuses unknown ones, and checks the
+# values in `__post_init__`, which runs right after the fields are set:
 
 # %%
 # %%writefile perevod/src/perevod/config.py
@@ -825,8 +831,9 @@ class Translator:
         return cls(network.to(device), tokenizer, GenerationConfig.from_dict(settings))
 
 # %% [markdown]
-# `model.eval()` turns dropout off. Forgetting it is the most common bug in inference code, and it makes a model
-# translate the same sentence differently every time; section 11 plants exactly this bug to see who notices.
+# > **Trap.** `model.eval()` turns dropout off. Forgetting it is the most common bug in inference code, and it
+# > makes a model translate the same sentence differently every time; section 11 plants exactly this bug to see who
+# > notices.
 #
 # Now the translation itself. It accepts a string or a list and returns the same, and it has an opinion about one
 # special input. Watch what the notebooks' decoding does with an empty string, first alone:
@@ -1040,10 +1047,12 @@ ax.set_title("Where a command spends its time")
 plt.show()
 
 # %% [markdown]
-# Importing PyTorch is the expensive part on its own. `perevod --version` and `perevod --help` don't need it, so
-# they answer in about the time it takes Python to start. A translation pays for PyTorch, then for loading the
-# model, and the difference between the last two bars is all the translating itself costs. Every process pays the
-# first two again, which is the argument for the next lesson's server: it loads the model once and keeps it.
+# → Importing PyTorch is the expensive part on its own: 2.24 s of the 3.01 s a one-sentence translation takes.
+#
+# `perevod --version` and `perevod --help` don't need it, so they answer in about the time it takes Python to
+# start. A translation pays for PyTorch, then for loading the model, and the difference between the last two bars
+# is all the translating itself costs. Every process pays the first two again, which is the argument for the next
+# lesson's server: it loads the model once and keeps it.
 #
 # The command at work, on a file with an empty line in the middle:
 
@@ -1706,9 +1715,9 @@ show_grid(second_run, "The same bugs against the improved tests")
 # model under it changes, and nothing announces it. Lesson 8 adds the direct check, that the translator's model is
 # not in training mode.
 #
-# That's the division of labour the four kinds of tests promised: the fast ones catch what breaks the structure,
-# the slow ones what breaks the quality. Mutation testing is how you find out which is which, and which test only
-# looked like it was working.
+# > **Key point.** The two grids show the division of labour the four kinds of tests promised: the fast ones catch
+# > what breaks the structure, the slow ones what breaks the quality. Mutation testing is how you find out which is
+# > which, and which test only looked like it was working.
 #
 # ## 12. Continuous integration
 #
@@ -1938,9 +1947,11 @@ for pronoun in ["she", "he"]:
 display(table(gender[gender.pronoun == "she"][["profession", "perevod"]]))
 
 # %% [markdown]
-# The pronoun doesn't steer the verb: with "he", the verb is feminine in two translations of twelve, more often than
-# with "she". The verb follows the profession instead, masculine for a doctor or an engineer whatever the sentence
-# says, feminine for a nurse, because медсестра is a feminine noun. The Russian is grammatical, and that's the
+# → The pronoun doesn't steer the verb: with "he", the verb is feminine in two translations of twelve, more often
+# than with "she".
+#
+# The verb follows the profession instead, masculine for a doctor or an engineer whatever the sentence says,
+# feminine for a nurse, because медсестра is a feminine noun. The Russian is grammatical, and that's the
 # trouble: "Мой врач сказал, что она устала" means that a male doctor said some other woman was tired, a reading
 # the English hardly suggests. The likely cause is the data, where male doctors are probably mentioned more often
 # than female ones; Stanovsky et al. found the same pattern in commercial systems.
@@ -2084,9 +2095,11 @@ else:
 # %% [markdown]
 # The package side is a version number. perevod follows [semantic versioning](https://semver.org/spec/v2.0.0.html):
 # MAJOR.MINOR.PATCH, where a bug fix raises the patch, a new feature the minor version, and a change that breaks
-# what users rely on the major one. For a translator, the question is what "breaks" means, and our answer is
-# opinionated: a new default model is a major release. Nothing in the API changes, but anyone who stored
-# translations, or tuned a pipeline around them, gets different output, and that's what breaking means to them.
+# what users rely on the major one.
+#
+# > **Key point.** For a translator, the question is what "breaks" means, and our answer is opinionated: a new
+# > default model is a major release. Nothing in the API changes, but anyone who stored translations, or tuned a
+# > pipeline around them, gets different output, and that's what breaking means to them.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/07/versions-light.png" width="760" alt="Two version numbers move separately. The package version follows semantic versioning: a bug fix is a patch, a new option a minor release, and a new default model, which changes the translations users get, a major one. The model is pinned by the commit of its repository, so a corrected model card changes no one's translations">
 #
