@@ -1,5 +1,5 @@
 # %% [markdown]
-# # Lesson 4. GPT from scratch: GPT-2's weights, a KV cache, and a model that learns chess
+# # Lesson 4. GPT from scratch: GPT-2, the KV cache and a model that learns chess
 #
 # In September 2023 OpenAI released gpt-3.5-turbo-instruct, an unremarkable model for completing text, and within
 # days people noticed that it played chess. Nicholas Carlini gave it the moves of a game so far, in PGN, the
@@ -598,7 +598,7 @@ for ax, text in zip(axes, PROMPTS):
     for layer, word, p in rows:
         ax.text(p + 0.02, layer, repr(word), va="center", fontsize=9, color=COLORS["ink"])
     ax.set_xlim(0, 1.45)
-    ax.set_title("…" + text[-34:], fontsize=10)
+    ax.set_title("… " + " ".join(text.split()[-5:]), fontsize=10)
     ax.set_xlabel("probability of the top token")
 axes[0].set_ylabel("after layer (0 = embeddings)")
 axes[0].set_yticks(range(len(lens[PROMPTS[0]])))
@@ -640,7 +640,9 @@ print(lichess["movetext"][0][:240], "…")
 # number as `1...`. The games are of every kind, from one-minute bullet to classical:
 
 # %%
-kind = lichess["Event"].str.split(" ").str[1]  # "Rated Blitz game" -> "Blitz"
+# "Rated Blitz game", "Blitz swiss https://lichess.org/swiss/…" -> "Blitz"
+SPEEDS = r"(UltraBullet|Bullet|Blitz|Rapid|Classical|Correspondence)"
+kind = lichess["Event"].str.extract(SPEEDS)[0]
 table(kind.value_counts().rename_axis("time control").reset_index(name="games"))
 
 # %% [markdown]
@@ -721,7 +723,7 @@ print(f"{len(train_games):,} training games, {len(stream) / 1e6:.0f} million cha
 
 # %%
 LINE = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7"
-pieces = tokenizer.convert_ids_to_tokens(tokenizer(LINE)["input_ids"])
+pieces = [tokenizer.decode([i]) for i in tokenizer(LINE)["input_ids"]]
 token_chips([pieces], labels=["GPT-2 tokens"], max_width=640)
 plt.show()
 print(f"10 moves, {len(pieces)} tokens")
