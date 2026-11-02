@@ -3,5 +3,6 @@ short_title = "GPT & chess"
 cover_alt = "Lesson 4 cover: GPT and chess. A line of chess notation read one character at a time, and the board the model reconstructs inside from those characters"
 gpu = true
 published = false
+published_on = 2026-11-02
 description = "GPT-2 written from scratch and loaded with OpenAI's weights, generation with a KV cache, the logit lens, and a small GPT trained on Lichess games that learns to play legal chess and keeps a board inside, found with a linear probe."
 tags = "gpt-2, gpt, chess, interpretability, nlp"

@@ -37,7 +37,7 @@
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type →
 # T4 GPU*. The notebook downloads GPT-2 (550 MB) and a gigabyte of Lichess games, and trains a chess model for
-# 25 minutes; on a T4 it runs in about @@RUNTIME@@ minutes.
+# 25 minutes; on a T4 it runs in about 40 minutes.
 
 # %% tags=["include:setup"]
 
@@ -220,8 +220,11 @@ plt.show()
 # has passed through a LayerNorm in every layer above it. In a pre-norm stack there is a clean path of additions
 # from the loss to the embeddings, the *residual stream*, and each layer only adds to it. Deep pre-norm models train
 # without the careful learning-rate warm-up that post-norm ones need
-# ([Xiong et al., 2020](https://arxiv.org/abs/2002.04745)), and every large decoder since GPT-2 is pre-norm. The
-# residual stream is also what section 6 and the probes of section 11 will read.
+# ([Xiong et al., 2020](https://arxiv.org/abs/2002.04745)), and every large decoder since GPT-2 is pre-norm.
+#
+# > **Key point.** In a pre-norm model every layer reads the residual stream and adds its result back to it. The
+# > stream is a running draft of everything the model has worked out so far, which is why section 6 and the probes
+# > of section 11 can read it after any layer.
 #
 # Attention is the one from the first course, with the causal mask. We write it out once by hand, and then use
 # PyTorch's `scaled_dot_product_attention`, which computes the same thing in one fused kernel, without ever storing
@@ -436,13 +439,20 @@ heatmap(chosen[None].numpy(), cols=labels, role="dec", vmin=0, vmax=1, annotate=
 plt.show()
 
 # %% [markdown]
-# @@PROBS_TEXT@@
+# A loss of 3.88 is an average of very different guesses. Where the left context gives the next token away, GPT-2
+# is close to certain: *Mind* after *Deep*, the *ol* of *Sedol* once *Sed* is there, *to* after *four games*. Where
+# the sentence carries news, it is lost: *Lee*, *Sed* and *Seoul* get next to nothing, although its training text
+# runs to the end of 2017, well after the match. Those tokens are the information in the sentence, and the loss is
+# highest exactly there. A language model is, among other things, a meter of surprise.
 
 # %% [markdown]
 # ## 5. Generating text, and the KV cache
 #
-# Generation is a loop: run the model, take the scores at the last position, pick a token, append it, repeat. The
-# simplest pick is the most probable token, *greedy decoding*. Here is GPT-2 continuing the most famous opening
+# Generation is a loop:
+#
+# scores at the last position → pick a token → append it → run again
+#
+# The simplest pick is the most probable token, *greedy decoding*. Here is GPT-2 continuing the most famous opening
 # move order in chess, the Ruy Lopez, written the way chess books and websites write it:
 
 # %%
@@ -467,7 +477,10 @@ prompt = tokenizer(RUY_LOPEZ, return_tensors="pt")["input_ids"].to(device)
 print(tokenizer.decode(generate(gpt2, prompt, 40)[0]))
 
 # %% [markdown]
-# @@RUY_LOPEZ_TEXT@@
+# GPT-2 knows what a game record looks like, a number, a dot, a letter and a square, and nothing about the game.
+# Its first move, 3...Nc6, sends a knight to the square where Black's knight already stands; White answers 4.Nf3,
+# the same mistake, and from then on the two sides shuffle pieces that aren't there. Greedy decoding makes the loop
+# worse: once a pattern has repeated, repeating it again is the likeliest continuation.
 #
 # Look at what the loop recomputes. At step $t$ the model runs over all $t$ tokens, although the keys and values of
 # the first $t-1$ were computed at the previous step and haven't changed: causal attention never lets an earlier
@@ -527,7 +540,10 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@KV_TEXT@@
+# Without the cache, each step reruns the whole text, so the time per token grows with the length and the
+# total grows with its square; the staircase is the GPU working in blocks of fixed size, so the cost jumps every so
+# many tokens. With the cache, token 900 costs what token 20 did. For 900 tokens that is 36.1 seconds against 4.9 on
+# a T4, and the gap widens with every token.
 #
 # The cache costs memory instead: two vectors of width $d$ per token in every layer. For GPT-2 that is small; for the
 # models of today it is the main thing that limits how many conversations fit on one GPU, which is what lesson 8 of
@@ -607,7 +623,12 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
-# @@LENS_TEXT@@
+# For Deep Blue's opponent, the first seven layers just repeat the last word of the prompt, *Garry*: early layers
+# still carry mostly their input, and the lens reads it back. From layer 8 *Kas* takes over, wavers once, and ends at
+# full confidence. The second prompt asks for Bobby Fischer's opponent of 1972, Boris Spassky. The middle layers bet
+# on *Johnson*, the Boris of British politics; the last one settles, with little confidence, on *Becker*, a tennis
+# player. Spassky never appears. The smallest GPT-2 doesn't know him, and the lens shows how it fails: by sliding
+# from one famous Boris to another.
 #
 # The lens is biased: the final LayerNorm and unembedding were trained to read the last layer, not the middle ones,
 # so early guesses look worse than what the layer knows. The *tuned lens* fixes this by training a small affine map
@@ -647,8 +668,7 @@ table(kind.value_counts().rename_axis("time control").reset_index(name="games"))
 
 # %% [markdown]
 # Bullet games are decided by the clock as much as by the moves, and a model trained on them learns to blunder in
-# time trouble. We keep blitz, rapid and classical games where both players are rated 1800 or more, roughly the
-# top third of Lichess. Then we strip the clocks and write each game the way Adam Karvonen did for his chess-playing
+# time trouble. We keep blitz, rapid and classical games where both players are rated 1800 or more. Then we strip the clocks and write each game the way Adam Karvonen did for his chess-playing
 # GPT ([Karvonen, 2024](https://arxiv.org/abs/2403.15498)): a `;` to mark the start, move numbers glued to White's
 # moves, nothing else.
 
@@ -716,7 +736,9 @@ print(f"{len(train_games):,} training games, {len(stream) / 1e6:.0f} million cha
 # %% [markdown]
 # ## 8. GPT-2 at the chessboard
 #
-# @@GPT2_CHESS_INTRO@@
+# Chess notation is all over the web, in game reports, forums and PGN files, so GPT-2 has read some. In a typical
+# position there are "of the order of 30 legal moves", as Claude Shannon estimated in 1950, among the thousands of
+# strings that look like a move. How often does GPT-2 hit one?
 #
 # Part of the trouble is visible before the model runs. GPT-2's tokenizer was built for English prose, and it cuts
 # chess notation into pieces that don't follow the moves:
@@ -827,7 +849,9 @@ print(f"GPT-2: {gpt2_shares.get('legal', 0.0):.1%} legal moves, "
 table(pd.DataFrame({"verdict": list(gpt2_shares), "share": list(gpt2_shares.values())}))
 
 # %% [markdown]
-# @@GPT2_SCORE_TEXT@@
+# GPT-2 almost always writes something shaped like a move: only 2% of its answers aren't moves at all. But 68%
+# are moves that no piece on the board can make, and only 28% are legal. It has learned the notation, not the
+# game.
 
 # %% [markdown]
 # ## 9. A GPT that has read nothing but chess
@@ -947,7 +971,9 @@ for step in range(STEPS):
 chess_gpt = chess_gpt.eval()
 
 # %% [markdown]
-# @@CURVE_TEXT@@
+# Twenty-five minutes, 111 million characters, about one pass over the training games. After four minutes the
+# model already finds a legal move in half the test positions, far more often than GPT-2 ever does; after twenty it
+# levels off around nine in ten. Nobody told it what a knight is.
 
 # %%
 curve = pd.DataFrame(curve)
@@ -977,7 +1003,8 @@ print(f"our chess GPT: {chess_shares.get('legal', 0.0):.1%} legal moves, "
       f"{chess_same:.1%} the same move as the player")
 
 # %% [markdown]
-# @@SCORE_TEXT@@
+# Nine moves in ten are legal. And one move in three is the move the human actually played, in positions with
+# some thirty legal options: the model has learned not only the rules, but how players rated 1800 like to play.
 #
 # What would more training buy? Karvonen published the models of his paper on the Hugging Face Hub under the MIT
 # license, and his 8-layer model is ours to the letter: 8 layers, 512 wide, 8 heads, the same 32 characters. It
@@ -986,8 +1013,9 @@ print(f"our chess GPT: {chess_shares.get('legal', 0.0):.1%} legal moves, "
 # checkpoint: nanoGPT's linear layers are `nn.Linear`, so nothing is transposed; they have no biases, so ours are set
 # to zero, which computes the same function; and nanoGPT uses the exact GELU, which goes into the config.
 #
-# The file is a PyTorch checkpoint, which is a pickle, and unpickling can run code. `weights_only=True` makes
-# `torch.load` refuse anything in it but tensors and plain values.
+# > **Trap.** The file is a PyTorch checkpoint, which is a pickle, and unpickling can run any code the file
+# > contains. `weights_only=True` makes `torch.load` refuse everything but tensors and plain values; never load a
+# > checkpoint from the internet without it.
 
 # %%
 path = hf_hub_download("adamkarvonen/chess_llms", "lichess_8layers_ckpt_no_optimizer.pt")
@@ -1038,7 +1066,12 @@ print(f"the move the player actually made: GPT-2 {gpt2_same:.1%}, ours {chess_sa
       f"Karvonen's {karvonen_same:.1%}")
 
 # %% [markdown]
-# @@KARVONEN_TEXT@@
+# Karvonen's model makes a legal move in 99.6% of the positions and the player's own move in more than half of
+# them. Ours, with the same architecture and 550 times less training, is legal 89.5% of the time, and almost all
+# of its mistakes are moves that no piece can make. What it lacks is the board, not the notation.
+#
+# → The same 25 million parameters, 550 times more training: from nine legal moves in ten to all but a few in a
+# thousand.
 #
 # A legal move in a position from a human game is one thing; a whole game is harder, because the model's own moves
 # build the position it has to understand. Each model plays White against an opponent that picks a random legal
@@ -1089,7 +1122,13 @@ outcomes["illegal tries per game"] = played.groupby("model")["illegal tries"].me
 table(outcomes.reset_index())
 
 # %% [markdown]
-# @@GAMES_TEXT@@
+# Here the gap becomes a canyon. Karvonen's model mates the random opponent in 74 games of 100 and draws 18. Ours
+# forfeits about half of its games, five illegal moves in a row, and most of the rest run out of its context before
+# anyone wins. The likely reason is the opponent. A random player builds positions that no 1800-rated human would
+# allow, with pieces hanging and kings wandering, and our model has never seen anything like them: its 89.5% on
+# human positions owed a good deal to the habits of human games. Karvonen's model has read 61 billion characters,
+# enough to keep its bearings when the game leaves the map. Carlini noticed the same in gpt-3.5-turbo-instruct:
+# given an implausible history that reaches the same position, "it's only half as good!"
 #
 # The shortest win of the lot, and where it ended:
 
@@ -1264,7 +1303,16 @@ best_rows = probes.loc[probes.groupby("model")["occupied squares"].idxmax()]
 table(best_rows.set_index("model").loc[list(MODELS)].reset_index(), digits=3)
 
 # %% [markdown]
-# @@PROBE_TEXT@@
+# The untrained model sets the floor. About half of the occupied squares can be read from any network's stream,
+# because the input gives a lot away: a piece that has never moved is where it started, and the last move says where
+# one piece went. Karvonen's model climbs far above that floor in the middle of its stack. After layer 6 the probe
+# reads 97.2% of the occupied squares, 98.4% of all squares, and the whole board without a single mistake in 52% of
+# the positions; the last two layers give a little back as they turn the board into the next move. His paper found
+# the peak at the same place, "the 8 layer model obtains peak accuracy at layer 6".
+#
+# Ours, after 25 minutes, reads 69% of the occupied squares, and its curve is still rising at the last layer: the
+# board is under construction. Nobody asked either model for a board. Predicting the next character of a game
+# record was enough to make one, and a single matrix can read it off.
 #
 # What the probes see, on one position from a held-out game: the real board, and the board read off the residual
 # stream of each trained model, at the layer where Karvonen's model holds it best. Squares a probe gets wrong are
@@ -1284,7 +1332,9 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
-# @@BOARD_TEXT@@
+# Karvonen's model reads this position without a mistake. Ours gets all of it but one pawn, and the mistake is
+# telling: the pawn went from a2 to a4 long ago, and our probe still finds it on a2, its square at the start of the
+# game. A model that has half learned to track the board falls back on what boards usually look like.
 
 # %% [markdown]
 # ## 12. Where GPT is the right tool today
@@ -1298,9 +1348,14 @@ plt.show()
 # write code or treat proteins, music or clicks as sequences of tokens. The chess model shows why the design spread:
 # give a GPT a sequence of symbols with structure, and next-token prediction alone makes it learn the structure, here
 # the rules and the board, without anyone writing them down. It also shows the limit. Predicting the next move of
-# players rated 1800 is not the same as playing well. gpt-3.5-turbo-instruct "is not playing to win. It's playing to
-# maximize the likelihood of the PGN text that's been provided", as Carlini put it, and answered one of the worst
-# openings in chess with the same opening. DeepMind trained a 270-million-parameter Transformer on Stockfish's
+# players rated 1800 is not the same as playing well; Carlini's gpt-3.5-turbo-instruct answered one of the worst
+# openings in chess with the same opening.
+#
+# > It's important to remember, though, that this model is not playing to win. It's playing to maximize the
+# > likelihood of the PGN text that's been provided.
+# > — Nicholas Carlini, 2023
+#
+# DeepMind trained a 270-million-parameter Transformer on Stockfish's
 # evaluations of positions instead of human moves, and it reached a Lichess blitz rating of 2895 against humans
 # without any search ([Ruoss et al., 2024](https://arxiv.org/abs/2402.04494)). When Kaggle and Google DeepMind ran a
 # chess tournament for frontier language models in August 2025, o3 beat Grok 4 4–0 in the final, and the organisers
