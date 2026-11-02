@@ -14,6 +14,18 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+In Qwen3-Next, Kimi Linear and the other hybrids, most layers are recurrent: they read the text into a state of fixed size, keep no cache and write every token at the same cost. The price is exact recall, because a $d \times d$ state holds at most $d$ key-value pairs exactly. A few layers of full attention bring the lookups back, though where they sit matters: in a small recall test the same four layers recalled every value with attention second and far fewer with it last. What a hybrid saves is the cache, four to ten times over, and that pays off where contexts are long and many conversations share a GPU.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">3 GiB</span><span class="stat-label">cache of Qwen3-Next for one 128K-token conversation, against 32 GiB for Qwen3-32B</span></div>
+<div class="stat"><span class="stat-value">36%</span><span class="stat-label">of the values recalled at 32 pairs by DeltaNet, the best purely recurrent model</span></div>
+<div class="stat"><span class="stat-value">16×</span><span class="stat-label">faster to write a token after 65K tokens, one recurrent layer against attention</span></div>
+</div>
+</aside>
+
 Qwen3-32B, a dense model from April 2025, keeps 32 GiB of keys and values for one conversation of 128 thousand tokens, about half of what its weights take. Qwen3-Next, released by the same team a few months later, keeps 3 GiB at the same length. It doesn't compress its cache or skip tokens. Three of every four of its layers simply have no cache: they read the text the way a recurrent network does, into a state of fixed size, and only every fourth layer is ordinary attention.
 
 Qwen3-Next is not the only one. Jamba, the Nemotron-H models, Kimi Linear and, for a while, MiniMax made the same choice: full attention in a few layers, something cheaper in the rest. This post builds the cheaper part from scratch, from linear attention to the gated delta rule, tests what it can and cannot remember, and then looks at how real models combine the two and what that buys on a GPU.
@@ -24,7 +36,7 @@ Every attention layer of a Transformer answers the same question for every token
 
 $$o_t = \sum_{j \le t} \frac{\exp(q_t \cdot k_j / \sqrt{d})}{\sum_{i \le t} \exp(q_t \cdot k_i / \sqrt{d})}\, v_j .$$
 
-Nothing is ever thrown away. To write token $t$, the layer needs the keys and values of all $t-1$ tokens before it, which is why serving engines keep them in a **KV cache** instead of recomputing them. Memory therefore grows linearly with the text, and since each new token reads all of it, reading a whole text of $n$ tokens takes time proportional to $n^2$.
+Nothing is ever thrown away. To write token $t$, the layer needs the keys and values of all $t-1$ tokens before it, which is why serving engines keep them in a *KV cache* instead of recomputing them. Memory therefore grows linearly with the text, and since each new token reads all of it, reading a whole text of $n$ tokens takes time proportional to $n^2$.
 
 Think of a library that keeps every book it has ever received and checks the whole catalogue for every question. The answers are exact, but the building has to grow with the collection.
 
@@ -64,7 +76,7 @@ def linear_attention(q, k, v):
     return (scores @ v) / scores.sum(-1, keepdim=True)
 ```
 
-On random inputs in double precision the two functions agree to about $10^{-15}$, which is rounding error. The recurrent form is how the layer writes text, one token at a time; the parallel form is how it trains, all positions at once. The parallel form also shows a catch: it still builds an $n \times n$ matrix of scores, because with a causal mask every position needs its own prefix of the sum and the brackets can't simply move. Training a linear layer efficiently needs a third form, which comes later.
+On random inputs in double precision the two functions agree to about $10^{-15}$, which is rounding error. The recurrent form is how the layer writes text, one token at a time; the parallel form is how it trains, all positions at once. The parallel form also shows a catch: it still builds an $n \times n$ matrix of scores, because with a causal mask every position needs its own prefix of the sum and the brackets can't simply move. Training a linear layer efficiently needs a third form, <a class="arrow-link" href="#training-a-recurrence-in-parallel">which comes later</a>.
 
 ## A memory of fixed size
 
@@ -84,7 +96,7 @@ The remedy dates from 1960, when Widrow and Hoff trained their linear neurons wi
 
 $$S_t = S_{t-1} + \beta_t\, k_t \big(v_t - S_{t-1}^\top k_t\big)^\top = (I - \beta_t k_t k_t^\top)\, S_{t-1} + \beta_t\, k_t v_t^\top ,$$
 
-with $k_t$ of unit length and $\beta_t \in (0, 1)$, a writing strength the layer computes for each token. This is one step of gradient descent on the memory's error for this key, $\tfrac12 \lVert S^\top k_t - v_t \rVert^2$, with learning rate $\beta_t$: the gradient with respect to $S$ is $k_t (S^\top k_t - v_t)^\top$. With $\beta_t = 1$, the old value under $k_t$ is erased and the new one is stored exactly. A layer that writes this way is called **DeltaNet**. In the space of values, one write looks like this:
+with $k_t$ of unit length and $\beta_t \in (0, 1)$, a writing strength the layer computes for each token. This is one step of gradient descent on the memory's error for this key, $\tfrac12 \lVert S^\top k_t - v_t \rVert^2$, with learning rate $\beta_t$: the gradient with respect to $S$ is $k_t (S^\top k_t - v_t)^\top$. With $\beta_t = 1$, the old value under $k_t$ is erased and the new one is stored exactly. A layer that writes this way is called *DeltaNet*. In the space of values, one write looks like this:
 
 [[delta-step]]
 
@@ -100,13 +112,17 @@ The left panel holds a surprise: from 64 pairs on, plain addition recalls more t
 
 The right panel shows what the delta rule is for. After 32 pairs, some of the keys get a new value. The delta rule returns the new value nearly every time. Addition returns the sum of the old and the new value, which is nearer to the new one only about half the time, and softmax attention as written here does no better: it sees two identical keys and averages their values. A trained Transformer can tell the later pair from the earlier one by their positions; this toy has no positions.
 
-So the delta rule doesn't enlarge the memory. A $d \times d$ matrix stays a $d \times d$ matrix, and it holds at most $d$ pairs exactly, whichever way they are written. What the delta rule adds is the ability to correct what is stored, which plain addition doesn't have at all.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The delta rule doesn't enlarge the memory. A $d \times d$ matrix stays a $d \times d$ matrix, and it holds at most $d$ pairs exactly, whichever way they are written. What the delta rule adds is the ability to correct what is stored, which plain addition doesn't have at all.
+</div>
 
 ## Forgetting on purpose
 
 Editing handles values that change. It does nothing about the opposite problem: a long text moves on, and much of what the state holds stops mattering. A memory of fixed size needs a way to let go of it.
 
-That is what gates are for. RetNet multiplied the state by a fixed decay at every step ([Sun et al., 2023](https://arxiv.org/abs/2307.08621)), Gated Linear Attention made the decay depend on the token ([Yang et al., 2024](https://arxiv.org/abs/2312.06635)), and Mamba-2 showed that its own selective state space model is linear attention with a data-dependent scalar gate ([Dao & Gu, 2024](https://arxiv.org/abs/2405.21060)). **Gated DeltaNet** puts the gate and the delta rule together ([Yang, Kautz & Hatamizadeh, 2025](https://arxiv.org/abs/2412.06464)):
+That is what gates are for. RetNet multiplied the state by a fixed decay at every step ([Sun et al., 2023](https://arxiv.org/abs/2307.08621)), Gated Linear Attention made the decay depend on the token ([Yang et al., 2024](https://arxiv.org/abs/2312.06635)), and Mamba-2 showed that its own selective state space model is linear attention with a data-dependent scalar gate ([Dao & Gu, 2024](https://arxiv.org/abs/2405.21060)). *Gated DeltaNet* puts the gate and the delta rule together ([Yang, Kautz & Hatamizadeh, 2025](https://arxiv.org/abs/2412.06464)):
 
 $$S_t = \alpha_t \,(I - \beta_t k_t k_t^\top)\, S_{t-1} + \beta_t\, k_t v_t^\top, \qquad \alpha_t \in (0, 1).$$
 
@@ -138,11 +154,17 @@ The Transformer recalls every value at every size on the chart. The three recurr
 
 Gated DeltaNet, the newest of the three, comes last from 16 pairs on. That is less strange than it looks, because this test gives the gate nothing to do. Every pair has to be kept until its question comes, so forgetting can only lose information. The authors of Gated DeltaNet, who trained models of 1.3 billion parameters on 100 billion tokens of real text, found that it "consistently surpasses existing models like Mamba2 and DeltaNet", in-context retrieval included ([Yang, Kautz & Hatamizadeh, 2025](https://arxiv.org/abs/2412.06464)). Four layers and 4,000 steps of a synthetic task are a different regime.
 
-The gate is also the easiest part to get wrong. In my first version it started at about one half, and weight decay kept pulling it back there, so the state lost half of what it held at every token, and Gated DeltaNet and the hybrid stayed at chance level. Starting the gate as the Gated DeltaNet and Mamba-2 code does, where a typical head keeps about 94% of its state from one token to the next, and leaving it out of weight decay, fixed it.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+The gate is the easiest part to get wrong. In my first version it started at about one half, and weight decay kept pulling it back there, so the state lost half of what it held at every token, and Gated DeltaNet and the hybrid stayed at chance level. Starting the gate as the Gated DeltaNet and Mamba-2 code does, where a typical head keeps about 94% of its state from one token to the next, and leaving it out of weight decay, fixed it.
+</div>
 
 The two hybrids differ only in the order of their layers. With attention second, the hybrid recalls every value at every size, like the Transformer, though three of its four layers are Gated DeltaNet, which on its own recalls the least. With attention on top, the same layers recall 26% of the values at 16 pairs and 12% at 32, at the better of two learning rates: a little more than Gated DeltaNet alone and less than DeltaNet.
 
-I can't say for certain why. The attention layer on top has what it needs: the convolution hands each value its key, and the other hybrid shows that one attention layer among three Gated DeltaNet layers is enough. This one just doesn't learn the lookup in 4,000 steps. A model of four layers is far from Qwen3-Next, where twelve attention layers are spread through 48 and most of them have many recurrent layers on both sides, so this says nothing about whether its layout is a good one. It does show that the ratio alone doesn't describe a hybrid. With the same layers in a different order, one model recalled like a Transformer and the other like a recurrent network.
+I can't say for certain why. The attention layer on top has what it needs: the convolution hands each value its key, and the other hybrid shows that one attention layer among three Gated DeltaNet layers is enough. This one just doesn't learn the lookup in 4,000 steps. A model of four layers is far from Qwen3-Next, where twelve attention layers are spread through 48 and most of them have many recurrent layers on both sides, so this says nothing about whether its layout is a good one.
+
+<p class="takeaway" markdown="1">The ratio alone doesn't describe a hybrid: with the same layers in a different order, one model recalled every value, like a Transformer, and the other 12% of them at 32 pairs, like a recurrent network.</p>
 
 ## Why one layer of attention is enough
 
@@ -152,7 +174,15 @@ Copying gives the same picture. Jelassi and colleagues proved that two layers of
 
 None of this requires attention everywhere. Much of predicting the next token is local, or a matter of keeping a running summary of what the text is about, and a gated recurrent layer does that well and cheaply. Exact lookups into the distant past are rarer, and a layer that can make them serves the whole model: the recurrent layers around it carry the local context, the attention layer finds the match. In the library picture, most floors work from a notebook page, and every few floors someone is allowed into the archive.
 
-The authors of Mamba-2 tried such hybrids and described the division of labour the same way: "attention layers act as a retrieval mechanism to quickly refer to previous tokens in the sequence instead of forcing the model to compress all the context to its memory". They found that "around 10% of the total number of layers being attention performs best" ([Dao & Gu, 2024](https://arxiv.org/abs/2405.21060)).
+The authors of Mamba-2 tried such hybrids and described the division of labour the same way:
+
+<blockquote class="pull" markdown="1">
+Attention layers act as a retrieval mechanism to quickly refer to previous tokens in the sequence instead of forcing the model to compress all the context to its memory.
+
+<cite>Tri Dao and Albert Gu, the authors of Mamba-2</cite>
+</blockquote>
+
+They found that "around 10% of the total number of layers being attention performs best" ([Dao & Gu, 2024](https://arxiv.org/abs/2405.21060)).
 
 A study at NVIDIA trained an 8-billion-parameter Transformer, pure Mamba and Mamba-2 models and a hybrid with 4 attention layers out of 56 on the same data. The pure Mamba models began to fail at looking up a number in a phone book beyond about 500 tokens. The hybrid exceeded the Transformer on all 12 standard tasks the authors evaluated, by 2.65 points on average ([Waleffe et al., 2024](https://arxiv.org/abs/2406.07887)).
 
@@ -184,6 +214,8 @@ Kimi Linear starts from multi-head latent attention, introduced in DeepSeek-V2 (
 
 At long context, the cache rather than the weights decides how many conversations fit on a GPU at once, and decoding speed follows from that. The Kimi Linear authors measured decoding with a million tokens of context and put the result down to memory: the smaller cache "enables larger batches, yielding a 6.3× faster TPOT (1.84ms vs. 11.48ms) than MLA at 1M tokens", TPOT being the time per output token.
 
+<p class="flow"><span>attention in 7 of 27 layers</span><span>26% of the cache</span><span>larger batches</span><span>6.3× faster decoding at 1M tokens</span></p>
+
 ## What it costs on a GPU
 
 The recurrent layer pays off only where the cache grows large, and a single layer on one GPU shows where that starts. I timed one layer with 16 heads of 128 dimensions, about the size of a Gated DeltaNet layer in Qwen3-Next, in two situations: reading a prompt of $n$ tokens at once, and writing one new token after $n$ tokens.
@@ -197,6 +229,8 @@ Softmax attention runs through PyTorch's fused attention kernel in half precisio
 Reading a prompt, softmax attention is faster up to 8K tokens, which is no surprise: its kernel is one fused program, and mine is a loop. The slopes differ, though. From 512 to 65,536 tokens, a sequence 128 times longer, the attention layer gets 8,600 times slower and the recurrent one 124 times slower. The curves cross between 8K and 16K tokens, and at 65K the recurrent layer is 4.2 times faster.
 
 Writing a token is where the cache costs most. Attention reads the keys and values of every earlier token, 512 MiB at 65K tokens in this one layer, and its time grows in proportion, from 0.08 ms to 3.7 ms. The recurrent layer updates a state of 1 MiB and takes 0.2 ms at any length; at that size the time is mostly the overhead of launching a few small GPU kernels. From about 2K tokens on, the recurrent step is faster, and at 65K it is 16 times faster.
+
+<p class="takeaway" markdown="1">On one GPU the recurrent layer overtakes attention from about 2K tokens when writing a token, and between 8K and 16K tokens when reading a prompt.</p>
 
 One layer and one sequence understate the difference in a real server. There, the caches of all the conversations in a batch have to fit in memory at once, so a model whose cache is a quarter or an eighth of the size can serve proportionally more conversations at the same length. Kimi Linear's 6.3 times, quoted above, comes from exactly that. The attention layers of a hybrid still pay the full price; three quarters of its layers stop paying it.
 

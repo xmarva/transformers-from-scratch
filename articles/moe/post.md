@@ -14,6 +14,18 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+A mixture of experts splits each feed-forward network into many smaller ones and lets a router send every token to a few of them, so the newest models hold twenty to thirty times as many parameters as they use for a token. In my small runs, a mixture with the compute of a small dense model got two thirds of the way to a dense model with as many parameters, once its router was kept from piling the tokens onto a few favourite experts. Serving is where a mixture is expensive: every expert must sit in memory, and a server's batch reads nearly all of them at every step.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">31%</span><span class="stat-label">longer per training step than a dense model doing the same arithmetic</span></div>
+<div class="stat"><span class="stat-value">94–98%</span><span class="stat-label">of the tokens one expert takes in three of six layers, without any balancing</span></div>
+<div class="stat"><span class="stat-value">87%</span><span class="stat-label">of DeepSeek-V3's routed experts read in one decoding step for 64 sequences</span></div>
+</div>
+</aside>
+
 DeepSeek-V3 has 671 billion parameters and uses 37 billion of them for each token. Kimi K2 has a trillion and uses 32 billion, gpt-oss-120b uses 5.1 billion of its 117, and some names spell the arithmetic out: Qwen3-235B-A22B has 235 billion parameters, 22 billion of them active. In every layer of these models a small router looks at the token and picks a few feed-forward networks, the experts, out of dozens or hundreds. Only those are computed. The rest of the weights wait in memory for tokens that need them.
 
 The idea is older than the Transformer. In 1991 Jacobs, Jordan, Nowlan and Hinton described systems "composed of many separate networks, each of which learns to handle a subset of the complete set of training cases" ([Jacobs et al., 1991](https://doi.org/10.1162/neco.1991.3.1.79)). In 2017 Shazeer and colleagues put a layer of up to 131,072 experts between the layers of an LSTM language model ([Shazeer et al., 2017](https://arxiv.org/abs/1701.06538)), and today the largest open models of DeepSeek, Qwen, Moonshot, OpenAI, Meta, Zhipu and MiniMax are all mixtures of experts.
@@ -76,7 +88,11 @@ Whether this loop is slow depends on how many tokens each expert gets. Every pas
 
 [[dispatch]]
 
+<details class="method" markdown="1">
+<summary>How my version batches the experts, and what production kernels do instead</summary>
+
 My version pads every expert's queue to the length of the longest, rounded up to a multiple of 256 so that the GPU sees few different shapes, and multiplies all of them by the stacked expert weights in one batched product. It agrees with a reference that runs every expert on every token and multiplies the unchosen ones by zero, to rounding error. Production kernels avoid even the padding: MegaBlocks writes the layer as a block-sparse matrix product ([Gale et al., 2023](https://arxiv.org/abs/2211.15841)), and DeepSeek's DeepGEMM library has grouped products that take the experts' tokens concatenated one after another, each expert's segment padded only to the kernel's block size.
+</details>
 
 ## Same compute, more parameters
 
@@ -84,11 +100,13 @@ What does a mixture buy? To see it on a small scale, I trained four models on a 
 
 The dense model has SwiGLU networks of width 768 and 7.2 million parameters in all. The mixture with 8 experts sends every token to 2 experts of width 384: it does the same work per token as the dense model, with 7.2 million active parameters, but holds 17.8 million. The mixture with 32 experts cuts the same budget finer, 8 of 32 experts of width 96. The fourth model is dense with networks of width 3,072: as many parameters as the mixtures, every one of them used for every token, at about two and a half times the compute.
 
-Each model trained three times, with different seeds, for 3,000 steps of 32 sequences of 256 tokens, about 25 million tokens, on an NVIDIA T4 on Kaggle, with the auxiliary balancing loss described below for the mixtures.
+Each model trained three times, with different seeds, for 3,000 steps of 32 sequences of 256 tokens, about 25 million tokens, on an NVIDIA T4 on Kaggle, with the auxiliary balancing loss <a class="arrow-link" href="#keeping-the-experts-busy">described below</a> for the mixtures.
 
 [[loss]]
 
-At the same compute per token, the mixture with 8 experts ends with a validation loss of 2.985 on average over the three seeds, against 3.062 for the dense model. The three seeds of the dense model end within 0.024 of each other and those of the mixture within 0.008, so a gap of 0.077 is not noise, and the mixture is better on each kind of text: by 0.08 on English, 0.10 on Russian and 0.06 on Python. The dense model with networks four times wider, as many parameters as the mixture and all of them working on every token, reaches 2.948, and until about step 1,750 the mixtures are even ahead of it. The mixture gets two thirds of the way from the small dense model to the large one while computing as much as the small one.
+At the same compute per token, the mixture with 8 experts ends with a validation loss of 2.985 on average over the three seeds, against 3.062 for the dense model. The three seeds of the dense model end within 0.024 of each other and those of the mixture within 0.008, so a gap of 0.077 is not noise, and the mixture is better on each kind of text: by 0.08 on English, 0.10 on Russian and 0.06 on Python. The dense model with networks four times wider, as many parameters as the mixture and all of them working on every token, reaches 2.948, and until about step 1,750 the mixtures are even ahead of it.
+
+<p class="takeaway" markdown="1">The mixture with 8 experts gets two thirds of the way from the small dense model to the large one while computing as much as the small one.</p>
 
 Compute per token is not the same thing as time. Here is how long one training step takes, with the experts run by the loop shown earlier and by the sorted, batched version:
 
@@ -99,6 +117,8 @@ The mixture with 8 experts takes 31% longer than the dense model that does the s
 ## Keeping the experts busy
 
 Left alone, the router has a bad habit. Early in training some expert happens to be a little better than the others, the router sends it more tokens, it trains on more data and gets better still, and the router sends it even more. The other experts get few tokens, learn little and stay unattractive. Shazeer and colleagues, who brought mixtures of experts to large networks, observed this "self-reinforcing" imbalance and countered it with an extra loss ([Shazeer et al., 2017](https://arxiv.org/abs/1701.06538)).
+
+<p class="flow"><span>one expert starts a little better</span><span>the router sends it more tokens</span><span>it trains on more and gets better still</span><span>the other experts learn little</span></p>
 
 [[balance]]
 
@@ -154,7 +174,13 @@ Here is the same thing token by token, on three short snippets of held-out text.
 
 In the first layer the router sorts tokens by what they look like. Its Russian expert takes президент and most of the pieces into which the tokenizer cut the names Либерии, Чарльз and Кинг: Л, иб, Ч, ар, ль, з, Д, Б, инг. Python's =, _, (), try and newlines go to an expert that leans to code. English has no expert of its own in this layer at all. At this depth a token's vector is still mostly the token itself, and the router has little else to go on.
 
-In the last layer, 10 of the 13 English tokens, 14 of the 17 Russian ones and 9 of the 16 Python ones go to an expert of their own kind. All the others but one go to the two mixed experts of this layer, and most of them are tokens the three kinds of text share: the numbers 3 and 21, the full stops after the initials Д. and Б., and in Python the brackets, colons, the underscore and newlines. The last layer prepares the prediction of the next token, and what the next token can be depends first of all on the language.
+In the last layer, 10 of the 13 English tokens, 14 of the 17 Russian ones and 9 of the 16 Python ones go to an expert of their own kind. All the others but one go to the two mixed experts of this layer, and most of them are tokens the three kinds of text share: the numbers 3 and 21, the full stops after the initials Д. and Б., and in Python the brackets, colons, the underscore and newlines.
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+In the last layer the router sorts tokens by language, because that layer prepares the prediction of the next token, and what the next token can be depends first of all on the language.
+</div>
 
 Specialisation by topic, the kind people usually hope for, is much weaker in large models. Mistral looked for experts on topics in Mixtral and did not find them: "the distribution of expert assignment is very similar for ArXiv papers (written in Latex), for biology (PubMed Abstracts), and for Philosophy (PhilPapers) documents". What they found instead was syntax: "in code, the indentation tokens are always assigned to the same experts, particularly at the first and last layers where the hidden states are more correlated to the input and output of the model" ([Jiang et al., 2024](https://arxiv.org/abs/2401.04088)). In OLMoE, trained from scratch with 64 small experts per layer, the specialisation is stronger: "for arXiv, which has a very specific distribution with lots of scientific text, the first expert in layer 0 is nearly 100% specialized", and "vocabulary specialization is higher in later layers" ([Muennighoff et al., 2025](https://arxiv.org/abs/2409.02060)).
 
@@ -196,7 +222,13 @@ $$1 - \left(1 - \frac{k}{E}\right)^{B}.$$
 
 My router with 8 of 32 experts sits exactly on its curve: a decoding step needs 25% of the experts for one sequence, 90% for 8 and all of them from 32 on, as if every token picked its experts at random. A model with a smaller share per token holds out longer. DeepSeek-V3, with 8 of 256, reads 3% of its routed experts for one sequence, 40% for 16 and 87% for 64, and from about 128 sequences on, nearly all of them.
 
-So the saving in memory traffic that makes a mixture fast at a batch of one disappears at the batch sizes a server runs at. What remains is the saving in arithmetic: each expert multiplies only the tokens that chose it. To turn that into speed, a server needs enough tokens per expert to keep each product efficient, and that is what expert parallelism is for: the experts are spread over many GPUs, every GPU holds a few of them, and tokens travel to their experts and back.
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The saving in memory traffic that makes a mixture fast at a batch of one disappears at the batch sizes a server runs at. What remains is the saving in arithmetic: each expert multiplies only the tokens that chose it.
+</div>
+
+To turn this saving into speed, a server needs enough tokens per expert to keep each product efficient, and that is what expert parallelism is for: the experts are spread over many GPUs, every GPU holds a few of them, and tokens travel to their experts and back.
 
 [[expert-parallel]]
 
@@ -210,7 +242,13 @@ A mixture of experts trades memory for compute. For a given quality it needs few
 
 The gain in compute is real and large. The Switch Transformer reached the quality of a dense T5-Base "in one-seventh the time" at the same compute per token ([Fedus et al., 2022](https://arxiv.org/abs/2101.03961)). The gain in wall-clock time is smaller, because routing and moving tokens cost time that no operation count shows: the OLMoE team found that their mixture "reaches the performance of the dense model with ∼3× fewer tokens", but in time "only ∼2× faster" ([Muennighoff et al., 2025](https://arxiv.org/abs/2409.02060)).
 
-So the trade pays where compute is the bottleneck and memory is plentiful: training large models, and serving them to many users at once on clusters where every expert sees enough tokens to stay busy. It pays less where memory is the bottleneck or traffic is light. The authors of GLaM, one of the first large mixtures, noted that sparse models "require a larger number of devices", which "increases the serving cost especially when the serving traffic is low" ([Du et al., 2022](https://arxiv.org/abs/2112.06905)). Fine-tuning needs care too. In the ST-MoE study, sparse models were "prone to overfitting": on a task with 250 training examples the sparse model did worse than the dense one, and sparse models needed their own fine-tuning settings, smaller batches and a higher learning rate ([Zoph et al., 2022](https://arxiv.org/abs/2202.08906)).
+So the trade pays where compute is the bottleneck and memory is plentiful: training large models, and serving them to many users at once on clusters where every expert sees enough tokens to stay busy. It pays less where memory is the bottleneck or traffic is light. The authors of GLaM, one of the first large mixtures, noted that sparse models "require a larger number of devices", which "increases the serving cost especially when the serving traffic is low" ([Du et al., 2022](https://arxiv.org/abs/2112.06905)).
+
+<div class="callout" markdown="1">
+<p class="callout-label">In practice</p>
+
+Fine-tuning needs care too. In the ST-MoE study, sparse models were "prone to overfitting": on a task with 250 training examples the sparse model did worse than the dense one, and sparse models needed their own fine-tuning settings, smaller batches and a higher learning rate ([Zoph et al., 2022](https://arxiv.org/abs/2202.08906)).
+</div>
 
 A laptop with plenty of memory and a modest processor is a case of its own. Its memory can hold all the experts, and at a batch of one each token reads only the few it needs.
 

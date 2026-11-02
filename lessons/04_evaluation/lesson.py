@@ -219,7 +219,8 @@ print("signature:   ", bleu.get_signature())
 # and they stop agreeing. The card's 48.4 and the leaderboard's numbers describe the same weights on different
 # test sets, and nothing on the card warns you that its Tatoeba isn't the Tatoeba everyone else uses.
 #
-# > A score is comparable only with scores of the same test set, the same references and the same metric settings.
+# > **Key point.** A score is comparable only with scores of the same test set, the same references and the same
+# > metric settings.
 #
 # ## 2. The plan
 #
@@ -452,9 +453,13 @@ for system in SYSTEMS:
 table(pd.DataFrame(scores), digits=1)
 
 # %% [markdown]
-# Our functions and sacreBLEU agree to the last digit on every system. opus-mt-en-ru leads by several points, and
-# beam search buys about a point over greedy decoding. Whether a point is a lot is section 10's question. First,
-# the ways these numbers move while the translations stay exactly the same.
+# Our functions and sacreBLEU agree to the last digit on every system.
+#
+# → opus-mt-en-ru leads with 45.4 BLEU; with beam search our model gets 40.8, about a point more than greedy
+# decoding's 39.6.
+#
+# Whether a point is a lot is section 10's question. First, the ways these numbers move while the translations stay
+# exactly the same.
 #
 # Where does each system sit on the brevity penalty? The ratio $c/r$ of the total lengths, on the penalty's curve:
 
@@ -1091,9 +1096,11 @@ print("opus-mt-en-ru:", hero_translation)
 table(pd.DataFrame(rows).sort_values("COMET", ascending=False), digits=2)
 
 # %% [markdown]
-# BLEU and chrF jump around with the wording of each reference; COMET calls the translation good against all
-# fifteen. It still prefers some references to others, the ones closest in wording, but the spread is under a
-# tenth, not the whole scale. That's the difference between comparing strings and comparing meanings.
+# → BLEU and chrF jump around with the wording of each reference, from 15.97 to 35.36 and from 9.35 to 70.55;
+# COMET calls the translation good against all fifteen.
+#
+# COMET still prefers some references to others, the ones closest in wording, but the spread is under a tenth, not
+# the whole scale. That's the difference between comparing strings and comparing meanings.
 #
 # ## 8. Metrics against professional translators
 #
@@ -1190,8 +1197,13 @@ table(pd.DataFrame(rows), digits=3)
 # %% [markdown]
 # COMET orders the most pairs the way the translators did, chrF fewer, BLEU fewest. That is the finding of the
 # WMT22 metrics task in miniature, where BLEU came last of 13 reference-based metrics, and of Kocmi et al., who
-# checked 3,344 system pairs and concluded: "Do not use BLEU, it is inferior to other metrics, and it has been
-# overused." Neither COMET nor anything else gets all pairs right.
+# checked 3,344 system pairs and concluded:
+#
+# > Do not use BLEU, it is inferior to other metrics, and it has been overused.
+# >
+# > — Kocmi et al. (2021)
+#
+# Neither COMET nor anything else gets all pairs right.
 
 # %% [markdown]
 # ## 9. Translations broken on purpose
@@ -1301,7 +1313,7 @@ table(pd.DataFrame(rows), digits=2)
 # meaning. COMET hardly charges for ё at all, which is right; its numbers sit in a narrow band, but their order is
 # mostly the order a reader would choose, names aside.
 #
-# > Every metric is blind to something. Before trusting one, find out what.
+# > **Key point.** Every metric is blind to something. Before trusting one, find out what.
 
 # %% [markdown]
 # ## 10. The paired bootstrap: which differences are real
@@ -1398,7 +1410,7 @@ table(pd.DataFrame(rows))
 # sentence gives BLEU a handful of n-gram matches, a noisy signal, and noise takes more sentences to average out.
 # With a small test set, the metric decides what you can see at all.
 #
-# > Report a difference with its bootstrap interval, or don't report it.
+# > **Key point.** Report a difference with its bootstrap interval, or don't report it.
 
 # %% [markdown]
 # ## 11. What opus-mt-en-ru saw in training
@@ -1486,8 +1498,8 @@ table(profile.groupby("seen by opus-mt").mean().reset_index(), digits=3)
 # baseline, opus-mt-en-ru's memory doesn't show. It reproduces the reference word for word a little more often on
 # the seen pairs, but no more than our model does.
 #
-# So the competitor did see a quarter of the exam, and it didn't help. Sometimes the scandal turns out to be
-# nothing, and the only way to know is to measure it.
+# > **Key point.** The competitor did see a quarter of the exam, and it didn't help. Sometimes the scandal turns out
+# > to be nothing, and the only way to know is to measure it.
 #
 # A leak is still a leak, though, so the comparison that counts is on the pairs opus-mt can't have seen, with the
 # bootstrap of section 10:
@@ -1578,8 +1590,10 @@ for label, part in test.groupby("rarest word", observed=True):
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# With every word familiar, our model is nearly as good as opus-mt-en-ru. With a word it has seen once or never,
-# it guesses, and COMET drops far below opus-mt-en-ru, which was trained on thousands of times more text.
+# → With every word familiar, our model is nearly as good as opus-mt-en-ru, 0.943 against 0.950; with a word it has
+# never seen, its COMET falls to 0.569 against 0.852.
+#
+# With a word seen once or never, our model guesses, and opus-mt-en-ru was trained on thousands of times more text.
 #
 # And the other way round: sentences where our model beats opus-mt-en-ru by the widest margin.
 

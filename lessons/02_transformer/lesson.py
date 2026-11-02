@@ -329,7 +329,7 @@ print("output: ", weights @ v)
 # The dot products are $1$, $2$ and $3$; divided by $\sqrt 2$ they become the scores, and softmax turns those into
 # weights that sum to 1. The third key matches the query best and gets the largest share, but not all of it.
 #
-# > Attention mixes; it doesn't pick.
+# > **Key point.** Attention mixes; it doesn't pick.
 #
 # The general function is the formula, line for line. Its inputs can have any number of leading dimensions (a batch
 # of sentences, several heads); the last two are always positions and vector entries, which is why the transpose
@@ -449,8 +449,10 @@ for d_k, result in results.items():
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# The variance follows $d_k$, as derived, and only the scaled weights stay put. Our heads have $d_k = 64$, the same
-# as in the 2017 paper.
+# → As $d_k$ grows from 4 to 1 024, the variance of the scores follows it, as derived, and the raw top weight climbs
+# from 0.43 to 0.96, while the scaled one stays between 0.23 and 0.25.
+#
+# Our heads have $d_k = 64$, the same as in the 2017 paper.
 
 # %% [markdown]
 # ## 6. Masks
@@ -604,8 +606,8 @@ print("earlier positions can't see the change; the last one can")
 # - $W_i^Q, W_i^K, W_i^V$, each $(d_{\text{model}}, d_k)$: what head $i$ asks for, offers and hands over.
 # - $W^O$, $(d_{\text{model}}, d_{\text{model}})$: mixes the heads' results back into one vector per position.
 #
-# Each head works in a smaller space, $d_k = d_{\text{model}} / h$ entries, so all heads together cost about as
-# much as one attention at full width: the model gets several patterns for the price of one.
+# > **Key point.** Each head works in a smaller space, $d_k = d_{\text{model}} / h$ entries, so all heads together
+# > cost about as much as one attention at full width: the model gets several patterns for the price of one.
 #
 # In code, nobody keeps $h$ separate small matrices. One big projection computes the queries of all heads at once,
 # and the result is cut into $h$ slices of $d_k$ entries:
@@ -813,7 +815,7 @@ print("feed-forward:", sum(p.numel() for p in feed_forward.parameters()), "param
 print("attention:   ", sum(p.numel() for p in ours.parameters()), "parameters")
 
 # %% [markdown]
-# Two thirds of an encoder layer's parameters sit in the feed-forward network, not in attention.
+# → Two thirds of an encoder layer's parameters sit in the feed-forward network, not in attention.
 #
 # **Residual connection.** Every sub-layer's output is *added* to its input,
 # $\mathbf{x} + \operatorname{Sublayer}(\mathbf{x})$ ([He et al., 2016](https://arxiv.org/abs/1512.03385)). A
@@ -1135,7 +1137,11 @@ plt.show()
 # the explanation joins two sections of this lesson. The residual stream carries the input embedding
 # $\sqrt{d_{\text{model}}}\,\mathbf{e}_t$ up through every layer, so the final vector still points partly along
 # $\mathbf{e}_t$. And the output layer is the same matrix $E$, so the score of token $t$ is the dot product of that
-# vector with $\mathbf{e}_t$ itself. Here are all sixteen thousand scores at one position:
+# vector with $\mathbf{e}_t$ itself.
+#
+# the residual stream carries the embedding up → the output layer is the same matrix → the token just read wins
+#
+# Here are all sixteen thousand scores at one position:
 
 # %%
 position = 3  # the fourth position of the first sentence
@@ -1194,9 +1200,11 @@ assert abs(log_sum - expected) < 0.02
 #
 # ## 12. Can it learn?
 #
-# Before spending an hour of GPU time on training (lesson 3), make sure the model can learn at all. The cheapest
-# test is to teach it a handful of sentence pairs by heart: a model that can't memorize sixteen pairs has a bug
-# somewhere. [Karpathy (2019)](https://karpathy.github.io/2019/04/25/recipe/) calls this step "overfit one batch".
+# Before spending an hour of GPU time on training (lesson 3), make sure the model can learn at all.
+#
+# > **In practice.** The cheapest test is to teach the model a handful of sentence pairs by heart: a model that
+# > can't memorize sixteen pairs has a bug somewhere. [Karpathy (2019)](https://karpathy.github.io/2019/04/25/recipe/)
+# > calls this step "overfit one batch".
 #
 # One detail: lesson 1 kept groups of linked pairs together, so the validation set holds several translations of
 # some English sentences. Nobody can memorize two answers to one question, so we take one pair per English
@@ -1345,8 +1353,9 @@ left_over = file_size - accounted
 print(f"left over: {left_over} bytes, {left_over / file_size:.3%} of the file")
 
 # %% [markdown]
-# What is left over is the file format itself: the tensors' names and headers. The translator we will compete with
-# is, number for number, the model you just wrote, at several times our size.
+# What is left over is the file format itself: the tensors' names and headers.
+#
+# → The translator we will compete with is, number for number, the model you just wrote, at 7.9 times our size.
 #
 # The model's code is also in the course package, `tfs.model`, so that later lessons can import it instead of
 # repeating it. Check that it is the same model, weight for weight:

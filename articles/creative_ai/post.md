@@ -14,13 +14,28 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+Imagination recombines memory: the brain system that stores experiences also assembles new scenes out of them. Recombination stops where a new input arrives, as with olo, a colour five people saw for the first time in 2025 and nobody could have imagined in advance. Producing candidates and choosing among them are different jobs; a language model does the first in its sampling and the second only if somebody adds it. Measured, chatbots beat the average person at finding unusual uses for objects while the best people still match them, and stories written with AI ideas are judged more novel but resemble each other more.
+
+</aside>
+
 On 10 March 2016, in the second game of its match against Lee Sedol in Seoul, AlphaGo played its 37th move on the fifth line, a shoulder hit at P10 of the kind professionals learn not to play. One of the English commentators "chuckled and said: 'I thought it was a mistake.'" Fan Hui, the European champion, who had lost to AlphaGo a few months earlier, was watching: "It's not a human move. I've never seen a human play this move. … So beautiful" ([Metz, 2016](https://www.wired.com/2016/03/sadness-beauty-watching-googles-ai-play-go/)). Lee Sedol stood up and left the room, and spent nearly fifteen minutes on his reply. AlphaGo itself had put the chance that a human would play the move at one in ten thousand ([Hassabis, 2016](https://blog.google/technology/ai/what-we-learned-in-seoul-with-alphago/)).
 
 [[move37]]
 
 Lee said afterwards: "I thought AlphaGo was based on probability calculation and that it was merely a machine. But when I saw this move, I changed my mind. Surely, AlphaGo is creative" ([DeepMind](https://deepmind.google/research/breakthroughs/alphago/)).
 
-The view he changed his mind about is older than computers. In 1843 Ada Lovelace wrote of Babbage's Analytical Engine: "The Analytical Engine has no pretensions whatever to originate anything. It can do whatever we know how to order it to perform" ([Lovelace, 1843](https://www.fourmilab.ch/babbage/sketch.html)). In 1950 Alan Turing answered with a question that turns the objection on the people making it: "Who can be certain that 'original work' that he has done was not simply the growth of the seed planted in him by teaching…" ([Turing, 1950](https://doi.org/10.1093/mind/LIX.236.433)).
+The view he changed his mind about is older than computers. In 1843 Ada Lovelace wrote of Babbage's Analytical Engine ([Lovelace, 1843](https://www.fourmilab.ch/babbage/sketch.html)):
+
+<blockquote class="pull" markdown="1">
+The Analytical Engine has no pretensions whatever to originate anything. It can do whatever we know how to order it to perform.
+
+<cite>Ada Lovelace, 1843</cite>
+</blockquote>
+
+In 1950 Alan Turing answered with a question that turns the objection on the people making it: "Who can be certain that 'original work' that he has done was not simply the growth of the seed planted in him by teaching…" ([Turing, 1950](https://doi.org/10.1093/mind/LIX.236.433)).
 
 That is the question here. Not whether a machine can create something from nothing, but whether anyone can: what a brain does when a person has a new idea, how much of it is recombining what was already there, where recombination runs out, and what the measurements of machine creativity actually show.
 
@@ -28,13 +43,13 @@ That is the question here. Not whether a machine can create something from nothi
 
 Psychologists use a definition with two parts: an idea or a product is creative if it is both original and effective, new and fit for some purpose ([Runco & Jaeger, 2012](https://doi.org/10.1080/10400419.2012.650092)). A random string is new and useless; a correct sum is useful and not new. The philosopher Margaret Boden, who has written about creativity and AI since the 1980s, adds surprise: "Creativity is the ability to come up with ideas or artefacts that are new, surprising, and valuable" ([Boden, 2007](https://doi.org/10.1017/S147717560000230X)).
 
-Boden makes two distinctions that clear up much of the argument about machines. The first is between ideas that are new to the person who has them, **P-creativity**, and ideas that are new to the world, "for the first time in human history", **H-creativity**. A child who works out for herself that there is no largest prime number is P-creative; Euclid, who proved it first, was H-creative. The second distinction is between three ways of being creative at all:
+Boden makes two distinctions that clear up much of the argument about machines. The first is between ideas that are new to the person who has them, *P-creativity*, and ideas that are new to the world, "for the first time in human history", *H-creativity*. A child who works out for herself that there is no largest prime number is P-creative; Euclid, who proved it first, was H-creative. The second distinction is between three ways of being creative at all:
 
 [[boden]]
 
-- **Combinational** creativity is "making unfamiliar combinations of familiar ideas": a metaphor, a pun, a collage.
-- **Exploratory** creativity works inside a conceptual space, the set of possibilities that a style or a set of rules allows, and reaches places in it nobody had been.
-- **Transformational** creativity changes the space itself, so that "thoughts are now possible which previously… were literally inconceivable."
+- *Combinational* creativity is "making unfamiliar combinations of familiar ideas": a metaphor, a pun, a collage.
+- *Exploratory* creativity works inside a conceptual space, the set of possibilities that a style or a set of rules allows, and reaches places in it nobody had been.
+- *Transformational* creativity changes the space itself, so that "thoughts are now possible which previously… were literally inconceivable."
 
 Move 37 was exploratory. The rules of Go did not change; the move was always legal. What changed was that a player had looked, and evaluated, where generations of professionals had learned not to look.
 
@@ -46,7 +61,13 @@ Daniel Schacter and Donna Rose Addis argued in 2007 that memory is "fundamentall
 
 [[hassabis]]
 
-The patients' imagined scenes were poorer and, above all, fell apart in space: "fragmented images in the absence of a holistic representation of the environmental setting." The result has a published dispute behind it. One of the five patients was unimpaired, and Larry Squire and colleagues found hippocampal patients who could imagine the future normally with a different method ([Squire et al., 2010](https://doi.org/10.1073/pnas.1014391107)); later studies with damage restricted to the hippocampus found the impairment again ([Race et al., 2011](https://doi.org/10.1523/JNEUROSCI.1145-11.2011)). The weight of the evidence is that the system which stores experiences is also the one that assembles new scenes out of them.
+The patients' imagined scenes were poorer and, above all, fell apart in space: "fragmented images in the absence of a holistic representation of the environmental setting." The result has a published dispute behind it. One of the five patients was unimpaired, and Larry Squire and colleagues found hippocampal patients who could imagine the future normally with a different method ([Squire et al., 2010](https://doi.org/10.1073/pnas.1014391107)); later studies with damage restricted to the hippocampus found the impairment again ([Race et al., 2011](https://doi.org/10.1523/JNEUROSCI.1145-11.2011)).
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The weight of the evidence is that the system which stores experiences is also the one that assembles new scenes out of them.
+</div>
 
 The same system shows up when healthy people create. Melissa Ellamil and colleagues had people design book covers in a scanner, switching between generating ideas and evaluating them. "Creative generation was associated with preferential recruitment of medial temporal lobe regions", the memory system, while evaluation recruited executive and default network regions ([Ellamil et al., 2012](https://doi.org/10.1016/j.neuroimage.2011.08.008)).
 
@@ -66,9 +87,9 @@ Image generators show the same boundary in their own way. They combine concepts 
 
 ## Generate, then select
 
-In 1960 the psychologist Donald Campbell proposed that creative thought works like evolution: **blind variation and selective retention**, many candidates produced without foresight and a few kept ([Campbell, 1960](https://doi.org/10.1037/h0040373)). Dean Keith Simonton has defended the theory for decades ([Simonton, 2011](https://doi.org/10.1037/a0022912)), others argue it does not fit how ideas actually develop ([Gabora, 2011](https://doi.org/10.1080/10400419.2011.571187)), and after more than sixty years "without any resolution of the controversy" ([Simonton, 2013](https://doi.org/10.1037/a0030705)) the core distinction has stuck: producing candidates and choosing among them are different jobs.
+In 1960 the psychologist Donald Campbell proposed that creative thought works like evolution: *blind variation and selective retention*, many candidates produced without foresight and a few kept ([Campbell, 1960](https://doi.org/10.1037/h0040373)). Dean Keith Simonton has defended the theory for decades ([Simonton, 2011](https://doi.org/10.1037/a0022912)), others argue it does not fit how ideas actually develop ([Gabora, 2011](https://doi.org/10.1080/10400419.2011.571187)), and after more than sixty years "without any resolution of the controversy" ([Simonton, 2013](https://doi.org/10.1037/a0030705)) the core distinction has stuck: producing candidates and choosing among them are different jobs.
 
-The brain seems to split them between networks that usually work against each other. The **default mode network** is active when attention turns inward, to memories, plans and daydreams. The **executive control network** holds a goal and checks progress toward it. The **salience network** decides which of the two the moment calls for. In creative thought, Roger Beaty and colleagues write, "the default and executive control networks, which can show an antagonistic relation, tend to cooperate" ([Beaty et al., 2016](https://doi.org/10.1016/j.tics.2015.10.004)).
+The brain seems to split them between networks that usually work against each other. The *default mode network* is active when attention turns inward, to memories, plans and daydreams. The *executive control network* holds a goal and checks progress toward it. The *salience network* decides which of the two the moment calls for. In creative thought, Roger Beaty and colleagues write, "the default and executive control networks, which can show an antagonistic relation, tend to cooperate" ([Beaty et al., 2016](https://doi.org/10.1016/j.tics.2015.10.004)).
 
 [[networks]]
 
@@ -80,7 +101,13 @@ Machines have the same two jobs. AlphaGo's networks were trained first on games 
 
 [[variation]]
 
-At a low temperature the model repeats one idea. At a medium one it produces eight different, sensible ones. At a high one it produces eight new ones, most of them broken, and the model itself rates them as very unlikely text. Variation on its own is noise. Everything that makes it useful, a person choosing, a reward model trained on human preferences, a search that tries continuations, is selection.
+At a low temperature the model repeats one idea. At a medium one it produces eight different, sensible ones. At a high one it produces eight new ones, most of them broken, and the model itself rates them as very unlikely text.
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+Variation on its own is noise. Everything that makes it useful, a person choosing, a reward model trained on human preferences, a search that tries continuations, is selection.
+</div>
 
 ## Measuring machine creativity
 
@@ -88,7 +115,11 @@ Psychologists measure divergent thinking with tasks like the Alternate Uses Task
 
 [[aut]]
 
-"On average, the AI chatbots outperformed human participants", the authors write, and "the best human ideas still matched or exceed those of the chatbots". Both are visible above. The mean of 256 people sits below every chatbot, and only 7 people did better on average than ChatGPT-4. But the people spread from the bottom of the scale to near the top, and the best person's best idea beat 31 of the 33 chatbot sessions. The authors add a caution about where the chatbots' ideas come from: "It remains possible that they simply retrieve ideas that exist in their database." A larger study found GPT-4 "robustly more creative along each divergent thinking measurement" than 151 people, while noting that it scored originality automatically and did not measure usefulness at all, and that "creative potential is not a guarantee for creative achievement" ([Hubert, Awa & Zabelina, 2024](https://doi.org/10.1038/s41598-024-53303-w)).
+"On average, the AI chatbots outperformed human participants", the authors write, and "the best human ideas still matched or exceed those of the chatbots". Both are visible above. The people spread from the bottom of the scale to near the top.
+
+<p class="takeaway" markdown="1">The mean of 256 people sits below every chatbot, and only 7 people did better on average than ChatGPT-4, but the best person's best idea beat 31 of the 33 chatbot sessions.</p>
+
+The authors add a caution about where the chatbots' ideas come from: "It remains possible that they simply retrieve ideas that exist in their database." A larger study found GPT-4 "robustly more creative along each divergent thinking measurement" than 151 people, while noting that it scored originality automatically and did not measure usefulness at all, and that "creative potential is not a guarantee for creative achievement" ([Hubert, Awa & Zabelina, 2024](https://doi.org/10.1038/s41598-024-53303-w)).
 
 What happens when people create *with* the machine? Anil Doshi and Oliver Hauser asked 293 people to write short stories, some with no help and some with story ideas from GPT-4, and had 600 readers rate them ([Doshi & Hauser, 2024](https://doi.org/10.1126/sciadv.adn5290)):
 

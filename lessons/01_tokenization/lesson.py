@@ -174,12 +174,13 @@ def plot_token_counts(counts, title):
 plot_token_counts(example_counts, "One sentence, two languages, five tokenizers")
 
 # %% [markdown]
-# Every tokenizer spends about the same on the English sentence. The Russian one costs several times more in
-# GPT-2, and the newer tokenizers narrow the gap. Note the vocabulary sizes next to the names: the gap closed as
-# the vocabularies grew from about fifty thousand pieces to two hundred thousand, enough room for frequent pieces
-# of many languages. Even in GPT-4o, though, the Russian sentence is more expensive than the English one. The extra
-# cost has a name, the **token tax**: [Petrov et al. (2023)](https://arxiv.org/abs/2305.15425) measured it across
-# hundreds of languages and found that the same text can take up to 15 times as many tokens as in English.
+# → Every tokenizer spends 7 tokens on the English sentence; the Russian one costs 46 in GPT-2 and 11 in GPT-4o.
+#
+# Note the vocabulary sizes next to the names: the gap closed as the vocabularies grew from about fifty thousand
+# pieces to two hundred thousand, enough room for frequent pieces of many languages. Even in GPT-4o, though, the
+# Russian sentence is more expensive than the English one. The extra cost has a name, the **token tax**:
+# [Petrov et al. (2023)](https://arxiv.org/abs/2305.15425) measured it across hundreds of languages and found that
+# the same text can take up to 15 times as many tokens as in English.
 #
 # Where does GPT-2's bill come from? Look at the pieces it cuts the first Russian word into:
 
@@ -480,7 +481,7 @@ table(flagged.sample(min(6, len(flagged)), random_state=SEED))
 # human. The filter was designed for noisy corpora crawled from the web; Tatoeba is written by people, so we keep
 # these pairs.
 #
-# > A cleaning step is a hypothesis about your data. Test it by reading what it removes.
+# > **Key point.** A cleaning step is a hypothesis about your data. Test it by reading what it removes.
 
 # %% [markdown]
 # ### The test set must stay unseen
@@ -690,8 +691,8 @@ assert group_leak == 0  # stops the notebook if a single pair leaks
 print("train:", len(train), "validation:", len(valid), "test:", len(test))
 
 # %% [markdown]
-# > Split by whatever must not be shared. Here that's sentences, so we split by groups of linked sentences; for
-# > medical images it would be patients, for code it would be repositories.
+# > **Key point.** Split by whatever must not be shared. Here that's sentences, so we split by groups of linked
+# > sentences; for medical images it would be patients, for code it would be repositories.
 #
 # The splits are final. We save them; at the end of the lesson they are published, so that lesson 2 can start
 # from exactly these sentences.
@@ -815,9 +816,10 @@ for lang in ["en", "ru"]:
     print(f"{lang}: {rate:.2%} of validation words are unknown")
 
 # %% [markdown]
-# Every unknown word becomes the same placeholder, and the model can neither read nor write it. For Russian that
-# happens an order of magnitude more often than for English, and those are exactly the rare inflected forms a
-# translator must produce.
+# → For Russian the OOV rate is 3.33%, an order of magnitude more than the 0.35% for English.
+#
+# Every unknown word becomes the same placeholder, and the model can neither read nor write it. For Russian those
+# are exactly the rare inflected forms a translator must produce.
 #
 # The opposite extreme, one token per character, has no unknown words at all, but the sequences get long:
 
@@ -1230,9 +1232,10 @@ plt.show()
 
 # %% [markdown]
 # Some splits look like a linguist's: `недо`, or the feminine suffix `ница`, the piece that turns *исследователь*
-# (a researcher) into a woman researcher. Others don't (`st` + `and`). BPE optimizes frequency, not meaning. The
-# model will learn what the pieces mean from context; what the tokenizer controls is that frequent things are short
-# and every rare thing can still be spelled.
+# (a researcher) into a woman researcher. Others don't (`st` + `and`).
+#
+# > **Key point.** BPE optimizes frequency, not meaning. The model will learn what the pieces mean from context;
+# > what the tokenizer controls is that frequent things are short and every rare thing can still be spelled.
 
 # %% [markdown]
 # ## 5. The production tokenizer
@@ -1246,8 +1249,8 @@ plt.show()
 #
 # The tokenizers of section 1 are such files; you downloaded five of them. The rule we follow:
 #
-# > The tokenizer owns its normalization. Then training, evaluation and the deployed service can't normalize
-# > differently, because there is no separate step to forget.
+# > **Key point.** The tokenizer owns its normalization. Then training, evaluation and the deployed service can't
+# > normalize differently, because there is no separate step to forget.
 #
 # First the normalizer, rebuilt from the same choices as `normalize`, step for step:
 
@@ -1475,10 +1478,13 @@ plt.show()
 
 # %% [markdown]
 # Each doubling of the vocabulary saves fewer tokens than the previous one, while the embedding table doubles every
-# time. We keep 16 000 symbols. Compare the last two rows of the table: going to 32 000 would save less than a
-# token per sentence in either language, and double an embedding table that already holds millions of parameters,
-# a sizeable share of a small translation model. Models with billions of parameters can afford 200 000 tokens,
-# because next to the rest of the model even a huge embedding table is small. Ours can't.
+# time. We keep 16 000 symbols.
+#
+# → Going from 16 000 to 32 000 symbols would save less than a token per sentence in either language and double an
+# embedding table that already holds millions of parameters, a sizeable share of a small translation model.
+#
+# Models with billions of parameters can afford 200 000 tokens, because next to the rest of the model even a huge
+# embedding table is small. Ours can't.
 
 # %% [markdown]
 # ### The token tax, revisited
@@ -1504,12 +1510,14 @@ validation_counts = pd.DataFrame(rows)
 plot_token_counts(validation_counts, "Average tokens per validation sentence")
 
 # %% [markdown]
-# On Russian, our tokenizer needs fewer tokens than every model in the chart, GPT-4o included, with a vocabulary a
-# fraction of the size. That's not because we out-engineered OpenAI. Our tokenizer was trained on exactly this
-# kind of text in exactly these two languages; theirs has to serve code, math and dozens of languages at once. On
-# English we're slightly worse than all of them, which is the honest price of sharing 16 000 symbols between two
-# languages. A tokenizer is a decision about what to be good at, and for a translator that reads English and
-# writes Russian this one is right.
+# → On Russian, our tokenizer needs fewer tokens than every model in the chart, 7.97 per sentence against GPT-4o's
+# 9.62, with a vocabulary a fraction of the size.
+#
+# That's not because we out-engineered OpenAI. Our tokenizer was trained on exactly this kind of text in exactly
+# these two languages; theirs has to serve code, math and dozens of languages at once. On English we're slightly
+# worse than all of them, which is the honest price of sharing 16 000 symbols between two languages. A tokenizer is
+# a decision about what to be good at, and for a translator that reads English and writes Russian this one is
+# right.
 #
 # And the word from section 1, cut by GPT-4o and by ours:
 

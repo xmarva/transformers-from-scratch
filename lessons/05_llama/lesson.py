@@ -130,9 +130,9 @@ table(pd.DataFrame(rows))
 # because Llama uses it in the pre-norm position. Testing every combination would take sixteen models; a free GPU
 # affords six runs.
 #
-# The sixth run is the most important one, and papers skip it surprisingly often: the 2017 design again, with
-# another seed. The two 2017 runs differ by nothing but chance, so their difference is the yardstick for all the
-# others.
+# > **Key point.** The sixth run is the most important one, and papers skip it surprisingly often: the 2017 design
+# > again, with another seed. The two 2017 runs differ by nothing but chance, so their difference is the yardstick
+# > for all the others.
 #
 # ## 3. Data, and the training loop of lesson 3
 #
@@ -241,6 +241,8 @@ print("largest difference:", (ours - fused).abs().max().item())
 # gradients largest near the output, and "using a large learning rate on those gradients makes the training
 # unstable". That is what lesson 3's warm-up was for. Pre-norm, they found, trains without one. Section 10 checks.
 #
+# post-norm → gradients largest near the output → a large learning rate is unstable → a warm-up is needed
+#
 # The history is a little funny. Five months after the paper, its authors' own code,
 # [tensor2tensor](https://github.com/tensorflow/tensor2tensor), switched its default to pre-norm. A comment by
 # Noam Shazeer, one of the authors, still sits in that code: post-norm is "the published version of the
@@ -339,9 +341,14 @@ print("smallest value of SiLU:", round(F.silu(z).min().item(), 3))
 # off depending on one projection of the input; in SwiGLU one projection decides, smoothly, how much of another
 # gets through.
 #
-# Why that should work better, nobody can say exactly, including its author. His paper ends: "We offer no
-# explanation as to why these architectures seem to work; we attribute their success, as all else, to divine
-# benevolence." It survived Narang et al.'s reimplementation, as one of the few changes that did.
+# Why that should work better, nobody can say exactly, including its author. His paper ends:
+#
+# > We offer no explanation as to why these architectures seem to work; we attribute their success, as all else,
+# > to divine benevolence.
+# >
+# > — Noam Shazeer, GLU Variants Improve Transformer (2020)
+#
+# It survived Narang et al.'s reimplementation, as one of the few changes that did.
 #
 # Three matrices instead of two would mean more weights. To compare fairly, the hidden width shrinks to two thirds
 # of the ReLU layer's, as in the paper and in Llama, rounded here to a multiple of 8, which GPUs like:
@@ -405,9 +412,9 @@ print(f"SwiGLU, d_ff = {swiglu_width(1024)}:", parameters(SwiGLU(256, swiglu_wid
 # $$\big(R(m\theta)\,q\big)^\top \big(R(n\theta)\,k\big) = q^\top R(-m\theta) R(n\theta)\, k = q^\top
 # R\big((n - m)\theta\big)\, k.$$
 #
-# The attention score depends on the positions only through $n - m$, the distance between the two tokens. That's
-# a **relative** position, given to attention directly, which is what the sinusoids of 2017 only hoped the model
-# would work out for itself.
+# > **Key point.** The attention score depends on the positions only through $n - m$, the distance between the two
+# > tokens. That's a **relative** position, given to attention directly, which is what the sinusoids of 2017 only
+# > hoped the model would work out for itself.
 #
 # Each pair turns at its own speed. With $b = 10\,000$, the first pair advances a radian per token and the last
 # needs tens of thousands of tokens for one turn; a full turn of pair $i$ takes $2\pi / \theta_i$ tokens:
@@ -956,7 +963,8 @@ for setup, runs in short_runs.groupby("setup", sort=False):
 table(pd.DataFrame(rows), digits=4)
 
 # %% [markdown]
-# Five runs of the same design spread over about a hundredth of COMET, as far as the largest step of the ladder.
+# → Five runs of the same design spread over about a hundredth of COMET, as far as the largest step of the ladder.
+#
 # One run per change can't rank pre-norm, RMSNorm, SwiGLU and RoPE by COMET on five thousand sentences, however
 # sure the bootstrap is.
 #
@@ -1006,9 +1014,10 @@ print(f"with a key/value head per query head: {without_gqa / 1024:.0f} KiB per t
 print(f"a full context of 128K tokens: {with_gqa * 128 * 1024 / 2**30:.0f} GiB")
 
 # %% [markdown]
-# Gigabytes for the cache of a single long conversation, on top of the weights: this is why grouped-query
-# attention spread so fast. Our model, with four heads and sentences of a dozen tokens, keeps a few kilobytes per
-# token.
+# → 16 GiB for a full context of 128K tokens, gigabytes for the cache of a single long conversation on top of the
+# weights: this is why grouped-query attention spread so fast.
+#
+# Our model, with four heads and sentences of a dozen tokens, keeps a few kilobytes per token.
 #
 # `Attention` already handles a `cache` dictionary (section 9). The step function gives each decoder layer one,
 # and greedy decoding runs on it:
@@ -1184,10 +1193,11 @@ for name in ["2017 s43, 20 epochs", "2017 s44, 20 epochs"]:
 # %% [markdown]
 # At twenty epochs the seeds agree far more closely than at five: the three runs of the new design are within a
 # thousandth of COMET of each other. Lesson 3's model is the lowest of the three 2017 runs, so part of the gap
-# above was that run's bad luck. Against the 2017 runs from this lesson's code the gain is smaller, and still
-# there: every run of the new design is above every run of the old one. That's the honest size of what an
-# architecture buys when the data stays the same: a few thousandths of COMET, a fraction of the distance to
-# opus-mt-en-ru.
+# above was that run's bad luck.
+#
+# > **Key point.** Against the 2017 runs from this lesson's code the gain is smaller, and still there: every run of
+# > the new design is above every run of the old one. That's the honest size of what an architecture buys when the
+# > data stays the same: a few thousandths of COMET, a fraction of the distance to opus-mt-en-ru.
 #
 # Lesson 4 found where lesson 3's model breaks: long sentences. Does the new one hold together longer?
 

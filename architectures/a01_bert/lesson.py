@@ -89,10 +89,15 @@ if device == "cuda":
 # ELMo's two directions never meet inside the network: each half reads one way, and only their outputs are joined.
 #
 # Why not train one model that reads both ways at once? Because it would cheat. Devlin and colleagues put it in one
-# sentence: "bidirectional conditioning would allow each word to indirectly 'see itself', and the model could
-# trivially predict the target word in a multi-layered context." Ask a model to predict word 5 while it can attend
-# to word 5, and it learns to copy. Even if word 5 can't attend to itself in the first layer, word 6 can, and in
-# the second layer word 5 reads it back from word 6.
+# sentence:
+#
+# > Bidirectional conditioning would allow each word to indirectly "see itself", and the model could trivially
+# > predict the target word in a multi-layered context.
+# >
+# > — Devlin et al., 2018
+#
+# Ask a model to predict word 5 while it can attend to word 5, and it learns to copy. Even if word 5 can't attend to
+# itself in the first layer, word 6 can, and in the second layer word 5 reads it back from word 6.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a01/readers-light.png" width="760" alt="Three ways to learn from raw text. GPT predicts each word from the words before it. ELMo trains a left-to-right and a right-to-left model separately and joins their outputs. BERT hides a word behind a mask and predicts it from both sides at once, in every layer">
 #
@@ -216,9 +221,11 @@ token_chips([tokenizer.tokenize(name), cased_tokenizer.tokenize(name)],
             labels=["uncased", "cased"], max_width=620)
 
 # %% [markdown]
-# Lowercasing helps a model that reads queries typed in a hurry. It hurts a model that must find names: the capital
-# letters are gone, and stripping the accent turns the end of a Spanish surname into the English word *pages*. In
-# section 7 we will look for names, and switch to the cased BERT.
+# > **Trap.** Lowercasing, which helps a model that reads queries typed in a hurry, hurts a model that must find
+# > names: the capital letters are gone, and stripping the accent turns the end of a Spanish surname into the
+# > English word *pages*.
+#
+# In section 7 we will look for names, and switch to the cased BERT.
 #
 # Each token becomes the sum of three learned vectors, its word, its position and its segment:
 #
@@ -536,8 +543,10 @@ del untrained
 
 # %% [markdown]
 # A loss of $L$ means the model gives the right word a probability of $e^{-L}$ on average, in the geometric sense.
-# The untrained network is no better than picking from the dictionary blindfolded. BERT gives the hidden word a
-# sizeable probability most of the time, on a text written years after it was trained.
+# The untrained network is no better than picking from the dictionary blindfolded.
+#
+# → Four days of pre-training took the loss from 10.33 to 3.00: BERT gives the hidden word a sizeable probability
+# most of the time, on a text written years after it was trained.
 #
 # That makes BERT a strange kind of oracle: ask it to fill a blank, and you see what it absorbed from books and
 # Wikipedia. Petroni and colleagues used exactly this to show that BERT holds "relational knowledge competitive with
@@ -696,9 +705,9 @@ print(f"on average this head puts {shares_by_head['previous'][layer, head]:.0%} 
       "of its attention on the previous token")
 
 # %% [markdown]
-# Heads like this one are why reading "attention maps" as explanations is risky. Most of what a head does is
-# plumbing: moving information to where the next layer can use it. The linguistically interesting heads exist, but
-# they are a minority, and a head that looks at a word doesn't mean the model uses what it found.
+# > **Trap.** Heads like this one are why reading "attention maps" as explanations is risky. Most of what a head
+# > does is plumbing: moving information to where the next layer can use it. The linguistically interesting heads
+# > exist, but they are a minority, and a head that looks at a word doesn't mean the model uses what it found.
 
 # %% [markdown]
 # ## 7. A job for BERT: personal data in financial documents
@@ -820,10 +829,12 @@ plt.show()
 print(f"{longer:.0%} of the documents don't fit in one input")
 
 # %% [markdown]
-# Truncating would silently skip whatever personal data sits past the limit, which for a masking tool is the worst
-# kind of error. The standard fix is a sliding window: cut the document into overlapping pieces of 510 tokens, run
-# each, and for every token keep the prediction from the window in which it sits furthest from an edge, where it had
-# the most context on both sides.
+# → Truncating the 14% of documents that don't fit would silently skip whatever personal data sits past the limit,
+# which for a masking tool is the worst kind of error.
+#
+# The standard fix is a sliding window: cut the document into overlapping pieces of 510 tokens, run each, and for
+# every token keep the prediction from the window in which it sits furthest from an edge, where it had the most
+# context on both sides.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a01/windows-light.png" width="760" alt="A document of 1,100 tokens cut into three overlapping windows of 510 tokens with a stride of 384. Each token's label is taken from the window where it is furthest from the window's edge, so every token is judged with context on both sides">
 
@@ -1077,8 +1088,10 @@ plt.show()
 # half of the spans exactly right. The random one gets almost none, and sixteen times more documents barely move it:
 # it spends its 300 updates learning that most tokens are `O`, while the pre-trained one starts from a model of
 # English and only has to learn what a name or an IBAN looks like in these documents. With far more updates and data
-# the random network would get further; pre-training paid for those in advance. The four days of Google's TPUs are
-# not in the architecture, since the two networks are identical. They are in the weights.
+# the random network would get further; pre-training paid for those in advance.
+#
+# > **Key point.** The four days of Google's TPUs are not in the architecture, since the two networks are identical.
+# > They are in the weights.
 #
 # Now the real model, on all the training documents:
 
@@ -1179,8 +1192,8 @@ plt.show()
 # pattern to compare with at all. BERT reads the context: *Full Name:* before a string makes it a person, *Ship to*
 # before a line makes it an address.
 #
-# In practice the two are combined: patterns for the few strict shapes, where they are exact and easy to audit, and
-# the model for everything else.
+# > **In practice.** The two are combined: patterns for the few strict shapes, where they are exact and easy to
+# > audit, and the model for everything else.
 #
 # Here is the model at work on a test document it has never seen, everything it found replaced by its group:
 

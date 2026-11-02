@@ -14,9 +14,21 @@ toc:
 ---
 {% raw %}
 
+<aside class="tldr" markdown="1">
+<p class="tldr-label">In short</p>
+
+Adapting a pretrained transformer to a task changes very little of it, and parameter-efficient fine-tuning trains only that little: the pretrained weights stay frozen, and a small set of added or selected parameters learns the task. On SST-2 with bert-base, LoRA and bottleneck adapters came within half a point of full fine-tuning; BitFit, Compacter and (IA)³, under a tenth of a percent each, lost one to two points. Every method cut the peak memory of full fine-tuning by a third to a half. LoRA works although the update of full fine-tuning is not low-rank: a rank-8 change turns out to be enough for the task.
+
+<div class="stats">
+<div class="stat"><span class="stat-value">0.27%</span><span class="stat-label">of bert-base's parameters trained by LoRA, half a point short of full fine-tuning</span></div>
+<div class="stat"><span class="stat-value">16</span><span class="stat-label">bytes per parameter to train every weight with Adam in mixed precision</span></div>
+<div class="stat"><span class="stat-value">193</span><span class="stat-label">directions, median, to hold 90% of a full fine-tuning update; random noise needs 392</span></div>
+</div>
+</aside>
+
 In 2020 Armen Aghajanyan, Luke Zettlemoyer and Sonal Gupta fine-tuned RoBERTa-Large, a model with 355 million parameters, by training about 200 numbers. They chose a random 200-dimensional subspace of the full parameter space, let the optimizer move only inside it, and reached 90% of what full fine-tuning gets on MRPC, a paraphrase task ([Aghajanyan et al., 2021](https://arxiv.org/abs/2012.13255)). Larger models needed even smaller subspaces. Two years later Tim Dettmers and colleagues fine-tuned a 65-billion-parameter model on a single 48 GB GPU, in 24 hours, and got a chatbot that GPT-4, acting as judge, rated at 99.3% of ChatGPT; the authors themselves warn that such benchmarks have wide error bars ([Dettmers et al., 2023](https://arxiv.org/abs/2305.14314)).
 
-Both results say the same thing: adapting a pretrained model to a task changes very little of it. (If the transformer itself needs a refresher, the course [Transformers: from scratch to production](/teaching/) builds one.) Most of what the model knows stays put, and the change that matters can be written down with a tiny number of parameters. **Parameter-efficient fine-tuning** (PEFT) is the family of methods built on that observation. This post goes through the main ones: what each adds to a transformer, written in a few lines of PyTorch, and how they compare when trained on the same task with the same budget.
+Both results say the same thing: adapting a pretrained model to a task changes very little of it. (If the transformer itself needs a refresher, the course [Transformers: from scratch to production](/teaching/) builds one.) Most of what the model knows stays put, and the change that matters can be written down with a tiny number of parameters. *Parameter-efficient fine-tuning* (PEFT) is the family of methods built on that observation. This post goes through the main ones: what each adds to a transformer, written in a few lines of PyTorch, and how they compare when trained on the same task with the same budget.
 
 ## What full fine-tuning costs
 
@@ -38,7 +50,13 @@ $$
 h \leftarrow h + \Delta h ,
 $$
 
-where $h$ is some hidden representation inside the model and $\Delta h$ is a small correction computed by the new parameters. That is the plain form; LoRA scales $\Delta h$ by a constant, and prefix tuning, written this way, mixes $h$ and $\Delta h$ with a gate, $(1-\lambda) h + \lambda \Delta h$. The methods differ in three choices: **where** $\Delta h$ is added, **what** it is computed from, and **how** the function that computes it is parameterized. Keep those three questions in mind; each section below answers them for one method.
+where $h$ is some hidden representation inside the model and $\Delta h$ is a small correction computed by the new parameters. That is the plain form; LoRA scales $\Delta h$ by a constant, and prefix tuning, written this way, mixes $h$ and $\Delta h$ with a gate, $(1-\lambda) h + \lambda \Delta h$.
+
+<div class="callout callout-key" markdown="1">
+<p class="callout-label">Key point</p>
+
+The methods differ in three choices: *where* $\Delta h$ is added, *what* it is computed from, and *how* the function that computes it is parameterized. Keep those three questions in mind; each section below answers them for one method.
+</div>
 
 The survey by Vladislav Lialin and colleagues sorts the methods into families: those that add new parameters, those that select a subset of existing ones, and those that reparameterize the weight update ([Lialin et al., 2023](https://arxiv.org/abs/2303.15647)):
 
@@ -50,7 +68,7 @@ To compare the methods on equal terms, I wrote each of them in plain PyTorch, as
 
 ## Adapters
 
-The first PEFT method for transformers, and still one of the most dependable, is the **adapter** of Neil Houlsby and colleagues ([Houlsby et al., 2019](https://arxiv.org/abs/1902.00751)). Insert a small network into every layer, train only that network, leave everything else as it was.
+The first PEFT method for transformers, and still one of the most dependable, is the *adapter* of Neil Houlsby and colleagues ([Houlsby et al., 2019](https://arxiv.org/abs/1902.00751)). Insert a small network into every layer, train only that network, leave everything else as it was.
 
 The small network is a bottleneck: it projects the $d$-dimensional hidden state down to $b \ll d$ numbers, applies a nonlinearity, projects back up, and adds the result to its input:
 
@@ -95,7 +113,7 @@ Houlsby et al. also trained the layer norms, and reported results "within 0.4% o
 
 ### Parallel adapters
 
-A sequential adapter sits on the main path: every token's hidden state must pass through it. He et al. moved it to the side. A **parallel adapter** reads the same input as the feed-forward block and adds its output, scaled by a constant $s$, to the block's output:
+A sequential adapter sits on the main path: every token's hidden state must pass through it. He et al. moved it to the side. A *parallel adapter* reads the same input as the feed-forward block and adds its output, scaled by a constant $s$, to the block's output:
 
 $$
 y = \text{FFN}(x) + s \cdot W_{\text{up}} \, \sigma(W_{\text{down}} x) .
@@ -127,7 +145,7 @@ The two paths no longer depend on each other, so on hardware that runs them conc
 
 ## LoRA
 
-Adapters add new computations to the model. **LoRA**, low-rank adaptation, adds none that survive training ([Hu et al., 2021](https://arxiv.org/abs/2106.09685)). The linear algebra behind it has [a post of its own](/blog/2024/lora-algorithm-for-llms/); here is what it does inside a transformer. Its starting point is a hypothesis about the update itself. Fine-tuning changes a weight matrix $W$ to $W + \Delta W$. LoRA assumes $\Delta W$ has low rank: that it can be written as the product of a tall, thin matrix and a short, wide one,
+Adapters add new computations to the model. *LoRA*, low-rank adaptation, adds none that survive training ([Hu et al., 2021](https://arxiv.org/abs/2106.09685)). The linear algebra behind it has [a post of its own](/blog/2024/lora-algorithm-for-llms/); here is what it does inside a transformer. Its starting point is a hypothesis about the update itself. Fine-tuning changes a weight matrix $W$ to $W + \Delta W$. LoRA assumes $\Delta W$ has low rank: that it can be written as the product of a tall, thin matrix and a short, wide one,
 
 $$
 W' = W + \Delta W = W + \frac{\alpha}{r} B A ,
@@ -186,11 +204,13 @@ LoRA's hypothesis can be checked. After fully fine-tuning BERT in the experiment
 
 [[spectrum]]
 
-The update is far from random. Its top 8 directions hold a median of 37% of it, against 4% for a random matrix of the same size. But it is not low-rank either: holding 90% of the update takes a median of 193 directions (from 28 to 228, depending on the matrix), against 392 for random noise. Full fine-tuning spreads its change over many directions. LoRA does not work because that change is low-rank. It works because a rank-8 change turns out to be enough for the task, and the experiment below shows how close it gets. Biderman et al. found the same on a much larger scale: full fine-tuning of Llama-2-7B made changes of a rank 10 to 100 times greater than the LoRA ranks people use.
+The update is far from random. Its top 8 directions hold a median of 37% of it, against 4% for a random matrix of the same size. But it is not low-rank either: holding 90% of the update takes a median of 193 directions (from 28 to 228, depending on the matrix), against 392 for random noise. Biderman et al. found the same on a much larger scale: full fine-tuning of Llama-2-7B made changes of a rank 10 to 100 times greater than the LoRA ranks people use.
+
+<p class="takeaway" markdown="1">Full fine-tuning spreads its change over many directions, and LoRA works anyway: a rank-8 change turns out to be enough for the task, and the experiment below shows how close it gets.</p>
 
 ### QLoRA
 
-QLoRA keeps LoRA's adapters in 16 bits but stores the frozen base model in 4 bits ([Dettmers et al., 2023](https://arxiv.org/abs/2305.14314)). The base weights are only read, never updated, so the quantization error enters the forward pass but not the optimizer. Three ideas make it work: **NF4**, a 4-bit format whose levels are placed at the quantiles of a normal distribution, which suits trained weights; **double quantization**, which quantizes the scaling constants as well and saves about 0.37 bits per parameter; and **paged optimizers**, which use NVIDIA's unified memory to move optimizer state to the CPU when a spike would otherwise run the GPU out of memory. The paper also found that "LoRA on all linear transformer block layers are required to match full finetuning performance", while the rank $r$ mattered little.
+QLoRA keeps LoRA's adapters in 16 bits but stores the frozen base model in 4 bits ([Dettmers et al., 2023](https://arxiv.org/abs/2305.14314)). The base weights are only read, never updated, so the quantization error enters the forward pass but not the optimizer. Three ideas make it work: *NF4*, a 4-bit format whose levels are placed at the quantiles of a normal distribution, which suits trained weights; *double quantization*, which quantizes the scaling constants as well and saves about 0.37 bits per parameter; and *paged optimizers*, which use NVIDIA's unified memory to move optimizer state to the CPU when a spike would otherwise run the GPU out of memory. The paper also found that "LoRA on all linear transformer block layers are required to match full finetuning performance", while the rank $r$ mattered little.
 
 ## (IA)³: rescaling instead of adding
 
@@ -245,7 +265,7 @@ There are 101,376 bias numbers in bert-base's encoder, plus 768 in the embedding
 
 The methods so far change what a layer computes. The next two change what it sees.
 
-**Prompt tuning** prepends learned vectors to the input ([Lester et al., 2021](https://arxiv.org/abs/2104.08691)). A text prompt is a sequence of token embeddings looked up in a table. A soft prompt is a sequence of embeddings that are parameters: the optimizer can place them anywhere in embedding space, not only at the positions of real words.
+*Prompt tuning* prepends learned vectors to the input ([Lester et al., 2021](https://arxiv.org/abs/2104.08691)). A text prompt is a sequence of token embeddings looked up in a table. A soft prompt is a sequence of embeddings that are parameters: the optimizer can place them anywhere in embedding space, not only at the positions of real words.
 
 [[map-prompt]]
 
@@ -269,7 +289,7 @@ class SoftPrompt(nn.Module):
 
 The prompt goes after `[CLS]` because BERT classifies from the first position. Twenty vectors of 768 numbers are 15,360 parameters, by far the fewest of any method here, and the result shows it: in the experiment below it reached 85.5% on average, no better than training the classification head alone (85.9%). Lester et al. found the same pattern on a much larger scale. With T5 models of up to 11 billion parameters, prompt tuning trailed full fine-tuning on small models and caught up with it only as models grew past a few billion parameters.
 
-**Prefix tuning** gives the learned vectors more reach ([Li & Liang, 2021](https://arxiv.org/abs/2101.00190)). Instead of input embeddings, it learns keys and values for every layer: each layer's attention sees $p$ extra key-value pairs, as if $p$ invisible tokens preceded the input at that depth:
+*Prefix tuning* gives the learned vectors more reach ([Li & Liang, 2021](https://arxiv.org/abs/2101.00190)). Instead of input embeddings, it learns keys and values for every layer: each layer's attention sees $p$ extra key-value pairs, as if $p$ invisible tokens preceded the input at that depth:
 
 $$
 \text{head} = \text{softmax}\!\left(\frac{Q \, [P_k ; K]^\top}{\sqrt{d_k}}\right) [P_v ; V] ,
@@ -309,11 +329,17 @@ def add_prefix(model, length=20):
         attention.prefix_value = nn.Parameter(torch.randn(shape) * 0.02)
 ```
 
-The second registration matters: a custom attention function also needs a rule for building the padding mask, and without it the model silently passes no mask at all. Li and Liang trained the prefix through a small MLP rather than directly, because optimizing the raw vectors was unstable; after training the MLP is thrown away and only the prefix kept.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Trap</p>
+
+A custom attention function also needs a rule for building the padding mask, registered with `AttentionMaskInterface` as above. Without it the model silently passes no mask at all.
+</div>
+
+Li and Liang trained the prefix through a small MLP rather than directly, because optimizing the raw vectors was unstable; after training the MLP is thrown away and only the prefix kept.
 
 ## Compacter: adapters built from Kronecker products
 
-Compacter shrinks the adapter's two matrices further ([Karimi Mahabadi et al., 2021](https://arxiv.org/abs/2106.04647)). It builds each of them as a sum of **Kronecker products**. The Kronecker product $A \otimes B$ of an $m \times n$ matrix and a $p \times q$ one is an $mp \times nq$ matrix made of blocks: block $(i, j)$ is $B$ multiplied by the entry $a_{ij}$.
+Compacter shrinks the adapter's two matrices further ([Karimi Mahabadi et al., 2021](https://arxiv.org/abs/2106.04647)). It builds each of them as a sum of *Kronecker products*. The Kronecker product $A \otimes B$ of an $m \times n$ matrix and a $p \times q$ one is an $mp \times nq$ matrix made of blocks: block $(i, j)$ is $B$ multiplied by the entry $a_{ij}$.
 
 [[kronecker]]
 
@@ -367,7 +393,9 @@ Here is how the methods compare on SST-2, against the number of parameters each 
 | task head only | none | 85.9 (84.7–86.7) | 22 s | 0.53 GiB |
 | prompt tuning | 15,360 (0.01%) | 85.5 (84.7–86.0) | 60 s | 1.35 GiB |
 
-Three methods come within half a point of full fine-tuning: LoRA with 0.27% of the model's parameters, and adapters in both arrangements with 1 to 2%. BitFit, Compacter and (IA)³, each with less than a tenth of a percent, lose about one to two points. Prefix tuning loses three. Prompt tuning learned nothing that the task head alone did not, as Lester et al.'s results predict for a model this small.
+<p class="takeaway" markdown="1">Three methods come within half a point of full fine-tuning: LoRA with 0.27% of the model's parameters, and adapters in both arrangements with 1 to 2%.</p>
+
+BitFit, Compacter and (IA)³, each with less than a tenth of a percent, lose about one to two points. Prefix tuning loses three. Prompt tuning learned nothing that the task head alone did not, as Lester et al.'s results predict for a model this small.
 
 The memory column shows a smaller saving than the chart at the top of this post, because bert-base is small: at 110 million parameters the activations of a batch take about as much memory as the optimizer state, and the activations remain. Still, every method cut the peak memory of full fine-tuning by a third to a half, and most of them halved the time. Compacter is the exception in time: it rebuilds its matrices from Kronecker products at every step, which the other methods do not have to do.
 
@@ -407,9 +435,9 @@ model.save_adapter("./sst2_adapter", "sst2")
 
 A few things are worth knowing before you start:
 
-- **Where to put LoRA.** The original paper adapted the query and value projections. QLoRA found that adapting every linear layer of the blocks is what closes the gap with full fine-tuning, and `peft` accepts `target_modules="all-linear"` for that.
-- **What LoRA does not learn.** Dan Biderman and colleagues compared LoRA with full fine-tuning of Llama-2-7B on code and mathematics: in the usual low-rank settings LoRA learned less of the new domain and forgot less of the old one, and full fine-tuning made weight changes of "a rank that is 10-100× greater than typical LoRA configurations" ([Biderman et al., 2024](https://arxiv.org/abs/2405.09673)). For instruction tuning on a narrow task the trade is usually welcome; for teaching a model a new field through continued pre-training, it may not be.
-- **Many adapters, one model.** Because adapters are small and the base is shared, one server can hold many of them at once and apply a different one to each request. S-LoRA serves thousands of LoRA adapters on a single GPU ([Sheng et al., 2023](https://arxiv.org/abs/2311.03285)), and [vLLM](https://docs.vllm.ai/en/latest/features/lora.html) applies adapters per request.
+- *Where to put LoRA.* The original paper adapted the query and value projections. QLoRA found that adapting every linear layer of the blocks is what closes the gap with full fine-tuning, and `peft` accepts `target_modules="all-linear"` for that.
+- *What LoRA does not learn.* Dan Biderman and colleagues compared LoRA with full fine-tuning of Llama-2-7B on code and mathematics: in the usual low-rank settings LoRA learned less of the new domain and forgot less of the old one, and full fine-tuning made weight changes of "a rank that is 10-100× greater than typical LoRA configurations" ([Biderman et al., 2024](https://arxiv.org/abs/2405.09673)). For instruction tuning on a narrow task the trade is usually welcome; for teaching a model a new field through continued pre-training, it may not be.
+- *Many adapters, one model.* Because adapters are small and the base is shared, one server can hold many of them at once and apply a different one to each request. S-LoRA serves thousands of LoRA adapters on a single GPU ([Sheng et al., 2023](https://arxiv.org/abs/2311.03285)), and [vLLM](https://docs.vllm.ai/en/latest/features/lora.html) applies adapters per request.
 
 ## References
 

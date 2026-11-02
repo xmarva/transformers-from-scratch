@@ -552,8 +552,10 @@ table(pd.DataFrame(race))
 # the effect of lesson 1 at a tiny scale. ELECTRA, in our race, did not: its discriminator fine-tuned no better than
 # random weights. The paper's smallest ELECTRA trained for four days on a GPU, some seven hundred times our budget,
 # with a generator narrower than its discriminator, while ours is one layer of the same width; its advantage is
-# measured there. A race this short says what happens in the first eight minutes, and in them the simpler task won.
-# It is RoBERTa's lesson again: an idea is only as good as the recipe it is trained with, and ours is a sketch.
+# measured there.
+#
+# > **Key point.** A race this short says what happens in the first eight minutes, and in them the simpler task won.
+# > It is RoBERTa's lesson again: an idea is only as good as the recipe it is trained with, and ours is a sketch.
 #
 # ## 3. DeBERTa: positions as vectors of their own
 #
@@ -694,10 +696,11 @@ del reference, deberta, deberta_weights
 # in a different order; in float64, to seven. Our forty lines are DeBERTa's attention.
 #
 # The explicit `.to(dtype)` in that loop is there for a reason we found the hard way while writing this lesson.
-# Microsoft stored DeBERTa-v3's weights in float16, and recent versions of `transformers` load a model in the
-# precision of its checkpoint. Compared without the cast, the reference quietly runs in half precision, and the two
-# models disagree in the second decimal place, which looks exactly like a bug in the attention. Running both in
-# float64 is the quickest way to tell a bug from rounding: a bug survives it, rounding doesn't.
+#
+# > **Trap.** Microsoft stored DeBERTa-v3's weights in float16, and recent versions of `transformers` load a model in
+# > the precision of its checkpoint. Compared without the cast, the reference quietly runs in half precision, and the
+# > two models disagree in the second decimal place, which looks exactly like a bug in the attention. Running both in
+# > float64 is the quickest way to tell a bug from rounding: a bug survives it, rounding doesn't.
 
 # %% [markdown]
 # ## 4. ModernBERT: an encoder rebuilt from LLM parts
@@ -833,10 +836,11 @@ for n in [512, 2048, 8192]:
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# The local layers get almost free as inputs grow, and the cost settles at that of the eight global layers: a little
-# over a third of an all-global model at 8,192 tokens, the length ModernBERT was trained for. On GPUs with
-# FlashAttention the saving is real time; the T4 has no kernel for windows, so here the mask only hides scores that
-# are still computed.
+# → The local layers get almost free as inputs grow, and the cost settles at that of the eight global layers: 37% of
+# an all-global model at 8,192 tokens, the length ModernBERT was trained for.
+#
+# On GPUs with FlashAttention the saving is real time; the T4 has no kernel for windows, so here the mask only hides
+# scores that are still computed.
 
 # %% [markdown]
 # ## 5. Triage for projects the model has never seen
@@ -964,10 +968,12 @@ heatmap(confusions[best], rows=KINDS, cols=KINDS, annotate=True, fmt="{:.2f}", c
 plt.show()
 
 # %% [markdown]
-# Reading four times more of each issue changed nothing. ModernBERT trained four times longer and classified four
-# times slower for the same score: the title and the first paragraph decide what an issue is, and the stack trace
-# below them adds nothing to that decision. Long context earns its price where the answer is spread through a
-# document, like the personal data of lesson 1's bank documents, not here.
+# → Reading four times more of each issue changed nothing: ModernBERT trained four times longer and classified four
+# times slower for the same macro F1, 0.73.
+#
+# The title and the first paragraph decide what an issue is, and the stack trace below them adds nothing to that
+# decision. Long context earns its price where the answer is spread through a document, like the personal data of
+# lesson 1's bank documents, not here.
 #
 # The errors that remain gather in one place: almost a third of the bugs were taken for questions. A bug report often
 # is a question, "is this expected?", and the projects' own labels don't agree on where one ends and the other
@@ -980,12 +986,13 @@ plt.show()
 # a hundred million times in a month ([Hugging Face, 2026](https://huggingface.co/models?sort=downloads)). The next
 # lesson is about exactly those.
 #
-# For a new project that needs an encoder, ModernBERT is a good default: it reads long inputs, it was trained on code as
-# well as prose, and it is fast where FlashAttention is available. DeBERTa-v3 remains a strong choice for short
-# English text when the last point of accuracy matters more than speed, and years of Kaggle competitions have worn
-# smooth every way of fine-tuning it. RoBERTa and BERT are worth knowing because half the models on the Hub are
-# their descendants, fine-tuned for one task or another, and an existing fine-tuned model often beats a better base
-# trained by you on less data.
+# > **Key point.** For a new project that needs an encoder, ModernBERT is a good default: it reads long inputs, it
+# > was trained on code as well as prose, and it is fast where FlashAttention is available.
+#
+# DeBERTa-v3 remains a strong choice for short English text when the last point of accuracy matters more than speed,
+# and years of Kaggle competitions have worn smooth every way of fine-tuning it. RoBERTa and BERT are worth knowing
+# because half the models on the Hub are their descendants, fine-tuned for one task or another, and an existing
+# fine-tuned model often beats a better base trained by you on less data.
 #
 # The lesson's other result is about method rather than models. RoBERTa won without touching the architecture,
 # ELECTRA without touching it either, and our tiny race showed that the training task alone moves the result. When a

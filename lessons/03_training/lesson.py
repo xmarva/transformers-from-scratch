@@ -284,8 +284,10 @@ print("random batches:", len(unsorted), "bucketed:", len(train_batches))
 del unsorted  # only needed for the comparison
 
 # %% [markdown]
-# Random batches waste a large share of every step on padding, and need more steps to cover the same data. One
-# trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less
+# → Random batches waste 70.6% of their positions on padding, against 1.8% in bucketed ones, and need 2 733 steps
+# instead of 814 to cover the same data.
+#
+# One trade-off of bucketing: a batch now holds sentences of one length, so its gradient is a little less
 # representative of the whole data than a random batch's. Shuffling the batch order every epoch keeps that
 # harmless in practice, and the paper's authors batched the same way.
 #
@@ -782,10 +784,12 @@ ax.legend()
 plt.show()
 
 # %% [markdown]
-# Same model, same data, same peak learning rate; only the first thousand steps differ. With the warm-up, the loss
-# falls steadily. Without it, the first steps at full speed throw the weights somewhere the model doesn't recover
-# from: the loss sticks near the dashed line, where a model knows little more than which tokens are frequent. In
-# the real run the warm-up lasts longer and the peak is lower, but the reason for it is the one you just saw.
+# → With the warm-up the loss falls steadily; without it, the loss sticks near the dashed line at 6.96, where a
+# model knows little more than which tokens are frequent.
+#
+# Same model, same data, same peak learning rate; only the first thousand steps differ. Without the warm-up, the
+# first steps at full speed throw the weights somewhere the model doesn't recover from. In the real run the warm-up
+# lasts longer and the peak is lower, but the reason for it is the one you just saw.
 #
 # The last protection is **gradient clipping**, the `clip_grad_norm_` line: if the length of the whole gradient
 # vector, over all the model's weights, exceeds a limit $c$, the vector is scaled down to that length,
@@ -856,9 +860,10 @@ print(f"gradients where float16 loses precision: {below_precise:.1%}")
 print(f"rounded to 0 after scaling by 65 536:  {after_scaling:.4%}")
 
 # %% [markdown]
-# A few percent of the gradients would vanish outright, and most of them would lose precision. Multiplying the
-# loss by $2^{16}$ multiplies every gradient by the same factor (the chain rule is linear), shifts the whole
-# histogram to the right and brings almost all of them into range.
+# → In float16, 4.23% of the gradients would vanish outright and 74.2% would lose precision.
+#
+# Multiplying the loss by $2^{16}$ multiplies every gradient by the same factor (the chain rule is linear), shifts
+# the whole histogram to the right and brings almost all of them into range.
 #
 # That is **mixed precision** ([Micikevicius et al., 2018](https://arxiv.org/abs/1710.03740)): matrix products run
 # in float16 under `torch.autocast`, while the weights and the sensitive operations (softmax, the loss) stay in
@@ -1010,7 +1015,7 @@ plt.show()
 # tenth of the model at every step. Only the validation curve is plain cross-entropy, so the floor doesn't apply to
 # it, and late in the run it passes below the line.
 #
-# > The loss you train on and the number you judge by are different numbers. Compare like with like.
+# > **Key point.** The loss you train on and the number you judge by are different numbers. Compare like with like.
 #
 # The probe sentences at a few points of the run:
 
@@ -1096,9 +1101,12 @@ table(pd.DataFrame(rows))
 # probable translation exactly, at an impossible cost. In between, a handful of beams already catches most of the
 # cases where greedy goes wrong.
 #
-# One correction is needed. Every token multiplies the probability by a number below 1, so longer sentences always
-# have lower scores, and a plain beam search prefers translations that stop early. The usual fix divides the score
-# by a **length penalty** ([Wu et al., 2016](https://arxiv.org/abs/1609.08144)),
+# One correction is needed.
+#
+# > **Trap.** Every token multiplies the probability by a number below 1, so longer sentences always have lower
+# > scores, and a plain beam search prefers translations that stop early.
+#
+# The usual fix divides the score by a **length penalty** ([Wu et al., 2016](https://arxiv.org/abs/1609.08144)),
 #
 # $$\operatorname{lp}(\mathbf{y}) = \left(\frac{5 + \lvert\mathbf{y}\rvert}{6}\right)^{\alpha},$$
 #
@@ -1225,9 +1233,11 @@ print("average score, beam:  ", round(decoded["beam score"].mean(), 3))
 table(changed[["English", "reference", "greedy", "beam"]].head(6))
 
 # %% [markdown]
-# Beam search changes some of the translations, and the ones it picks score higher under the model on average, which
-# is what it searches for. Whether they are also better *translations* is a separate question, sentence by
-# sentence; lesson 4 answers it with metrics that compare outputs with the references.
+# → Beam search changes 35 of 150 translations and raises the average score under the model from −2.965 to −2.551,
+# which is what it searches for.
+#
+# Whether its choices are also better *translations* is a separate question, sentence by sentence; lesson 4 answers
+# it with metrics that compare outputs with the references.
 #
 # ## 9. Decoding by sampling
 #
@@ -1326,8 +1336,10 @@ table(pd.DataFrame(rows))
 # At temperature 1 the samples wander: a draw from the long tail of sixteen thousand tokens now and then, and the
 # tail includes English tokens, because lesson 1 built one vocabulary for both languages. At 1.5 the output falls
 # apart. A low temperature with a top-p cut-off, the setting of the chat models in section 1, stays close to the
-# greedy translation and varies a little from draw to draw. For a translation that variety is no virtue: we want
-# the one best reading, and that's why translators search.
+# greedy translation and varies a little from draw to draw.
+#
+# > **Key point.** For a translation that variety is no virtue: we want the one best reading, and that's why
+# > translators search.
 #
 # ## 10. Inside the trained model
 #
@@ -1477,7 +1489,7 @@ table(train[teacher_and_she & masculine_noun].head(5))
 # women too. So the data teaches the model, correctly, that *учитель* is the usual word, and only rarely shows it a
 # sentence where *she* forces *учительница* and a feminine verb. For *исследовательница* it never shows one at all.
 #
-# > A model learns the distribution of its data. Rare constructions are learned last, or not at all.
+# > **Key point.** A model learns the distribution of its data. Rare constructions are learned last, or not at all.
 #
 # That isn't a flaw of our small model alone, as the next section shows.
 
