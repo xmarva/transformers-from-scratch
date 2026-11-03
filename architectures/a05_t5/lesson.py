@@ -1,7 +1,25 @@
 # %% [markdown]
 # # Lesson 5. T5 and BART: the encoder–decoder, and a model that writes SQL
 #
-# @@HOOK@@
+# In 1961 four researchers at MIT's Lincoln Laboratory fed a computer questions on punched cards, such as "Where did
+# the Red Sox play on July 7?" Their program, BASEBALL, turned each one into a list, `Place = ? Team = Red Sox Month =
+# July Day = 7`, looked the answer up in the results of one American League season and printed it ([Green et al.,
+# 1961](https://doi.org/10.1145/1460690.1460714)). The authors had bigger plans: "the business executive, the military
+# commander, and the scientist need to ask questions of the computer in ordinary English". Sixty-five years later,
+# asking a database in English is a common feature, and the benchmark everyone measured it on, Spider, went from 12.4%
+# of queries exactly right for the best model of 2018 to 86.6% of queries returning the right result for GPT-4 with
+# careful prompting in 2023. Then came Spider 2.0, built from real company databases "often containing over 1,000
+# columns", and o1-preview solved 21.3% of its tasks ([Lei et al., 2025](https://arxiv.org/abs/2411.07763)).
+#
+# A question in English and a query in SQL are two languages, and the architecture built for translating between
+# languages is the encoder–decoder. Its most influential member is T5, Google's model of 2019 that turned every task
+# into text in, text out. For a while encoder–decoders led Spider: in 2021 T5-3B with a constrained decoder reached
+# 75.1% on the test set. Then decoder-only models took over. But T5 never left: its encoder turns your prompt into the
+# conditioning of Stable Diffusion 3 and FLUX, and in 2025 Google turned Gemma into an encoder–decoder.
+#
+# In this lesson you will write T5 yourself, load Google's weights into it, look at what makes it different from BERT
+# and GPT, and fine-tune it on Spider for 20 minutes on a free GPU. Then you will run every query it writes and see
+# which ones are right.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a05/hero-light.png" width="760" alt="A question and the database's schema go into T5's encoder, which reads all of it at once. The decoder writes an SQL query one token at a time, looking back at the encoder's output through cross-attention. The query is then run on the SQLite database, and its result is compared with the result of the correct query">
 #
@@ -30,6 +48,7 @@ import random
 import sqlite3
 import time
 import zipfile
+from collections import Counter
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -54,7 +73,25 @@ if device == "cuda":
 # %% [markdown]
 # ## 1. Every task as text
 #
-# @@T5_STORY@@
+# In October 2019 a Google team published a 67-page study built on one idea: "Every task we consider—including
+# translation, question answering, and classification—is cast as feeding our model text as input and training it to
+# generate some target text" ([Raffel et al., 2020](https://arxiv.org/abs/1910.10683)). They named the model the
+# Text-to-Text Transfer Transformer, T5. A task is chosen by a prefix written in plain words, `translate English to
+# German:` or `cola sentence:` for grammaticality, and a class is a word, *acceptable* or *not acceptable*. Even
+# regression became text. The similarity scores of STS-B, between 1 and 5, were rounded to steps of 0.2 and written
+# out as strings like "3.8", which recasts the regression as "a 21-class classification problem".
+#
+# The paper is remembered as much for its method as for the idea: on one setup it compared nearly every choice people
+# argued about in 2019, from architectures and objectives to datasets, multi-task training and scale. Its dataset
+# became a standard of its own. C4, the Colossal Clean Crawled Corpus, is about 750 GB of English cut from one month
+# of Common Crawl, April 2019, by blunt rules: keep only lines that end in a full stop or similar mark, drop pages
+# with fewer than three sentences, pages with any word from a list of "Dirty, Naughty, Obscene or Otherwise Bad
+# Words", pages with "lorem ipsum", and any page with a curly bracket, since "the curly bracket “{” appears in many
+# programming languages […] but not in natural text". Code was not what C4 was for, and section 8 shows one thing that
+# cost.
+#
+# The original T5 checkpoints were pre-trained on a mixture of C4 and the paper's supervised tasks, translation and
+# summarisation among them. That is why the smallest of them still knows its prefixes.
 #
 # The smallest T5 still knows its prefixes. Four of them, four tasks, one model with no task-specific layer:
 
@@ -79,7 +116,10 @@ answers = tokenizer.batch_decode(answers, skip_special_tokens=True)
 table(pd.DataFrame({"prompt": prompts, "answer": answers}))
 
 # %% [markdown]
-# @@PREFIX_COMMENT@@
+# The translations are right, and the similarity scores come back as text: 5.0 for a paraphrase and 0.0 for two
+# unrelated sentences, the two ends of the scale. The grammar judgement is wrong. "The guards arrives at the museum at
+# seven" is called acceptable, a reminder that a prefix asks for a task and doesn't promise the model can do it. This
+# is the smallest T5, with 60 million parameters.
 
 # %% [markdown]
 # ## 2. Two stacks and a bridge
@@ -141,10 +181,11 @@ x = torch.randn(2, 5, 8)
 mine, builtin = Norm(8, 1e-6), nn.RMSNorm(8, eps=1e-6)
 print("largest difference from nn.RMSNorm:", (mine(x) - builtin(x)).abs().max().item())
 
-# %% [markdown]
-# **Attention without $\sqrt{d_k}$.** T5 drops the division by $\sqrt{d_k}$ in the scores. Nothing is lost: the
-# scale is folded into the initialisation of the query matrix, @@SCALE_SOURCE@@ and a transplant has to leave the
-# division out, or every score comes out eight times too small.
+# %% [markdown] **Attention without $\sqrt{d_k}$.** T5 drops the division by $\sqrt{d_k}$ in the scores. Nothing is
+# lost: the scale is folded into the initialisation of the query matrix, since Google's initialisation draws the query
+# matrix with a standard deviation $\sqrt{d_k}$ times smaller than the key matrix's. That has the same effect when
+# training starts, and training adjusts it from there. A transplant has to leave the division out too, and a
+# transplant has to leave the division out, or every score comes out eight times too small.
 #
 # **Positions as a bias.** T5 has no position embeddings at all. Instead, each attention head adds a learned number
 # to each score, which depends only on how far the key is from the query:
@@ -207,7 +248,9 @@ plt.show()
 # $2 \times 32 \times 8 = 512$ numbers. GPT-2 spent 786,432 on its position embeddings.
 #
 # **The output layer.** T5's decoder scores the vocabulary with the input embedding matrix, tied as in GPT-2, after
-# multiplying the hidden state by $d^{-1/2}$. @@TIE_SOURCE@@
+# multiplying the hidden state by $d^{-1/2}$. Google's Mesh TensorFlow code does this whenever the input and output
+# embeddings are shared, and Hugging Face's code copies it. Leave it out and every logit is $\sqrt{512} \approx 23$
+# times too large for t5-small.
 #
 # The attention layer below takes an optional `source`: without it, it is self-attention; with it, the keys and
 # values come from the encoder and it is cross-attention. The optional `cache` is the KV cache of lesson 4, with one
@@ -439,15 +482,20 @@ print("largest difference in logits:", (ours - theirs).abs().max().item())
 
 # %%
 @torch.no_grad()
-def generate(model, ids, mask, max_new_tokens=64, eos=1, pad=0):
+def generate(model, ids, mask, max_new_tokens=64, eos=1, pad=0, temperature=0.0,
+             generator=None):
     memory = model.encode(ids, mask)
     caches = [{"self": {}, "cross": {}} for _ in model.decoder]
     token = torch.full((ids.shape[0], 1), pad, device=ids.device)
     written = []
     done = torch.zeros(ids.shape[0], dtype=torch.bool, device=ids.device)
     for step in range(max_new_tokens):
-        logits = model.decode(token, memory, mask, caches, past=step)
-        token = logits[:, -1].argmax(dim=-1, keepdim=True)
+        logits = model.decode(token, memory, mask, caches, past=step)[:, -1].float()
+        if temperature == 0:
+            token = logits.argmax(dim=-1, keepdim=True)  # greedy
+        else:
+            probs = (logits / temperature).softmax(dim=-1)
+            token = torch.multinomial(probs, 1, generator=generator)
         token = token.masked_fill(done[:, None], pad)  # finished rows write padding
         written.append(token)
         done = done | (token[:, 0] == eos)
@@ -493,7 +541,11 @@ fig.colorbar(image, ax=ax, label="bias added to the score")
 plt.show()
 
 # %% [markdown]
-# @@BIAS_COMMENT@@
+# The heads have split the work. Some favour the left side and some the right; one rises sharply on the token just
+# before the query, one on the token just after; one strongly avoids the query's own position, so that it always
+# reads a neighbour; and one barely cares about distance at all and attends by content. A model that is told nothing
+# about order beyond these 32 numbers per head still builds a sense of left, right and next door. Beyond about ten
+# tokens the biases flatten out: the buckets there are wide, and far is simply far.
 #
 # Cross-attention is where the encoder–decoder earns its name, and it can be watched. We translate the sentence of
 # section 1 again with our model, keep the cross-attention weights of every decoder layer, and average the eight
@@ -519,7 +571,12 @@ heatmap(weights, rows=german_tokens, cols=source_tokens, cell=0.3)
 plt.show()
 
 # %% [markdown]
-# @@CROSS_COMMENT@@
+# Most German tokens find their English source: *Wach* looks at *guard*, *kommen* at *arrive*, *sieben* at
+# *seven*, *Museum* at *museum*. German puts the particle of *ankommen* at the very end of the sentence, and the
+# last word, *an*, looks back at *arrive*. Nobody gave the model an alignment; it learned
+# one because translating needs it. Much of the attention, though, goes to the task prefix, *to* and the colon, on
+# nearly every row: a head that has nothing useful to read parks its weight on a token that carries no content, the
+# same habit as the attention sinks of lesson 9.
 
 # %% [markdown]
 # ## 6. Pre-training by repair: T5 and BART
@@ -530,9 +587,23 @@ plt.show()
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a05/objectives-light.png" width="760" alt="Two ways to pre-train an encoder–decoder on raw text. T5's span corruption replaces spans of the sentence with sentinel tokens, extra_id_0 and extra_id_1, and the target lists only the dropped spans, each after its sentinel, so the target is short. BART's text infilling replaces each span with a single mask token, which can stand for any number of words, and the target is the whole original sentence">
 #
-# @@OBJECTIVES_STORY@@
+# T5's version is *span corruption*. It drops 15% of the tokens in spans of 3 on average, replaces each span with a
+# sentinel token, `<extra_id_0>`, `<extra_id_1>` and so on, and asks the decoder for the dropped spans only, each
+# after its sentinel, with one more sentinel at the end. The targets are short, and that was the point: the choice was
+# "made to reduce the computational cost of pre-training". Across the many variants the paper tried, the details of
+# the corruption mattered little. What mattered was that "denoising objectives outperformed language modeling".
 #
-# T5's recipe takes three numbers: drop @@DENSITY@@ of the tokens, in spans of @@SPAN@@ tokens on average, at random
+# BART, which Facebook AI published the same month, is the same architecture seen from the other side: "a denoising
+# autoencoder for pretraining sequence-to-sequence models", whose bidirectional encoder and left-to-right decoder "can
+# be seen as generalizing BERT […], GPT […], and other recent pretraining schemes" ([Lewis et al.,
+# 2020](https://aclanthology.org/2020.acl-main.703/)). Its best corruption was *text infilling*: span lengths are
+# drawn from a Poisson distribution with a mean of 3, and each span becomes a single mask token, even a span of length
+# zero, so the model has to "predict how many tokens are missing from a span". The large model also shuffled the order
+# of the sentences. BART's decoder writes the whole document back, which made it a strong generator: on XSum, a
+# summarisation dataset the BART paper calls highly abstractive, it beat the best earlier model by "roughly 3.5 points
+# on all ROUGE metrics".
+#
+# T5's recipe takes three numbers: drop 15% of the tokens, in spans of 3 tokens on average, at random
 # places. Google's code first decides how many tokens to drop and how many spans to cut them into, then splits both
 # the dropped and the kept tokens into that many pieces of random length, and interleaves them. Here it is on the
 # example sentence from the T5 paper:
@@ -572,7 +643,10 @@ token_chips([source, target], labels=["encoder reads", "decoder writes"],
 plt.show()
 
 # %% [markdown]
-# @@CORRUPTION_COMMENT@@
+# The encoder sees the sentence with holes, each hole one sentinel however many tokens it hides. The decoder's target
+# lists what is missing, in order, and closes with one more sentinel. A sentence of 11 tokens would lose only two at
+# T5's rate, so the cell doubles it; on a 512-token passage of C4 the real recipe cuts about two dozen holes, in every
+# kind of place.
 #
 # So does a pre-trained T5 repair text? Ask it to fill the spans the T5 paper drops. We use t5-base here, which we
 # also need in section 8; the smallest model fills them less reliably.
@@ -621,7 +695,15 @@ table(pd.DataFrame({"masked": masked, "BART writes": written}))
 # %% [markdown]
 # ## 7. Spider: 200 databases and a question for each table
 #
-# @@SPIDER_STORY@@
+# Spider was built at Yale in 2018. Eleven students spent "a total of 1,000 man-hours" writing "10,181 questions and
+# 5,693 unique complex SQL queries on 200 databases with multiple tables, covering 138 different domains" ([Yu et al.,
+# 2018](https://aclanthology.org/D18-1425/)). What made it hard was the split: the databases of the test set never
+# appear in training, so a model has to read a schema it has never seen. The best model in the paper got 12.4% of the
+# test queries exactly right. In 2021 T5-3B with PICARD, a decoder that rejects any token that would make the query
+# invalid, reached 75.1% execution accuracy on the test set. PICARD's authors noted that without it, "12% of the SQL
+# queries generated by the T5-3B model on Spider's development set result in an execution error" ([Scholak et al.,
+# 2021](https://arxiv.org/abs/2109.05093)). GPT-4 with careful prompting took the leaderboard to 85.3% and then 86.6%
+# in 2023, and in February 2024 the authors closed it.
 #
 # The Spider authors distribute the databases as SQLite files; the Hugging Face copy we use is a re-host of the
 # official archive, pinned to one revision, under the same CC BY-SA 4.0 licence.
@@ -709,7 +791,14 @@ with_less = sum("<" in model_target(e) for e in train_set)
 print(f"training queries with '<': {with_less} of {len(train_set):,}")
 
 # %% [markdown]
-# @@LESS_THAN_STORY@@
+# T5 can't write "less than". Its vocabulary was learned for prose, and `<` isn't in it, so the tokenizer turns it
+# into `<unk>`, the unknown token, and decoding drops it. The query loses its comparison without an error:
+# `Age < 30` becomes `Age 30`. A model fine-tuned on such targets would learn to write queries that can't run, for
+# every question that needs a "less than".
+#
+# The fix costs nothing. The embedding matrix has more rows than the tokenizer has tokens, because the vocabulary
+# was rounded up to a multiple of 128, and the last rows have never been used. We add `<` to the tokenizer, it takes
+# the first free id, and the model already has a row for it:
 
 # %%
 print("vocabulary rows in the model:", t5.embed.weight.shape[0])
@@ -720,8 +809,9 @@ print("id of the new token '<':     ", sql_tokenizer.convert_tokens_to_ids("<"))
 ids = sql_tokenizer(query).input_ids
 print(sql_tokenizer.convert_ids_to_tokens(ids))
 
-# %% [markdown]
-# @@NEW_TOKEN_COMMENT@@
+# %% [markdown] The new token sits in a row the model never trained, so at first it is noise; fine-tuning will give it
+# a meaning, because a few hundred training queries use it. The tokenizer is the same for every size of T5, so
+# `sql_tokenizer` serves t5-base too.
 #
 # Now the training. We fine-tune t5-base, the same architecture as t5-small with 12 layers on each side and a width
 # of 768, loaded into our own `T5` class; the transplant needs no change. Each step takes a random batch of
@@ -761,7 +851,15 @@ with torch.no_grad():
 print(f"loss on development queries before training: {before:.2f}")
 
 # %% [markdown]
-# @@TRAINING_SETUP@@
+# The plan: 20 minutes of training, however many steps that is on your GPU. Batches hold up to 16 questions of similar
+# length and at most 4,096 input tokens, so that the longest schemas still fit in a T4's memory. The optimizer is
+# AdamW at a constant learning rate after a short warm-up, with gradients clipped at 1. Every 200 steps we measure the
+# loss on 256 held-out development questions.
+#
+# We train in float32. T5 was trained on TPUs with bfloat16 activations, which have the range of float32, and in
+# float16 its feed-forward outputs overflow: in 2021, "t5-small was the only T5 model that was working in fp16"
+# ([Hugging Face forum, 2021](https://discuss.huggingface.co/t/t5-fp16-issue-is-fixed/3139)). A T4 has no fast
+# bfloat16, so float32 it is.
 
 # %%
 TRAIN_MINUTES = 0.5 if SMOKE else 20
@@ -852,7 +950,10 @@ plt.show()
 # A loss says how probable the model finds the correct query. It doesn't say whether the query the model writes is
 # right, and for SQL there is a better judge than any metric: run it. Spider's databases are real SQLite files, so we
 # run the model's query and the correct one on the same database and compare what comes back. This is *execution
-# accuracy*. @@EXEC_SOURCE@@
+# accuracy*. It errs in both directions. Two correct queries can differ as strings, `AGE > 34` and `AGE >= 35`, which
+# is why exact matching underrates models. And a wrong query can happen to return the right rows on one particular
+# database, which is why Spider's official metric since 2020 runs every query on a suite of databases built to tell
+# such queries apart ([Zhong et al., 2020](https://arxiv.org/abs/2010.02840)). We use the one database Spider ships.
 #
 # Two results are the same if they hold the same rows. Order matters only if the correct query asks for one with
 # `ORDER BY`; otherwise we compare the rows as sorted lists. A query that runs longer than five seconds is stopped
@@ -878,7 +979,7 @@ def same_result(db_id, predicted, gold):
     try:
         got = run_query(db_id, predicted)
     except Exception as error:
-        return False, type(error).__name__
+        return False, str(error)  # SQLite's message
     if "order by" in gold.lower():
         return got == expected, "ran"
     return sorted(map(repr, got)) == sorted(map(repr, expected)), "ran"
@@ -980,13 +1081,140 @@ for title, frame in [("right, but not the reference string", right_but_different
 # %% [markdown]
 # @@EXAMPLES_COMMENT@@
 #
-# ## 10. Why decoder-only models won anyway
+# The queries that don't run, sorted by what SQLite said about them:
+
+# %%
+def error_kind(message):
+    for kind in ["no such column", "syntax error", "no such table", "ambiguous column",
+                 "interrupted"]:
+        if kind in message:
+            return kind
+    return "other"
+
+
+kinds = Counter(error_kind(message) for message in failed["status"])
+table(pd.DataFrame(kinds.most_common(), columns=["SQLite says", "queries"]))
+
+# %% [markdown]
+# @@ERRORS_COMMENT@@
 #
-# @@WHY_DECODERS@@
+# ## 10. Letting SQLite choose
 #
-# ## 11. Where the encoder–decoder is the right tool today
+# @@CHOOSE_STORY@@
+
+# %%
+SAMPLES = 4
+generator = torch.Generator(device=device).manual_seed(SEED)
+candidates = [[query] for query in predictions]  # the greedy query comes first
+started = time.time()
+for i in range(0, len(evaluated), 64):
+    chunk = evaluated[i:i + 64]
+    batch = sql_tokenizer([model_input(e) for e in chunk], max_length=512, truncation=True,
+                          padding=True, return_tensors="pt").to(device)
+    for _ in range(SAMPLES):
+        written = generate(model, batch.input_ids, batch.attention_mask, max_new_tokens=192,
+                           temperature=0.7, generator=generator)
+        queries = sql_tokenizer.batch_decode(written, skip_special_tokens=True)
+        for j, query in enumerate(queries):
+            candidates[i + j].append(query)
+print(f"{SAMPLES} more queries per question in {time.time() - started:.0f} s")
+
+
+def first_that_runs(db_id, queries):
+    for query in queries:
+        try:
+            run_query(db_id, query)
+            return query
+        except Exception:
+            continue
+    return queries[0]  # none runs: keep the greedy one
+
+
+chosen, any_right = [], []
+for e, queries in zip(evaluated, candidates):
+    chosen.append(first_that_runs(e["db_id"], queries))
+    any_right.append(any(same_result(e["db_id"], q, model_target(e))[0] for q in queries))
+results["chosen"] = chosen
+results["chosen correct"] = [same_result(e["db_id"], q, model_target(e))[0]
+                             for e, q in zip(evaluated, chosen)]
+results["any of 5 correct"] = any_right
+still_failing = 0
+for e, q in zip(evaluated, chosen):
+    try:
+        run_query(e["db_id"], q)
+    except Exception:
+        still_failing += 1
+print(f"greedy:                      {results['correct'].mean():.1%}")
+print(f"first of 5 that runs:        {results['chosen correct'].mean():.1%}")
+print(f"at least one of 5 is right:  {results['any of 5 correct'].mean():.1%}")
+print("queries that still fail to run:", still_failing)
+
+# %%
+labels = ["greedy", "first of 5\nthat runs", "any of 5\nis right"]
+values = [results["correct"].mean(), results["chosen correct"].mean(),
+          results["any of 5 correct"].mean()]
+fig, ax = plt.subplots(figsize=(6.4, 2.4))
+ax.barh(labels, values, color=[COLORS["enc"], COLORS["enc"], COLORS["line"]])
+for k, value in enumerate(values):
+    ax.text(value + 0.01, k, f"{value:.1%}", va="center", color=COLORS["muted"])
+ax.invert_yaxis()
+ax.set_xlim(0, 1)
+ax.set_xlabel("execution accuracy on 1,034 development questions")
+plt.show()
+
+# %% [markdown]
+# @@CHOOSE_COMMENT@@
 #
-# @@WHERE_TODAY@@
+# ## 11. Why decoder-only models won anyway
+#
+# T5's own comparison put the encoder–decoder first: "For all tasks, the encoder-decoder architecture with the
+# denoising objective performed best." Three years later the largest models were all decoders. The reasons are worth
+# knowing, because none of them is that the encoder–decoder is worse.
+#
+# The first is what got measured. T5 measured transfer learning: pre-train, then fine-tune for each task. The models
+# that changed the field were used another way, prompted with no fine-tuning at all. BigScience tested exactly this
+# before choosing the architecture of BLOOM, training models of 5 billion parameters on 170 billion tokens, and found
+# that "the best objective and architecture is the opposite in these two settings": a causal decoder trained on plain
+# language modelling did best right after pre-training, an encoder–decoder trained on masked language modelling did
+# best once multi-task fine-tuning was added ([Wang et al., 2022](https://arxiv.org/abs/2204.05832)). BLOOM's report
+# ([BigScience Workshop, 2022](https://arxiv.org/abs/2211.05100)) stated the market's verdict: "all state-of-the-art
+# language models over 100 billion parameters are causal decoder-only models".
+#
+# The second is memory. Each token passes through only one stack, so an encoder–decoder costs about as much compute as
+# a decoder-only model with half its parameters. But it has "twice the parameters of the decoder-only model, and hence
+# twice the memory footprint", and when the limit is what fits on the GPUs, that counts. The third is how much the
+# objective teaches per token: denoising learns from the 15% of tokens it hides, language modelling from nearly all of
+# them, which Yi Tay, the first author of [UL2](https://arxiv.org/abs/2205.05131), calls less "loss exposure" ([Tay,
+# 2024](https://www.yitay.net/blog/model-architecture-blogpost-encoders-prefixlm-denoising)).
+#
+# There is also an engineering argument, which is ours rather than a paper's: one stack is simpler. A chat is one
+# growing sequence in which every answer becomes part of the next input. A decoder reads it with one KV cache; an
+# encoder–decoder has to decide what counts as input and re-encode it as the conversation grows. Kernels, serving
+# systems and fine-tuning tools were then built for the one shape that won, which made it cheaper still.
+#
+# The verdict is not final. In 2025 Google turned pre-trained Gemma 2 decoders into encoder–decoders and reported that
+# "under similar inference budget, encoder-decoder LLMs achieve comparable (often better) pretraining performance but
+# substantially better finetuning performance than their decoder-only counterpart". Google's announcement adds that a
+# model with a 9B encoder and a 2B decoder runs at nearly the latency of the 2B model ([Google,
+# 2025](https://developers.googleblog.com/en/t5gemma/)). [T5Gemma 2](https://arxiv.org/abs/2512.14856) followed in
+# December 2025, multimodal, in sizes from 270M-270M to 4B-4B.
+#
+# ## 12. Where the encoder–decoder is the right tool today
+#
+# Wherever the input is long or of a different kind from the output, and the output is short. Speech recognition:
+# Whisper is an encoder–decoder, chosen because "this architecture has been well validated to scale reliably"
+# ([Radford et al., 2022](https://arxiv.org/abs/2212.04356)). Translation: Meta's
+# [NLLB-200](https://arxiv.org/abs/2207.04672) and the Helsinki-NLP MarianMT models. Image generation: the frozen
+# encoder half of a T5-XXL turns the prompt into vectors in Imagen, Stable Diffusion 3 and
+# [FLUX.1](https://github.com/black-forest-labs/flux). Imagen's authors found "scaling the text encoder size to be
+# significantly more impactful than the U-Net size" ([Saharia et al., 2022](https://arxiv.org/abs/2205.11487)), and
+# Stable Diffusion 3's that dropping T5 costs little, except when the prompt asks for written text in the picture
+# ([Esser et al., 2024](https://arxiv.org/abs/2403.03206)). And structured jobs like ours: a question to SQL, a
+# document to fields, a ticket to a category with an explanation. For such a job, a small encoder–decoder fine-tuned
+# on a few thousand examples is cheap to run and, in our experience, hard to beat at its size.
+#
+# What it is not for is open conversation and learning from examples in the prompt. The models people chat with are
+# decoders, and lesson 6 is about what changed inside them since GPT-2.
 #
 # T5's passport, and the family tree with this lesson's branch:
 #
@@ -997,4 +1225,23 @@ for title, frame in [("right, but not the reference string", right_but_different
 # %% [markdown]
 # ## References
 #
-# @@REFERENCES@@
+# - Green, B. F., Wolf, A. K., Chomsky, C., & Laughery, K. (1961). [Baseball: an automatic question-answerer](https://doi.org/10.1145/1460690.1460714). *Western Joint IRE-AIEE-ACM Computer Conference*, 219–224.
+# - Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., Zhou, Y., Li, W., & Liu, P. J. (2020). [Exploring the limits of transfer learning with a unified text-to-text transformer](https://arxiv.org/abs/1910.10683). *Journal of Machine Learning Research*, 21(140), 1–67.
+# - Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V., & Zettlemoyer, L. (2020). [BART: denoising sequence-to-sequence pre-training for natural language generation, translation, and comprehension](https://aclanthology.org/2020.acl-main.703/). *ACL 2020*.
+# - Zhang, B., & Sennrich, R. (2019). [Root mean square layer normalization](https://arxiv.org/abs/1910.07467). *NeurIPS 2019*.
+# - Yu, T., Zhang, R., Yang, K., et al. (2018). [Spider: a large-scale human-labeled dataset for complex and cross-domain semantic parsing and text-to-SQL task](https://aclanthology.org/D18-1425/). *EMNLP 2018*. Data: [yale-lily.github.io/spider](https://yale-lily.github.io/spider), CC BY-SA 4.0.
+# - Scholak, T., Schucher, N., & Bahdanau, D. (2021). [PICARD: parsing incrementally for constrained auto-regressive decoding from language models](https://arxiv.org/abs/2109.05093). *EMNLP 2021*.
+# - Zhong, R., Yu, T., & Klein, D. (2020). [Semantic evaluation for text-to-SQL with distilled test suites](https://arxiv.org/abs/2010.02840). *EMNLP 2020*.
+# - Lei, F., Chen, J., Ye, Y., et al. (2025). [Spider 2.0: evaluating language models on real-world enterprise text-to-SQL workflows](https://arxiv.org/abs/2411.07763). *ICLR 2025*.
+# - Wang, T., Roberts, A., Hesslow, D., Le Scao, T., et al. (2022). [What language model architecture and pretraining objective work best for zero-shot generalization?](https://arxiv.org/abs/2204.05832) *ICML 2022*.
+# - BigScience Workshop (2022). [BLOOM: a 176B-parameter open-access multilingual language model](https://arxiv.org/abs/2211.05100). arXiv:2211.05100.
+# - Tay, Y., Dehghani, M., Tran, V. Q., et al. (2023). [UL2: unifying language learning paradigms](https://arxiv.org/abs/2205.05131). *ICLR 2023*.
+# - Tay, Y. (2024). [What happened to BERT & T5? On Transformer encoders, PrefixLM and denoising objectives](https://www.yitay.net/blog/model-architecture-blogpost-encoders-prefixlm-denoising).
+# - Zhang, B., Moiseev, F., Ainslie, J., et al. (2025). [Encoder-decoder Gemma: improving the quality-efficiency trade-off via adaptation](https://arxiv.org/abs/2504.06225). arXiv:2504.06225.
+# - Google (2025). [T5Gemma: a new collection of encoder-decoder Gemma models](https://developers.googleblog.com/en/t5gemma/). Google Developers Blog.
+# - Zhang, B., Suganthan, P., Liu, G., et al. (2025). [T5Gemma 2: seeing, reading, and understanding longer](https://arxiv.org/abs/2512.14856). arXiv:2512.14856.
+# - Radford, A., Kim, J. W., Xu, T., Brockman, G., McLeavey, C., & Sutskever, I. (2022). [Robust speech recognition via large-scale weak supervision](https://arxiv.org/abs/2212.04356). arXiv:2212.04356.
+# - NLLB Team (2022). [No language left behind: scaling human-centered machine translation](https://arxiv.org/abs/2207.04672). arXiv:2207.04672.
+# - Saharia, C., Chan, W., Saxena, S., et al. (2022). [Photorealistic text-to-image diffusion models with deep language understanding](https://arxiv.org/abs/2205.11487). *NeurIPS 2022*.
+# - Esser, P., Kulal, S., Blattmann, A., et al. (2024). [Scaling rectified flow transformers for high-resolution image synthesis](https://arxiv.org/abs/2403.03206). *ICML 2024*.
+# - Hugging Face forum (2021). [T5 fp16 issue is fixed](https://discuss.huggingface.co/t/t5-fp16-issue-is-fixed/3139).
