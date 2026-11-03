@@ -771,14 +771,27 @@ WARMUP = 100
 optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=0.0)
 
 
+TOKEN_BUDGET = 4096  # input tokens per batch: 16 questions of 256 tokens, or 8 of 512
+input_tokens = {}
+for e, n in zip(train_set, lengths):
+    input_tokens[e["question"] + e["query"]] = min(n, 512)
+
+
 def batches_by_length(examples, size, rng):
     shuffled = examples[:]
     rng.shuffle(shuffled)
     batches = []
     for i in range(0, len(shuffled), size * 50):
-        pool = sorted(shuffled[i:i + size * 50], key=lambda e: len(model_input(e)))
-        for j in range(0, len(pool), size):
-            batches.append(pool[j:j + size])
+        pool = sorted(shuffled[i:i + size * 50],
+                      key=lambda e: input_tokens[e["question"] + e["query"]])
+        batch = []
+        for e in pool:
+            longest = input_tokens[e["question"] + e["query"]]  # the pool is sorted
+            if len(batch) == size or (len(batch) + 1) * longest > TOKEN_BUDGET:
+                batches.append(batch)
+                batch = []
+            batch.append(e)
+        batches.append(batch)
     rng.shuffle(batches)  # similar lengths within a batch, random order of batches
     return batches
 
