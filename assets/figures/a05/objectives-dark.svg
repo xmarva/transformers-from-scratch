@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 346" width="760" height="346" role="img" aria-label="Two ways to pre-train an encoder–decoder on raw text. T5&#x27;s span corruption replaces spans of the sentence with sentinel tokens, extra_id_0 and extra_id_1, and the target lists only the dropped spans, each after its sentinel, so the target is short. BART&#x27;s text infilling replaces each span with a single mask token, which can stand for any number of words, and the target is the whole original sentence">
+<title>Two ways to pre-train an encoder–decoder on raw text. T5&#x27;s span corruption replaces spans of the sentence with sentinel tokens, extra_id_0 and extra_id_1, and the target lists only the dropped spans, each after its sentinel, so the target is short. BART&#x27;s text infilling replaces each span with a single mask token, which can stand for any number of words, and the target is the whole original sentence</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="346" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Pre-training by repair: T5 and BART corrupt text differently</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the encoder reads the damaged text; the decoder writes what is needed to undo the damage</text>
+<text x="14.0" y="88.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">T5: span corruption</text>
+<text x="14.0" y="112.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">encoder reads</text>
+<rect x="130.0" y="96.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="146.7" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">The</text>
+<rect x="168.4" y="96.0" width="53.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="195.1" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">guards</text>
+<rect x="226.7" y="96.0" width="92.8" height="26.0" rx="7" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="273.1" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;extra_id_0&gt;</text>
+<rect x="324.5" y="96.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="341.2" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="363.0" y="96.0" width="53.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="389.6" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">museum</text>
+<rect x="421.2" y="96.0" width="26.8" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="434.6" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">at</text>
+<rect x="453.0" y="96.0" width="92.8" height="26.0" rx="7" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="499.5" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;extra_id_1&gt;</text>
+<rect x="550.9" y="96.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="567.6" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="589.3" y="96.0" width="59.8" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="619.2" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">morning</text>
+<rect x="654.2" y="96.0" width="24.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="666.3" y="112.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">.</text>
+<text x="14.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">decoder writes</text>
+<rect x="130.0" y="134.0" width="92.8" height="26.0" rx="7" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="176.4" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;extra_id_0&gt;</text>
+<rect x="227.8" y="134.0" width="53.2" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="254.5" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">arrive</text>
+<rect x="286.1" y="134.0" width="26.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="299.5" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">at</text>
+<rect x="317.9" y="134.0" width="92.8" height="26.0" rx="7" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="364.3" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;extra_id_1&gt;</text>
+<rect x="415.8" y="134.0" width="46.6" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="439.1" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">seven</text>
+<rect x="467.4" y="134.0" width="26.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="480.8" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">in</text>
+<rect x="499.2" y="134.0" width="92.8" height="26.0" rx="7" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="545.7" y="150.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;extra_id_2&gt;</text>
+<text x="130.0" y="182.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">only the missing spans: a short target</text>
+<text x="14.0" y="222.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">BART: text infilling</text>
+<text x="14.0" y="246.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">encoder reads</text>
+<rect x="130.0" y="230.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="146.7" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">The</text>
+<rect x="168.4" y="230.0" width="53.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="195.1" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">guards</text>
+<rect x="226.7" y="230.0" width="53.2" height="26.0" rx="7" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="253.3" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;mask&gt;</text>
+<rect x="284.9" y="230.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="301.6" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="323.4" y="230.0" width="53.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="350.0" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">museum</text>
+<rect x="381.6" y="230.0" width="26.8" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="395.0" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">at</text>
+<rect x="413.4" y="230.0" width="53.2" height="26.0" rx="7" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="440.1" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#1A1F26" xml:space="preserve">&lt;mask&gt;</text>
+<rect x="471.7" y="230.0" width="33.4" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="488.4" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="510.1" y="230.0" width="59.8" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="540.0" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">morning</text>
+<rect x="575.0" y="230.0" width="24.2" height="26.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="587.1" y="246.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F6C878" xml:space="preserve">.</text>
+<text x="14.0" y="284.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">decoder writes</text>
+<rect x="130.0" y="268.0" width="33.4" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="146.7" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">The</text>
+<rect x="168.4" y="268.0" width="53.2" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="195.1" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">guards</text>
+<rect x="226.7" y="268.0" width="53.2" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="253.3" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">arrive</text>
+<rect x="284.9" y="268.0" width="26.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="298.3" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">at</text>
+<rect x="316.8" y="268.0" width="33.4" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="333.5" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">the</text>
+<rect x="355.2" y="268.0" width="53.2" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="381.8" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">museum</text>
+<rect x="413.4" y="268.0" width="26.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="426.9" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">at</text>
+<rect x="445.3" y="268.0" width="46.6" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="468.6" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">seven</text>
+<rect x="496.9" y="268.0" width="26.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="510.3" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">in</text>
+<rect x="528.8" y="268.0" width="33.4" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="545.5" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">the</text>
+<rect x="567.2" y="268.0" width="59.8" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="597.1" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">morning</text>
+<rect x="632.0" y="268.0" width="24.2" height="26.0" rx="7" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="644.1" y="284.9" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#F7A1AE" xml:space="preserve">.</text>
+<text x="130.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the whole sentence back; one &lt;mask&gt; may hide any number of words, even none</text>
+</svg>

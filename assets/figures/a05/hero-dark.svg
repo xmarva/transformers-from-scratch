@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" width="760" height="336" role="img" aria-label="A question and the database&#x27;s schema go into T5&#x27;s encoder, which reads all of it at once. The decoder writes an SQL query one token at a time, looking back at the encoder&#x27;s output through cross-attention. The query is then run on the SQLite database, and its result is compared with the result of the correct query">
+<title>A question and the database&#x27;s schema go into T5&#x27;s encoder, which reads all of it at once. The decoder writes an SQL query one token at a time, looking back at the encoder&#x27;s output through cross-attention. The query is then run on the SQLite database, and its result is compared with the result of the correct query</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="336" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">A question goes in, a query comes out, and SQLite says if it is right</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the encoder reads the question and the schema; the decoder writes the query</text>
+<text x="14.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">question</text>
+<rect x="14.0" y="96.0" width="330.0" height="34.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="179.0" y="117.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">How many singers are younger than 30?</text>
+<text x="14.0" y="156.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">schema</text>
+<rect x="14.0" y="166.0" width="330.0" height="34.0" rx="9" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="179.0" y="187.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">singer : Singer_ID , Name , Age , …</text>
+<polyline points="345.0,148.0 377.0,148.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="378.0" y="96.0" width="150.0" height="104.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="453.0" y="152.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">encoder</text>
+<text x="453.0" y="88.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">reads both ways</text>
+<polyline points="529.0,148.0 561.0,148.0" fill="none" stroke="#9C8CF5" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<rect x="562.0" y="96.0" width="184.0" height="104.0" rx="9" fill="#391D24" stroke="#F2667C" stroke-width="1.5"/>
+<text x="654.0" y="152.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#F7A1AE" xml:space="preserve">decoder</text>
+<text x="654.0" y="88.0" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">writes left to right</text>
+<text x="14.0" y="262.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">query</text>
+<rect x="14.0" y="272.0" width="450.0" height="34.0" rx="9" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="239.0" y="293.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1A1F26" xml:space="preserve">SELECT count(*) FROM singer WHERE Age &lt; 30</text>
+<polyline points="654.0,201.0 654.0,236.0 240.0,236.0 240.0,270.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<polyline points="465.0,289.0 497.0,289.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="498.0" y="272.0" width="118.0" height="34.0" rx="9" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="557.0" y="293.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#E7EAF0" xml:space="preserve">SQLite</text>
+<polyline points="617.0,289.0 649.0,289.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="650.0" y="272.0" width="96.0" height="34.0" rx="9" fill="#12302C" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="698.0" y="293.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#7FDCCF" xml:space="preserve">[(2,)] ✓</text>
+<text x="498.0" y="326.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same rows as the correct query?</text>
+</svg>
