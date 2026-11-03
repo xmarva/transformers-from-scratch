@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 412" width="760" height="412" role="img" aria-label="The encoder–decoder. On the left the encoder: a stack of layers with self-attention that sees the whole input in both directions and a feed-forward network; it runs once and turns the input into a sequence of vectors. On the right the decoder: in every layer causal self-attention over what it has written so far, then cross-attention, whose queries come from the decoder and whose keys and values come from the encoder&#x27;s output, then a feed-forward network. Only the decoder runs once per generated token">
+<title>The encoder–decoder. On the left the encoder: a stack of layers with self-attention that sees the whole input in both directions and a feed-forward network; it runs once and turns the input into a sequence of vectors. On the right the decoder: in every layer causal self-attention over what it has written so far, then cross-attention, whose queries come from the decoder and whose keys and values come from the encoder&#x27;s output, then a feed-forward network. Only the decoder runs once per generated token</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="412" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Two stacks and a bridge: the encoder–decoder</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the encoder runs once; the decoder runs once per token it writes and reads the encoder in every layer</text>
+<text x="14.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">encoder × 6 layers (t5-small)</text>
+<rect x="14.0" y="98.0" width="300.0" height="34.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="164.0" y="119.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">input: translate English to German: …</text>
+<polyline points="164.0,133.0 164.0,149.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="150.0" width="300.0" height="160.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="30.0" y="164.0" width="268.0" height="34.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="164.0" y="185.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#4B39B5" xml:space="preserve">self-attention, both directions</text>
+<polyline points="164.0,199.0 164.0,213.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="30.0" y="214.0" width="268.0" height="34.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="164.0" y="235.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">feed-forward</text>
+<text x="30.0" y="278.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">norm before each part, residual</text>
+<text x="30.0" y="296.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">around it, as in GPT-2</text>
+<polyline points="164.0,311.0 164.0,327.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="14.0" y="328.0" width="300.0" height="34.0" rx="9" fill="#0F8C7E" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="164.0" y="349.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">H: one vector per input token</text>
+<text x="420.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">decoder × 6 layers</text>
+<rect x="420.0" y="98.0" width="326.0" height="34.0" rx="9" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="583.0" y="119.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#8A5508" xml:space="preserve">written so far: &lt;pad&gt; Die Wachen</text>
+<polyline points="583.0,133.0 583.0,149.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="420.0" y="150.0" width="326.0" height="202.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="436.0" y="164.0" width="294.0" height="34.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="583.0" y="185.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">self-attention, causal</text>
+<polyline points="583.0,199.0 583.0,213.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="436.0" y="214.0" width="294.0" height="34.0" rx="9" fill="#6A55D8" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="583.0" y="235.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">cross-attention: Q from here, K, V from H</text>
+<polyline points="583.0,249.0 583.0,263.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="436.0" y="264.0" width="294.0" height="34.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="583.0" y="285.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">feed-forward</text>
+<text x="436.0" y="330.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">then one more norm and the vocabulary</text>
+<polyline points="583.0,353.0 583.0,369.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="420.0" y="370.0" width="326.0" height="30.0" rx="9" fill="#FBE6EA" stroke="#D23F57" stroke-width="1.5"/>
+<text x="583.0" y="389.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#A82D42" xml:space="preserve">next token: kommen</text>
+<polyline points="315.0,345.0 360.0,345.0 360.0,231.0 434.0,231.0" fill="none" stroke="#6A55D8" stroke-width="2.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<text x="370.0" y="292.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">H</text>
+</svg>
