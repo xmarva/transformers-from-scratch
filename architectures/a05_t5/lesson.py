@@ -201,7 +201,8 @@ print("largest difference from nn.RMSNorm:", (mine(x) - builtin(x)).abs().max().
 # bucket. Near words get precise positions, far ones only a rough sense of "far". The decoder looks only back, so it
 # uses all 32 buckets for distances to the left.
 #
-# Written out for the encoder, with $n = |j - i|$ the distance between key and query, the bucket within one half is
+# Written out for the encoder, with $n = \lvert j - i \rvert$ the distance between key and query, the bucket within
+# one half is
 #
 # $$b(n) = \begin{cases} n, & n < 8, \\ \min\!\left(15,\; 8 + \left\lfloor 8 \cdot \dfrac{\ln(n/8)}{\ln(128/8)}
 # \right\rfloor\right), & n \ge 8, \end{cases}$$
@@ -1005,7 +1006,11 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@LOSS_COMMENT@@
+# The loss falls fast: within the first 200 steps the development loss drops to a small fraction of where it started,
+# and after that it barely moves while the training loss keeps going down. From there on the model gets better at the
+# training questions than at SQL in general, the start of overfitting. The loss isn't the goal, though. It measures
+# how probable the reference query is token by token, and a query can be improbable in that sense and still return the
+# right rows. The only way to know is to run it.
 #
 # ## 9. Checking by running
 #
@@ -1094,7 +1099,15 @@ lucky = results["correct"] & results["no rows"] & ~results["exact"]
 print("right only in that both return no rows:", lucky.sum())
 
 # %% [markdown]
-# @@ACCURACY_COMMENT@@
+# Just over two queries in five return the right rows, on twenty databases the model has never seen, after 20 minutes
+# of fine-tuning a model of 220 million parameters.
+#
+# The three ways of counting tell three different stories. Compared character for character, only about one query in
+# nine matches the reference, and most of that gap is formatting: T5's tokenizer drops the space before a comma, and
+# Spider's annotators mixed quotes and capital letters. After normalising those, about a third match. Execution
+# accepts roughly another tenth on top: queries written differently that mean the same thing. A handful of those are
+# right only by luck, because both queries return no rows at all on this database, the false positive of the figure
+# above. And almost two queries in five don't run.
 #
 # Where does it go wrong? Spider's own scripts sort queries into four levels of hardness by counting their parts; a
 # rougher but transparent way is to look at what a correct query contains: a join, a nested `SELECT`, a `GROUP BY`,
@@ -1132,7 +1145,10 @@ ax.set_xlabel("execution accuracy")
 plt.show()
 
 # %% [markdown]
-# @@PARTS_COMMENT@@
+# The pattern is the one Spider was built to expose. Queries with none of these parts, one table with a filter or a
+# count, are right almost two times in three. Every added clause costs, and joins cost the most: fewer than one in
+# five is right. To join two tables, the model has to know which column of one points to which column of the other.
+# Our input doesn't say, so it guesses from the names.
 #
 # Three kinds of answers are worth looking at one by one: queries that are right although they differ from the
 # reference, queries that don't run, and queries that run and return the wrong thing.
@@ -1152,7 +1168,18 @@ for title, frame in [("right, but not the reference string", right_but_different
         print()
 
 # %% [markdown]
-# @@EXAMPLES_COMMENT@@
+# The first group is why execution accuracy exists: the model groups by the name instead of the id, joins the tables
+# from the other side, or writes an aggregate where the reference doesn't need one, and the rows come out the same.
+# Some of these are right on this database only; a suite of test databases would catch a few.
+#
+# The second group is the model's main failure, and it isn't about SQL. The queries are well formed, but they reach
+# for a column or a table that doesn't exist, often through a join the question didn't need.
+#
+# The third group is where our own check shows its limits. "How many singers are from each country?" answered with
+# `SELECT count(*), Country` is right: it holds the same numbers in the other column order, and our comparison, which
+# is strict about the order of columns, counts it as wrong. The last example is a matter of annotation: the reference
+# reads "the average" as a column called `Average`, the model as `avg(capacity)`, and a person could read the question
+# either way. No metric of text-to-SQL is free of such cases; what matters is knowing which way each one errs.
 #
 # The queries that don't run, sorted by what SQLite said about them:
 
@@ -1169,7 +1196,10 @@ kinds = Counter(error_kind(message) for message in failed["status"])
 table(pd.DataFrame(kinds.most_common(), columns=["SQLite says", "queries"]))
 
 # %% [markdown]
-# @@ERRORS_COMMENT@@
+# Nearly all the failures are of one kind: the query names a column that the table doesn't have. Syntax errors are
+# rare. After 20 minutes the model writes grammatical SQL; what it can't do reliably is read the schema. The
+# text-to-SQL literature calls this *schema linking*, and it is why the best T5 systems on Spider gave the model some
+# of each database's contents as well as its names. Here is one failure drawn against the real schema:
 
 # %%
 invented = failed[failed["status"].str.startswith("no such column")]
@@ -1190,7 +1220,10 @@ if len(invented) > 0:
     plt.show()
 
 # %% [markdown]
-# @@INVENTED_COMMENT@@
+# The model knows that a singer has an id and that concerts involve singers, so it joins `singer` to `concert` on
+# `singer_id`. But `concert` has no such column: singers and concerts meet in a third table, `singer_in_concert`, and
+# nothing in our input says so. The foreign keys we left out would have. The question didn't even need a join: the
+# youngest singer's song is in `singer` itself.
 #
 # ## 10. Letting SQLite choose
 #
@@ -1266,7 +1299,12 @@ ax.set_xlabel("execution accuracy on 1,034 development questions")
 plt.show()
 
 # %% [markdown]
-# @@CHOOSE_COMMENT@@
+# Letting SQLite reject the queries that fail adds about six points of execution accuracy, with no new training and
+# nothing but the database's word that a query runs. More than a third of the failing questions get a working
+# replacement from the four samples. The last bar shows what is left for a better judge: a perfect choice among the
+# same five candidates would add only about four points more. For nearly half of the questions, none of the five
+# candidates is right. Choosing better won't fix those; a bigger model, longer training, or the schema's keys and some
+# of its values in the input would.
 #
 # ## 11. Why decoder-only models won anyway
 #
