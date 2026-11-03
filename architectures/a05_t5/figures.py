@@ -129,6 +129,114 @@ def objectives() -> Figure:
     return fig
 
 
+# ---------------------------------------------------------------- the vocabulary's rows
+
+def vocab() -> Figure:
+    c = config(T5_SMALL)
+    fig = Figure(
+        760,
+        250,
+        alt="The rows of t5-small's embedding matrix, not to scale. Rows 0 to 31,999 are the SentencePiece "
+        "vocabulary, from the padding, end and unknown tokens to the last piece. Rows 32,000 to 32,099 are the 100 "
+        "sentinels, extra_id_99 down to extra_id_0. Rows 32,100 to 32,127 are 28 rows that no token uses, left over "
+        "because the matrix was rounded up to a multiple of 128. The new token for less-than takes row 32,100",
+    )
+    fig.text(14, 28, "Where a new token can go: the rows of T5's embedding matrix", kind="title")
+    fig.text(14, 50, f"{c['vocab_size']:,} rows, of which the tokenizer uses 32,100; not to scale", kind="note")
+    y = 84
+    fig.box(14, y, 420, 44, role="data", label="32,000 SentencePiece pieces")
+    fig.box(440, y, 170, 44, role="att", label="100 sentinels")
+    fig.box(616, y, 130, 44, role="neutral", label="28 unused")
+    fig.text(14, 156, "rows 0–31,999: <pad>, </s>, <unk>, then pieces of English, German, French, Romanian",
+             kind="note")
+    fig.text(14, 180, "rows 32,000–32,099: the sentinels, <extra_id_99> down to <extra_id_0>", kind="note",
+             role="att")
+    fig.text(14, 204, "rows 32,100–32,127: no token uses them; the matrix was rounded up to 251 × 128 rows",
+             kind="note")
+    fig.text(14, 232, "the new token '<' takes row 32,100, the first free one", kind="label", role="dec")
+    return fig
+
+
+# ---------------------------------------------------------------- two ways to grade a query
+
+def execmatch() -> Figure:
+    fig = Figure(
+        760,
+        372,
+        alt="Two ways to grade a predicted query, on an illustrative table of four people aged 41, 29, 35 and 52. The "
+        "reference is AGE greater than 34. A prediction of AGE at least 35 is a different string, so exact "
+        "matching calls it wrong, but it returns the same three people and is right. A prediction of AGE greater "
+        "than 30 also returns the same three people on this table, so execution calls it right although it is "
+        "wrong; a second table with a person aged 32 tells the two apart, which is what a test suite does",
+    )
+    fig.text(14, 28, "Grading a query: compare the text, or run it", kind="title")
+    fig.text(14, 50, "an illustration: the question is \"Who is older than 34?\" and the table has four people",
+             kind="note")
+    fig.text(14, 86, "People", kind="subtitle")
+    people = [("Ana", 41), ("Ben", 29), ("Chen", 35), ("Dana", 52)]
+    for k, (name, age) in enumerate(people):
+        fig.box(14, 98 + k * 36, 92, 30, role="data", label=name)
+        fig.box(110, 98 + k * 36, 52, 30, role="data", label=str(age))
+    rows = [("reference", "AGE > 34", "—", "Ana, Chen, Dana", "—"),
+            ("prediction 1", "AGE >= 35", "✗ different text", "Ana, Chen, Dana", "✓ right"),
+            ("prediction 2", "AGE > 30", "✗ different text", "Ana, Chen, Dana", "✓ but wrong")]
+    fig.text(196, 86, "WHERE …", kind="subtitle")
+    fig.text(330, 86, "exact match", kind="subtitle")
+    fig.text(468, 86, "rows it returns", kind="subtitle")
+    fig.text(640, 86, "execution", kind="subtitle")
+    for k, (who, where, exact, got, run) in enumerate(rows):
+        y = 98 + k * 52
+        fig.text(196, y + 12, who, kind="note")
+        fig.box(196, y + 18, 120, 28, role="dec" if k else "neutral", label=where)
+        if k:
+            fig.text(330, y + 37, exact, kind="label", role="dec")
+            fig.text(640, y + 37, run, kind="label", role="enc" if k == 1 else "dec")
+        fig.text(468, y + 37, got, kind="label")
+    fig.text(14, 286, "prediction 1 is the same query written differently: exact match is too strict", kind="note")
+    fig.text(14, 308, "prediction 2 only agrees on this table: add Eli, aged 32, and the rows differ", kind="note")
+    fig.text(14, 330, "Spider's official metric runs every query on a suite of such tables", kind="note")
+    return fig
+
+
+# ---------------------------------------------------------------- what an encoder–decoder costs
+
+def cost() -> Figure:
+    fig = Figure(
+        760,
+        330,
+        alt="What an encoder–decoder costs against a decoder-only model. The decoder-only model is one stack with P "
+        "parameters, and every token, of the input and of the output, passes through it. The encoder–decoder has "
+        "two stacks of P parameters each: input tokens pass through the encoder, output tokens through the "
+        "decoder. Each token meets P parameters in both cases, so the compute is about the same, but the "
+        "encoder–decoder has to keep twice the parameters in memory",
+    )
+    fig.text(14, 28, "The same work per token, twice the weights", kind="title")
+    fig.text(14, 50, "every token passes through one stack of P parameters, in either design", kind="note")
+    fig.text(14, 86, "decoder-only: P parameters", kind="subtitle")
+    tokens_in = ["question", "schema"]
+    tokens_out = ["SELECT", "…"]
+    fig.row(tokens_in + tokens_out, 14, 98, role="data", size=11, h=26)
+    fig.box(14, 140, 300, 70, role="dec", label="one stack, P")
+    fig.arrow((164, 125), (164, 139))
+    fig.text(14, 236, "input and output tokens both pass through P", kind="note")
+    fig.text(14, 256, "memory: P", kind="label")
+
+    fig.text(400, 86, "encoder–decoder: 2P parameters", kind="subtitle")
+    fig.row(tokens_in, 400, 98, role="data", size=11, h=26)
+    fig.row(tokens_out, 590, 98, role="data", size=11, h=26)
+    fig.box(400, 140, 160, 70, role="enc", label="encoder, P")
+    fig.box(586, 140, 160, 70, role="dec", label="decoder, P")
+    fig.arrow((470, 125), (470, 139))
+    fig.arrow((640, 125), (640, 139))
+    fig.arrow((561, 175), (585, 175), role="att")
+    fig.text(400, 236, "input tokens through the encoder, output tokens", kind="note")
+    fig.text(400, 256, "through the decoder: each still meets P", kind="note")
+    fig.text(400, 276, "memory: 2P", kind="label", role="dec")
+    fig.text(14, 312, "compute per token: the same; weights to hold: twice as many (Wang et al., 2022)",
+             kind="note")
+    return fig
+
+
 # ---------------------------------------------------------------- passport
 
 def passport() -> Figure:
@@ -183,6 +291,9 @@ FIGURES = {
     "hero": hero,
     "encdec": encdec,
     "objectives": objectives,
+    "vocab": vocab,
+    "execmatch": execmatch,
+    "cost": cost,
     "passport": passport,
     "family": lambda: arch.family(5),
 }
