@@ -37,6 +37,7 @@ from courses import COURSES, Course, course_of, lesson_dirs  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "xmarva/transformers-from-scratch"
 RAW = f"https://raw.githubusercontent.com/{REPO}"
+SITE = "https://xmarva.github.io"  # where the lessons are published as posts
 KAGGLE_USER = "qmarva"
 TARGETS = ("kaggle", "colab")
 BUILD_TAGS = ("only-kaggle", "only-colab")
@@ -61,7 +62,17 @@ def links(lesson: str, meta: dict, course: Course = COURSES[0]) -> dict[str, str
         "colab": f"https://colab.research.google.com/github/{REPO}/blob/main/notebooks/colab/{lesson}.ipynb",
         "kaggle": f"https://www.kaggle.com/code/{KAGGLE_USER}/{kaggle_slug(kaggle_title(meta, course))}",
         "github": f"https://github.com/{REPO}",
+        "course": f"{SITE}/teaching/",
     }
+
+
+def post_link(lesson: str, meta: dict, course: Course = COURSES[0]) -> str | None:
+    """The lesson's post on the site, once it is published (same slug as tools/export_post.py)."""
+    if not meta.get("published") or "published_on" not in meta:
+        return None
+    number, name = lesson.split("_", 1)
+    slug = f"{course.post}-{number.lstrip('abcdefghijklmnopqrstuvwxyz')}-{name.replace('_', '-')}"
+    return f"{SITE}/blog/{str(meta['published_on'])[:4]}/{slug}/"
 
 
 def header_cell(lesson: str, meta: dict, target: str, ref: str, course: Course = COURSES[0]) -> nbformat.NotebookNode:
@@ -71,11 +82,13 @@ def header_cell(lesson: str, meta: dict, target: str, ref: str, course: Course =
         "kaggle": f"[![Open in Kaggle](https://kaggle.com/static/images/open-in-kaggle.svg)]({url['kaggle']})",
     }
     other = "colab" if target == "kaggle" else "kaggle"
+    post = post_link(lesson, meta, course)
+    site = f"[read it on the site]({post})" if post else f"[the course on the site]({url['course']})"
     lines = [
         f"![{meta['cover_alt']}]({RAW}/{ref}/assets/covers/{lesson.split('_', 1)[0]}-en.png)",
         "",
-        f"**{course.title}** · Lesson {meta['number']} of {course.lessons} · [all lessons and code]({url['github']}) "
-        f"&nbsp; {badge[other]}",
+        f"**{course.title}** · Lesson {meta['number']} of {course.lessons} · {site} · "
+        f"[all lessons and code]({url['github']}) &nbsp; {badge[other]}",
     ]
     return nbformat.v4.new_markdown_cell("\n".join(lines))
 

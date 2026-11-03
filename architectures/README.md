@@ -5,6 +5,8 @@ that grew out of it. Each lesson is one architecture: what it changed and why, i
 its history, where it is the right tool today and where it isn't, and a practical task it solves well. The lessons go
 from the simplest to the most complex, and each one fixes a limit of an earlier one.
 
+Every published lesson is also a post on [xmarva.github.io](https://xmarva.github.io/teaching/), with the notebook's outputs and pictures.
+
 Every lesson follows the same plan:
 
 - **What it changed.** The story: the paper, the people, what it beat, the limit of its predecessor it removed.
