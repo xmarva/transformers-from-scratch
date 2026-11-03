@@ -95,9 +95,8 @@ if device == "cuda":
 # cost.
 #
 # The original T5 checkpoints were pre-trained on a mixture of C4 and the paper's supervised tasks, translation and
-# summarisation among them. That is why the smallest of them still knows its prefixes.
-#
-# The smallest T5 still knows its prefixes. Four of them, four tasks, one model with no task-specific layer:
+# summarisation among them. That is why the smallest of them still knows its prefixes. Here are four of them in five
+# prompts, one model with no task-specific layer:
 
 # %%
 T5_SMALL = "google-t5/t5-small"
@@ -185,11 +184,11 @@ x = torch.randn(2, 5, 8)
 mine, builtin = Norm(8, 1e-6), nn.RMSNorm(8, eps=1e-6)
 print("largest difference from nn.RMSNorm:", (mine(x) - builtin(x)).abs().max().item())
 
-# %% [markdown] **Attention without $\sqrt{d_k}$.** T5 drops the division by $\sqrt{d_k}$ in the scores. Nothing is
-# lost: the scale is folded into the initialisation of the query matrix, since Google's initialisation draws the query
-# matrix with a standard deviation $\sqrt{d_k}$ times smaller than the key matrix's. That has the same effect when
-# training starts, and training adjusts it from there. A transplant has to leave the division out too, and a
-# transplant has to leave the division out, or every score comes out eight times too small.
+# %% [markdown]
+# **Attention without $\sqrt{d_k}$.** T5 drops the division by $\sqrt{d_k}$ in the scores. Nothing is lost: Google's
+# initialisation draws the query matrix with a standard deviation $\sqrt{d_k}$ times smaller than the key matrix's,
+# which has the same effect when training starts, and training adjusts it from there. A transplant has to leave the
+# division out too, or every score comes out eight times too small.
 #
 # **Positions as a bias.** T5 has no position embeddings at all. Instead, each attention head adds a learned number
 # to each score, which depends only on how far the key is from the query:
@@ -727,7 +726,7 @@ table(pd.DataFrame({"masked": masked, "BART writes": written}))
 # then puts to work.
 
 # %% [markdown]
-# ## 7. Spider: 200 databases and a question for each table
+# ## 7. Spider: questions about databases the model has never seen
 #
 # Spider was built at Yale in 2018. Eleven students spent "a total of 1,000 man-hours" writing "10,181 questions and
 # 5,693 unique complex SQL queries on 200 databases with multiple tables, covering 138 different domains"
@@ -783,19 +782,20 @@ table(singers)
 # `singer`.
 
 # %%
-def schema_text(db_id):
+def schema_text(db_id, only=None):
     db = schemas[db_id]
     columns = {}
     for table_index, column in db["column_names_original"][1:]:  # the first is "*"
         columns.setdefault(table_index, []).append(column)
     parts = []
     for i, name in enumerate(db["table_names_original"]):
-        parts.append(name + " : " + " , ".join(columns.get(i, [])))
+        if only is None or name.lower() in only:
+            parts.append(name + " : " + " , ".join(columns.get(i, [])))
     return db_id + " | " + " | ".join(parts)
 
 
-def model_input(example):
-    return example["question"] + " | " + schema_text(example["db_id"])
+def model_input(example, only=None):
+    return example["question"] + " | " + schema_text(example["db_id"], only)
 
 
 def model_target(example):
@@ -811,16 +811,26 @@ print("training inputs longer than 512 tokens:", sum(n > 512 for n in lengths))
 dev_lengths = [len(tokenizer(model_input(e)).input_ids) for e in dev_set]
 print("development inputs longer than 512 tokens:", sum(n > 512 for n in dev_lengths))
 
-# a schema cut off at 512 tokens would teach the model to write about tables it was never shown
-kept = [n <= 512 for n in lengths]
-train_set = [e for e, keep in zip(train_set, kept) if keep]
-lengths = [n for n, keep in zip(lengths, kept) if keep]
-print(f"training questions kept: {len(train_set):,}")
+# a schema cut at 512 tokens would teach the model about tables it was never shown,
+# so a long one keeps only the tables its query uses
+shortened = 0
+for e, n in zip(train_set, lengths):
+    e["input"] = model_input(e)
+    if n > 512:
+        words = set(re.findall(r"[a-z_][a-z0-9_]*", e["query"].lower()))
+        e["input"] = model_input(e, only=words)
+        shortened += 1
+for e in dev_set:
+    e["input"] = model_input(e)
+lengths = [len(tokenizer(e["input"]).input_ids) for e in train_set]
+print("training schemas shortened to the tables of their query:", shortened)
+print("training inputs still longer than 512 tokens:", sum(n > 512 for n in lengths))
 
 # %% [markdown]
-# A few training databases have schemas too long for 512 tokens, and their questions are dropped rather than cut
-# short. A cut schema would teach the model to write about tables it was never shown, which is exactly the mistake we
-# least want it to learn. Every development schema fits.
+# A few training databases have schemas too long for 512 tokens. Cutting them at 512 would teach the model to write
+# about tables it was never shown, which is exactly the mistake we least want it to learn, and dropping their
+# questions would lose some of the hardest joins in the set. So for those questions alone the schema keeps only the
+# tables that the reference query uses. Every development schema fits whole, so the evaluation never relies on this.
 #
 # Note what the input leaves out: which column of one table points to which column of another. Spider's `tables.json`
 # lists these foreign keys, and joins need them; writing them in would push hundreds of training inputs and dozens of
@@ -859,9 +869,10 @@ print("id of the new token '<':     ", sql_tokenizer.convert_tokens_to_ids("<"))
 ids = sql_tokenizer(query).input_ids
 print(sql_tokenizer.convert_ids_to_tokens(ids))
 
-# %% [markdown] The new token sits in a row the model never trained, so at first it is noise; fine-tuning will give it
-# a meaning, because a few hundred training queries use it. The tokenizer is the same for every size of T5, so
-# `sql_tokenizer` serves t5-base too.
+# %% [markdown]
+# The new token sits in a row the model never trained, so at first it is noise; fine-tuning will give it a meaning,
+# because a few hundred training queries use it. The tokenizer is the same for every size of T5, so `sql_tokenizer`
+# serves t5-base too.
 #
 # Now the training. We fine-tune t5-base, the same architecture as t5-small with 12 layers on each side and a width
 # of 768, loaded into our own `T5` class; the transplant needs no change. Each step takes a random batch of
@@ -878,7 +889,7 @@ print(f"t5-base: {sum(p.numel() for p in model.parameters()) / 1e6:.0f} million 
 
 
 def make_batch(examples):
-    inputs = sql_tokenizer([model_input(e) for e in examples], max_length=512,
+    inputs = sql_tokenizer([e["input"] for e in examples], max_length=512,
                            truncation=True, padding=True, return_tensors="pt")
     targets = sql_tokenizer([model_target(e) for e in examples], max_length=256,
                             truncation=True, padding=True, return_tensors="pt").input_ids
@@ -901,10 +912,10 @@ with torch.no_grad():
 print(f"loss on development queries before training: {before:.2f}")
 
 # %% [markdown]
-# The plan: 20 minutes of training, however many steps that is on your GPU. Batches hold up to 16 questions of similar
-# length and at most 4,096 input tokens, so that the longest schemas still fit in a T4's memory. The optimizer is
-# AdamW at a constant learning rate after a short warm-up, with gradients clipped at 1. Every 200 steps we measure the
-# loss on 256 held-out development questions.
+# The plan: 1,100 steps, about 20 minutes on a T4. Batches hold up to 16 questions of similar length and at most 4,096
+# input tokens, so that the longest schemas still fit in a T4's memory. The optimizer is AdamW at a constant learning
+# rate after a short warm-up, with gradients clipped at 1. Every 200 steps we measure the loss on 256 held-out
+# development questions.
 #
 # We train in float32. T5 was trained on TPUs with bfloat16 activations, which have the range of float32, and in
 # float16 its feed-forward outputs overflow: in 2021, "t5-small was the only T5 model that was working in fp16"
@@ -912,7 +923,7 @@ print(f"loss on development queries before training: {before:.2f}")
 # bfloat16, so float32 it is.
 
 # %%
-TRAIN_MINUTES = 0.5 if SMOKE else 20
+STEPS = 3 if SMOKE else 1100  # about 20 minutes on a T4
 BATCH = 16
 LR = 3e-4
 WARMUP = 100
@@ -959,9 +970,9 @@ rng = random.Random(SEED)
 history = []
 model.train()
 started, step = time.time(), 0
-while time.time() - started < TRAIN_MINUTES * 60:
+while step < STEPS:
     for examples in batches_by_length(train_set, BATCH, rng):
-        if time.time() - started >= TRAIN_MINUTES * 60:
+        if step == STEPS:
             break
         for group in optimizer.param_groups:
             group["lr"] = LR * min(1.0, (step + 1) / WARMUP)
@@ -978,8 +989,9 @@ history.append({"step": step, "minutes": (time.time() - started) / 60,
                 "train loss": loss.item(), "dev loss": dev_loss(model)})
 model.eval()
 history = pd.DataFrame(history)
+minutes = (time.time() - started) / 60
 passes = step * BATCH / len(train_set)
-print(f"{step:,} steps, {passes:.1f} passes over the training questions")
+print(f"{step:,} steps in {minutes:.0f} minutes, about {passes:.1f} passes over the data")
 
 # %%
 fig, ax = plt.subplots(figsize=(6.4, 2.8))
@@ -998,8 +1010,8 @@ plt.show()
 # ## 9. Checking by running
 #
 # A loss says how probable the model finds the correct query. It doesn't say whether the query the model writes is
-# right, and for SQL there is a better judge than any metric: run it. Spider's databases are real SQLite files, so we
-# run the model's query and the correct one on the same database and compare what comes back. This is *execution
+# right, and for SQL there is a better judge than comparing text: run it. Spider's databases are real SQLite files, so
+# we run the model's query and the correct one on the same database and compare what comes back. This is *execution
 # accuracy*. It errs in both directions. Two correct queries can differ as strings, `AGE > 34` and `AGE >= 35`, which
 # is why exact matching underrates models. And a wrong query can happen to return the right rows on one particular
 # database, which is why Spider's official metric since 2020 runs every query on a suite of databases built to tell
@@ -1054,7 +1066,7 @@ predictions = []
 started = time.time()
 for i in range(0, len(evaluated), 64):
     chunk = evaluated[i:i + 64]
-    batch = sql_tokenizer([model_input(e) for e in chunk], max_length=512, truncation=True,
+    batch = sql_tokenizer([e["input"] for e in chunk], max_length=512, truncation=True,
                           padding=True, return_tensors="pt").to(device)
     written = generate(model, batch.input_ids, batch.attention_mask, max_new_tokens=192)
     predictions += sql_tokenizer.batch_decode(written, skip_special_tokens=True)
@@ -1062,7 +1074,7 @@ print(f"{len(predictions):,} queries written in {time.time() - started:.0f} s")
 
 def normalized(query):
     query = " ".join(query.lower().replace('"', "'").split())
-    return re.sub(r"\s*([,()])\s*", r"\1", query)  # spaces around commas and brackets
+    return re.sub(r"\s*([,()<>=!])\s*", r"\1", query)  # spaces around , ( ) and < > = !
 
 
 results = []
@@ -1071,12 +1083,15 @@ for e, predicted in zip(evaluated, predictions):
     results.append({"db_id": e["db_id"], "question": e["question"], "gold": model_target(e),
                     "predicted": predicted, "correct": correct, "status": status,
                     "as written": predicted == model_target(e),
-                    "exact": normalized(predicted) == normalized(model_target(e))})
+                    "exact": normalized(predicted) == normalized(model_target(e)),
+                    "no rows": len(run_query(e["db_id"], model_target(e))) == 0})
 results = pd.DataFrame(results)
-print(f"execution accuracy:                    {results['correct'].mean():.1%}")
-print(f"the same string as the reference:      {results['as written'].mean():.1%}")
+print(f"execution accuracy:                     {results['correct'].mean():.1%}")
+print(f"the same string as the reference:       {results['as written'].mean():.1%}")
 print(f"the same up to spaces, quotes and case: {results['exact'].mean():.1%}")
 print("queries that failed to run:", (results["status"] != "ran").sum())
+lucky = results["correct"] & results["no rows"] & ~results["exact"]
+print("right only in that both return no rows:", lucky.sum())
 
 # %% [markdown]
 # @@ACCURACY_COMMENT@@
@@ -1197,7 +1212,7 @@ candidates = [[query] for query in predictions]  # the greedy query comes first
 started = time.time()
 for i in range(0, len(evaluated), 64):
     chunk = evaluated[i:i + 64]
-    batch = sql_tokenizer([model_input(e) for e in chunk], max_length=512, truncation=True,
+    batch = sql_tokenizer([e["input"] for e in chunk], max_length=512, truncation=True,
                           padding=True, return_tensors="pt").to(device)
     for _ in range(SAMPLES):
         written = generate(model, batch.input_ids, batch.attention_mask, max_new_tokens=192,
