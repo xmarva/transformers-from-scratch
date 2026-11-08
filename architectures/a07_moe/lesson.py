@@ -937,10 +937,9 @@ for name, sentence in samples.items():
             f'<div><span style="opacity:0.6">layer {layer}&nbsp;</span>'
             f'{"".join(chips)}</div>'
         )
-legend = "".join(
-    chip(f"its first expert prefers {d}", palette[i]) for i, d in enumerate(DOMAINS)
-)
-lines.append(f"<div>{legend}</div></div>")
+legend = "".join(chip(d, palette[i]) for i, d in enumerate(DOMAINS))
+caption = '<span style="opacity:0.6">the first expert prefers&nbsp;</span>'
+lines.append(f"<div>{caption}{legend}</div></div>")
 display(HTML("".join(lines)))
 
 # %% [markdown]
