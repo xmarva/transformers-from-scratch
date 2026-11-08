@@ -95,9 +95,12 @@ def _rotation(azimuth: float, elevation: float) -> np.ndarray:
     return tilt @ turn
 
 
-def draw(ax, hemi: str, view: str, labels, colors: dict[str, str], *, base=("#E9ECF1", "#C9CED7"), kind="inflated"):
+def draw(ax, hemi: str, view: str, labels, colors: dict[str, str], *, base=("#E9ECF1", "#C9CED7"), kind="inflated",
+         overlays=()):
     """Paint one hemisphere on `ax`, seen from `view`, faces coloured by `colors[label]` or the folds' greys.
 
+    `overlays` are continuous maps drawn over that: (values per vertex, colour, low, high); a vertex takes the colour
+    in proportion to where its value sits between low (none) and high (full), e.g. an atlas of probabilities.
     After the rotation the camera looks along +x from -x: the page shows (-y, z)."""
     from matplotlib.collections import PolyCollection
     from matplotlib.colors import to_rgb
@@ -111,6 +114,9 @@ def draw(ax, hemi: str, view: str, labels, colors: dict[str, str], *, base=("#E9
     vertex_rgb = gyrus + (sulcus - gyrus) * depth
     for name, color in colors.items():
         vertex_rgb[labels == name] = to_rgb(color)
+    for values, color, low, high in overlays:
+        weight = np.clip((np.asarray(values, dtype=float) - low) / (high - low), 0, 1)[:, None]
+        vertex_rgb = vertex_rgb * (1 - weight) + np.array(to_rgb(color)) * weight
     face_rgb = vertex_rgb[faces].mean(axis=1)
 
     corners = seen[faces]
