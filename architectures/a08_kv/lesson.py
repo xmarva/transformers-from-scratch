@@ -558,7 +558,7 @@ else:
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
 config = AutoConfig.from_pretrained("{REPO}")
-# the library's long-context RoPE wants a stretch factor the config doesn't give; 32k of 32k is 1
+# the library's RoPE wants a stretch factor the config omits; 32k of 32k is 1
 config.rope_parameters["factor"] = 1.0
 model = AutoModelForCausalLM.from_pretrained("{REPO}", config=config, dtype=torch.float16)
 model = model.to("cuda").eval()
