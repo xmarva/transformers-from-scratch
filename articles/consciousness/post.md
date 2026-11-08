@@ -1,12 +1,13 @@
 ---
 layout: post
-title: "Consciousness for physicalists: the hard problem, thought experiments and today's theories"
+title: "Theories of consciousness and the hard problem"
 date: 2026-11-08 00:00:00
-description: "Why \"it's just what the brain does\" doesn't answer the question of consciousness, the thought experiments that show it, every major position from illusionism to panpsychism, the scientific theories and how they were put to the test, and what all of it says about AI"
+description: "The hard problem of consciousness for readers used to physicalism. Thought experiments from Mary's room to fading qualia, positions from illusionism to panpsychism, the scientific theories, the first experiment that tested two of them against each other, and what they imply for AI"
+seo_description: "The hard problem of consciousness for physicalists, with Mary's room, zombies, panpsychism and the experiment that tested global workspace theory and IIT."
 tags: [consciousness, philosophy-of-mind, neuroscience, hard-problem, ai]
 categories: [cognitive-science, philosophy]
-thumbnail: /assets/posts/consciousness-for-physicalists/cover.png
-og_image: https://xmarva.github.io/assets/posts/consciousness-for-physicalists/cover.png
+thumbnail: /assets/posts/theories-of-consciousness/cover.png
+og_image: https://xmarva.github.io/assets/posts/theories-of-consciousness/cover.png
 stylesheets: [/assets/css/tfs-course.css]
 toc:
   beginning: true
@@ -32,7 +33,7 @@ The occasion was the first results of an experiment designed to make that kind o
 
 If you work in machine learning or engineering, you probably think the question is settled in principle: consciousness is something the brain does, the details are for neuroscience, and philosophers who talk about a "hard problem" are making a mystery out of a gap in the data. This post is written for you. It is not an argument against physicalism. It is an argument that physicalism is a family of positions that disagree about the most interesting question, and that the thought experiments philosophers use are the fastest way to find out which member of the family you are.
 
-## What exactly is the problem?
+## What is the hard problem of consciousness?
 
 In 1974 Thomas Nagel gave the definition that most of the field still uses: "an organism has conscious mental states if and only if there is something that it is like to be that organism" ([Nagel, 1974](https://doi.org/10.2307/2183914)). His example was a bat. Bats find their way by echolocation, and imagining hanging upside down in a cave and listening for echoes tells me what it would be like for *me* to behave like a bat, not what it is like for a bat to be a bat. Every subjective fact is tied to a point of view, Nagel argued, while physical science works by abandoning points of view.
 
@@ -46,7 +47,7 @@ Twelve years earlier Joseph Levine had put the same worry as a gap in explanatio
 
 One more distinction prevents a lot of confusion, especially in conversations about AI. Ned Block separated *access consciousness*, information that is available to reasoning and to the control of speech and action, from *phenomenal consciousness*: "Phenomenal consciousness is experience; the phenomenally conscious aspect of a state is what it is like to be in that state" ([Block, 1995](https://doi.org/10.1017/S0140525X00038188)). Access is a function and could be engineered. Phenomenal consciousness is what the hard problem is about. Much of the talk about whether a model "is conscious" slides from one to the other without noticing.
 
-## Why "it's just what the brain does" isn't an answer
+## Is consciousness just what the brain does?
 
 The slogan can be true and still not do the job you want from it. Here is why, in four steps.
 
@@ -62,11 +63,11 @@ Fourth, the philosophers who have thought hardest about it don't find it obvious
 
 <p class="takeaway" markdown="1">The honest starting point is Nagel's: physicalism may be true, and we don't yet understand how. The rest of the debate is about what kind of explanation would close that gap, or whether it needs closing.</p>
 
-## Six thought experiments, and what each one tests
+## Thought experiments about consciousness
 
 Thought experiments in philosophy of mind work like unit tests: each isolates one assumption and shows what you are committed to if you accept it. You don't have to accept the conclusion to learn something from where you resist.
 
-### Mary's room: is knowing all the physical facts knowing everything?
+### Mary's room
 
 Frank Jackson's Mary is a brilliant scientist who has lived all her life in a black-and-white room, seeing the world through a black-and-white television ([Jackson, 1982](https://doi.org/10.2307/2960077)). She knows everything physical there is to know about colour vision: the wavelengths, the retina, the neurons, how it all leads someone to say "the sky is blue". In the 1986 version she knows *all* physical facts, completed physics and every functional role included ([Jackson, 1986](https://doi.org/10.2307/2026143)). Then she walks out and sees a red tomato. Does she learn something?
 
@@ -76,7 +77,7 @@ Frank Jackson's Mary is a brilliant scientist who has lived all her life in a bl
 
 Physicalists have three main replies. She learns no new fact but gains new abilities, to imagine, remember and recognise red, as David Lewis and Laurence Nemirow argued. She becomes acquainted with something she knew about. Or, the most common reply today, she learns an old physical fact under a new concept, a phenomenal concept that she can only have by having the experience, as you can know that the morning star is the evening star without being able to recognise it at dawn ([Loar, 1990](https://doi.org/10.2307/2214188)). And then there is the twist that most popular accounts leave out: Jackson himself gave up the argument. By 1995 he had concluded that if experiences were epiphenomenal, causing nothing, as his own version of the argument made them, nobody could know about them, so something had to be wrong with it; he later joined the physicalists ([Nida-Rümelin & O Conaill, 2024](https://plato.stanford.edu/entries/qualia-knowledge/)).
 
-### Zombies: is a molecule-for-molecule copy of you necessarily conscious?
+### Philosophical zombies
 
 A philosophical zombie is not a robot that acts conscious. It is an exact physical duplicate of you, atom for atom, that behaves exactly as you do, says the same things, including "I'm conscious", and has no experience at all: "There is nothing it is like to be a zombie" ([Chalmers, 1996](https://global.oup.com/academic/product/the-conscious-mind-9780195117899)). Nobody thinks zombies exist. The argument is about whether they are possible: if a zombie world is conceivable in a strict sense, then it is possible, and if it is possible, the physical facts don't fix the facts about experience, and physicalism is false ([Kirk, 2023](https://plato.stanford.edu/entries/zombies/)).
 
@@ -86,19 +87,19 @@ The argument has an ancestor in Saul Kripke's lectures of 1970. To make heat, Go
 
 The survey shows where physicalists get off. In 2020, 16% of philosophers said zombies are inconceivable, the type-A answer; 37% said conceivable but not possible, the type-B answer; 24% said possible. The modal physicalist grants that you can imagine a zombie and denies that imagining it tells you anything about what is possible, as you can imagine water that isn't H₂O.
 
-### The inverted spectrum: could your red be my green?
+### The inverted spectrum
 
 John Locke asked whether a violet might produce in one person the idea that a marigold produces in another, with nobody ever able to tell, since both would call violets violet. If such an inversion were possible between two people who behave identically, behaviourism would be false; between two people with identical functional organisation, functionalism; only between two physical duplicates would it threaten physicalism ([Byrne, 2025](https://plato.stanford.edu/entries/qualia-inverted/)).
 
 Here empirical science pushes back on a thought experiment. Colour space isn't symmetric: there are more distinguishable shades between red and blue than between green and yellow, dark yellow is brown while dark blue is still blue, and red looks warm. A naive red-green inversion would show up in behaviour. Defenders retreat to symmetric cases that are harder to picture.
 
-### The China brain: would a nation of people with radios have a mind?
+### The China brain
 
 In 1978 Ned Block imagined converting the government of China to functionalism and having it run a human mind for an hour ([Block, 1980](https://doi.org/10.4159/harvard.9780674594623.c31)). Each citizen gets a two-way radio and follows instructions that together implement the machine table describing your mind; letters displayed on satellites, visible across the country, keep track of which state the whole system is in. If functionalism is right, the system has your mental states, including the felt ones. Is anybody there, besides a billion people with radios? (Block chose China because it "has a billion inhabitants", not, as is often said, because that matches the number of neurons; a brain has about 86 billion.)
 
 Most people's intuition says no one is there. The functionalist replies that intuitions about huge, slow systems are unreliable, and that the mind would belong to the system, not to any citizen.
 
-### Fading and dancing qualia: a dualist's argument for conscious machines
+### Fading and dancing qualia
 
 The thought experiment that should interest engineers most comes from a dualist. Chalmers asks you to replace your neurons, one at a time, with silicon chips that do exactly the same local job ([Chalmers, 1995b](https://consc.net/papers/qualia.html)). Your behaviour never changes, because each chip does what the neuron did. Suppose the end result, a silicon copy of your brain, had no experience. Then somewhere in the middle there is a person with half-faded experience, who sees pale pink where you saw bright red, while saying exactly what you would say about the bright red. "The crucial point here is that Joe is systematically wrong about everything that he is experiencing." Chalmers finds that implausible, and concludes that experience doesn't fade: a fine-grained functional copy of a conscious brain is conscious, in silicon or anything else.
 
@@ -106,17 +107,17 @@ The thought experiment that should interest engineers most comes from a dualist.
 
 The "dancing" version installs a silicon circuit that sees blue where you see red as a backup and flips a switch between it and your own neurons: "My experiences are switching from red to blue, but I do not notice any change." That is the standard philosophical argument that consciousness doesn't depend on carbon, and its author believes experience is not physical. Being a dualist about what experience is and a functionalist about which systems have it is a consistent position.
 
-### Nagel's bat, once more
+### What is it like to be a bat?
 
 The bat belongs on this list because it tests something different: the limits of imagination rather than of physics. Learning everything about echolocation tells you what a bat does with sound. Whether that will ever tell you what it is like to be a bat is the question that keeps every other thought experiment alive.
 
-## The positions: a map
+## Philosophical positions on consciousness
 
 The thought experiments sort people into positions, and the positions are easiest to remember as answers to three questions.
 
 [[positions]]
 
-### Physicalism without a hard problem: illusionism and eliminativism
+### Illusionism and eliminativism
 
 *Illusionism*, defended by Keith Frankish and in its classic form by Daniel Dennett, is the most radical physicalism and the most often misunderstood. "This is the view that phenomenal consciousness, as usually conceived, is illusory" ([Frankish, 2016](https://keithfrankish.com/eprints/Frankish_2016_Illusionism_as_a_theory_of_consciousness_eprint.pdf)). Illusionists don't deny that you see, feel pain or have experiences in the everyday sense. They deny that experiences have the special properties philosophers attribute to them, intrinsic, private, ineffable qualities, and say that introspection misrepresents ordinary physical states as having them. The hard problem becomes the *illusion problem*: why do experiences seem to have phenomenal properties? Frankish is candid about the cost: if zombies lack only phenomenal consciousness in the philosophers' technical sense, then "in this technical sense, we are zombies."
 
@@ -124,25 +125,25 @@ Dennett's 1988 essay "Quining qualia" set out to destroy faith in the very conce
 
 The objection to all of this is short. Chalmers calls it Moorean: it is more certain that people sometimes feel pain than that any premise of the illusionist argument is true ([Chalmers, 2018](https://consc.net/papers/metaproblem.pdf)). Galen Strawson called the denial of experience the strangest thing in the history of human thought. Illusionists reply that an illusion of experience needn't itself be experienced, any more than a misprint in a map needs to be printed twice.
 
-### Physicalism with a gap: identity, functionalism and the phenomenal-concept strategy
+### Identity theory, functionalism and the phenomenal concept strategy
 
 The *identity theory* of the 1950s said that sensations are brain processes, as lightning is an electrical discharge. Its trouble was multiple realisability: octopuses, birds and people all seem to feel pain with very different nervous systems, so pain can't be identical to one kind of neural process ([Putnam, 1967](https://plato.stanford.edu/entries/multiple-realizability/)). *Functionalism* answered by identifying a mental state with its role in the system rather than with its stuff, which makes minds possible in any substrate, including silicon. It is the most popular single answer among philosophers, at 33% on the survey's question about consciousness, ahead of dualism at 22% and identity theory at 13%.
 
 The most common way physicalists handle the hard problem today is the *phenomenal-concept strategy* of Brian Loar and David Papineau. The gap between experience and brain is real, but it is a gap between two kinds of concept, not two kinds of thing: one we get by having an experience, the other from theory. Two concepts can pick out one thing without our being able to see that they do, as "water" and "H₂O" did. Chalmers's objection is a dilemma: whatever feature of phenomenal concepts is supposed to explain the gap must either itself be physically explicable, in which case it can't explain why a zombie wouldn't have it too, or not, in which case physicalism has given up ([Chalmers, 2007](https://consc.net/papers/pceg.pdf)).
 
-### Physicalism about consciousness, but not of the functional kind: biological naturalism and mysterianism
+### Biological naturalism and mysterianism
 
 John Searle's *biological naturalism* holds that consciousness is a real, subjective biological phenomenon, caused by the brain's specific processes as liquidity is a feature of water, and that running the right program is not enough ([Searle, 1992](https://doi.org/10.7551/mitpress/5834.001.0001)). The objection is that it never says which causal powers of the brain matter, and if it's their organisation, it is functionalism under another name. Anil Seth's view that experience is rooted in our nature as living, self-regulating "beast machines" is close to it in spirit.
 
 Colin McGinn's *mysterianism* is the modest version: some natural property of the brain explains consciousness, but our minds are "cognitively closed" to it, as a dog's mind is to calculus. "How can technicolour phenomenology arise from soggy grey matter?" ([McGinn, 1989](https://doi.org/10.1093/mind/XCVIII.391.349)). It is hard to argue with and hard to make use of.
 
-### Dualism: experience is not physical
+### Dualism
 
 *Property dualism*, Chalmers's own view, holds that experiences are fundamental features of the world, tied to physical organisation by laws of nature we haven't yet found, much as electromagnetism had to be added to mechanics. Its main problem is causal: if physics is complete, non-physical experiences have nothing left to do, and then our talk about experience isn't caused by experience. *Epiphenomenalism* accepts that consequence: experience is caused by the brain and causes nothing, like the whistle of a steam train, in Thomas Huxley's image. William James's reply still stands: a property with no effects could not have been selected by evolution.
 
 *Substance dualism*, Descartes' view that the mind is a separate thing, has modern defenders but faces the old objection his correspondent Elisabeth of Bohemia raised in 1643: how could an unextended mind move an extended body? Today the objection is that every physical effect seems to have a sufficient physical cause, leaving nothing for a mind to do.
 
-### Monism of a different kind: panpsychism, Russellian monism, idealism
+### Panpsychism, Russellian monism and idealism
 
 The most surprising turn in recent philosophy of mind has been the return of *panpsychism*, the view that some fundamental physical entities have, in Chalmers's words, mental states ([Chalmers, 2015](https://consc.net/papers/panpsychism.pdf)). Its best argument comes from Bertrand Russell and Arthur Eddington: physics describes what mass and charge *do*, their structure and dynamics, and is silent about what they intrinsically *are*. Experience is the one intrinsic nature we know from the inside, so perhaps that is what the structure is the structure of. This is *Russellian monism*; Galen Strawson put the argument bluntly: "Real physicalists must accept that at least some ultimates are intrinsically experience-involving" ([Strawson, 2008](https://doi.org/10.1093/acprof:oso/9780199267422.003.0003)). Panpsychism does not say that rocks have feelings; a rock, like a crowd, need not be a subject.
 
@@ -150,7 +151,7 @@ Its own defenders name its hardest problem: *combination*. How do many tiny subj
 
 *Idealism*, the view that reality is fundamentally mental, survives in Bernardo Kastrup's "analytic idealism", where individual minds are dissociated parts of one universal consciousness. It reverses the combination problem: how does one mind split into many?
 
-## The scientific theories: where in the brain, and why
+## Scientific theories of consciousness
 
 Philosophers ask what consciousness is. Neuroscientists ask which brain activity distinguishes seeing something from not seeing it, while the stimulus stays the same: a word flashed so briefly that sometimes you see it and sometimes you don't, two images competing for one eye. The answers have grown into theories, more than two hundred by one count ([Kuhn, 2024](https://doi.org/10.1016/j.pbiomolbio.2023.12.003)). Six of them matter most.
 
@@ -162,7 +163,7 @@ Philosophers ask what consciousness is. Neuroscientists ask which brain activity
 
 *Higher-order theories* (David Rosenthal, Hakwan Lau, Joseph LeDoux) say a state is conscious when you are, in a suitable way, aware of being in it, through a representation of the state itself ([Brown et al., 2019](https://doi.org/10.1016/j.tics.2019.06.009)). *Recurrent processing theory* (Victor Lamme) says visual experience begins when higher visual areas feed signals back to lower ones, no frontal cortex needed: the first fast sweep up the visual hierarchy is unconscious ([Lamme & Roelfsema, 2000](https://doi.org/10.1016/S0166-2236(00)01657-X)). *Predictive processing*, in Anil Seth's version, says perception is the brain's best guess about the causes of its signals, a "controlled hallucination", and that the deepest guesses are about the state of the body itself ([Seth & Tsakiris, 2018](https://doi.org/10.1016/j.tics.2018.08.008)). And Michael Graziano's *attention schema theory* says the brain builds a simplified model of its own attention, and "the content of this internal model leads a brain to conclude that it has a subjective experience" ([Graziano & Webb, 2015](https://doi.org/10.3389/fpsyg.2015.00500)), which makes it a scientific cousin of illusionism.
 
-## Putting two theories to the test
+## Testing global workspace theory against integrated information theory
 
 The usual way theories of consciousness are tested makes it easy for each to declare victory, since each team runs the experiments its theory suggests. In 2018 the Templeton World Charity Foundation brought proponents of the two leading theories, Tononi and Koch for integrated information and Dehaene for the global workspace, together to do something different: agree in advance on three predictions where the theories conflict and on what result would count against each, and let theory-neutral labs collect the data ([Melloni et al., 2023](https://doi.org/10.1371/journal.pone.0268577)).
 
@@ -176,7 +177,7 @@ Two lessons came out of it, and neither is the one the headlines wanted. First, 
 
 A quieter result may matter more. A brain wave called the P3b, appearing about 300 ms after a stimulus, was long treated as a signature of consciousness. When people saw stimuli but didn't have to report them, it vanished: "we found a robust P3b in the report condition, but no P3b whatsoever in the no-report condition" ([Cohen et al., 2020](https://doi.org/10.1523/JNEUROSCI.0120-20.2020)). Much of what looked like the brain becoming conscious of something may have been the brain preparing to say so.
 
-## Why it matters: patients who seem to be absent
+## Covert consciousness in unresponsive patients
 
 The question stops being academic in an intensive care unit. In 2006 Adrian Owen and colleagues put a young woman who met the clinical criteria for a vegetative state into a scanner and asked her to imagine playing tennis, then to imagine walking through her home. Her brain lit up in the motor and spatial areas that light up in healthy volunteers, "in a manner indistinguishable from that of healthy volunteers" ([Owen et al., 2006](https://doi.org/10.1126/science.1130197)).
 
@@ -186,7 +187,7 @@ In 2024 a study at six centres tested 353 adults with disorders of consciousness
 
 A test inspired by integrated information theory, the *perturbational complexity index*, takes a different route. It knocks on the cortex with a magnetic pulse and measures how complex the echo is in the EEG: a conscious brain responds with activity that is both widespread and varied, an unconscious one with a simple, local or uniform response ([Casali et al., 2013](https://doi.org/10.1126/scitranslmed.3006294)). In a benchmark of 150 subjects, awake, dreaming, deeply asleep and under different anaesthetics, a single threshold of 0.31 separated conscious from unconscious states without a single error, and it caught 36 of 38 minimally conscious patients ([Casarotto et al., 2016](https://doi.org/10.1002/ana.24779)). Nine of 43 patients diagnosed as vegetative had high complexity, a hint that some of them might be conscious and unable to show it. The index measures a capacity, calibrated against what people later report, and its success doesn't make integrated information theory true.
 
-## And AI?
+## Can AI be conscious?
 
 Every theory above gives a different answer for a language model, which is why the question can't be settled by asking the model.
 
@@ -198,7 +199,7 @@ Meanwhile the functional side keeps moving. In July 2026 interpretability resear
 
 The last reading is the one Chalmers himself recommends as common ground. The *meta-problem* of consciousness is "the problem of explaining why we think that there is a problem of consciousness" ([Chalmers, 2018](https://consc.net/papers/metaproblem.pdf)). It is an easy problem, a question about behaviour and mechanisms, and it can now be studied in machines: why do systems trained on human text say they have an inner life, and what in them produces the saying? Chalmers wrote that if he were a materialist, he would be an illusionist. An illusionist would say that answering the meta-problem is all there ever was to answer.
 
-## What a physicalist can take from this
+## What a physicalist can conclude
 
 Five conclusions seem fair.
 

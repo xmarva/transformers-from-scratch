@@ -40,16 +40,16 @@ def problems() -> Figure:
         "explanatory gap: heat equals molecular motion explains why heat melts ice, while pain equals C-fibre firing "
         "explains wincing but not why pain feels the way it does",
     )
-    fig.text(14, 28, "The easy problems, the hard one, and the gap between them", kind="title")
+    fig.text(14, 28, "The easy problems and the hard problem of consciousness", kind="title")
     fig.text(14, 50, "Chalmers (1995); Levine (1983)", kind="note")
-    fig.text(14, 84, "easy: explain a function", kind="subtitle")
+    fig.text(14, 84, "the easy problems", kind="subtitle")
     easy = ["discriminate and react", "integrate information", "report a mental state", "focus attention",
             "control behaviour", "wake and sleep"]
     for k, name in enumerate(easy):
         x, y = 14 + (k % 2) * 186, 96 + (k // 2) * 40
         fig.box(x, y, 178, 32, role="enc", label=name)
     fig.text(14, 232, "solved by a mechanism that does the job", kind="note")
-    fig.text(420, 84, "hard: why is any of it felt?", kind="subtitle")
+    fig.text(420, 84, "the hard problem", kind="subtitle")
     fig.box(420, 96, 326, 112, role="dec", label=None, strong=False)
     fig.text(436, 126, "\"Why is the performance of", kind="body")
     fig.text(436, 148, "these functions accompanied", kind="body")
@@ -95,7 +95,7 @@ def chart_survey(theme):
         ax.spines["left"].set_visible(False)
         ax.grid(False)
         ax.set_title(f"{question}\nN = {n:,}", fontsize=9, loc="left")
-    _caption(fig, "What philosophers think: the 2020 PhilPapers Survey",
+    _caption(fig, "What philosophers think about consciousness in the 2020 PhilPapers Survey",
              "accept or lean towards; several answers allowed, so a question needn't add up to 100%", c)
     return fig
 
@@ -111,7 +111,7 @@ def mary() -> Figure:
         "recognise red (Lewis, Nemirow); she gains acquaintance (Conee); she learns an old fact under a new concept "
         "(Loar, Papineau). Jackson himself gave up the argument by 1995",
     )
-    fig.text(14, 28, "Mary's room: does knowing every physical fact mean knowing everything?", kind="title")
+    fig.text(14, 28, "Mary's room asks whether knowing every physical fact is knowing everything", kind="title")
     fig.text(14, 50, "Jackson (1982, 1986)", kind="note")
     fig.box(14, 78, 250, 132, role="neutral", label=None)
     fig.text(30, 104, "a black-and-white room", kind="subtitle")
@@ -156,8 +156,9 @@ def zombie() -> Figure:
         "physicalism is false. In 2020, 16% of philosophers said zombies are inconceivable, 37% conceivable but not "
         "possible, 24% possible",
     )
-    fig.text(14, 28, "Zombies: a molecule-for-molecule copy of you with nobody home", kind="title")
-    fig.text(14, 50, "not a robot that acts conscious: an exact physical duplicate (Kirk; Chalmers, 1996)", kind="note")
+    fig.text(14, 28, "A philosophical zombie is an exact physical copy of you without experience", kind="title")
+    fig.text(14, 50, "not a robot that acts conscious but an exact physical duplicate (Kirk; Chalmers, 1996)",
+             kind="note")
     fig.text(214, 84, "you", kind="subtitle", anchor="middle")
     fig.text(330, 84, "your zombie twin", kind="subtitle", anchor="middle")
     for k, (what, you, twin) in enumerate(rows):
@@ -194,7 +195,7 @@ def fading() -> Figure:
         "bright red, systematically wrong about their own experience. Chalmers concludes experience does not fade: a "
         "fine-grained functional copy is conscious",
     )
-    fig.text(14, 28, "Fading qualia: swap your neurons for chips, one at a time", kind="title")
+    fig.text(14, 28, "Replacing neurons with chips one at a time", kind="title")
     fig.text(14, 50, "Chalmers (1995), a dualist's argument that a silicon copy of a brain would be conscious",
              kind="note")
     stages = [0, 0.25, 0.5, 0.75, 1.0]
@@ -229,7 +230,7 @@ def positions() -> Figure:
         "(Russell, Strawson, Goff). Everything is mental: idealism (Kastrup). Functionalism, which systems are "
         "conscious, cuts across the tree",
     )
-    fig.text(14, 28, "The positions, as answers to three questions", kind="title")
+    fig.text(14, 28, "Positions on consciousness as answers to three questions", kind="title")
     fig.text(14, 50, "Chalmers's types A, B, D, E and F in brackets", kind="note")
     fig.box(14, 70, 360, 34, role="att", label="Is there a hard problem beyond the functions?", strong=True)
     fig.line((60, 105), (60, 127))
@@ -327,8 +328,8 @@ def cogitate() -> Figure:
         "synchrony, which was absent, a failure; GNWT brief long-range synchrony, not supported by the preregistered "
         "metric but consistent in an exploratory analysis, mixed",
     )
-    fig.text(14, 28, "Two theories, three predictions, one experiment", kind="title")
-    fig.text(14, 50, "Cogitate Consortium (2025): 256 people, fMRI, MEG and intracranial EEG; preregistered",
+    fig.text(14, 28, "How the Cogitate experiment tested IIT against global workspace theory", kind="title")
+    fig.text(14, 50, "Cogitate Consortium (2025), 256 people, fMRI, MEG and intracranial EEG, preregistered",
              kind="note")
     fig.text(180, 80, "IIT predicted", kind="label", role="enc")
     fig.text(400, 80, "GNWT predicted", kind="label", role="att")
@@ -369,7 +370,8 @@ def chart_patients(theme):
         ax.axis("off")
         ax.set_title(f"{name}: {did} of {total}", fontsize=9.5, loc="left")
     _caption(fig, "Who performed mental tasks in the scanner, by bedside behaviour",
-             "violet: imagined playing tennis, moving a hand and so on, on fMRI or EEG; Bodien et al. (2024)", c)
+             "in violet those who imagined playing tennis, moving a hand and so on, on fMRI or EEG; "
+             "Bodien et al. (2024)", c)
     return fig
 
 
@@ -393,17 +395,17 @@ def cover():
     svg, spans, right = cv.chip_row(["discriminate", "report", "attend"], cv.MOTIF_X0, 172, size=17)
     cv.fits(right)
     out.append(svg)
-    out.append(cv.label(cv.MOTIF_X0, 262, "AND THE HARD ONE"))
+    out.append(cv.label(cv.MOTIF_X0, 262, "THE HARD PROBLEM"))
     svg, spans, right = cv.chip_row(["why is any of it felt?"], cv.MOTIF_X0, 284, size=17, kinds={0: "hot"})
     cv.fits(right)
     out.append(svg)
-    out.append(cv.label(cv.MOTIF_X0, 374, "TESTED ON"))
+    out.append(cv.label(cv.MOTIF_X0, 374, "THOUGHT EXPERIMENTS"))
     svg, spans, right = cv.chip_row(["Mary", "zombies", "a silicon brain"], cv.MOTIF_X0, 396, size=17,
                                     kinds={0: "warm", 1: "warm", 2: "warm"})
     cv.fits(right)
     out.append(svg)
-    return cv.frame("blog / philosophy", ["Consciousness", "for physicalists"],
-                    ["The hard problem, thought", "experiments and the theories"], "".join(out),
+    return cv.frame("blog / philosophy", ["Theories of", "consciousness"],
+                    ["The hard problem for", "a physicalist reader"], "".join(out),
                     footer="Philosophy of mind")
 
 
