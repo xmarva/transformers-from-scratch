@@ -8,9 +8,9 @@
 # head's key and value can be recomputed when needed.
 #
 # DeepSeek-V3 has 128 query heads and 61 layers, and a token in its cache takes about half the memory it takes in
-# Llama 3.1 8B, a model eighty times smaller. That trick, *multi-head latent attention*, is the subject of most of this
-# lesson. We write it from scratch, find out why it needs its own handling of positions, load a small model built on
-# it, and measure on a T4 what it buys and what it costs. Then we try to turn lesson 6's Qwen3 into a latent model
+# Llama 3.1 8B, a model eighty times smaller. That trick, *multi-head latent attention*, is the subject of most of
+# this lesson. We write it from scratch, find out why it needs its own handling of positions, load a small model built
+# on it, and measure on a T4 what it buys and what it costs. Then we try to turn lesson 6's Qwen3 into a latent model
 # without any training, and look at the levers that work on any model: fewer bits per number, and a cache organised
 # like virtual memory.
 #
@@ -28,7 +28,7 @@
 # 6. Compress lesson 6's Qwen3 into a latent model without training, two ways, and quantize its cache to fewer bits.
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type → T4
-# GPU*. The notebook downloads MiniCPM3-4B (8 GB) and Qwen3-0.6B (1.5 GB); on a T4 it runs in about @@RUNTIME@@
+# GPU*. The notebook downloads MiniCPM3-4B (8 GB) and Qwen3-0.6B (1.5 GB); on a T4 it runs in about ten
 # minutes.
 
 # %% tags=["include:setup"]
@@ -61,7 +61,7 @@ if device == "cuda":
 # %% [markdown]
 # ## 1. What a token costs
 #
-# For the models of lesson 6 the cost of a token is a product of four numbers: two (a key and a value) times the
+# For the models of lesson 6 the cost of a token is a plain product: two (a key and a value) times the
 # layers $$L$$, the key-value heads $$n_{kv}$$ and the head size $$d_h$$, in bytes per number $$b$$:
 #
 # $$\text{bytes per token} = 2 \cdot L \cdot n_{kv} \cdot d_h \cdot b.$$
@@ -129,7 +129,14 @@ budget = pd.DataFrame(rows)
 table(budget, digits=1)
 
 # %% [markdown]
-# @@BUDGET@@
+# The spread is wide. The dense models of lesson 6 sit in a narrow band, and Gemma 3 27B tops the table only because
+# we counted every layer in full; its local layers keep a window, as lesson 6 showed, and a real Gemma cache is far
+# smaller. The latent models are a different class: DeepSeek-V3, with 128 query heads and 61 layers, keeps about half
+# of what Llama 3.1 8B keeps per token, and MiniCPM3 a quarter.
+#
+# DeepSeek's own headline for this is bigger, a cache "reduced by 93.3%" against DeepSeek 67B. By our count from the
+# configs, latent attention alone cuts the cache by about four fifths; the rest of the way to 93.3% comes from storing
+# the cache in about six bits per number, which the paper mentions a few sections later.
 #
 # "10 GB" is roughly what a T4 has left once a 4-billion-parameter model sits in it in 16-bit floats, so the last
 # column is how many people could talk to such a model at once if it had each architecture's cache.
@@ -342,7 +349,10 @@ per_token = {
 print("numbers cached per token per layer:", per_token)
 
 # %% [markdown]
-# @@ABSORB@@
+# The two forms agree to the rounding of 32-bit floats, so the absorbed one is not an approximation; it is the same
+# arithmetic in a different order. What changes is what has to be kept. In this toy layer the rebuilt keys and values
+# take eight times the memory of the latent and the rotary key, and in a real model the ratio is larger, because
+# real models have more and wider heads per latent.
 
 # %% [markdown]
 # ## 3. Why positions need their own dimensions
@@ -384,15 +394,17 @@ print(
 )
 
 # %% [markdown]
-# @@ROPE@@
+# Absorbing past rotated keys gives scores that have nothing to do with the right ones, while without the rotation the
+# absorbed scores are exact. That is the whole reason for the decoupled design: the rotary part is small, shared by
+# all heads and cached as is, and the large compressed part never rotates, so it can be absorbed.
 
 # %% [markdown]
 # ## 4. MiniCPM3 in PyTorch
 #
 # DeepSeek's own latent-attention models are too large for a T4: even DeepSeek-V2-Lite needs, in its card's words,
 # "40GB*1 GPU" for inference in 16-bit floats. MiniCPM3-4B from OpenBMB uses the same layout, DeepSeek-V2's names and
-# all, at a size that fits: 62 layers, 40 heads, a latent of 256 numbers and a rotary key of 32. Its weights come under
-# the MiniCPM model licence, free for research. Its config:
+# all, at a size that fits: 62 layers, 40 heads, a latent of 256 numbers and a rotary key of 32. Its weights come
+# under the MiniCPM model licence, free for research. Its config:
 
 # %%
 REPO = "openbmb/MiniCPM3-4B"
@@ -571,11 +583,13 @@ print(
 print("max difference, absorbed:", f"{(ours_absorbed - theirs).abs().max().item():.2e}")
 
 # %% [markdown]
-# @@MATCH@@
+# Both forms of our model agree with Hugging Face's within the rounding of 16-bit floats over 62 layers; in 32-bit
+# floats, on the small random model this notebook's smoke test uses, the difference is a few millionths. The weights
+# load into our classes unchanged: MiniCPM3 is DeepSeek-V2's attention with smaller numbers.
 #
 # Generation is lesson 4's loop with a cache per layer. `generate` takes the kind of cache and whether to absorb, so
 # the same weights can run with a latent cache and absorption, as DeepSeek serves its models, or with a cache of
-# rebuilt keys and values, the way most libraries ran latent models until recently.
+# rebuilt keys and values, the way the code published with MiniCPM3 runs it.
 
 
 # %%
@@ -682,7 +696,10 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@CAPACITY@@
+# The latent cache read the whole document, all 32,768 tokens, with a cache of about a gigabyte. The cache of rebuilt
+# keys and values ran out of memory a little past a fifth of it. The model is the same and so are the weights; only
+# what we chose to keep differs. And the second curve is not a strawman: the code that was published with MiniCPM3,
+# and vLLM's implementation of it, both cache rebuilt keys and values.
 #
 # Memory is half the story; the other half is time. With the latent cache, every new token either rebuilds the keys
 # and values of the whole context in every layer, or absorbs and works in the latent space, where each head's score is
@@ -753,7 +770,18 @@ table(
 )
 
 # %% [markdown]
-# @@SPEED@@
+# Three different behaviours. With absorption, a new token costs the same at every context length here: the time goes
+# into the rest of the model, reading 8 GB of weights and running 62 layers, and the scores against a few thousand
+# latents are cheap next to that. Rebuilding the keys and values at every step costs more and more as the context
+# grows, because it rebuilds all of them, every time. Caching rebuilt keys and values is the fastest at short
+# contexts, since the attention is then ordinary, and runs out of memory before 8,192 tokens.
+#
+# Absorption is not free either. Per cached token each head scores over the 256 + 32 numbers of the latent instead of
+# the 64 + 32 of a key, and mixes 256 numbers instead of 64, so the attention does several times the arithmetic. On a
+# large GPU with many heads that arithmetic dominates; DeepSeek's kernel notes say that "the MLA kernel is
+# compute-bound despite being a decoding-stage attention kernel". That is why serving engines use each form where it
+# fits: vLLM's documentation describes the rebuilt form for reading a prompt and the absorbed one for generating, the
+# first "compute friendly", the second "data-movement friendly".
 
 # %% [markdown]
 # ## 6. A latent cache for a model that wasn't trained with one
@@ -911,16 +939,24 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@CONVERSION@@
+# At 1,024 numbers both methods lose nothing, and that is the first lesson of this experiment: Qwen3-0.6B's hidden
+# state is only 1,024 numbers wide, so its keys and values, 2,048 numbers computed linearly from it, carry no more
+# information than the hidden state itself. The model caches twice what it needs.
+#
+# Below that the two methods part. The weight SVD falls apart quickly, the activation PCA degrades gently, which is
+# why TransMLA works with the keys and values the model actually produces. But even the PCA loses noticeably at a
+# quarter of the original cache, and the loss grows from there. A model can be converted, but not for free: the
+# published conversions all fine-tune afterwards, MHA2MLA on a fraction of a percent of the pre-training data, and the
+# rotary positions have to be split out first, which our experiment didn't attempt.
 
 # %% [markdown]
 # ## 7. Fewer bits per number
 #
-# The lever that works on every model is the number format. KIVI found that keys and values want different
-# treatment: "the key cache should be quantized per-channel ... In contrast, the value cache should be quantized
-# per-token", because "in key cache, some fixed channels exhibit very large magnitudes, whereas in value cache, there
-# is no significant pattern for outliers" ([Liu et al., 2024](https://arxiv.org/abs/2402.02750)). We try both groupings
-# on Qwen3's keys and values at 8, 4 and 2 bits, rounding them on the way into the cache and measuring the loss.
+# The lever that works on every model is the number format. KIVI found that keys and values want different treatment:
+# "the key cache should be quantized per-channel ... In contrast, the value cache should be quantized per-token",
+# because "in key cache, some fixed channels exhibit very large magnitudes, whereas in value cache, there is no
+# significant pattern for outliers" ([Liu et al., 2024](https://arxiv.org/abs/2402.02750)). We try both groupings on
+# Qwen3's keys and values at 8, 4 and 2 bits, rounding them on the way into the cache and measuring the loss.
 
 
 # %%
@@ -962,12 +998,45 @@ restore()
 table(pd.DataFrame(quantization), digits=3)
 
 # %% [markdown]
-# @@QUANT@@
+# Eight bits cost nothing measurable, which is why an 8-bit or FP8 cache is a switch in serving engines. At four bits
+# the grouping matters: keys rounded per channel keep the loss noticeably closer to the original than keys rounded per
+# token, as KIVI predicts, because a few channels of the keys carry much larger numbers than the rest. At two bits
+# both break down here. KIVI gets to two bits with more care than this sketch: it rounds keys in small groups of
+# tokens rather than over the whole text, and keeps the most recent tokens in full precision. Our per-channel rounding
+# also looks at the whole sequence at once, which a cache filled one token at a time cannot do.
 
 # %% [markdown]
 # ## 8. Where each lever fits
 #
-# @@WHERE@@
+# Every lever in this lesson trades something, and they combine.
+#
+# Grouped queries, from lesson 6, are now the default: they cost a little quality and nothing else, and nearly every
+# new model has them. Local layers, also lesson 6, cut the cache of most layers to a window and need the model to be
+# trained that way. Latent attention cuts deepest, to about a quarter of what grouped queries with eight groups would
+# keep at the same size, at the price of more arithmetic per generated token, and it too has to be trained in, or
+# converted and fine-tuned.
+#
+# The levers that need no retraining are the number format and the memory manager. An 8-bit cache halves the memory
+# for free, as we saw, and lower formats need care. The memory manager matters more than it sounds: before vLLM, in
+# its authors' measurement, "only 20.4% - 38.2% of the KV cache memory is used to store the actual token states in the
+# existing systems" ([Kwon et al., 2023](https://arxiv.org/abs/2309.06180)), the rest lost to caches reserved for the
+# longest possible answer. PagedAttention stores the cache in fixed blocks, like an operating system's pages, and
+# shares the blocks of a common prefix between requests, lesson 6's prefix caching done by the server.
+#
+# The industry combines all of these. Character.AI described cutting its cache by "more than 20X" with multi-query
+# attention, one global layer in six, keys and values shared between neighbouring layers, and 8-bit numbers, the last
+# of these in their words "We use int8 quantization on model weights, activations, and attention KV cache"
+# ([Character.AI,
+# 2024](https://web.archive.org/web/20240620140946/https://research.character.ai/optimizing-inference/)). Sharing
+# between layers is its own research line, from cross-layer attention ([Brandon et al.,
+# 2024](https://arxiv.org/abs/2405.12981)) to YOCO, which keeps one cache for the whole model ([Sun et al.,
+# 2024](https://arxiv.org/abs/2405.05254)). And when nothing else is left, the cache can be cut by forgetting: H2O
+# keeps the few tokens that collect most of the attention and drops the rest ([Zhang et al.,
+# 2023](https://arxiv.org/abs/2306.14048)).
+#
+# For a T4 the practical answer is the table of section 1 with the weights subtracted: a 4B model in 16-bit floats
+# leaves room for a handful of long conversations with a grouped-query cache, several times more with a latent one,
+# and twice as many again with an 8-bit cache.
 #
 # DeepSeek-V2's passport, the model that introduced latent attention, and the family tree with this lesson's branch:
 #
