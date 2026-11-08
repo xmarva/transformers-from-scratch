@@ -169,6 +169,10 @@ Put the evidence together and a map appears. Colour each brain system by how clo
 
 [[modules]]
 
+The table names the systems behind the colours and the counterpart each was compared with.
+
+[[modtable]]
+
 The strongest matches are the sensory and language systems, and the dopamine teaching signal. They have something in common: each was matched by a model trained on a large amount of the same kind of input the brain gets, to do a similar job, and the similarity grew out of the training rather than being built in. The weakest are the systems that run the body, keep track of the self and keep learning over a lifetime.
 
 ## Who is more efficient?
