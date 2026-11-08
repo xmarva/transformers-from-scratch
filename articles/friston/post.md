@@ -46,7 +46,11 @@ An observation the model expects, with probability near 1, has surprisal near 0;
 
 Friston's argument for why living things should keep surprisal low runs as follows. Anything that stays the kind of thing it is spends its time in a limited set of states. The probability distribution over its states is therefore concentrated, which means it has low entropy. Entropy is average surprisal, and if the system is *ergodic*, if averaging over time gives the same answer as averaging over all the states it could be in, then keeping surprisal low moment to moment keeps entropy low over a lifetime ([Friston, 2012](https://doi.org/10.3390/e14112100)). "Biological agents must therefore minimize the long-term average of surprise to ensure that their sensory entropy remains low" ([Friston, 2010](https://doi.org/10.1038/nrn2787)).
 
-Two warnings save a lot of confusion later. This entropy is the Shannon entropy of a probability distribution, not the entropy of thermodynamics; living things don't violate the second law, they keep their own states ordered while exporting disorder to their surroundings. And ergodicity is an assumption, not a fact about organisms, which do grow, age and die.
+<div class="callout callout-warn" markdown="1">
+<p class="callout-label">Two traps</p>
+
+This entropy is the Shannon entropy of a probability distribution, not the entropy of thermodynamics; living things don't violate the second law, they keep their own states ordered while exporting disorder to their surroundings. And ergodicity is an assumption, not a fact about organisms, which do grow, age and die.
+</div>
 
 ## Free energy: a bound you can actually compute
 
@@ -80,7 +84,11 @@ $$F = \underbrace{D_{\mathrm{KL}}\big[q(x) \,\Vert\, p(x)\big]}_{\text{complexit
 
 If you work in machine learning, you have met $$F$$ already. A variational autoencoder is trained to maximise the *evidence lower bound*, the ELBO, which is exactly $$-F$$ with the data called $$x$$ and the hidden causes called $$z$$ ([Kingma & Welling, 2014](https://arxiv.org/abs/1312.6114)). Active-inference papers say it outright: "The variational free energy is the negative evidence lower bound that is optimised in variational Bayes in machine learning" ([Da Costa et al., 2020](https://doi.org/10.1016/j.jmp.2020.102447)). The idea of a brain doing this goes back to the Helmholtz machine of Dayan, Hinton, Neal and Zemel in 1995 ([Dayan et al., 1995](https://doi.org/10.1162/neco.1995.7.5.889)), named after Hermann von Helmholtz, who described perception as unconscious inference in the 1860s.
 
-Why "free energy"? Because the formula has the same shape as the Helmholtz free energy of statistical physics, energy minus temperature times entropy, if you call $$-\ln p(o, x)$$ the energy and set the temperature to 1. The mathematics is shared; there are no joules in it. Confusing the two is the most common mistake in popular accounts.
+<div class="callout" markdown="1">
+<p class="callout-label">Why the name</p>
+
+The formula has the same shape as the Helmholtz free energy of statistical physics, energy minus temperature times entropy, if you call $$-\ln p(o, x)$$ the energy and set the temperature to 1. The mathematics is shared; there are no joules in it.
+</div>
 
 ## Perception: prediction errors, weighted by how much you trust them
 
@@ -96,11 +104,21 @@ Rafal Bogacz's tutorial makes this concrete with a creature that has one light r
 
 The left panel is the exact answer, computed by Bayes' rule on a grid. The right panel is the creature's guess following the gradient of free energy from its prior expectation, computed here exactly as in Bogacz's exercises. It settles near 1.57, at the peak of the exact posterior. Bogacz's text: "it rapidly converges to the value of ϕ≈1.6, which is also the value that maximizes the exact posterior probability." The guess finds the most probable size, not the average one, which is about 1.48 for this lopsided posterior; a single number cannot carry uncertainty, which is one of the approximations the scheme pays for its simplicity.
 
+<details class="method" markdown="1">
+<summary>How the charts in this post are computed</summary>
+
+They come from the formulas above, not from the papers' figures. For the bound, the joint probability of Bogacz's example, a normal prior on the size with mean 3 and variance 1 times a normal likelihood of the light with mean $$v^2$$ and variance 1, is evaluated on a fine grid of sizes. Surprisal is minus the log of its integral, and free energy is the integral of $$q(v)\,[\ln q(v) - \ln p(u, v)]$$ for each Gaussian belief $$q$$.
+
+The guess follows Bogacz's second exercise: small Euler steps along the gradient of $$\ln p(v) + \ln p(u \mid v)$$, starting at the prior mean. The thinner line is his third exercise, where the same descent runs through two prediction-error units, one for the prior and one for the senses. The risk and ambiguity bars further down use the two-state examples of Smith, Friston and Whyte's tutorial, combined by the formula for $$G$$.
+</details>
+
 Put many such units in a hierarchy and you get *predictive coding*. Each level sends predictions down to the level below and receives back the error: what the prediction failed to explain. Rao and Ballard proposed in 1999 that feedback connections in the visual cortex "carry predictions of lower-level neural activities" and feedforward connections carry the residual errors ([Rao & Ballard, 1999](https://doi.org/10.1038/4580)).
 
 [[hierarchy]]
 
 Precision is the most interesting knob in the scheme. It sets how loudly each error is heard. Turn up the precision of the senses and the guess follows the data; turn up the precision of the prior and the guess follows expectations. In Friston's account attention *is* precision: attending to something means trusting its prediction errors more.
+
+<p class="takeaway" markdown="1">With Gaussian assumptions, minimising free energy is gradient descent on prediction errors weighted by precision. It finds the most probable cause, not a full posterior.</p>
 
 ## Action: making the world fit the prediction
 
@@ -142,6 +160,8 @@ The principle itself makes no prediction that could fail; we'll come back to tha
 
 [[evidence]]
 
+<p class="takeaway" markdown="1">The brain clearly uses expectations. Whether it computes them by predictive coding is mixed in the evidence, and direct tests of the principle itself are still few.</p>
+
 ## The strongest criticisms
 
 *It can't be falsified, and its author agrees.* "The free energy principle is what it is—a principle. Like Hamilton's Principle of Stationary Action, it cannot be falsified" ([Fortier & Friedman, 2018](https://www.aliusresearch.org/library/pdfs/alius-bulletin/issue-02/alius-bulletin-issue-02-friston-of-woodlice-and-men-a-bayesian-account-of-cognition-life-and.pdf)). Friston's colleagues defend this as the difference between a principle, "a piece of mathematical reasoning, which can be developed into a method", and the theories built with it, which can be tested once mapped to data; they also concede that "the FEP itself has nothing instructive to say of the demarcations defining life or consciousness per se" ([Ramstead et al., 2023](https://doi.org/10.1098/rsfs.2022.0029)). Critics accept the distinction and draw the consequence: if the principle explains any behaviour, it explains none in particular, and the work of explanation is done by the specific models. Samuel Gershman put it most precisely: "FEP does not have a fixed set of distinctive claims. Rather, it makes different claims under different sets of assumptions" ([Gershman, 2019](https://doi.org/10.51628/001c.10839)).
@@ -164,6 +184,8 @@ In the middle is a framework: perception, learning and action described as minim
 
 At the top are the grand claims: that every living thing, by virtue of existing, can be described as inferring its world, and that this tells us what life, mind or consciousness are. Here the principle's defenders themselves concede that it says little about life or consciousness as such, and its critics argue that the physics behind it holds only in special cases.
 
-If you take one thing from it, take the middle layer: the brain as a machine that predicts, weighs its errors by how much it trusts them, and acts to make its predictions come true. That picture can be wrong in testable ways, and that is its best feature.
+If you take one thing from it, take the middle layer: the brain as a machine that predicts, weighs its errors by how much it trusts them, and acts to make its predictions come true. Unlike the principle, that picture makes predictions an experiment can refute.
+
+The calculations and the figures as code: [articles/friston](https://github.com/xmarva/transformers-from-scratch/tree/main/articles/friston).
 
 {% endraw %}
