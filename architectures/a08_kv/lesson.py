@@ -147,7 +147,9 @@ table(budget, digits=1)
 # DeepSeek-V2 describes it in a dozen equations ([DeepSeek-AI, 2024](https://arxiv.org/abs/2405.04434)). For a token
 # with hidden state $$h_t$$, the keys and values of all heads come from one compressed vector:
 #
-# $$c_t^{KV} = W^{DKV} h_t, \qquad k_t^C = W^{UK} c_t^{KV}, \qquad v_t^C = W^{UV} c_t^{KV},$$
+# $$c_t^{KV} = W^{DKV} h_t,$$
+#
+# $$k_t^C = W^{UK} c_t^{KV}, \qquad v_t^C = W^{UV} c_t^{KV},$$
 #
 # where $$c_t^{KV}$$ has $$d_c$$ numbers, far fewer than the $$2 n_h d_h$$ of the keys and values it stands for.
 # "MLA only needs to cache $$c_t^{KV}$$", and more than that: "since $$W^{UK}$$ can be absorbed into $$W^Q$$, and
@@ -796,8 +798,9 @@ table(
 # and the values come from two matrices, together 2,048 numbers per token. Replace them by a down-projection to $$r$$
 # numbers, the latent we would cache, and an up-projection back:
 #
-# $$\begin{bmatrix} k \\ v \end{bmatrix} = W x \;\approx\; B\,(A x), \qquad A \in \mathbb{R}^{r \times d}, \quad
-# B \in \mathbb{R}^{2048 \times r}.$$
+# $$\begin{bmatrix} k \\ v \end{bmatrix} = W x \;\approx\; B\,(A x),$$
+#
+# $$A \in \mathbb{R}^{r \times d}, \qquad B \in \mathbb{R}^{2048 \times r}.$$
 #
 # Two ways to choose $$A$$ and $$B$$. The *weight SVD* takes the best rank-$$r$$ approximation of $$W$$ itself.
 # The *activation PCA* takes the $$r$$ directions along which the keys and values of real text vary most, measured on
@@ -1023,12 +1026,11 @@ table(pd.DataFrame(quantization), digits=3)
 # longest possible answer. PagedAttention stores the cache in fixed blocks, like an operating system's pages, and
 # shares the blocks of a common prefix between requests, lesson 6's prefix caching done by the server.
 #
-# The industry combines all of these. Character.AI described cutting its cache by "more than 20X" with multi-query
-# attention, one global layer in six, keys and values shared between neighbouring layers, and 8-bit numbers, the last
-# of these in their words "We use int8 quantization on model weights, activations, and attention KV cache"
-# ([Character.AI,
-# 2024](https://web.archive.org/web/20240620140946/https://research.character.ai/optimizing-inference/)). Sharing
-# between layers is its own research line, from cross-layer attention ([Brandon et al.,
+# The industry combines all of these. Character.AI, by its own account, cut its cache by "more than 20X" with
+# multi-query attention, one global layer in six, keys and values shared between neighbouring layers, and 8-bit
+# numbers: "We use int8 quantization on model weights, activations, and attention KV cache"
+# ([Character.AI, 2024](https://web.archive.org/web/20240620140946/https://research.character.ai/optimizing-inference/)).
+# Sharing between layers is its own research line, from cross-layer attention ([Brandon et al.,
 # 2024](https://arxiv.org/abs/2405.12981)) to YOCO, which keeps one cache for the whole model ([Sun et al.,
 # 2024](https://arxiv.org/abs/2405.05254)). And when nothing else is left, the cache can be cut by forgetting: H2O
 # keeps the few tokens that collect most of the attention and drops the rest ([Zhang et al.,
