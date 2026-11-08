@@ -1,4 +1,4 @@
-"""Download the data behind the post's brain maps into articles/brain_ai/data (git-ignored).
+"""Download the data behind the post's brain maps into articles/brain_ai/data, where it is also kept in the repository.
 
     LanA: Lipkin et al. (2022), a probabilistic atlas of the language network from 804 people on fsaverage,
     figshare doi:10.6084/m9.figshare.20425209, CC BY 4.0
