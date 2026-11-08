@@ -83,7 +83,7 @@ def chart_survey(theme):
     fig, axes = plt.subplots(1, 4, figsize=(7.6, 3.5), gridspec_kw={"width_ratios": [2, 2, 3, 5]})
     fig.subplots_adjust(left=0.04, right=0.99, top=0.72, bottom=0.26, wspace=0.35)
     colors = [c["att"], c["enc"], c["data"], c["dec"], c["line"]]
-    for ax, (question, answers, n) in zip(axes, SURVEY):
+    for ax, (question, answers, n) in zip(axes, SURVEY, strict=True):
         x = np.arange(len(answers))
         values = [a[1] for a in answers]
         ax.bar(x, values, color=colors[: len(answers)], width=0.7)
@@ -356,7 +356,7 @@ def chart_patients(theme):
     groups = [("no response at the bedside", 241, 60), ("responding at the bedside", 112, 43)]
     fig, axes = plt.subplots(1, 2, figsize=(7.6, 3.4), gridspec_kw={"width_ratios": [241, 150]})
     fig.subplots_adjust(left=0.02, right=0.98, top=0.72, bottom=0.08, wspace=0.12)
-    for ax, (name, total, did) in zip(axes, groups):
+    for ax, (name, total, did) in zip(axes, groups, strict=True):
         cols = 20
         for i in range(total):
             r, col = divmod(i, cols)
