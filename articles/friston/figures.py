@@ -64,7 +64,7 @@ def chart_bound(theme):
     ax.set_xlabel("centre of the belief q about the food's size")
     ax.set_ylabel("nats")
     ax.legend(frameon=False, fontsize=9, loc="upper center")
-    _caption(fig, "Free energy is never below surprisal; good beliefs nearly touch it",
+    _caption(fig, "Free energy never falls below surprisal",
              "Gaussian beliefs about the size of the food in Bogacz's example; F computed by integration", c)
     return fig
 
@@ -100,7 +100,7 @@ def chart_bogacz(theme):
     axes[0].text(2.5, posterior.max() * 0.9, f"dashed: most probable, {mode:.2f}", fontsize=8.5, color=c["muted"])
     axes[0].text(2.5, posterior.max() * 0.76, f"dotted: mean, {mean:.2f}", fontsize=8.5, color=c["muted"])
     axes[0].set_xlabel("size of the food, v")
-    axes[0].set_title("exact posterior, by Bayes' rule", fontsize=10)
+    axes[0].set_title("exact posterior from Bayes' rule", fontsize=10)
     axes[0].set_yticks([])
     t = np.arange(len(path)) * dt
     axes[1].plot(np.arange(len(network)) * dt, network, color=c["line"], linewidth=1.4,
@@ -110,10 +110,10 @@ def chart_bogacz(theme):
     axes[1].set_xlim(0, 10)
     axes[1].set_xlabel("time")
     axes[1].set_ylabel("the creature's guess, φ")
-    axes[1].set_title("the guess, starting from the prior 3", fontsize=10)
+    axes[1].set_title("the guess starting from the prior mean 3", fontsize=10)
     axes[1].legend(frameon=False, fontsize=8.5)
     _caption(fig, "Perception as descent on free energy finds the most probable size",
-             "Bogacz's example: light u = 2, prior mean 3, both variances 1, g(v) = v²; computed here", c)
+             "Bogacz's example with light u = 2, prior mean 3, both variances 1 and g(v) = v², computed here", c)
     return fig
 
 
@@ -128,7 +128,7 @@ def decompose() -> Figure:
         "the believed causes predict the observation. Third: the negative of the evidence lower bound that "
         "variational autoencoders maximise",
     )
-    fig.text(14, 28, "One quantity, three readings", kind="title")
+    fig.text(14, 28, "Three ways to write variational free energy", kind="title")
     fig.text(14, 50, "F[q, o] = E_q[ ln q(x) − ln p(o, x) ]", kind="mono")
     rows = [
         ("as a bound", [("divergence from the true posterior, ≥ 0", "att"), ("+  surprisal, −ln p(o)", "dec")],
@@ -159,7 +159,7 @@ def hierarchy() -> Figure:
         "by its precision. Precision works like a volume knob on each error: turned up, the guess follows the data; "
         "turned down, it follows expectations. In Friston's account attention is precision",
     )
-    fig.text(14, 28, "Predictive coding: predictions go down, weighted errors go up", kind="title")
+    fig.text(14, 28, "In predictive coding predictions go down and weighted errors go up", kind="title")
     fig.text(14, 50, "Rao & Ballard (1999); Friston (2005); precision as gain", kind="note")
     levels = ["level 3: objects, scenes", "level 2: shapes, textures", "level 1: edges", "the senses"]
     for k, name in enumerate(levels):
@@ -204,9 +204,9 @@ def chart_efe(theme):
     ambiguities = [ambiguity(a_amb, np.array([0.9, 0.1])), ambiguity(a_amb, np.array([0.1, 0.9]))]
     fig, axes = plt.subplots(1, 2, figsize=(7.6, 3.3))
     fig.subplots_adjust(left=0.06, right=0.98, top=0.72, bottom=0.2, wspace=0.35)
-    panels = [(axes[0], risks, "risk: how far from preferred outcomes",
+    panels = [(axes[0], risks, "risk measures distance from preferred outcomes",
                ["policy 1\nlikely to the goal", "policy 2\na coin flip"]),
-              (axes[1], ambiguities, "ambiguity: how murky the view",
+              (axes[1], ambiguities, "ambiguity measures how murky the view is",
                ["policy 1\ntoward the murky state", "policy 2\ntoward the clear one"])]
     for ax, values, title, names in panels:
         ax.bar([0, 1], values, color=[c["att"], c["dec"]], width=0.55)
@@ -217,7 +217,7 @@ def chart_efe(theme):
         ax.set_yticks([])
         ax.spines["left"].set_visible(False)
         ax.grid(False)
-    _caption(fig, "Expected free energy = risk + ambiguity, in nats; lower is chosen",
+    _caption(fig, "Expected free energy is risk plus ambiguity",
              "two-state examples from Smith, Friston & Whyte (2022), recomputed here", c)
     return fig
 
@@ -232,7 +232,7 @@ def blanket() -> Figure:
         "the blanket: given the blanket, internal and external states are independent. A cell membrane is an "
         "example; a candle flame, whose molecules are swept away almost instantly, is not",
     )
-    fig.text(14, 28, "A Markov blanket: what separates a thing from its world", kind="title")
+    fig.text(14, 28, "A Markov blanket separates a thing from its surroundings", kind="title")
     fig.text(14, 50, "internal and external states touch only through the blanket (Friston, 2013, 2019)", kind="note")
     fig.box(14, 130, 150, 50, role="neutral", label="external η")
     fig.box(230, 80, 200, 50, role="data", label="sensory s", strong=True)
@@ -274,7 +274,7 @@ def evidence() -> Figure:
         "free energy, the 2019 physics: contested, holding in narrow cases. The principle itself: not testable, by "
         "design",
     )
-    fig.text(14, 28, "What the free energy framework claims, and how the evidence stands", kind="title")
+    fig.text(14, 28, "Claims of the free energy framework and the evidence for each", kind="title")
     fig.text(14, 50, "from the reviews and studies cited in this post", kind="note")
     for k, (claim, evidence_text, status, role) in enumerate(rows):
         y = 70 + k * 36
@@ -301,22 +301,22 @@ def chart_alts():
 
 
 def cover():
-    out = [cv.label(cv.MOTIF_X0, 150, "ONE QUANTITY")]
+    out = [cv.label(cv.MOTIF_X0, 150, "VARIATIONAL FREE ENERGY")]
     svg, spans, right = cv.chip_row(["F ≥ −ln p(o)"], cv.MOTIF_X0, 172, size=18, kinds={0: "hot"})
     cv.fits(right)
     out.append(svg)
-    out.append(cv.label(cv.MOTIF_X0, 262, "MINIMISED THREE WAYS"))
+    out.append(cv.label(cv.MOTIF_X0, 262, "THREE WAYS TO LOWER IT"))
     svg, spans, right = cv.chip_row(["perceive", "learn", "act"], cv.MOTIF_X0, 284, size=18)
     cv.fits(right)
     out.append(svg)
-    out.append(cv.label(cv.MOTIF_X0, 374, "TESTED, PARTLY"))
+    out.append(cv.label(cv.MOTIF_X0, 374, "STATE OF THE EVIDENCE"))
     svg, spans, right = cv.chip_row(["mixed", "contested", "untestable"], cv.MOTIF_X0, 396, size=17,
                                     kinds={0: "warm", 1: "warm", 2: "warm"})
     cv.fits(right)
     out.append(svg)
     return cv.frame("blog / cognitive science", ["The free energy", "principle"],
-                    ["Friston's theory: the maths,", "the evidence, the critics"], "".join(out),
-                    footer="Cognitive science, measured")
+                    ["Karl Friston's theory with", "the maths and the evidence"], "".join(out),
+                    footer="Cognitive science")
 
 
 CHARTS = {"bound": chart_bound, "bogacz": chart_bogacz, "efe": chart_efe}
