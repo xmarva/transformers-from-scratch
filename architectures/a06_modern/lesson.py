@@ -32,7 +32,7 @@
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type → T4
 # GPU*. The notebook downloads Qwen3-0.6B (1.5 GB), Qwen3-4B (8 GB), GPT-2 (550 MB) and the MASSIVE dataset (40 MB),
-# trains a few small models and two LoRA adapters; on a T4 it runs in about @@RUNTIME@@ minutes.
+# trains a few small models and two LoRA adapters; on a T4 it runs in about 70 minutes.
 
 # %% tags=["include:setup"]
 
@@ -1558,7 +1558,16 @@ evaluate(model, "0.6B + LoRA, en")
 table(pd.DataFrame(scores), digits=3)
 
 # %% [markdown]
-# @@LORA_EN@@
+# One pass over the English commands, a few minutes on a T4 and ten million trained parameters change the picture.
+# On the whole English test set the adapted 0.6B model gets about two commands in three exactly right, several times
+# as many as the 4B model given instructions, and it answers faster. The more surprising row is Russian. The adapter
+# never saw a Russian command, yet the model gets a good share of them exactly right: the skill it learned, find the
+# intent and copy the words, carries over to a language Qwen3 learned in pretraining.
+#
+# For scale, the MASSIVE paper's baselines, multilingual models of a few hundred million parameters fine-tuned in
+# full, reach 69.7–72.5% exact match in English when trained on all 51 languages, and 42.6–52.8% in Russian when
+# trained on English alone (its Table 7). After one pass, with a small fraction of its parameters trained, our model
+# lands a few points below the first range and somewhat below the second.
 #
 # And the promise that LoRA costs nothing at inference, checked: add $$\frac{\alpha}{r}BA$$ into every frozen matrix,
 # drop the extra path, and the logits stay the same up to 16-bit rounding.
@@ -1631,7 +1640,9 @@ axes[0].invert_yaxis()
 plt.show()
 
 # %% [markdown]
-# @@LORA_BOTH@@
+# The Russian commands lift the Russian score most of the way to the English one, and English loses nothing; if
+# anything it gains a little. That brings the 0.6B model close to the paper's models trained on all 51 languages,
+# which reach 66.2–69.2% exact match in Russian, after a few minutes of training on a free GPU.
 #
 # The mistakes that are left are worth reading, especially in Russian, where a slot's value is a word in some case
 # of a declension and has to be copied in exactly that case.
@@ -1645,7 +1656,13 @@ random.Random(3).shuffle(mistakes)
 table(pd.DataFrame(mistakes[:8]))
 
 # %% [markdown]
-# @@MISTAKES@@
+# None of these mistakes is about grammar. The model copies every value in the form the command has it,
+# *колбасками*, *москве*, *владивостокскому*. What it gets wrong is the annotation. Some are plain errors: Король и
+# Шут is a band, not a song, and *магазины* should have been marked as a type of business. Some are boundaries: is the
+# order *пиццу с колбасками*, or a pizza plus an ingredient? And some are judgement calls where the reference itself
+# is debatable: does "у меня встреча в полдень сегодня" add a meeting or ask about one, and is a question about where
+# Alla Pugacheva buys her children's clothes a quirky remark or a factual question? Part of the distance between two
+# thirds right and all right is disagreement of this kind, which no model will remove.
 
 # %% [markdown]
 # ## 9. Where these models are the right tool
@@ -1658,9 +1675,10 @@ table(pd.DataFrame(mistakes[:8]))
 # compresses the cache further still.
 #
 # For a narrow job with a fixed format, such as extraction, routing, classification with a reason, or turning text
-# into a call to your own API, a small model with LoRA is the cheapest thing that works. @@WHERE_LORA@@ The adapter
-# is a few dozen megabytes, so one base model in memory can serve many jobs by swapping adapters, and after merging
-# it runs as fast as the base model.
+# into a call to your own API, a small model with LoRA is the cheapest thing that works. Here it beat a model
+# seven times its size that was given the task in words, and it learned the Russian version of the job from a few
+# minutes of examples. The adapter is a few dozen megabytes, so one base model in memory can serve many jobs by
+# swapping adapters, and after merging it runs as fast as the base model.
 #
 # For anything that needs knowledge or open reasoning, size matters more than any trick in this lesson. A 0.6B model
 # knows what fits in 0.6 billion numbers, and thinking mode buys accuracy with tokens, which on a long problem means
