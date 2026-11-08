@@ -74,6 +74,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--secrets", help="private Kaggle dataset with secret files, e.g. qmarva/tfs-secrets")
     parser.add_argument("--kernel", default=KERNEL, help="the Kaggle kernel to run in; another one runs in parallel")
     parser.add_argument("--cpu", action="store_true", help="run without a GPU, for lessons that don't train")
+    parser.add_argument("--accelerator", help="Kaggle accelerator, e.g. NvidiaTeslaT4 for two T4s; default: Kaggle's")
     args = parser.parse_args(argv)
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -94,7 +95,8 @@ def main(argv: list[str] | None = None) -> int:
             "model_sources": [],
         }
         (folder / "kernel-metadata.json").write_text(json.dumps(metadata, indent=2))
-        print(kaggle("kernels", "push", "-p", str(folder)).strip())
+        accelerator = ["--accelerator", args.accelerator] if args.accelerator else []
+        print(kaggle("kernels", "push", "-p", str(folder), *accelerator).strip())
 
     while True:
         time.sleep(60)
