@@ -82,7 +82,7 @@ def chart_dopamine(theme):
         ax.set_ylim(-1.15, 1.15)
         ax.grid(False)
     axes[0].set_ylabel("prediction error δ")
-    _caption(fig, "Dopamine as a prediction error: what a temporal-difference model predicts",
+    _caption(fig, "Dopamine responses predicted by a temporal-difference model",
              "computed here with TD learning, one feature per moment after the cue; compare Schultz et al. (1997)",
              c)
     return fig
@@ -121,8 +121,8 @@ def chart_language(theme):
     bar.tick_params(length=0)
     for side in bar.spines.values():
         side.set_visible(False)
-    _caption(fig, "The language network: where sentences light up the cortex",
-             "LanA atlas, 804 people: how often each spot is among a person's most language-selective", c)
+    _caption(fig, "Where the language network lies in the cortex",
+             "how often each spot is among a person's most language-selective, LanA atlas of 804 people", c)
     return fig
 
 
@@ -180,7 +180,7 @@ def encoding() -> Figure:
         "the measured one, and the correlation is divided by the noise ceiling: how well the brain predicts itself "
         "across repeated measurements or across people",
     )
-    fig.text(14, 28, "An encoding model: predict the brain from the model", kind="title")
+    fig.text(14, 28, "How an encoding model predicts the brain from a model", kind="title")
     fig.text(14, 50, "fitted on some sentences, tested on sentences it has never seen", kind="note")
     fig.box(14, 132, 150, 50, role="data", label="“The tower fell”")
     fig.arrow((165, 150), (199, 106))
@@ -236,7 +236,7 @@ def chart_ventral(theme):
     handles = [Patch(facecolor=shades[stage], label=stage) for stage, _, _ in STREAM]
     fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3, frameon=False, fontsize=9.5,
                handlelength=1.2, columnspacing=1.6)
-    _caption(fig, "The ventral stream: from the back of the head forward, along the underside",
+    _caption(fig, "The ventral stream runs forward along the underside of the brain",
              "left hemisphere, approximate stages with Destrieux's gyri; "
              "a vision network's layers line up the same way",
              c)
@@ -267,8 +267,8 @@ def vision() -> Figure:
         "while agreement with neurons saturated. Conwell and colleagues in 2024 found ImageNet accuracy unrelated to "
         "how well 224 models predicted human fMRI",
     )
-    fig.text(14, 28, "Accuracy bought brain similarity, then stopped", kind="title")
-    fig.text(14, 50, "five studies of vision networks against the ventral stream", kind="note")
+    fig.text(14, 28, "How the brain similarity of vision networks changed with their accuracy", kind="title")
+    fig.text(14, 50, "five studies against monkey IT and the human visual cortex", kind="note")
     for k, (who, data, finding, role) in enumerate(rows):
         y = 70 + k * 44
         fig.box(14, y, 186, 34, role=role, label=who, strong=k == 0)
@@ -313,8 +313,8 @@ def chart_space(theme):
         ax.set_title(title, fontsize=10, pad=4)
         ax.text(0.5, -0.06, "firing across a 1 m box", transform=ax.transAxes, ha="center", va="top", fontsize=8.5,
                 color=c["muted"])
-    _caption(fig, "The brain's map: place cells in the hippocampus, grid cells next door",
-             "idealised firing maps computed here: one Gaussian field; three waves 60° apart give the lattice", c)
+    _caption(fig, "Place cells in the hippocampus and grid cells in the entorhinal cortex",
+             "idealised firing maps computed here, one Gaussian field and three waves 60° apart for the lattice", c)
     return fig
 
 
@@ -336,8 +336,8 @@ def memory() -> Figure:
         "absorbed slowly in training. Consolidation by replay during sleep pairs with nothing: what happens in a "
         "conversation never reaches the weights",
     )
-    fig.text(14, 28, "Three memories and no sleep: a useful map, if you remember it is one", kind="title")
-    fig.text(14, 50, "human memory systems and the nearest store in a deployed language model", kind="note")
+    fig.text(14, 28, "Human memory and the memory of a language model", kind="title")
+    fig.text(14, 50, "for each memory system, the nearest store in a deployed model", kind="note")
     fig.text(14, 76, "the brain", kind="subtitle")
     fig.text(420, 76, "a language model", kind="subtitle")
     for k, (human, note, model, model_note) in enumerate(rows):
@@ -376,8 +376,8 @@ def chart_physics(theme):
     ax.grid(axis="x")
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("possible or impossible video: accuracy")
-    _caption(fig, "Intuitive physics in complex scenes: people against the best models",
-             "IntPhys 2 (Bordes et al., 2025): permanence, immutability, continuity, solidity", c)
+    _caption(fig, "People and the best AI models on intuitive physics in complex scenes",
+             "IntPhys 2 (Bordes et al., 2025) on permanence, immutability, continuity and solidity", c)
     return fig
 
 
@@ -455,7 +455,7 @@ def modtable() -> Figure:
         "counterpart",
     )
     fig.text(14, 28, "Brain systems and their nearest AI counterparts", kind="title")
-    fig.text(14, 50, "strong: activity predicted or signature reproduced; partial: some of the job; absent: none",
+    fig.text(14, 50, "strong means activity predicted or signature reproduced, partial some of the job, absent none",
              kind="note")
     for k, (system, ai, note, status) in enumerate(rows):
         y = 66 + k * 34
@@ -501,7 +501,7 @@ def chart_energy(theme):
         ax.grid(axis="y", visible=False)
         ax.tick_params(axis="y", labelsize=8.5)
         ax.tick_params(axis="x", labelsize=8)
-    _caption(fig, "Energy: training is enormous, an answer costs about a minute of brain",
+    _caption(fig, "Energy used by the brain and by AI models",
              "Levy & Calvert 2021; Patterson et al. 2021; Llama 3.1 card at 700 W; Epoch AI 2025; Google 2025", c)
     return fig
 
@@ -534,7 +534,7 @@ def chart_data(theme):
     ax.grid(axis="x")
     ax.grid(axis="y", visible=False)
     ax.set_xlabel("words or tokens (log scale)")
-    _caption(fig, "Data: a child's lifetime of language against a model's training",
+    _caption(fig, "Words a child hears and tokens a language model is trained on",
              "Frank 2023 (child estimates); BabyLM; Patterson et al. 2021; Llama 3 (Meta, 2024)", c)
     return fig
 
@@ -554,14 +554,14 @@ def cover():
         out.append(svg)
         cv.fits(cv.MOTIF_X0 + w + 52 + w2)
         y += 58
-    out.append(cv.label(cv.MOTIF_X0, y + 34, "AND WHAT NO MODEL DOES YET"))
+    out.append(cv.label(cv.MOTIF_X0, y + 34, "NO AI COUNTERPART YET"))
     svg, spans, right = cv.chip_row(["sleep", "a body", "lifelong learning"], cv.MOTIF_X0, y + 56, size=16,
                                     kinds={0: "warm", 1: "warm", 2: "warm"})
     cv.fits(right)
     out.append(svg)
-    return cv.frame("blog / cognitive science", ["The brain and", "AI models"],
-                    ["Where they converge,", "and where they don't"], "".join(out),
-                    footer="Cognitive science, measured")
+    return cv.frame("blog / cognitive science", ["The human brain", "and AI models"],
+                    ["Language, vision, memory,", "dopamine and energy"], "".join(out),
+                    footer="Cognitive science")
 
 
 def chart_alts():
