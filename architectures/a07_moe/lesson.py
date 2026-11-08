@@ -6,21 +6,21 @@
 # eight of them for each token. Nobody tells the router what an expert is for. Whatever division of labour the
 # experts end up with, they found it themselves during training on five trillion tokens.
 #
-# That makes a mixture of experts the one architecture in this course you can interrogate in a way you can't
-# interrogate a dense model. Feed it Python, and you can watch which experts light up; feed it Russian, a language
-# it barely saw in training, and watch again. Then you can act on what you saw: throw away the experts a job doesn't
-# use, and keep a smaller model that still does the job.
+# In a dense model every token goes through every weight, so there is nothing to watch. A mixture can be watched:
+# feed it Python and see which experts light up, feed it Russian, a language it barely saw in training, and watch
+# again. Then you can act on what you saw, throw away the experts a job doesn't use, and keep a smaller model that
+# still does the job.
 #
 # A [post on this blog](https://xmarva.github.io/blog/2026/mixture-of-experts/) built a mixture of experts from
 # scratch, trained it next to dense models and compared the ways of keeping its experts busy. This lesson takes the
-# next step, to a real model trained at scale: we read how a dozen production mixtures are built, write OLMoE in
+# next step, to a real model trained at scale: we read how nine production mixtures are built, write OLMoE in
 # PyTorch, load the official weights and look inside.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a07/hero-light.png" width="760" alt="A mixture-of-experts layer. A token's vector goes to the router, a linear layer that scores all 64 experts; the softmax turns the scores into probabilities, and the eight largest pick the experts that run. Each chosen expert is a small SwiGLU network; their outputs are added, each weighted by its probability, and the result joins the residual stream. The other 56 experts do nothing for this token">
 #
 # **What you'll do**
 #
-# 1. Read the configs of a dozen mixtures, from Mixtral to gpt-oss, and see how the design moved.
+# 1. Read the configs of nine mixtures, from Mixtral to gpt-oss, and see how the design moved.
 # 2. Write the router four ways, find out which of them are the same function, and dispatch tokens to experts
 #    without computing what nobody asked for.
 # 3. Write OLMoE in PyTorch, load its official weights across two GPUs and match Hugging Face's outputs.
@@ -31,7 +31,7 @@
 #
 # **What you need**: two GPUs. On Kaggle, *Settings → Accelerator → GPU T4 x2*; OLMoE's weights take 13 GB in 16-bit
 # floats, more than one T4 has to spare. The notebook downloads OLMoE (14 GB), a slice of Russian Wikipedia (250 MB)
-# and two small datasets; on two T4s it runs in about @@RUNTIME@@ minutes.
+# and two small datasets; on two T4s it runs in about five minutes.
 
 # %% tags=["include:setup"]
 
@@ -69,7 +69,7 @@ for name in GPUS:
         print(name, torch.cuda.get_device_name(name))
 
 # %% [markdown]
-# ## 1. A dozen mixtures side by side
+# ## 1. Nine mixtures side by side
 #
 # As in lesson 6, the fastest way to read an architecture is its `config.json`. Here are the configs of nine
 # mixtures released between December 2023 and August 2025, with the total and active parameter counts their papers
@@ -142,16 +142,17 @@ table(pd.DataFrame(rows))
 # Three things changed in under two years.
 #
 # *The experts got smaller and more numerous.* Mixtral has eight experts as wide as a dense model's feed-forward
-# network and sends each token to two. OLMoE, Qwen3 and DeepSeek-V3 cut the same budget into 64 to 256 narrow experts
-# and send each token to eight. DeepSeek's argument for this, *fine-grained experts*, is combinatorial: two experts out
-# of sixteen can be chosen in 120 ways, eight out of 64 in "4,426,165,368" ([Dai et al.,
-# 2024](https://arxiv.org/abs/2401.06066)), so a token gets a mix much closer to what it needs. gpt-oss went the
-# other way, to 32 or 128 wide experts and four per token.
+# network and sends each token to two. OLMoE, Qwen3 and DeepSeek-V3 use 64 to 256 narrow experts and send each
+# token to eight. DeepSeek's argument for this, *fine-grained experts*, is combinatorial: two experts
+# out of sixteen can be chosen in 120 ways, eight out of 64 in "4,426,165,368" ([Dai et al.,
+# 2024](https://arxiv.org/abs/2401.06066)), so a token gets a mix much closer to what it needs. gpt-oss went the other
+# way, to 32 or 128 wide experts and four per token.
 #
 # *Some models keep experts that every token uses.* DeepSeek's *shared experts* hold the knowledge every token needs,
 # so that the routed ones don't each keep a copy of it: "Regardless of the router module, each token will be
 # deterministically assigned to these shared experts." Qwen1.5-MoE had them; Qwen3 dropped them; OLMoE tested one and
-# found that "sharing an expert performs slightly worse" ([Muennighoff et al., 2024](https://arxiv.org/abs/2409.02060)).
+# found that "sharing an expert performs slightly worse" ([Muennighoff et al.,
+# 2024](https://arxiv.org/abs/2409.02060)).
 #
 # *The routers disagree on the order of operations.* Some take a softmax over all experts and keep the top $$k$$
 # probabilities; some keep the top $$k$$ scores and take a softmax over those; DeepSeek-V3 scores experts with a
@@ -218,7 +219,14 @@ for name, (w, i) in results.items():
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# @@ROUTERS@@
+# All four routers choose the same experts here, and that is no accident: a softmax and a sigmoid never change the
+# order of the scores, and without a bias the top $$k$$ scores stay the top $$k$$ under any increasing function. They
+# differ in the weights. Two of them are in fact one function: a softmax over all experts followed by renormalising
+# the top $$k$$ gives exactly what a softmax over the top $$k$$ scores gives, because the experts left out cancel
+# between numerator and denominator. Mixtral and Qwen3 on one side, Granite and gpt-oss on the other, write the same
+# router in two orders. OLMoE's is the odd one out: its eight weights add up to less than one, by however much
+# probability the router gave to the experts it didn't choose. DeepSeek-V3's sigmoid gives yet other weights, and its
+# bias, which is zero here, is what lets it steer the choice without touching them.
 #
 # The experts themselves are lesson 5's SwiGLU network of the first course, one per expert, each much narrower than
 # a dense model's. The naive way to run a layer is to run every expert on every token and multiply most of the results
@@ -297,7 +305,9 @@ for name, (seconds, _) in timings.items():
 print("max difference:", f"{difference.item():.2e}")
 
 # %% [markdown]
-# @@DISPATCH@@
+# The two ways agree to the last digits a 32-bit float carries, and grouping by expert is already faster on a CPU
+# even at this toy size, though each expert sees only a few dozen tokens. The gap grows with the number of experts:
+# the wasteful way pays for all of them, the grouped one for the eight a token chose.
 #
 # Production kernels go further and run all the groups in one *grouped* matrix multiplication, but the arithmetic is
 # the one above. How the router is kept from sending everything to a few favourites, the auxiliary loss of Switch
@@ -314,7 +324,7 @@ print("max difference:", f"{difference.item():.2e}")
 # %%
 REPO = "allenai/OLMoE-1B-7B-0924"
 olmoe_config = configs["OLMoE"]
-olmoe_config.setdefault("rms_norm_eps", 1e-5)  # the config leaves it out: transformers' default
+olmoe_config.setdefault("rms_norm_eps", 1e-5)  # not in the config: the library default
 keys = [
     "hidden_size",
     "num_hidden_layers",
@@ -340,7 +350,8 @@ print(f"{'rope_theta':22} {olmoe_config.get('rope_theta')}")
 #
 # Everything outside the experts is lesson 6's code with those two changes. One more change is for the GPU, not the
 # model: the residual stream is kept in 32-bit floats between layers. OLMoE was trained in bfloat16, which has a much
-# wider range than the float16 a T4 offers, and a sum of 32 terms is where a float16 would overflow first.
+# wider range than the float16 a T4 offers, and the residual stream, a running sum over 32 sublayers, is where
+# large values build up.
 
 
 # %%
@@ -594,7 +605,12 @@ print(
 )
 
 # %% [markdown]
-# @@MATCH@@
+# Every next-token prediction is the same as Hugging Face's. The logits differ more than in earlier lessons, for
+# two reasons that have nothing to do with the arithmetic being wrong; the smoke test of this notebook, which runs a
+# small random OLMoE in 32-bit floats, agrees with Hugging Face's to the seventh digit. Here both models run in 16-bit
+# floats, ours with the residual stream in 32 bits and theirs without, so their rounding differs. And a mixture
+# amplifies small differences: when two experts have nearly the same score for the eighth place, a rounding error
+# decides which one runs, and the token gets a different expert's output.
 #
 # Where do the parameters live?
 
@@ -631,18 +647,18 @@ table(
 print(f"used for one token: {active:,} of {total:,} ({active / total:.0%})")
 
 # %% [markdown]
-# @@PARAMS@@
+# Nearly all of OLMoE is experts. A token runs through all the attention, the embeddings and one eighth of the
+# experts, a fifth of the model in all, which is where the 1B in its name comes from. The routers that decide all of
+# this are a rounding error: one matrix of 64 rows per layer.
 
 # %% [markdown]
 # ## 4. Which experts fire
 #
-# Four kinds of text, each with its own corpus:
-#
-# - *English*: Wikipedia articles from WikiText-103, as in lesson 6;
-# - *Python*: the source code of Python's own standard library, which is on every machine that runs this notebook;
-# - *maths*: the 1,319 school word problems of GSM8K's test set with their worked solutions ([Cobbe et al.,
-#   2021](https://arxiv.org/abs/2110.14168)), which mix English, numbers and arithmetic;
-# - *Russian*: articles from a slice of Russian Wikipedia.
+# Four kinds of text, each from its own corpus. English is Wikipedia articles from WikiText-103, as in lesson 6.
+# Python is the source code of Python's own standard library, which is on every machine that runs this notebook.
+# Maths is the 1,319 school word problems of GSM8K's test set with their worked solutions ([Cobbe et al.,
+# 2021](https://arxiv.org/abs/2110.14168)), which mix English, numbers and arithmetic. Russian is articles from a
+# slice of Russian Wikipedia.
 #
 # OLMoE's training data is overwhelmingly English, and its tokenizer shows it: a Russian word falls apart into many
 # more tokens than an English one. Each text is cut into windows of 512 tokens; most go to measuring how the experts
@@ -810,7 +826,11 @@ plt.tight_layout()
 plt.show()
 
 # %% [markdown]
-# @@HEATMAP@@
+# The experts have divided the work, and they did it in every layer. In each panel a block of experts belongs to
+# each kind of text, dark in one row and pale in the others. The blocks sharpen with depth: in the first layer many
+# experts are still shared, while in the last most of them serve one kind of text and ignore the rest. Russian has its
+# own experts from the very first layer, which makes sense for a language whose tokens look nothing like the others:
+# Cyrillic letters and fragments of words that English text never produces.
 #
 # The same thing counted across all sixteen layers: in each layer, how many experts get more than half of their use
 # from one kind of text.
@@ -841,7 +861,12 @@ ax.legend(frameon=False, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.2))
 plt.show()
 
 # %% [markdown]
-# @@SPECIALISTS@@
+# The count grows towards the last layers, where more than half of the experts take most of their work from a single
+# kind of text. This is what OLMoE's authors found on their own data, "experts exhibit domain and vocabulary
+# specialization", and it is the opposite of what Mistral found in Mixtral, where "the selection of experts appears to
+# be more aligned with the syntax rather than the domain". OLMoE's authors have an explanation: Mixtral was not
+# trained as a mixture from scratch but "upcycled from Mistral", its experts copied from one dense network, and they
+# never grew apart as much.
 #
 # Specialisation also shows from the other side. How many of the 64 experts does a domain need in a layer to cover
 # most of its routing? A domain that spreads evenly over all of them needs most of the layer; a domain with its own
@@ -871,7 +896,10 @@ for d, name in enumerate(DOMAINS):
 table(pd.DataFrame(rows))
 
 # %% [markdown]
-# @@FOOTPRINT@@
+# English spreads over the most experts: covering half of its routing takes a quarter to a third of a layer, and
+# covering nine tenths takes most of the layer. Python and Russian are concentrated: a handful of experts carry half
+# of their routing in a typical layer. That is the difference between a model's main language, which uses the whole
+# model, and the kinds of text it can afford to delegate to a few specialists.
 #
 # Last, the tokens themselves. Below, a sentence of each kind with every token coloured by the domain its first
 # expert prefers, in the first and the last layer.
@@ -916,7 +944,14 @@ lines.append(f"<div>{legend}</div></div>")
 display(HTML("".join(lines)))
 
 # %% [markdown]
-# @@TOKENS@@
+# The colours tell the same story token by token. The Russian sentence goes to experts that prefer Russian almost
+# everywhere, already in the first layer, where a token is still mostly what it looks like. The Python line starts out
+# mixed, many of its words sent to experts that prefer English, and ends almost entirely with Python's experts, except
+# its line breaks and indentation, which go, oddly, to experts that prefer Russian. The maths problem ends with its
+# own experts, except for the arithmetic, `-`, `7` and `=`, which goes to the experts that prefer code. And the
+# English sentence, in the last layer, sends more than half of its tokens to the experts of the maths problems, which
+# are English too: by then the router sorts tokens less by language than by what should come next, and a sentence
+# about opening hours reads a lot like a word problem.
 
 # %% [markdown]
 # ## 5. A smaller model for one kind of text
@@ -1026,7 +1061,11 @@ axes[0].legend(frameon=False, fontsize=8.5)
 plt.show()
 
 # %% [markdown]
-# @@PRUNING@@
+# Pruning works in one direction only. Keep three quarters of the experts that Python uses, and Python barely
+# notices, while every other kind of text gets visibly worse; the same holds for Russian. At half the experts even the
+# target domain pays a real price, and at a quarter the model falls apart for everything. So a mixture can be trimmed
+# for a narrow job by a quarter without any training, which saves a quarter of the experts' memory; cutting deeper
+# would need fine-tuning to recover what is lost.
 
 # %% [markdown]
 # ## 6. Experts in and out of GPU memory
@@ -1099,7 +1138,12 @@ ax.legend(frameon=False, fontsize=8.5)
 plt.show()
 
 # %% [markdown]
-# @@TOUCHED@@
+# A batch of real tokens touches fewer experts than the formula predicts, because tokens of a kind prefer the same
+# experts; a batch of Python alone touches fewer still. But the curves join the formula's soon enough: a few dozen
+# tokens of mixed text already need most of every layer. That is why serving a mixture needs all its experts in fast
+# memory as soon as more than a few users share a GPU. DeepSeek goes the other way: its paper describes generation on
+# 320 GPUs, "each GPU hosts only one expert", so that every GPU gets a full batch of tokens for the one expert it
+# holds ([DeepSeek-AI, 2024](https://arxiv.org/abs/2412.19437)).
 #
 # The second number matters when a single user generates text one token at a time, as on a laptop: how often does the
 # next token need an expert that the previous tokens already loaded? We keep a cache of $$C$$ experts per layer in
@@ -1159,12 +1203,29 @@ ax.legend(frameon=False, fontsize=8.5)
 plt.show()
 
 # %% [markdown]
-# @@CACHE@@
+# For a single user the picture is much better. Consecutive tokens of one text keep asking for the same experts, so a
+# cache that holds a quarter of each layer's experts already finds half to two thirds of what the next token needs,
+# several times as often as random routing would; Russian and Python, with their small footprints, cache best. This is
+# what offloading schemes for running large mixtures on small GPUs rely on: the experts in use stay on the GPU, the
+# rest wait in the CPU's memory, and a miss costs one transfer of an expert's weights.
 
 # %% [markdown]
 # ## 7. Where mixtures are the right tool
 #
-# @@WHERE@@
+# A mixture of experts buys a big model's knowledge at a small model's compute per token, and pays in memory. That
+# trade suits a provider serving many users at once: the batch is large, every expert is busy, and the memory of all
+# the experts is spread over enough GPUs that it doesn't matter. This is why the largest open models of the last two
+# years, DeepSeek-V3, Qwen3-235B, Kimi K2 and gpt-oss-120b, are mixtures.
+#
+# On one GPU with one user the trade is worse. You hold 7 billion parameters to compute with 1.3, while a dense model
+# of the same memory would put all of it to work for every token. A mixture makes sense here when the memory is there
+# anyway, when you can offload the experts a text doesn't use, as section 6 showed works, or when you need the
+# specialisation itself: section 5's pruning gives a smaller model for one kind of text without training.
+#
+# Fine-tuning a mixture has its own traps. The router can be trained or frozen; training it on a narrow dataset can
+# undo the balance it learned, so freezing it is the safer default. Adapters such as lesson 6's LoRA can go on the
+# attention and on the experts alike. Long context, lesson 9, and the memory of the KV cache, lesson 8, apply to a
+# mixture unchanged: its attention is a dense model's.
 #
 # OLMoE's passport, and the family tree with this lesson's branch:
 #
