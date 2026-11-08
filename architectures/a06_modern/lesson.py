@@ -413,8 +413,9 @@ print(f"the same with a key-value head per query head: "
 # same RMSNorm as everywhere else, with its own learned scale $$g$$. Qwen3 and Gemma 3 apply it to one head's vector
 # at a time, with one scale shared by the heads of a layer; OLMo 2 normalises the whole projection at once.
 #
-# $$\hat q = g_q \odot \frac{q}{\text{rms}(q)}, \qquad \hat k = g_k \odot \frac{k}{\text{rms}(k)}, \qquad
-# s_{ij} = \frac{\hat q_i \cdot \hat k_j}{\sqrt{d_h}}.$$
+# $$\hat q = g_q \odot \frac{q}{\text{rms}(q)}, \qquad \hat k = g_k \odot \frac{k}{\text{rms}(k)},$$
+#
+# $$s_{ij} = \frac{\hat q_i \cdot \hat k_j}{\sqrt{d_h}}.$$
 #
 # Now $$\lVert \hat q \rVert = \sqrt{d_h}$$ before the scale, and the score can only grow if training grows $$g_q$$
 # and $$g_k$$ themselves, slowly and in plain sight. *Soft-capping*, Gemma 2's fix, leaves the scores alone until
@@ -1408,8 +1409,9 @@ table(pd.DataFrame(scores), digits=3)
 # a product of two thin matrices ([Hu et al., 2021](https://arxiv.org/abs/2106.09685)). A frozen weight
 # $$W \in \mathbb{R}^{d_{out} \times d_{in}}$$ becomes
 #
-# $$W' = W + \frac{\alpha}{r} B A, \qquad A \in \mathbb{R}^{r \times d_{in}}, \quad B \in \mathbb{R}^{d_{out}
-# \times r},$$
+# $$W' = W + \frac{\alpha}{r} B A,$$
+#
+# $$A \in \mathbb{R}^{r \times d_{in}}, \qquad B \in \mathbb{R}^{d_{out} \times r},$$
 #
 # with a rank $$r$$ of 8 or 16 where $$d_{in}$$ and $$d_{out}$$ are in the thousands. $$B$$ starts at zero, so the
 # model starts exactly where it was; the factor $$\alpha / r$$ saves retuning the learning rate when the rank
