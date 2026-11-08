@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 438" width="760" height="438" role="img" aria-label="OLMoE&#x27;s passport. Published September 2024 by the Allen Institute for AI, fully open: weights, data, code and logs, Apache 2.0. Type: decoder-only mixture of experts, 6.9 billion parameters, 1.3 billion active per token. Training: 5.1 trillion tokens, mostly English. Attention: 16 heads of 128, multi-head, QK-norm over the whole query and key projections. Positions: rotary, base 10,000. Experts: 64 SwiGLU experts of width 1,024 in each of 16 layers, 8 per token, no shared expert. Router: softmax over all experts, top 8, not renormalised; trained with a load-balancing loss and a z-loss. Vocabulary: 50,304 tokens, untied input and output. Good at: studying routing, English text at the cost of a 1B model. Not for: languages it barely saw, long contexts of more than 4,096 tokens">
+<title>OLMoE&#x27;s passport. Published September 2024 by the Allen Institute for AI, fully open: weights, data, code and logs, Apache 2.0. Type: decoder-only mixture of experts, 6.9 billion parameters, 1.3 billion active per token. Training: 5.1 trillion tokens, mostly English. Attention: 16 heads of 128, multi-head, QK-norm over the whole query and key projections. Positions: rotary, base 10,000. Experts: 64 SwiGLU experts of width 1,024 in each of 16 layers, 8 per token, no shared expert. Router: softmax over all experts, top 8, not renormalised; trained with a load-balancing loss and a z-loss. Vocabulary: 50,304 tokens, untied input and output. Good at: studying routing, English text at the cost of a 1B model. Not for: languages it barely saw, long contexts of more than 4,096 tokens</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="438" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">OLMoE: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">September 2024, Allen Institute for AI; all open, Apache 2.0</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">decoder-only mixture; 6.9B parameters, 1.3B per token</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">training</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">5.1 trillion tokens, mostly English</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">attention</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">16 heads of 128; QK-norm on whole projections</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">positions</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">rotary, base 10,000</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">experts</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">64 of width 1,024 per layer, 8 per token, none shared</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">router</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">softmax, top 8, not renormalised</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">vocabulary</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">50,304 tokens; input and output not tied</text>
+<text x="14.0" y="361.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">good at</text>
+<rect x="190.0" y="342.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="361.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">studying routing; English at a 1B cost</text>
+<text x="14.0" y="395.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">not for</text>
+<rect x="190.0" y="376.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="395.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">rare languages; contexts over 4,096 tokens</text>
+</svg>
