@@ -72,7 +72,7 @@ def chart_dopamine(theme):
     fig, axes = plt.subplots(1, 3, figsize=(7.6, 2.9), sharey=True)
     fig.subplots_adjust(top=0.66, bottom=0.2, left=0.08, right=0.99, wspace=0.12)
     t = np.arange(STEPS)
-    for ax, (delta, title, note) in zip(axes, panels):
+    for ax, (delta, title, note) in zip(axes, panels, strict=True):
         colors = [c["enc"] if d >= 0 else c["dec"] for d in delta]
         ax.bar(t, delta, width=0.8, color=colors)
         ax.axhline(0, color=c["line"], linewidth=0.8)
@@ -142,9 +142,11 @@ def chart_drive(theme):
     # Tuckute et al. (2024), event-related test in new participants: response relative to baseline sentences,
     # on z-scored BOLD responses of the language network
     rows = [
-        ("chosen to drive it", 85.7, c["att"], ["“People on Insta Be Like, “Gross!””", "“Turin loves me not, nor will.”"]),
+        ("chosen to drive it", 85.7, c["att"],
+         ["“People on Insta Be Like, “Gross!””", "“Turin loves me not, nor will.”"]),
         ("ordinary sentences", 0.0, c["line"], ["the 1,000 sentences the model was trained on"]),
-        ("chosen to silence it", -97.5, c["dec"], ["“We were sitting on the couch.”", "“Inside was a tiny silver sculpture.”"]),
+        ("chosen to silence it", -97.5, c["dec"],
+         ["“We were sitting on the couch.”", "“Inside was a tiny silver sculpture.”"]),
     ]
     fig, ax = plt.subplots(figsize=(7.6, 3.9))
     fig.subplots_adjust(left=0.03, right=0.97, top=0.78, bottom=0.04)
@@ -235,7 +237,8 @@ def chart_ventral(theme):
     fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3, frameon=False, fontsize=9.5,
                handlelength=1.2, columnspacing=1.6)
     _caption(fig, "The ventral stream: from the back of the head forward, along the underside",
-             "left hemisphere, approximate stages with Destrieux's gyri; a vision network's layers line up the same way",
+             "left hemisphere, approximate stages with Destrieux's gyri; "
+             "a vision network's layers line up the same way",
              c)
     return fig
 
@@ -407,7 +410,7 @@ def chart_modules(theme):
         labels = brain.destrieux("left")
         colors = {}
         overlays = []
-        for name, regions, status in MODULES:
+        for _name, regions, status in MODULES:
             if regions == "LanA":
                 overlays.append((lana("left"), status_color[status], 0.25, 0.45))
             else:
@@ -519,7 +522,7 @@ def chart_data(theme):
     ]
     fig, ax = plt.subplots(figsize=(7.6, 3.3))
     fig.subplots_adjust(left=0.3, right=0.97, top=0.76, bottom=0.17)
-    for k, (name, low, high, color) in enumerate(rows):
+    for k, (_name, low, high, color) in enumerate(rows):
         if high > low:
             ax.plot([low, high], [k, k], color=color, linewidth=9, solid_capstyle="round")
         else:
@@ -557,7 +560,8 @@ def cover():
     cv.fits(right)
     out.append(svg)
     return cv.frame("blog / cognitive science", ["The brain and", "AI models"],
-                    ["Where they converge,", "and where they don't"], "".join(out), footer="Cognitive science, measured")
+                    ["Where they converge,", "and where they don't"], "".join(out),
+                    footer="Cognitive science, measured")
 
 
 def chart_alts():
@@ -572,8 +576,9 @@ def chart_alts():
         "underside of the temporal lobe",
         "space": "A coronal slice of the brain with both hippocampi highlighted, and two idealised firing maps over a "
         "one-metre box: a place cell fires in one spot, a grid cell at every vertex of a triangular lattice",
-        "physics": "Accuracy at telling possible from impossible videos on the IntPhys 2 benchmark. People, by majority "
-        "of three annotators, 96.4%. The best models are near chance at 50%: V-JEPA 2 57.5%, Gemini 2.5 Flash 55.6%, "
+        "physics": "Accuracy at telling possible from impossible videos on the IntPhys 2 benchmark. "
+        "People, by majority of three annotators, 96.4%. The best models are near chance at 50%: "
+        "V-JEPA 2 57.5%, Gemini 2.5 Flash 55.6%, "
         "GPT-4o 53.8%, V-JEPA with RoPE 53.8%, Qwen-VL 2.5 52.3%, Cosmos-4B 49.4%",
         "modules": "The left hemisphere from the side and from the middle, coloured by how close an AI counterpart is. "
         "Visual cortex, auditory cortex and the language network: a close counterpart. Motor cortex, dorsolateral "
