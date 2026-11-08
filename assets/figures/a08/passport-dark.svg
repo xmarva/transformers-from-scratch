@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 438" width="760" height="438" role="img" aria-label="DeepSeek-V2&#x27;s passport. Published May 2024 by DeepSeek-AI with open weights. Type: decoder-only mixture of experts, 236 billion parameters, 21 billion per token, 160 routed and 2 shared experts, 6 routed per token. Training: 8.1 trillion tokens. Attention: multi-head latent attention, 128 heads, a latent of 512 numbers and a rotary key of 64 per token and layer; queries compressed to 1,536. Positions: decoupled rotary dimensions, 64 per head. Cache: 576 numbers per token per layer, as much as grouped-query attention with 2.25 groups. Vocabulary: 102,400 tokens. Good at: long conversations served to many users at once. Not for: a single GPU">
+<title>DeepSeek-V2&#x27;s passport. Published May 2024 by DeepSeek-AI with open weights. Type: decoder-only mixture of experts, 236 billion parameters, 21 billion per token, 160 routed and 2 shared experts, 6 routed per token. Training: 8.1 trillion tokens. Attention: multi-head latent attention, 128 heads, a latent of 512 numbers and a rotary key of 64 per token and layer; queries compressed to 1,536. Positions: decoupled rotary dimensions, 64 per head. Cache: 576 numbers per token per layer, as much as grouped-query attention with 2.25 groups. Vocabulary: 102,400 tokens. Good at: long conversations served to many users at once. Not for: a single GPU</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="438" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">DeepSeek-V2: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">May 2024, DeepSeek-AI; open weights</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">mixture of experts; 236B parameters, 21B per token</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">training</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">8.1 trillion tokens</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">attention</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">latent, 128 heads, latent 512, rotary key 64</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">queries</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">compressed to 1,536, then 128 + 64 per head</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">cache</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">576 numbers per token per layer</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">experts</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">160 routed and 2 shared, 6 per token</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">vocabulary</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">102,400 tokens</text>
+<text x="14.0" y="361.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">good at</text>
+<rect x="190.0" y="342.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="361.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">long chats served to many users at once</text>
+<text x="14.0" y="395.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">not for</text>
+<rect x="190.0" y="376.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="395.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">a single GPU</text>
+</svg>

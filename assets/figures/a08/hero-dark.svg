@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 344" width="760" height="344" role="img" aria-label="What one token keeps in the cache under four designs, drawn to scale for 32 heads of 128. Multi-head attention keeps a key and a value for every head, 8,192 numbers per layer. Grouped-query attention with 8 groups keeps 2,048. Latent attention keeps one compressed vector of 512 and a rotary key of 64, 576 numbers, from which every head&#x27;s key and value are rebuilt. Multi-query attention keeps one key and one value, 256 numbers">
+<title>What one token keeps in the cache under four designs, drawn to scale for 32 heads of 128. Multi-head attention keeps a key and a value for every head, 8,192 numbers per layer. Grouped-query attention with 8 groups keeps 2,048. Latent attention keeps one compressed vector of 512 and a rotary key of 64, 576 numbers, from which every head&#x27;s key and value are rebuilt. Multi-query attention keeps one key and one value, 256 numbers</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="344" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">What one token leaves in the cache of one layer</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">32 query heads of 128 numbers; the bars are to scale</text>
+<text x="14.0" y="94.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">multi-head</text>
+<text x="14.0" y="114.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">a key and a value per head</text>
+<rect x="300.0" y="78.0" width="370.0" height="34.0" rx="9" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="680.0" y="100.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">8,192</text>
+<text x="14.0" y="152.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">grouped-query, 8 groups</text>
+<text x="14.0" y="172.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">a key and a value per group</text>
+<rect x="300.0" y="136.0" width="92.5" height="34.0" rx="9" fill="#F0B04A" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="402.5" y="158.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">2,048</text>
+<text x="14.0" y="210.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">latent</text>
+<text x="14.0" y="230.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">a latent of 512, a rotary key of 64</text>
+<rect x="300.0" y="194.0" width="26.0" height="34.0" rx="9" fill="#9C8CF5" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="336.0" y="216.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">576</text>
+<text x="14.0" y="268.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">multi-query</text>
+<text x="14.0" y="288.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">one key and one value</text>
+<rect x="300.0" y="252.0" width="11.6" height="34.0" rx="9" fill="#3CC2B0" stroke="#3CC2B0" stroke-width="1.5"/>
+<text x="321.6" y="274.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">256</text>
+<text x="14.0" y="330.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">latent attention rebuilds every head&#x27;s key and value from its 576 numbers when it needs them</text>
+</svg>
