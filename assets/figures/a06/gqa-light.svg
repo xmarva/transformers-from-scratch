@@ -8,7 +8,7 @@
 <marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
 </defs>
 <rect width="760" height="330" rx="12" fill="#FFFFFF"/>
-<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Who reads which keys and values: eight query heads, three designs</text>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Multi-head, grouped-query and multi-query attention with eight query heads</text>
 <text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the cache stores only the key-value heads, so it shrinks with them</text>
 <text x="14.0" y="86.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">multi-head (MHA)</text>
 <text x="14.0" y="104.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">each query head has its own</text>

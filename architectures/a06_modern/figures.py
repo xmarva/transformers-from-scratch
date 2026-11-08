@@ -27,7 +27,7 @@ HERO_ALT = ("The decoder block of a modern LLM, with each change since Llama mar
 
 def hero() -> Figure:
     fig = Figure(760, 352, alt=HERO_ALT)
-    fig.text(14, 28, "Inside one attention layer: where the changes since Llama act", kind="title")
+    fig.text(14, 28, "Where the changes since Llama act in a decoder block", kind="title")
     fig.text(14, 50, "two of them save memory while the model generates, two keep training stable", kind="note")
     steps = ["projections", "QK-norm", "RoPE", "q·k / √d", "soft-cap", "mask", "softmax · V"]
     knobs = {0, 1, 4, 5}
@@ -58,9 +58,9 @@ def hero() -> Figure:
         for j, line in enumerate(lines):
             fig.text(cx + 10, top + 46 + j * 19, line, kind="note")
         fig.text(cx + 10, top + 106, tag, kind="label", role=role)
-    fig.text(14, 316, "everything else is Llama's: RMSNorm before attention and before the feed-forward network,",
+    fig.text(14, 316, "in most models the rest is Llama's: RMSNorm before attention and before the feed-forward",
              kind="note")
-    fig.text(14, 336, "rotary positions, a SwiGLU feed-forward network, residual connections, and almost no biases",
+    fig.text(14, 336, "network, rotary positions, a SwiGLU feed-forward network, residual connections, almost no biases",
              kind="note")
     return fig
 
@@ -77,7 +77,7 @@ def skeleton() -> Figure:
         "feed-forward network with three matrices, no biases. The places where this lesson's changes act are "
         "marked: the key-value heads, the mask, the queries and keys, the scores",
     )
-    fig.text(14, 28, "Six years of decoder blocks: GPT-2 against a 2025 model", kind="title")
+    fig.text(14, 28, "The decoder block of GPT-2 and of a 2025 model", kind="title")
     fig.text(14, 50, "the same residual stream and causal mask; almost everything inside has been replaced",
              kind="note")
     left = [("tokens + learned position vectors", "data"), ("LayerNorm: mean, scale, bias", "neutral"),
@@ -114,7 +114,7 @@ def gqa() -> Figure:
         "heads share one key-value head. Below each, the KV cache per token, in proportion: eight, four and one "
         "units",
     )
-    fig.text(14, 28, "Who reads which keys and values: eight query heads, three designs", kind="title")
+    fig.text(14, 28, "Multi-head, grouped-query and multi-query attention with eight query heads", kind="title")
     fig.text(14, 50, "the cache stores only the key-value heads, so it shrinks with them", kind="note")
     panels = [("multi-head (MHA)", 8, "each query head has its own"),
               ("grouped-query (GQA)", 4, "two query heads per group"),
@@ -158,7 +158,7 @@ def window() -> Figure:
         "layer's summaries. Right: the rolling buffer, four slots, where token i is written into slot i mod 4 "
         "over the token that left the window",
     )
-    fig.text(14, 28, "A window of W = 4: the mask, the reach, the cache", kind="title")
+    fig.text(14, 28, "The mask, the reach and the cache of a window of four", kind="title")
     fig.text(14, 50, "each token sees itself and the three before it; information still travels further", kind="note")
     cell = 13
     for p, (title, w) in enumerate([("global", 99), ("local, W = 4", 4)]):
@@ -185,7 +185,7 @@ def window() -> Figure:
     fig.text(x0, y0 + 4 * 26 + 18, "W − 1 more tokens with every layer", kind="note")
 
     x0, y0 = 14, 268
-    fig.text(x0, y0, "the rolling buffer: token i goes into slot i mod 4", kind="subtitle")
+    fig.text(x0, y0, "the rolling buffer puts token i into slot i mod 4", kind="subtitle")
     slots = [8, 9, 6, 7]
     for s, token in enumerate(slots):
         fig.box(x0 + s * 66, y0 + 14, 58, 34, role="data", label=f"t{token}")
@@ -210,7 +210,7 @@ def lora() -> Figure:
         "two outputs are added, the low-rank path scaled by alpha over r. B starts at zero, so at the start the "
         "model is unchanged. After training, B times A is added into W and the extra path disappears",
     )
-    fig.text(14, 28, "LoRA: a frozen matrix and a thin trained detour around it", kind="title")
+    fig.text(14, 28, "LoRA adds a thin trained detour to a frozen matrix", kind="title")
     fig.text(14, 50, "W' = W + (α / r) · B A, with r far smaller than the matrix's sides", kind="note")
     fig.box(14, 132, 80, 40, role="data", label="x")
     fig.arrow((95, 152), (139, 110))
@@ -226,7 +226,7 @@ def lora() -> Figure:
     fig.box(600, 132, 60, 40, role="plain", label="+")
     fig.arrow((661, 152), (689, 152))
     fig.box(690, 132, 56, 40, role="data", label="y")
-    fig.text(140, 252, "A starts random and B starts at zero: at step 0 the model is exactly the original", kind="note")
+    fig.text(140, 252, "A starts random and B at zero, so at step 0 the model is exactly the original", kind="note")
     fig.text(140, 274, "after training, B A is added into W once, and the detour costs nothing at inference",
              kind="note")
     return fig

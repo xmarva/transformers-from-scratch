@@ -8,7 +8,7 @@
 <marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
 </defs>
 <rect width="760" height="352" rx="12" fill="#FFFFFF"/>
-<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Inside one attention layer: where the changes since Llama act</text>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Where the changes since Llama act in a decoder block</text>
 <text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">two of them save memory while the model generates, two keep training stable</text>
 <rect x="14.0" y="84.0" width="94.0" height="40.0" rx="9" fill="#6A55D8" stroke="#6A55D8" stroke-width="1.5"/>
 <text x="61.0" y="108.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">projections</text>
@@ -58,6 +58,6 @@
 <text x="576.0" y="233.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the last W tokens</text>
 <text x="576.0" y="252.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">Mistral, Gemma, gpt-oss</text>
 <text x="576.0" y="274.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">memory</text>
-<text x="14.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">everything else is Llama&#x27;s: RMSNorm before attention and before the feed-forward network,</text>
-<text x="14.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">rotary positions, a SwiGLU feed-forward network, residual connections, and almost no biases</text>
+<text x="14.0" y="316.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">in most models the rest is Llama&#x27;s: RMSNorm before attention and before the feed-forward</text>
+<text x="14.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">network, rotary positions, a SwiGLU feed-forward network, residual connections, almost no biases</text>
 </svg>

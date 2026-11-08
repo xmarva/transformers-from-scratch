@@ -1,5 +1,5 @@
 # %% [markdown]
-# # Lesson 6. Inside modern LLMs: GQA, sliding windows, QK-norm, and Qwen3 from scratch
+# # Lesson 6. Modern LLM architecture and Qwen3 from scratch
 #
 # Give Llama 3.1 8B a long contract to read, 128,000 tokens of it, and before it writes the first word of its answer
 # it has to keep the whole contract in GPU memory: a key and a value for every token, in every head of every one of
@@ -15,7 +15,7 @@
 # windows and models that mix local and global layers. The second gave us QK-norm and soft-capping, small changes
 # that keep attention from tearing a training run apart.
 #
-# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a06/hero-light.png" width="760" alt="The decoder block of a modern LLM, with each change since Llama marked where it acts. Grouped-query attention shares one key-value head among several query heads and shrinks the KV cache. A sliding window limits how far back a local layer can look. QK-norm normalises queries and keys before their dot product, and soft-capping squashes the scores with a tanh. The rest of the block is Llama's: RMSNorm before each part, rotary positions, a SwiGLU feed-forward network">
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a06/hero-light.png" width="760" alt="The decoder block of a modern LLM, with each change since Llama marked where it acts. Grouped-query attention shares one key-value head among several query heads and shrinks the KV cache. A sliding window limits how far back a local layer can look. QK-norm normalises queries and keys before their dot product, and soft-capping squashes the scores with a tanh. In most models the rest of the block is Llama's: RMSNorm before each part, rotary positions, a SwiGLU feed-forward network">
 #
 # **What you'll do**
 #
@@ -53,7 +53,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from huggingface_hub import HfApi, hf_hub_download
 from safetensors.torch import load_file
-from tfs.viz import heatmap
 from transformers import AutoTokenizer
 # the reference implementations, for the checks
 from transformers import AutoModelForCausalLM, GPT2LMHeadModel
@@ -105,15 +104,17 @@ def text_config(repo):
 
 
 configs = {}
-for repo, name, released in MODELS:
+for repo, name, _ in MODELS:
     configs[name] = text_config(repo)
 print(len(configs), "configs")
 
 # %% [markdown]
 # Three settings need a word before the table. Some models give a layer either *global* attention, over everything
 # before it, or *local* attention, over a window of the last few thousand tokens; section 7 is about why, and the
-# config says it in one of three ways. QK-norm and soft-capping, the subject of section 4, don't appear in the config
-# at all, because they are written into the model's code: we note the model types whose code has them.
+# config says it in one of three ways. Soft-capping, one of the subjects of section 4, has a setting of its own,
+# `attn_logit_softcapping`. QK-norm, the other, doesn't appear in the config at all, because it is written into the
+# model's code: we note the model types whose code has it. And Gemma's configs don't say whether the input and output
+# embeddings are tied, because Gemma's code ties them unless told otherwise.
 
 # %%
 # model types whose attention normalises queries and keys
@@ -145,8 +146,12 @@ def attention_summary(c):
     return f"{local} local : {len(kinds) - local} global, {c['sliding_window']}"
 
 
+def tied(c):  # Gemma's configs leave the key out, and Gemma's code ties by default
+    return c.get("tie_word_embeddings", c["model_type"].startswith("gemma"))
+
+
 rows = []
-for repo, name, released in MODELS:
+for _, name, released in MODELS:
     c = configs[name]
     rows.append({
         "model": name,
@@ -160,7 +165,7 @@ for repo, name, released in MODELS:
         "QK-norm": "yes" if c["model_type"] in QK_NORM else "",
         "soft-cap": c.get("attn_logit_softcapping") or "",
         "vocabulary": c["vocab_size"],
-        "tied": "yes" if c.get("tie_word_embeddings") else "",
+        "tied": "yes" if tied(c) else "",
     })
 table(pd.DataFrame(rows))
 
@@ -176,15 +181,16 @@ table(pd.DataFrame(rows))
 # chosen for the attention kernels and the KV cache, not derived from the rest.
 #
 # *Attention* shows the second way to save memory, local layers. Mistral 7B made every layer local with a window
-# of 4,096 tokens; its later versions and Mistral Small went back to global attention everywhere. Gemma 2
-# alternates, Gemma 3 keeps one global layer in six, gpt-oss alternates with a window of only 128.
+# of 4,096 tokens; its version 0.3 and Mistral Small went back to global attention everywhere, and Ministral 8B
+# made three layers in four local again. Gemma 2 alternates, Gemma 3 keeps one global layer in six, gpt-oss
+# alternates with a window of only 128.
 #
 # *QK-norm* and *soft-cap* are the stability tricks of section 4. Gemma 2 squashed its scores; Gemma 3, OLMo 2 and
 # Qwen3 normalise queries and keys instead.
 #
 # *Vocabulary* grew from Mistral's 32,000 to over 262,000 in Gemma 3: more languages, fewer tokens per sentence,
-# and in a small model a large share of all parameters, which is why the small models *tie* their input and output
-# embeddings, using one matrix for both.
+# and in a small model a large share of all parameters. That is why small models often *tie* their input and output
+# embeddings, using one matrix for both; Gemma ties them at every size.
 #
 # A few settings didn't fit in the table. SmolLM3 drops rotary positions from every fourth layer, which see the
 # tokens with no positions at all; Gemma 3 27B scales its scores by the width per head of the whole model, 168,
@@ -202,14 +208,17 @@ for name in ["Mistral 7B", "Mistral Small 24B", "Llama 3.1 8B", "Qwen3 8B"]:
     print(f"{name}: RoPE base {configs[name]['rope_theta']:,.0f}")
 
 # %% [markdown]
-# ## 2. The skeleton they share
+# ## 2. The decoder block they share
 #
-# Under the settings, all fourteen models are the same machine, the one [lesson 5 of the first
+# Under the settings, the fourteen models are variations of one machine, the one [lesson 5 of the first
 # course](https://xmarva.github.io/blog/2026/transformers-from-scratch-05-llama/) built step by step: a stack of
-# decoder blocks, each with RMSNorm before attention and before the feed-forward network, a residual connection
-# around each, rotary positions applied to queries and keys, a SwiGLU feed-forward network, and in most of them no
-# biases at all. GPT-2, in lesson 4, had LayerNorm, learned positions and GELU; nothing of it survived but the
-# residual stream and the causal mask.
+# decoder blocks with a residual connection around attention and around the feed-forward network, RMSNorm, rotary
+# positions applied to queries and keys, a gated feed-forward network, and in most of them no biases at all. Most put
+# the norm before attention and before the feed-forward network and gate with SiLU, as Llama does. OLMo 2 normalises
+# the outputs of the two instead of their inputs, Gemma 2 and 3 normalise both and gate with GELU, and gpt-oss
+# replaces the feed-forward network with a mixture of experts, the subject of lesson 7. GPT-2, in lesson 4, had
+# LayerNorm, learned positions and GELU; of its block only the residual stream, the causal mask and, in most models,
+# the norm before each part survived.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a06/skeleton-light.png" width="760" alt="Two decoder blocks side by side. GPT-2's, from lesson 4: LayerNorm, attention with learned position embeddings added to the input, LayerNorm, a GELU feed-forward network, biases everywhere. The modern block: RMSNorm, attention with rotary positions applied to queries and keys inside it, RMSNorm, a SwiGLU feed-forward network with three matrices, no biases. The places where this lesson's changes act are marked: the key-value heads, the mask, the queries and keys, the scores">
 #
@@ -269,7 +278,7 @@ print("output", tuple(ours.shape))
 print("max difference from PyTorch's GQA:", (ours - reference).abs().max().item())
 
 # %% [markdown]
-# The repeat makes a copy for clarity; real kernels, and PyTorch's `enable_gqa=True`, read the shared head in place,
+# The repeat makes a copy for clarity; fused attention kernels such as FlashAttention read the shared head in place,
 # which is the point: in a group of $$g$$, every key and value read from memory serves $$g$$ query heads instead of
 # one. The cache is $$g$$ times smaller *and* each byte of it does $$g$$ times more work.
 #
@@ -319,20 +328,23 @@ for kv_heads in [12, 6, 4, 3, 2, 1]:
 table(pd.DataFrame(shared))
 
 # %% [markdown]
-# @@GPT2_SHARE@@
+# Sharing ruins the model. With every head on its own, GPT-2 reads Wikipedia as well as it ever did. Halve the
+# key-value heads and its perplexity grows by more than an order of magnitude, and with fewer heads it stays about
+# that bad. Each head of a trained model learned its own keys and values, and their average is none of them.
 #
-# So a model is either trained with grouped queries from the start, as Llama 3 and everything after it were, or
+# So a model is either trained with grouped queries from the start, as Llama 3 and most models after it were, or
 # converted and then trained again. Here is what it buys, for every model of section 1: the KV cache of one
 # sequence of 32,768 tokens in 16-bit numbers, against the cache the same model would need with a key-value head
 # for every query head. A local layer keeps only its window, and we count that too; section 7 explains it.
 
 # %%
-def kv_cache_bytes(c, tokens, kv_heads=None):
+def kv_cache_bytes(c, tokens, kv_heads=None, windows=True):
     if kv_heads is None:
         kv_heads = c["num_key_value_heads"]
     total = 0
     for kind in layer_kinds(c):
-        kept = tokens if kind == "global" else min(tokens, c["sliding_window"])
+        local = windows and kind == "local"
+        kept = min(tokens, c["sliding_window"]) if local else tokens
         total += 2 * kept * kv_heads * c["head_dim"] * 2  # keys and values, 2 bytes each
     return total
 
@@ -343,26 +355,29 @@ actual = [kv_cache_bytes(configs[n], context) / 1e9 for n in names]
 full = []
 for n in names:
     every_head = configs[n]["num_attention_heads"]
-    full.append(kv_cache_bytes(configs[n], context, every_head) / 1e9)
+    full.append(kv_cache_bytes(configs[n], context, every_head, windows=False) / 1e9)
 fig, ax = plt.subplots(figsize=(7.6, 5.2))
 y = np.arange(len(names))
 ax.barh(y, full, color=COLORS["grid"],
         label="a key-value head for every query head, all global")
 ax.barh(y, actual, color=COLORS["att"], label="as configured")
 for k in range(len(names)):
-    ax.text(full[k] + 0.4, k, f"{actual[k]:.1f} GB", va="center",
+    ax.text(actual[k] + 0.4, k, f"{actual[k]:.1f} GB", va="center",
             color=COLORS["muted"], fontsize=9)
 ax.set_yticks(y, names)
 ax.invert_yaxis()
 ax.set_xlabel(f"KV cache of one sequence of {context:,} tokens, GB")
 ax.set_title("What grouped queries and local layers save")
-ax.legend(frameon=False, loc="lower right")
+ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2)
 ax.grid(axis="x")
 ax.grid(axis="y", visible=False)
 plt.show()
 
 # %% [markdown]
-# @@KV_CHART@@
+# The grey bars are what these models would need with neither trick. Grouped queries alone cut the cache by the size
+# of a group, two to eight times; local layers cut it further, and in Gemma 3 and gpt-oss the few global layers end up
+# holding nearly all of it. OLMo 2, with a key-value head for every query head and no local layers, needs the
+# largest cache in the table, although it is far from the largest model.
 #
 # And the claim this lesson opened with, checked: Llama 3.1 8B's cache at its full context of 131,072 tokens against
 # its weights, both in 16 bits.
@@ -377,7 +392,7 @@ print(f"the same with a key-value head per query head: "
       f"{kv_cache_bytes(llama, 131_072, llama['num_attention_heads']) / 1e9:.1f} GB")
 
 # %% [markdown]
-# ## 4. When attention blows up
+# ## 4. Training stability, QK-norm and soft-capping
 #
 # The second pressure shows up during training, and it shows up late, which is what makes it expensive. In 2023 a
 # Google team scaling a Vision Transformer to 22 billion parameters watched their 8-billion-parameter run diverge
@@ -395,7 +410,8 @@ print(f"the same with a key-value head per query head: "
 # the softmax vanishes for every other key, and a head that has collapsed onto one token has no way back.
 #
 # Two fixes are in the table of section 1. *QK-norm* normalises each query and each key before the dot product, the
-# same RMSNorm as everywhere else, applied to one head's vector at a time, with its own learned scale $$g$$:
+# same RMSNorm as everywhere else, with its own learned scale $$g$$. Qwen3 and Gemma 3 apply it to one head's vector
+# at a time, with one scale shared by the heads of a layer; OLMo 2 normalises the whole projection at once.
 #
 # $$\hat q = g_q \odot \frac{q}{\text{rms}(q)}, \qquad \hat k = g_k \odot \frac{k}{\text{rms}(k)}, \qquad
 # s_{ij} = \frac{\hat q_i \cdot \hat k_j}{\sqrt{d_h}}.$$
@@ -420,14 +436,14 @@ ax.plot(s, 30 * np.tanh(s / 30), color=COLORS["dec"],
 ax.set_ylim(-80, 80)
 ax.set_xlabel("score before the cap")
 ax.set_ylabel("score after")
-ax.set_title("Soft-capping: nothing changes near zero, nothing passes the ceiling")
+ax.set_title("Soft-capping bends large scores towards a ceiling")
 ax.legend(frameon=False, loc="upper left")
 plt.show()
 
 # %% [markdown]
 # Gemma 3 dropped soft-capping in favour of QK-norm: "we replace the soft-capping of Gemma 2 with QK-norm" ([Gemma
 # Team, 2025](https://arxiv.org/abs/2503.19786)). The two are not equivalent: a cap only limits the score, while
-# QK-norm limits the vectors that make it, and leaves the model a learned scale to set how sharp each head may be.
+# QK-norm limits the vectors that make it, and leaves the model a learned scale to set how sharp attention may get.
 #
 # You don't need 8 billion parameters to watch this happen. Wortsman et al. showed that the same instabilities
 # "also appear in small models when training at high learning rates" ([Wortsman et al.,
@@ -518,8 +534,8 @@ class TinyLM(nn.Module):
         return self.head(self.norm(h))
 
 # %% [markdown]
-# The training loop is lesson 3's of the first course with nothing removed: AdamW, a warm-up, a cosine decay, the
-# gradient clipped at 1. The only thing we turn is the peak learning rate.
+# The training loop is lesson 4's: AdamW, a warm-up, a cosine decay, the gradient clipped at 1. The only thing we
+# turn is the peak learning rate.
 
 # %%
 def wiki_bytes(split):
@@ -599,12 +615,19 @@ axes[0].set_title("Final loss against learning rate")
 axes[1].set_yscale("log")
 axes[1].set_xlabel("step")
 axes[1].set_ylabel("largest attention score")
-axes[1].set_title(f"The largest score, at a learning rate of {SHOWN:g}")
+axes[1].set_title(f"The largest score at a learning rate of {SHOWN:g}")
 axes[0].legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@STABILITY_TEXT@@
+# At the smallest learning rate the three models end close together. Raise it and they part: the plain model's loss
+# climbs fastest, soft-capping holds it back at the middle rate but not at the highest, and the model with QK-norm
+# barely notices, and is a little better even at the lowest rate.
+#
+# The right-hand plot shows why. In the plain model the largest score grows by orders of magnitude within the first
+# couple of hundred steps and stays there, so its softmax is nearly one-hot. With QK-norm it stays in the tens. The
+# soft-capped model's raw scores also grow far past the cap of 50, though less than the plain model's, and the cap
+# only squashes them on the way into the softmax: past the ceiling the tanh is flat and passes back almost no gradient.
 
 # %% [markdown]
 # ## 5. Qwen3 in PyTorch
@@ -613,7 +636,7 @@ plt.show()
 # parameters, six of them dense and two mixtures of experts, all under Apache 2.0 and trained on "36 trillion tokens"
 # in "119 languages and dialects" ([Qwen Team, 2025](https://arxiv.org/abs/2505.09388)). The report describes the
 # dense models in two sentences: like Qwen2.5 they use grouped-query attention, SwiGLU, rotary positions and RMSNorm
-# with pre-normalisation, and then "we remove QKV-bias used in Qwen2 and introduce QK-Norm […] to the attention
+# with pre-normalisation, and then "we remove QKV-bias used in Qwen2 […] and introduce QK-Norm […] to the attention
 # mechanism to ensure stable training for Qwen3". That is the whole difference from the skeleton of section 2, and
 # we already have every piece.
 #
@@ -669,8 +692,9 @@ def rotate(x, cos, sin):
 # Attention puts sections 3 and 4 together. Queries take 16 heads of 128, keys and values 8: groups of two. QK-norm
 # comes after the projection and before the rotation, one norm for all query heads and one for all key heads. The
 # cache stores keys and values with 8 heads, before they are repeated, which is where grouped queries save memory;
-# the repeat happens on the way into the attention kernel. The attention itself is PyTorch's fused
-# `scaled_dot_product_attention`, which never writes out the matrix of scores.
+# the repeat happens on the way into the attention kernel. The attention itself is PyTorch's
+# `scaled_dot_product_attention`, which on a GPU usually runs a fused kernel that never writes out the matrix of
+# scores.
 
 # %%
 class Cache:
@@ -717,8 +741,9 @@ class Attention(nn.Module):
         return self.o_proj(out.transpose(1, 2).reshape(b, t, -1))
 
 # %% [markdown]
-# The feed-forward network is SwiGLU with no biases, and the block is pre-norm with two residual connections. The
-# model's last step multiplies by the embedding matrix itself: Qwen3-0.6B ties its input and output embeddings.
+# The feed-forward network is SwiGLU with no biases, and the block is pre-norm with two residual connections. In
+# Qwen3-0.6B, 1.7B and 4B the last step multiplies by the embedding matrix itself, because they tie their input and
+# output embeddings; from 8B up the output matrix is a separate one, and the class takes either.
 
 # %%
 class FeedForward(nn.Module):
@@ -755,6 +780,10 @@ class Qwen3(nn.Module):
         n_layers = config["num_hidden_layers"]
         self.layers = nn.ModuleList([Block(config) for _ in range(n_layers)])
         self.norm = RMSNorm(config["hidden_size"], config["rms_norm_eps"])
+        self.tied = config.get("tie_word_embeddings", False)
+        if not self.tied:  # Qwen3-8B and larger have an output matrix of their own
+            d, vocab = config["hidden_size"], config["vocab_size"]
+            self.lm_head = nn.Linear(d, vocab, bias=False)
 
     def hidden(self, ids, positions, mask, caches=None):
         x = self.embed_tokens(ids)
@@ -768,7 +797,9 @@ class Qwen3(nn.Module):
         return self.norm(x)
 
     def logits(self, h):
-        return h @ self.embed_tokens.weight.T  # tied: the output layer is the embeddings
+        if self.tied:
+            return h @ self.embed_tokens.weight.T  # the output layer is the embeddings
+        return self.lm_head(h)
 
     def forward(self, ids, positions, mask, caches=None):
         return self.logits(self.hidden(ids, positions, mask, caches))
@@ -777,8 +808,8 @@ class Qwen3(nn.Module):
 # ## 6. The official weights in our code
 #
 # We named our modules the way Qwen's checkpoint names its tensors, so the transplant is a matter of dropping the
-# prefix `model.`. The checkpoint also stores `lm_head.weight`, an exact copy of the embedding matrix that the tied
-# model never needs; `load_state_dict` refuses anything else missing or left over.
+# prefix `model.`. The checkpoint of a tied model also stores `lm_head.weight`, an exact copy of the embedding
+# matrix that the model never needs, and we skip it; `load_state_dict` refuses anything else missing or left over.
 
 # %%
 def load_qwen3(repo, dtype):
@@ -794,8 +825,9 @@ def load_qwen3(repo, dtype):
         state.update(load_file(hf_hub_download(repo, name)))
     renamed = {}
     for key, value in state.items():
-        if key != "lm_head.weight":
-            renamed[key.removeprefix("model.")] = value.to(dtype)
+        if key == "lm_head.weight" and config.get("tie_word_embeddings", False):
+            continue  # a copy of the embeddings
+        renamed[key.removeprefix("model.")] = value.to(dtype)
     with torch.device("meta"):  # no memory for the random weights we are about to replace
         model = Qwen3(config)
     model.load_state_dict(renamed, strict=True, assign=True)
@@ -831,7 +863,10 @@ table(pd.DataFrame({"part": list(parts), "parameters": list(parts.values()),
                     "share": [f"{n / total:.1%}" for n in parts.values()]}))
 
 # %% [markdown]
-# @@PARAMS@@
+# About a quarter of the model is the embedding table, 151,936 rows of 1,024 numbers, one row per token, used twice:
+# at the input and, tied, at the output. Attention has a larger share than in older models because its heads are
+# wider than the model itself. QK-norm adds a few thousand parameters, next to nothing for what section 4 showed it
+# does.
 #
 # The check, as in every lesson: the same tokens through our model and through Hugging Face's, in 32-bit floats.
 
@@ -854,7 +889,8 @@ print("max difference:", f"{(ours - theirs).abs().max().item():.2e}")
 del reference
 
 # %% [markdown]
-# @@MATCH@@
+# Our model and Hugging Face's agree to within the rounding of 32-bit arithmetic, so the transplant is exact: the
+# classes above are all there is to Qwen3.
 #
 # Generation is lesson 4's loop, extended to a batch of prompts of different lengths. The prompts are padded on the
 # left, so that every row's last token is in the same column; padding gets no attention, and positions are counted
@@ -925,10 +961,13 @@ for thinking in [False, True]:
     print(answer if len(answer) < 1500 else answer[:700] + "\n[…]\n" + answer[-500:])
 
 # %% [markdown]
-# @@THINKING@@
+# Both answers are right. Without thinking the model writes a tidy solution at once. With thinking it first talks to
+# itself for several times as many tokens, sets up the equation, doubts it, sets it up again and checks the result,
+# and only then writes the same answer. On a problem this easy the thinking buys nothing; it pays on problems where
+# the first attempt goes wrong, and either way it is paid for in tokens.
 
 # %% [markdown]
-# ## 7. Sliding windows, and local and global layers
+# ## 7. Sliding-window attention and local layers
 #
 # Grouped queries shrink the cache per token; a sliding window caps the number of tokens. In a *local* layer each
 # token attends only to the last $$W$$ tokens, itself included:
@@ -936,14 +975,15 @@ for thinking in [False, True]:
 # $$\text{token } i \text{ sees token } j \quad \Longleftrightarrow \quad i - W < j \le i.$$
 #
 # Mistral 7B, in September 2023, gave every layer a window of 4,096 tokens and pointed out that the window is not a
-# horizon: layer 2 sees layer 1's outputs, each of which already summarises 4,096 tokens, so information can travel
-# $$W$$ tokens per layer. "At the last layer, using a window size of W=4096, we have a theoretical attention span of
+# horizon: layer 2 sees layer 1's outputs, each of which already summarises a window, so information travels about
+# $$W$$ tokens further back with every layer ($$W - 1$$ with our mask; Mistral's paper lets a position see the $$W$$
+# tokens before itself). "At the last layer, using a window size of W=4096, we have a theoretical attention span of
 # approximately 131K tokens" ([Jiang et al., 2023](https://arxiv.org/abs/2310.06825)). Its cache never holds more
 # than $$W$$ tokens: a *rolling buffer* writes token $$i$$ into slot $$i \bmod W$$, over the token that has just left
 # the window, and on a 32k-token sequence "this reduces the cache memory usage by 8x, without impacting the model
 # quality".
 #
-# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a06/window-light.png" width="760" alt="Sliding-window attention. Left: the causal mask of global attention, a full lower triangle, against the mask of a local layer with a window of four, a band along the diagonal. Middle: through three local layers, a token reaches four, then seven, then ten tokens back, because each layer reads the previous layer's summaries. Right: the rolling buffer, four slots, where token i is written into slot i mod 4 over the token that left the window">
+# <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a06/window-light.png" width="760" alt="Sliding-window attention. Left: the causal mask of global attention, a full lower triangle, against the mask of a local layer with a window of four, a band along the diagonal. Middle: through one, two and three local layers, what a token can draw on spans four, then seven, then ten tokens, itself included, because each layer reads the previous layer's summaries. Right: the rolling buffer, four slots, where token i is written into slot i mod 4 over the token that left the window">
 #
 # The rolling buffer is a few lines on top of our `Cache`. It keeps at most $$W$$ keys and values; it doesn't even
 # need to keep them in order, because a token's position is already rotated into its key and attention doesn't care
@@ -996,14 +1036,15 @@ print("tokens:", t, "window:", W, "slots in each cache:", caches[0].k.shape[2])
 print("max difference:", f"{(banded - stepwise).abs().max().item():.2e}")
 
 # %% [markdown]
-# @@ROLLING@@
+# The two agree to rounding error, and the buffer never holds more than its 16 slots: a rolling cache is another way
+# of storing what the banded mask lets each token see.
 #
-# Mistral's later models gave the window up, and the model that made local attention common again was Gemma 2,
-# which alternated local and global layers, one to one. Gemma 3 went to five local layers for every global one with
-# a window of 1,024 (512 in the 1B model, says its config), and gpt-oss alternates again with a window of only 128
-# tokens. The global layers carry information across the whole context; the local ones, the large majority, cost a
-# fixed amount of memory however long the context grows. Here are the layers of every model of section 1 that has
-# local ones:
+# Gemma 2 made local attention common again: it alternated local and global layers, one to one. Gemma 3 went to
+# five local layers for every global one with a window of 1,024 (512 in the 1B model, says its config), Ministral 8B
+# to three for every global one with a window of 32,768, and gpt-oss alternates again with a window of only 128
+# tokens. The global layers carry information across the whole context; the local ones, half of the layers or more,
+# cost a fixed amount of memory however long the context grows. Here are the layers of every model of section 1 that
+# has local ones:
 
 # %%
 mixed = [name for name in names if "local" in layer_kinds(configs[name])]
@@ -1107,19 +1148,35 @@ for (name, losses), color in zip(by_position.items(), colors):
     smooth = np.convolve(losses, np.ones(64) / 64, mode="valid")
     ax.plot(np.arange(len(smooth)) + 32, smooth, color=color, label=name, linewidth=1.4)
 ax.axvline(512, color=COLORS["line"], linestyle="--")
-ax.text(520, ax.get_ylim()[1] * 0.97, "the window ends", color=COLORS["muted"],
-        fontsize=9, va="top")
+ax.text(530, 0.5, "the window ends", color=COLORS["muted"], fontsize=9, va="center",
+        transform=ax.get_xaxis_transform())
 ax.set_xlabel("position of the predicted token")
 ax.set_ylabel("loss, averaged over 64 positions")
 ax.set_title("Qwen3-0.6B with windows it was never trained with")
-ax.legend(frameon=False, fontsize=8.5, loc="upper right")
+ax.legend(frameon=False, fontsize=8.5, loc="upper center", bbox_to_anchor=(0.5, -0.2),
+          ncol=2)
 plt.show()
 
 # %% [markdown]
-# @@WINDOWS@@
+# Up to the 512th token every mask is the same as global attention, and so is the loss. After it, a window of 512 in
+# every layer is a disaster: the loss more than doubles and stays there. One global layer in six helps only a little.
+# The surprise is in the last two rows. Keep the first four tokens of the text visible to every layer, and the
+# windowed model comes close to the global one all the way to the 4,096th token.
+#
+# The first tokens matter not for what they say. Xiao et al. found that language models put a large share of their
+# attention on the first tokens of a text, whatever those tokens are: a softmax has to give its weight to something,
+# and the first tokens, visible to every later one, become the place to park it. They called them *attention sinks*,
+# and "keeping the KV of initial tokens will largely recover the performance of window attention" ([Xiao et al.,
+# 2023](https://arxiv.org/abs/2309.17453)). Cut the sinks off with a window and the heads that used them have nowhere
+# to put their attention. The gap that remains between the rows with sinks and global attention is what the model
+# really loses by not seeing far, and it grows with position, as global attention gets more context to use.
+#
+# Models trained with windows from the start learn to live with them, and gpt-oss builds the sink into every head:
+# "Each attention head has a learned bias in the denominator of the softmax" ([OpenAI,
+# 2025](https://arxiv.org/abs/2508.10925)).
 
 # %% [markdown]
-# ## 8. LoRA: teaching the small model a job
+# ## 8. Teaching the small model a job with LoRA
 #
 # A model of 0.6 billion parameters will not write your novel, but it can do one narrow job fast and cheaply, on a
 # laptop or a phone. The job here is the one every voice assistant does: turn a spoken command into a structured
@@ -1186,7 +1243,11 @@ table(pd.DataFrame({"English": [row["utt"] for row in shown],
                     "Russian JSON": [target(russian_by_id[row["id"]]) for row in shown]}))
 
 # %% [markdown]
-# @@MASSIVE_EXAMPLES@@
+# The localisation shows in every row. Kenny Rogers's song became one by the Russian singer Klava Koka, and the slot
+# keeps her name in the genitive the sentence puts it in, *клавы коки*; Mike became Mikhail, in the instrumental case,
+# *михаилом*. So a Russian slot value is not always in the form a dictionary gives, and a model has to copy it in the
+# form it has in the command. The commands were written by people, typos included: *конвертировть* is missing a
+# letter.
 #
 # The score has three numbers, as in the MASSIVE paper: the share of commands whose intent is right, the F1 of the
 # slots, counting a slot as right only if both its type and its value match, and the share of commands where
@@ -1242,10 +1303,11 @@ print(score(shown, ['{"intent": "alarm_set", "slots": []}'] * 4))
 
 # %% [markdown]
 # **The baseline: ask nicely.** Without any training, a chat model can be told the task in its system prompt: the
-# format, the 60 intents, the 55 slot types and three examples. That prompt is @@PROMPT_TOKENS@@ tokens long, and it
-# is the same for every command. Recomputing its keys and values for every request would be a waste, so we compute
-# them once and start every batch from a copy: *prefix caching*, which serving engines such as vLLM do automatically
-# for every shared start of a prompt. Our `generate` already takes a prefix; here is how to make one.
+# format, the 60 intents, the 55 slot types and three examples. That prompt runs to a few hundred tokens, as the next
+# cell prints, and it is the same for every command. Recomputing its keys and values for every request would be a
+# waste, so we compute them once and start every batch from a copy: *prefix caching*, which serving engines such as
+# vLLM do automatically, in blocks of tokens, whenever prompts share a start. Our `generate` already takes a prefix;
+# here is how to make one.
 
 # %%
 def schema_prompt(train_rows):
@@ -1301,7 +1363,7 @@ def run(model, rows, system=None, batch=64):
 # %% [markdown]
 # The baselines run on a fixed sample of 500 test commands in each language, the same commands in English and in
 # Russian. Qwen3-0.6B and Qwen3-4B, the latter in 16-bit floats so that it fits on a T4: our class loads it unchanged,
-# since the whole family shares one architecture.
+# since the dense models of the family share one architecture.
 
 # %%
 train_en = [row for row in english if row["partition"] == "train"]
@@ -1335,11 +1397,14 @@ for repo, batch in baselines:
 table(pd.DataFrame(scores), digits=3)
 
 # %% [markdown]
-# @@ZERO_SHOT@@
+# Instructions alone don't make either model a voice assistant. Both write valid JSON nearly every time, so the
+# format is not the problem; the content is. The 0.6B model picks the right intent for fewer than half of the
+# commands and gets few slots right. The 4B model does much better on intents, yet fewer than one command in five
+# comes out exactly right, it takes several times as long, and both models do worse in Russian.
 #
 # **LoRA.** Fine-tuning all 596 million parameters would work, but AdamW keeps two numbers per parameter on top of
-# the parameter and its gradient, and a model per task is a lot of models. In 2021 a Microsoft team observed that the
-# change fine-tuning makes to a weight matrix has a low "intrinsic rank", and proposed to learn only that change, as
+# the parameter and its gradient, and a model per task is a lot of models. In 2021 a Microsoft team hypothesised that
+# the change fine-tuning makes to a weight matrix has a low "intrinsic rank", and proposed to learn only that change, as
 # a product of two thin matrices ([Hu et al., 2021](https://arxiv.org/abs/2106.09685)). A frozen weight
 # $$W \in \mathbb{R}^{d_{out} \times d_{in}}$$ becomes
 #
@@ -1389,7 +1454,8 @@ def add_lora(model):
 # the assistant's answer, followed by `<|im_end|>` so that the model learns to stop. The loss counts only the
 # answer's tokens. The frozen model stays in 16-bit floats; the LoRA matrices, their gradients and AdamW's state are
 # 32-bit, and a gradient scaler keeps the 16-bit backward pass from underflowing. We train for one pass over the
-# 11,514 English training commands.
+# 11,514 English training commands, 32 to a step. The 32 go through the model eight at a time and their gradients add
+# up before the step: the step is the same, and long commands don't run a T4 out of memory.
 
 # %%
 def examples_of(rows):
@@ -1402,7 +1468,32 @@ def examples_of(rows):
     return examples
 
 
-def train_lora(model, rows, batch=4 if SMOKE else 32, peak_lr=2e-4, warmup=30):
+def answer_loss(model, chunk):
+    """The loss summed over the answers' tokens of a few examples, padded to one width."""
+    n = len(chunk)
+    width = max(len(p) + len(a) for p, a in chunk)
+    ids = torch.full((n, width), IM_END, device=device)
+    labels = torch.full((n, width), -100, device=device)
+    real = torch.zeros(n, width, dtype=torch.bool, device=device)
+    for k, (prompt, answer) in enumerate(chunk):
+        sequence = prompt + answer
+        ids[k, :len(sequence)] = torch.tensor(sequence, device=device)
+        # the logits at position p predict the token at p + 1
+        first, last = len(prompt) - 1, len(sequence) - 1
+        labels[k, first:last] = torch.tensor(answer, device=device)
+        real[k, :len(sequence)] = True
+    positions = torch.arange(width, device=device)[None].expand(n, -1)
+    causal = torch.ones(width, width, dtype=torch.bool, device=device).tril()
+    itself = torch.eye(width, dtype=torch.bool, device=device)
+    mask = (causal & real[:, None, None, :]) | itself
+    h = model.hidden(ids, positions, mask)
+    scored = labels != -100
+    logits = model.logits(h[scored]).float()
+    return F.cross_entropy(logits, labels[scored], reduction="sum")
+
+
+def train_lora(model, rows, batch=4 if SMOKE else 32, micro=2 if SMOKE else 8,
+               peak_lr=2e-4, warmup=30):
     params = add_lora(model)
     optimizer = torch.optim.AdamW(params, lr=peak_lr, weight_decay=0.0)
     scaler = torch.amp.GradScaler(enabled=device == "cuda")
@@ -1413,35 +1504,22 @@ def train_lora(model, rows, batch=4 if SMOKE else 32, peak_lr=2e-4, warmup=30):
         order = order[:4 * batch]
     history = []
     model.train()
-    for step, s in enumerate(range(0, len(order) - batch + 1, batch)):
+    for step, s in enumerate(range(0, len(order), batch)):
         chunk = [examples[k] for k in order[s:s + batch]]
-        width = max(len(p) + len(a) for p, a in chunk)
-        ids = torch.full((batch, width), IM_END, device=device)
-        labels = torch.full((batch, width), -100, device=device)
-        real = torch.zeros(batch, width, dtype=torch.bool, device=device)
-        for k, (prompt, answer) in enumerate(chunk):
-            sequence = prompt + answer
-            ids[k, :len(sequence)] = torch.tensor(sequence, device=device)
-            # the logits at position p predict the token at p + 1
-            first, last = len(prompt) - 1, len(sequence) - 1
-            labels[k, first:last] = torch.tensor(answer, device=device)
-            real[k, :len(sequence)] = True
-        positions = torch.arange(width, device=device)[None].expand(batch, -1)
-        causal = torch.ones(width, width, dtype=torch.bool, device=device).tril()
-        itself = torch.eye(width, dtype=torch.bool, device=device)
-        mask = (causal & real[:, None, None, :]) | itself
-        h = model.hidden(ids, positions, mask)
-        scored = labels != -100
-        loss = F.cross_entropy(model.logits(h[scored]).float(), labels[scored])
+        tokens = sum(len(answer) for _, answer in chunk)
         for group in optimizer.param_groups:
             group["lr"] = peak_lr * min(1.0, (step + 1) / warmup)
         optimizer.zero_grad(set_to_none=True)
-        scaler.scale(loss).backward()
+        total = 0.0
+        for m in range(0, len(chunk), micro):  # the pieces' gradients add up
+            loss = answer_loss(model, chunk[m:m + micro]) / tokens
+            scaler.scale(loss).backward()
+            total += loss.item()
         scaler.unscale_(optimizer)
         torch.nn.utils.clip_grad_norm_(params, 1.0)
         scaler.step(optimizer)
         scaler.update()
-        history.append(loss.item())
+        history.append(total)
     model.eval()
     return params, history
 
@@ -1461,7 +1539,7 @@ ax.plot(history, color=COLORS["enc"], linewidth=1)
 ax.set_yscale("log")
 ax.set_xlabel("step (32 commands each)")
 ax.set_ylabel("loss on the answer's tokens")
-ax.set_title("LoRA on Qwen3-0.6B, English commands only")
+ax.set_title("LoRA on Qwen3-0.6B trained on English commands only")
 plt.show()
 
 # %% [markdown]
@@ -1513,7 +1591,9 @@ difference = (before_merge - after_merge).abs().max().item()
 print("max difference after merging:", f"{difference:.3f}")
 
 # %% [markdown]
-# @@MERGE@@
+# After the merge the model has exactly as many parameters as before training, and its logits move only by what
+# rounding the merged weights to 16 bits does. The adapter is now part of the weights, and the model runs as fast as
+# it did before training.
 #
 # Now the same recipe with the Russian training commands added, 23,028 commands in all, still one pass.
 
@@ -1544,7 +1624,7 @@ for ax, language, rows in zip(axes, ["English", "Russian"], [sample_en, sample_r
         ax.text(value + 0.01, k, f"{value:.0%}", va="center", color=COLORS["muted"],
                 fontsize=9)
     ax.set_xlim(0, 1)
-    ax.set_title(f"{language}: exactly right, the same {len(rows)} commands")
+    ax.set_title(f"Exactly right on the same {len(rows)} {language} commands")
     ax.grid(axis="x")
     ax.grid(axis="y", visible=False)
 axes[0].invert_yaxis()
@@ -1586,8 +1666,9 @@ table(pd.DataFrame(mistakes[:8]))
 # knows what fits in 0.6 billion numbers, and thinking mode buys accuracy with tokens, which on a long problem means
 # thousands of them.
 #
-# The tricks themselves are now the default, and you will rarely choose them: every new model has grouped queries,
-# most have QK-norm, and local layers are spreading. What this lesson left out is the next step in each direction.
+# The tricks themselves are now the default, and you will rarely choose them: nearly every new model shares its keys
+# and values among query heads, by grouped queries or, in DeepSeek's models, by compressing them; QK-norm is common,
+# and local layers are spreading. What this lesson left out is the next step in each direction.
 # gpt-oss and the larger Qwen3 models are mixtures of experts, which spend only a fraction of their parameters on
 # each token: lesson 7. Long context, and the RoPE bases of a hundred million in the table of section 1, are lesson
 # 9.
@@ -1606,6 +1687,7 @@ table(pd.DataFrame(mistakes[:8]))
 # - Gemma Team (2024). [Gemma 2: improving open language models at a practical size](https://arxiv.org/abs/2408.00118). arXiv:2408.00118.
 # - Gemma Team (2025). [Gemma 3 technical report](https://arxiv.org/abs/2503.19786). arXiv:2503.19786.
 # - Qwen Team (2025). [Qwen3 technical report](https://arxiv.org/abs/2505.09388). arXiv:2505.09388.
+# - Xiao, G., Tian, Y., Chen, B., Han, S., & Lewis, M. (2023). [Efficient streaming language models with attention sinks](https://arxiv.org/abs/2309.17453). *ICLR 2024*.
 # - Dehghani, M., Djolonga, J., Mustafa, B., et al. (2023). [Scaling vision Transformers to 22 billion parameters](https://arxiv.org/abs/2302.05442). *ICML 2023*.
 # - Wortsman, M., Liu, P. J., Xiao, L., et al. (2023). [Small-scale proxies for large-scale Transformer training instabilities](https://arxiv.org/abs/2309.14322). *ICLR 2024*.
 # - OLMo Team (2024). [2 OLMo 2 furious](https://arxiv.org/abs/2501.00656). arXiv:2501.00656.
