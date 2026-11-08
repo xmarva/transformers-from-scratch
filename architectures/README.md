@@ -37,7 +37,7 @@ number in the text comes from an output of the notebook. The course shares the t
 |---|---|---|---|
 | a04 | **GPT**: from GPT-1 to GPT-3, and a model that learns chess | the GPT-2 block (pre-norm, learned positions, tied embeddings), generation with a KV cache; gpt2 weights; the logit lens | a small GPT trained on Lichess games: legal-move rate, and a linear probe that finds the board inside it |
 | a05 | **T5 and BART**: the encoder–decoder | relative position buckets, span corruption, cross-attention; t5-small weights; why decoder-only won | text-to-SQL, checked by running the queries |
-| a06 | **Inside modern LLMs**: what Llama, Mistral, Gemma and Qwen do differently | grouped-query attention, sliding windows, local and global layers, QK-norm, logit soft-capping; Qwen3-0.6B weights; a table of a dozen models from their configs | structured extraction with a small model, fine-tuned with LoRA |
+| a06 | **Modern LLM architecture and Qwen3 from scratch**: what Llama, Mistral, Gemma and Qwen do differently | grouped-query attention, sliding windows, local and global layers, QK-norm, logit soft-capping; Qwen3-0.6B weights; a table of a dozen models from their configs | structured extraction with a small model, fine-tuned with LoRA |
 
 ## Part 3. Scale and efficiency
 
