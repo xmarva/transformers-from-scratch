@@ -314,6 +314,7 @@ print("max difference:", f"{difference.item():.2e}")
 # %%
 REPO = "allenai/OLMoE-1B-7B-0924"
 olmoe_config = configs["OLMoE"]
+olmoe_config.setdefault("rms_norm_eps", 1e-5)  # the config leaves it out: transformers' default
 keys = [
     "hidden_size",
     "num_hidden_layers",
