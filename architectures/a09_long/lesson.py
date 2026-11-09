@@ -356,7 +356,7 @@ def load_model(source, c, dtype, spread=False):
     model.eval()
     if not spread or torch.cuda.device_count() < 2:
         return model.to(device)
-    half = len(model.layers) // 2  # first half of the layers on one GPU, the rest on the other
+    half = len(model.layers) // 2  # half of the layers on each GPU
     model.embed_tokens.to("cuda:0")
     for i, layer in enumerate(model.layers):
         layer.to("cuda:0" if i < half else "cuda:1")
