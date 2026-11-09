@@ -72,8 +72,8 @@ if device == "cuda":
 
 # %%
 PHOTOS = ["bear", "shuttle", "lava", "orca", "hummingbird"]
-# 960-pixel copies of the Wikimedia Commons files listed in the References, kept in the course's
-# repository because Commons limits how often one address may download
+# 960-pixel copies of the Wikimedia Commons files listed in the References, kept in
+# the course's repository because Commons limits how often one address may download
 BASE = (
     "https://raw.githubusercontent.com/"
     "xmarva/transformers-from-scratch/main/assets/photos/a11"
