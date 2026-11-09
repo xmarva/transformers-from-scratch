@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" width="760" height="372" role="img" aria-label="The same eight tokens read by attention and by Mamba. Attention keeps a key and a value for every token, so its cache grows by one slot per token and never shrinks. Mamba writes every token into one state of fixed size, 1,536 channels of 16 numbers per layer in mamba-130m, and the state is the same size after eight tokens or eight million">
+<title>The same eight tokens read by attention and by Mamba. Attention keeps a key and a value for every token, so its cache grows by one slot per token and never shrinks. Mamba writes every token into one state of fixed size, 1,536 channels of 16 numbers per layer in mamba-130m, and the state is the same size after eight tokens or eight million</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="372" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Attention keeps every token; Mamba keeps a state</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same eight tokens, read by each</text>
+<text x="14.0" y="98.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">attention</text>
+<rect x="120.0" y="76.0" width="78.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="159.3" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">Amundsen</text>
+<rect x="206.5" y="76.0" width="70.7" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="241.9" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">reached</text>
+<rect x="285.2" y="76.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="305.0" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="332.8" y="76.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="356.4" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">Pole</text>
+<rect x="388.1" y="76.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="411.7" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">with</text>
+<rect x="443.4" y="76.0" width="55.1" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="471.0" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">fifty</text>
+<rect x="506.5" y="76.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="530.2" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">-two</text>
+<rect x="561.8" y="76.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="585.5" y="95.5" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">dogs</text>
+<rect x="120.0" y="116.0" width="78.5" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="120.0" y="130.0" width="78.5" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="206.5" y="116.0" width="70.7" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="206.5" y="130.0" width="70.7" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="285.2" y="116.0" width="39.5" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="285.2" y="130.0" width="39.5" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="332.8" y="116.0" width="47.3" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="332.8" y="130.0" width="47.3" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="388.1" y="116.0" width="47.3" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="388.1" y="130.0" width="47.3" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="443.4" y="116.0" width="55.1" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="443.4" y="130.0" width="55.1" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="506.5" y="116.0" width="47.3" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="506.5" y="130.0" width="47.3" height="10.0" rx="1" fill="#F2667C"/>
+<rect x="561.8" y="116.0" width="47.3" height="10.0" rx="1" fill="#3CC2B0"/>
+<rect x="561.8" y="130.0" width="47.3" height="10.0" rx="1" fill="#F2667C"/>
+<text x="621.2" y="136.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">+ 1 key, 1 value</text>
+<text x="120.0" y="164.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the cache: one key and one value per token, per layer, kept to the end</text>
+<text x="14.0" y="226.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">Mamba</text>
+<rect x="120.0" y="204.0" width="78.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="159.3" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">Amundsen</text>
+<rect x="206.5" y="204.0" width="70.7" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="241.9" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">reached</text>
+<rect x="285.2" y="204.0" width="39.5" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="305.0" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">the</text>
+<rect x="332.8" y="204.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="356.4" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">Pole</text>
+<rect x="388.1" y="204.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="411.7" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">with</text>
+<rect x="443.4" y="204.0" width="55.1" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="471.0" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">fifty</text>
+<rect x="506.5" y="204.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="530.2" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">-two</text>
+<rect x="561.8" y="204.0" width="47.3" height="30.0" rx="7" fill="#362A14" stroke="#F0B04A" stroke-width="1.5"/>
+<text x="585.5" y="223.6" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#F6C878" xml:space="preserve">dogs</text>
+<polyline points="159.3,236.0 313.1,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="241.9,236.0 339.4,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="305.0,236.0 365.6,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="356.4,236.0 391.9,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="411.7,236.0 418.1,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="471.0,236.0 444.4,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="530.2,236.0 470.6,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<polyline points="585.5,236.0 496.9,268.0" fill="none" stroke="#9C8CF5" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#arrow-att)"/>
+<rect x="300.0" y="270.0" width="210.0" height="40.0" rx="9" fill="#9C8CF5" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="405.0" y="295.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#E7EAF0">state: 1,536 × 16</text>
+<text x="524.0" y="288.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">rewritten at every token,</text>
+<text x="524.0" y="304.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">the same size forever</text>
+<text x="14.0" y="352.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">per layer of mamba-130m; a token is read, folded into the state, and forgotten</text>
+</svg>
