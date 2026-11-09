@@ -611,10 +611,10 @@ ax.set_title("Every dot is one head, averaged over the five photos")
 plt.show()
 
 # %% [markdown]
-# In the first layers the heads split: some look only at their neighbourhood, a few pixels away, like a convolution;
-# others already look across the whole image, something a CNN can only do after many layers. By the last layers every
-# head looks far. The ViT paper reported the same spread; it is the clearest sign that the model learned a locality
-# that a CNN has built in, and learned to drop it where it doesn't help.
+# In the first layers the heads split: some look mostly at their neighbourhood, a patch or two away, like a
+# convolution; others already look across the whole image, something a CNN can only do after many layers. By the last
+# layers every head looks far. The ViT paper reported the same spread; it is the clearest sign that the model learned
+# a locality that a CNN has built in, and learned to drop it where it doesn't help.
 #
 # **What decides the answer.** The class token's attention to the patches shows what it gathered, but a single layer
 # tells little, because the token mixes with everything at every layer. *Attention rollout* (Abnar and Zuidema, 2020)
@@ -779,12 +779,12 @@ for r, name in enumerate(show):
 plt.show()
 
 # %% [markdown]
-# Each head of the last layer has found an object and outlined it on a grid of 8-pixel cells: the orca's body and fins
-# against the sea, the shuttle together with its plume, the bear's head and the fish. Different heads take different
-# parts. The model was never shown a label, a box or a mask; separating a thing from its background turned out to be
-# useful for matching crops of the same photo, and the attention learned to do it. DINOv2, which Meta trained on 142
-# million curated images in 2023, is the same idea at scale, and its features are what many vision systems now start
-# from. The last section puts them to work.
+# Most heads of the last layer have found an object and outlined it on a grid of 8-pixel cells: the orca's body and
+# fins against the sea, the shuttle and the edge of its plume, the bear's head and the fish. Different heads take
+# different parts, and one or two look at the background instead. The model was never shown a label, a box or a mask;
+# separating a thing from its background turned out to be useful for matching crops of the same photo, and the
+# attention learned to do it. DINOv2, which Meta trained on 142 million curated images in 2023, is the same idea at
+# scale, and its features are what many vision systems now start from. The last section puts them to work.
 
 # %% [markdown]
 # ## 7. Land use from orbit, with few labels
@@ -1050,9 +1050,11 @@ for per_class in budgets:
         if device == "cuda":
             torch.cuda.empty_cache()
 results = pd.DataFrame(results)
-table(
-    results.pivot(index="learner", columns="labels per class", values="accuracy"), digits=3
-)
+order = ["ViT-B/16 pretrained", "small ViT", "small CNN", "DINOv2 + linear probe"]
+accuracy = results.pivot(index="learner", columns="labels per class", values="accuracy")
+accuracy = accuracy.loc[order]
+accuracy.columns = [f"{n:,} labels per class" for n in accuracy.columns]
+table(accuracy.reset_index(), digits=3)
 
 # %%
 fig, ax = plt.subplots(figsize=(7.2, 3.8))
@@ -1136,9 +1138,10 @@ for ax in axes.flat[len(wrong) :]:
 plt.show()
 
 # %% [markdown]
-# Most mistakes involve herbaceous vegetation, mixed up with pasture, with crops and even with forest: scrub, meadow
-# and young trees are the same green-brown texture at this scale. Look at the tiles and you will hesitate too; at 10
-# metres a pixel, an orchard and a field of wheat can look the same.
+# The mistakes are few, and many of them involve herbaceous vegetation, taken for pasture, for crops or for forest:
+# scrub, meadow and young trees are the same green-brown texture at this scale. Another kind is a tile with a road
+# across it: a river, a factory or a suburb with a highway through it becomes a highway. Look at the tiles and you
+# will hesitate too; at 10 metres a pixel, an orchard and a field of wheat can look the same.
 
 # %% [markdown]
 # ## 8. Where the ViT is today
