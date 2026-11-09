@@ -40,13 +40,11 @@
 # %% tags=["include:setup"]
 
 # %%
-import hashlib
 import io
 import json
 import math
 import random
 import time
-import urllib.parse
 import urllib.request
 
 import matplotlib.pyplot as plt
@@ -73,33 +71,20 @@ if device == "cuda":
 # breaching off the coast of Washington, a rufous hummingbird in Wyoming.
 
 # %%
-PHOTOS = {  # Wikimedia Commons file names; every one is a public-domain US government work
-    "bear": "A_brown_bear_at_Brooks_Falls_captures_a_salmon_in_its_jaws.jpg",
-    "shuttle": "Space_Shuttle_Discovery_Lifts_Off_(2).jpg",
-    "lava": "Pahoeoe_fountain_edit2.jpg",
-    "orca": "OCNMS_Orca_breaching_(50040737978).jpg",
-    "hummingbird": (
-        "Rufous_hummingbird_at_Seedskadee_National_Wildlife_Refuge_(51349613347).jpg"
-    ),
-}
+PHOTOS = ["bear", "shuttle", "lava", "orca", "hummingbird"]
+# 960-pixel copies of the Wikimedia Commons files listed in the References, kept in the course's
+# repository because Commons limits how often one address may download
+BASE = "https://raw.githubusercontent.com/" + "xmarva/transformers-from-scratch/main/assets/photos/a11"
 
 
-def commons_photo(name, width=960):
-    h = hashlib.md5(
-        name.encode()
-    ).hexdigest()  # Commons stores files under the hash of the name
-    q = urllib.parse.quote(name)
-    base = "https://upload.wikimedia.org/wikipedia/commons/thumb"
-    url = f"{base}/{h[0]}/{h[:2]}/{q}/{width}px-{q}"
-    agent = {"User-Agent": "transformers-from-scratch course (github.com/xmarva)"}
-    data = urllib.request.urlopen(urllib.request.Request(url, headers=agent)).read()
+def fetch_photo(name):
+    data = urllib.request.urlopen(f"{BASE}/{name}.jpg").read()
     return Image.open(io.BytesIO(data)).convert("RGB")
 
 
 photos = {}
-for key, name in PHOTOS.items():
-    photos[key] = commons_photo(name)
-    time.sleep(1)  # Wikimedia asks for a polite pace
+for name in PHOTOS:
+    photos[name] = fetch_photo(name)
 
 fig, axes = plt.subplots(1, len(photos), figsize=(12, 2.8))
 for ax, (key, photo) in zip(axes, photos.items()):
@@ -193,7 +178,10 @@ ax.imshow(shown)
 for k in range(1, grid):
     ax.axhline(k * PATCH - 0.5, color="white", linewidth=0.6)
     ax.axvline(k * PATCH - 0.5, color="white", linewidth=0.6)
-ax.set_title("a 14 × 14 grid of 16-pixel squares", fontsize=10)
+red = COLORS["dec"]
+first_rows = plt.Rectangle((-0.5, -0.5), SIZE, 2 * PATCH, fill=False, color=red, lw=2)
+ax.add_patch(first_rows)
+ax.set_title("a 14 × 14 grid of 16-pixel squares; the first two rows in red", fontsize=10)
 ax.axis("off")
 for k in range(2 * grid):
     row, col = divmod(k, grid)
@@ -219,11 +207,11 @@ print("unfold against reshape, max difference:", (unfolded - patches).abs().max(
 
 # %% [markdown]
 # **Step 3: one patch is 768 numbers.** A patch is a small picture, 16×16 pixels in three channels, and the model
-# sees it as one long vector: the 256 red values, then the 256 green, then the 256 blue. Here is patch 37, from the
-# bear's head, and its vector drawn as a strip, every number one thin bar.
+# sees it as one long vector: the 256 red values, then the 256 green, then the 256 blue. Here is patch 50, the one
+# with the bear's eye, and its vector drawn as a strip, every number one thin bar.
 
 # %%
-k = 37
+k = 50  # row 3, column 8: the bear's eye
 row, col = divmod(k, grid)
 tile = shown[row * PATCH : (row + 1) * PATCH, col * PATCH : (col + 1) * PATCH]
 fig = plt.figure(figsize=(12, 2.6))
