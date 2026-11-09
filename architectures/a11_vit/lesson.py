@@ -3,7 +3,8 @@
 #
 # For eight years, from AlexNet in 2012 to 2020, every serious image classifier was a convolutional network. A
 # convolution has two beliefs about images built into it: that nearby pixels belong together, and that a pattern means
-# the same thing wherever it appears. Those beliefs are true, and they are why a CNN learns from a few thousand photos.
+# the same thing wherever it appears. Those beliefs are true, and they are why a CNN learns from a few thousand
+# photos.
 #
 # In October 2020 a team at Google Brain dropped both. They took the Transformer encoder of lesson 1, BERT's encoder
 # almost unchanged, cut an image into a grid of 16×16-pixel squares, and fed the squares to it as if they were words.
@@ -493,11 +494,11 @@ table(pd.DataFrame(rows))
 # %% [markdown]
 # Two things to read. Without positions, shuffled and ordered patches give *identical* answers, to the last digit:
 # with nothing to say where a patch sits, the encoder treats the image as a bag of squares, and a bag has no order.
-# That model also gets most photos wrong, because it was trained to rely on positions it no longer has. With positions,
-# shuffling hurts some photos and not others: the bear's fur and the lava's red are recognisable in any order, while a
-# shuttle cut into pieces looks like any projectile, and a shuffled orca becomes a kite, the bird of prey. ViTs are
-# surprisingly robust to such shuffling, a finding Naseer and colleagues reported in 2021, and the reason is in the
-# table: much of what identifies an object lives inside the patches themselves.
+# That model also gets most photos wrong, because it was trained to rely on positions it no longer has. With
+# positions, shuffling hurts some photos and not others: the bear's fur and the lava's red are recognisable in any
+# order, while a shuttle cut into pieces looks like any projectile, and a shuffled orca becomes a kite, the bird of
+# prey. ViTs are surprisingly robust to such shuffling, a finding Naseer and colleagues reported in 2021, and the
+# reason is in the table: much of what identifies an object lives inside the patches themselves.
 #
 # The model's own answers on the five photos, top five each:
 
@@ -652,8 +653,8 @@ plt.show()
 #
 # More pixels per object help, and the ViT paper fine-tuned its models at 384×384. With the same 16-pixel patches the
 # grid becomes 24 × 24 and the sequence 577 tokens long. The patch embedding and the encoder don't care, they work on
-# any number of tokens; only the position embeddings, learned for a 14 × 14 grid, have to change. The paper's answer is
-# lesson 9's answer in two dimensions: *interpolate* them, treating the 196 vectors as a 14 × 14 image with 768
+# any number of tokens; only the position embeddings, learned for a 14 × 14 grid, have to change. The paper's answer
+# is lesson 9's answer in two dimensions: *interpolate* them, treating the 196 vectors as a 14 × 14 image with 768
 # channels and resizing it.
 
 
@@ -718,8 +719,9 @@ table(pd.DataFrame(cost), digits=2)
 
 # %% [markdown]
 # At 224 pixels with 16-pixel patches attention is a small part of the work; at 512 pixels with 8-pixel patches it
-# approaches half of it, and the share keeps growing with every step up. This is why the vision encoders of today's chat models cut images into tiles and why their patch sizes
-# are 14 or 16 and not smaller: every halving of the patch quadruples the sequence.
+# approaches half of it, and the share keeps growing with every step up. This is why the vision encoders of today's
+# chat models cut images into tiles and why their patch sizes are 14 or 16 and not smaller: every halving of the patch
+# quadruples the sequence.
 
 # %% [markdown]
 # ## 6. Attention that finds objects without labels
@@ -777,20 +779,20 @@ for r, name in enumerate(show):
 plt.show()
 
 # %% [markdown]
-# Each head of the last layer has found an object and outlined it on a grid of 8-pixel cells: the orca's body and
-# fins against the sea, the shuttle together with its plume, the bear's head and the fish. Different heads take
-# different parts. The model was never shown a label, a box or a mask; separating a thing from its background turned
-# out to be useful for matching crops of the same photo, and the attention learned to do it. DINOv2, which Meta trained
-# on 142 million curated images in 2023, is the same idea at scale, and its features are what many vision systems now
-# start from. The last section puts them to work.
+# Each head of the last layer has found an object and outlined it on a grid of 8-pixel cells: the orca's body and fins
+# against the sea, the shuttle together with its plume, the bear's head and the fish. Different heads take different
+# parts. The model was never shown a label, a box or a mask; separating a thing from its background turned out to be
+# useful for matching crops of the same photo, and the attention learned to do it. DINOv2, which Meta trained on 142
+# million curated images in 2023, is the same idea at scale, and its features are what many vision systems now start
+# from. The last section puts them to work.
 
 # %% [markdown]
 # ## 7. Land use from orbit, with few labels
 #
 # EuroSAT is 27,000 images from the Sentinel-2 satellites of the European Space Agency's Copernicus programme, 64×64
 # pixels, each 640 metres across, in ten classes of land use: crops, forest, pasture, highway, industry, housing,
-# rivers, lakes and two more. Helber and colleagues released it in 2019 under the MIT license. It is a good test of the
-# ViT's weak spot: images that look nothing like ImageNet, and a budget of labels we can shrink at will.
+# rivers, lakes and two more. Helber and colleagues released it in 2019 under the MIT license. It is a good test of
+# the ViT's weak spot: images that look nothing like ImageNet, and a budget of labels we can shrink at will.
 
 # %%
 EUROSAT = "hf://datasets/timm/eurosat-rgb/data/{}-00000-of-00001.parquet"
@@ -1081,8 +1083,8 @@ plt.show()
 # its built-in belief in local, repeated patterns is worth thousands of examples. As labels grow, the ViT closes much
 # of the gap, but on 16 thousand tiles it doesn't pass the CNN; that took hundreds of millions of images. The two
 # pretrained learners show the way out the field took: do the data-hungry learning once, on a huge collection, and
-# reuse it. A ViT that has seen ImageNet-21k, or a frozen DINOv2 with only a linear layer trained on top, is good
-# with ten labels per class. With all the labels, though, the CNN trained from scratch passes the frozen DINOv2: features
+# reuse it. A ViT that has seen ImageNet-21k, or a frozen DINOv2 with only a linear layer trained on top, is good with
+# ten labels per class. With all the labels, though, the CNN trained from scratch passes the frozen DINOv2: features
 # that were never adapted to satellite colours have a ceiling, and the fine-tuned ViT, which adapts everything, stays
 # on top.
 #
@@ -1115,11 +1117,19 @@ for i in range(10):
             )
 plt.show()
 
+short = {  # titles that fit under a tile
+    "AnnualCrop": "annual crop",
+    "HerbaceousVegetation": "herbaceous",
+    "PermanentCrop": "permanent crop",
+    "SeaLake": "sea or lake",
+}
 wrong = (best != test_labels).nonzero()[:, 0][:12]
 fig, axes = plt.subplots(2, 6, figsize=(12, 4.6))
 for ax, i in zip(axes.flat, wrong.tolist()):
     ax.imshow(test_images[i].permute(1, 2, 0))
-    ax.set_title(f"{classes[test_labels[i]]}\n→ {classes[best[i]]}", fontsize=8)
+    truth = short.get(classes[test_labels[i]], classes[test_labels[i]].lower())
+    guess = short.get(classes[best[i]], classes[best[i]].lower())
+    ax.set_title(f"{truth}\n→ {guess}", fontsize=8)
     ax.axis("off")
 for ax in axes.flat[len(wrong) :]:
     ax.axis("off")
@@ -1134,8 +1144,8 @@ plt.show()
 # ## 8. Where the ViT is today
 #
 # **DeiT** (Touvron and colleagues, Facebook AI, 2020) showed that with strong augmentation and regularisation a ViT
-# trains on ImageNet alone, in under three days on one machine, and matches CNNs; the dependence on JFT was a matter of
-# recipe as much as of architecture.
+# trains on ImageNet alone, in under three days on one machine, and matches CNNs; the dependence on JFT was a matter
+# of recipe as much as of architecture.
 #
 # **Self-supervised ViTs**, DINO and DINOv2, learn from images without labels, and their features are what vision
 # systems start from when labels are few, as section 7 showed.
