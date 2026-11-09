@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="760" height="360" role="img" aria-label="How FlashAttention walks the attention matrix of a causal model. The queries are cut into blocks of rows and the keys and values into blocks of columns. For one block of queries the kernel loads one block of keys and values at a time into the GPU&#x27;s fast on-chip memory, computes that tile of scores, folds it into a running maximum, a running sum and a running output, and moves on; the full matrix of scores never exists. Tiles above the diagonal are skipped, because a causal model&#x27;s queries never look ahead">
+<title>How FlashAttention walks the attention matrix of a causal model. The queries are cut into blocks of rows and the keys and values into blocks of columns. For one block of queries the kernel loads one block of keys and values at a time into the GPU&#x27;s fast on-chip memory, computes that tile of scores, folds it into a running maximum, a running sum and a running output, and moves on; the full matrix of scores never exists. Tiles above the diagonal are skipped, because a causal model&#x27;s queries never look ahead</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="360" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">FlashAttention never builds the matrix of scores</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">one block of queries against one block of keys at a time, in on-chip memory</text>
+<text x="172.0" y="76.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">keys and values, in blocks</text>
+<text x="58.0" y="90.0" text-anchor="end" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575" transform="rotate(-90 58.0 90.0)">queries, in blocks</text>
+<rect x="72.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="106.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="140.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="174.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="208.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="242.0" y="88.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="72.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="106.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="140.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="174.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="208.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="242.0" y="122.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="72.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="106.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="140.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="174.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="208.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="242.0" y="156.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="72.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#E1F3F0"/>
+<rect x="106.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#E1F3F0"/>
+<rect x="140.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#E1F3F0"/>
+<rect x="174.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#6A55D8"/>
+<rect x="208.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="242.0" y="190.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="72.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="106.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="140.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="174.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="208.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="242.0" y="224.0" width="30.0" height="30.0" rx="1" fill="#F6F7F9"/>
+<rect x="72.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="106.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="140.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="174.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="208.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<rect x="242.0" y="258.0" width="30.0" height="30.0" rx="1" fill="#FCF0DA"/>
+<text x="284.0" y="210.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">← the block in work</text>
+<rect x="40.0" y="308.0" width="12.0" height="12.0" rx="1" fill="#E1F3F0"/>
+<text x="60.0" y="318.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">folded in</text>
+<rect x="190.0" y="308.0" width="12.0" height="12.0" rx="1" fill="#6A55D8"/>
+<text x="210.0" y="318.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">in work</text>
+<rect x="40.0" y="330.0" width="12.0" height="12.0" rx="1" fill="#FCF0DA"/>
+<text x="60.0" y="340.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">other rows</text>
+<rect x="190.0" y="330.0" width="12.0" height="12.0" rx="1" fill="#F6F7F9"/>
+<text x="210.0" y="340.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">never read</text>
+<text x="410.0" y="96.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#1D2430">for each tile of keys and values:</text>
+<rect x="410.0" y="116.0" width="336.0" height="26.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="420.0" y="134.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">scores = Q·Kᵀ / √d</text>
+<text x="420.0" y="158.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">a 128 × 128 tile, not n × n</text>
+<rect x="410.0" y="166.0" width="336.0" height="26.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="420.0" y="184.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">m = max(m, row max)</text>
+<text x="420.0" y="208.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">the running maximum of each row</text>
+<rect x="410.0" y="216.0" width="336.0" height="26.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="420.0" y="234.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">ℓ = ℓ·e^(m_old − m) + Σ e^(s − m)</text>
+<text x="420.0" y="258.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">the running sum, rescaled</text>
+<rect x="410.0" y="266.0" width="336.0" height="26.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="420.0" y="284.0" text-anchor="start" font-family="IBM Plex Mono" font-size="13" font-weight="500" fill="#1D2430">O = O·e^(m_old − m) + e^(s − m)·V</text>
+<text x="420.0" y="308.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">the running output, rescaled</text>
+<text x="410.0" y="336.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">after the last tile, O / ℓ = softmax(QKᵀ/√d)·V</text>
+</svg>
