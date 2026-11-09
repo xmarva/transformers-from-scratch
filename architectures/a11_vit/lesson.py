@@ -495,9 +495,9 @@ table(pd.DataFrame(rows))
 # with nothing to say where a patch sits, the encoder treats the image as a bag of squares, and a bag has no order.
 # That model also gets most photos wrong, because it was trained to rely on positions it no longer has. With positions,
 # shuffling hurts some photos and not others: the bear's fur and the lava's red are recognisable in any order, while a
-# shuttle cut into pieces looks like any projectile. ViTs are surprisingly robust to such shuffling, a finding Naseer
-# and colleagues reported in 2021, and the reason is in the table: much of what identifies an object lives inside the
-# patches themselves.
+# shuttle cut into pieces looks like any projectile, and a shuffled orca becomes a kite, the bird of prey. ViTs are
+# surprisingly robust to such shuffling, a finding Naseer and colleagues reported in 2021, and the reason is in the
+# table: much of what identifies an object lives inside the patches themselves.
 #
 # The model's own answers on the five photos, top five each:
 
@@ -688,9 +688,9 @@ for k, name in enumerate(photos):
     print(f"{name:12} 224: {small_answer:28} 384: {big_answer}")
 
 # %% [markdown]
-# Without a single step of training, the model reads three times as many patches and still names the photos. The
-# confidence moves a little, because the stretched positions are close to, but not the same as, anything it saw.
-# Fine-tuning at the new size closes that gap in a few thousand steps.
+# Without a single step of training, the model reads three times as many patches and still names every photo, as
+# sure of itself as before. These photos are easy; on harder images the stretched positions, close to but not the same
+# as anything the model saw, are worth a short fine-tuning at the new size, which is what the ViT paper did.
 #
 # The price of resolution is the length of the sequence, and attention's cost grows with its square. The patch size
 # sets the trade-off:
@@ -718,7 +718,7 @@ table(pd.DataFrame(cost), digits=2)
 
 # %% [markdown]
 # At 224 pixels with 16-pixel patches attention is a small part of the work; at 512 pixels with 8-pixel patches it
-# dominates. This is why the vision encoders of today's chat models cut images into tiles and why their patch sizes
+# approaches half of it, and the share keeps growing with every step up. This is why the vision encoders of today's chat models cut images into tiles and why their patch sizes
 # are 14 or 16 and not smaller: every halving of the patch quadruples the sequence.
 
 # %% [markdown]
@@ -1082,7 +1082,9 @@ plt.show()
 # of the gap, but on 16 thousand tiles it doesn't pass the CNN; that took hundreds of millions of images. The two
 # pretrained learners show the way out the field took: do the data-hungry learning once, on a huge collection, and
 # reuse it. A ViT that has seen ImageNet-21k, or a frozen DINOv2 with only a linear layer trained on top, is good
-# with ten labels per class.
+# with ten labels per class. With all the labels, though, the CNN trained from scratch passes the frozen DINOv2: features
+# that were never adapted to satellite colours have a ceiling, and the fine-tuned ViT, which adapts everything, stays
+# on top.
 #
 # Where the best model still goes wrong:
 
@@ -1124,9 +1126,9 @@ for ax in axes.flat[len(wrong) :]:
 plt.show()
 
 # %% [markdown]
-# The mistakes are mostly the honest ones: pasture against herbaceous vegetation, a river against a highway when both
-# are a thin line through fields, permanent crops against annual ones. Look at the tiles and you will hesitate too;
-# at 10 metres a pixel, an orchard and a field of wheat can look the same.
+# Most mistakes involve herbaceous vegetation, mixed up with pasture, with crops and even with forest: scrub, meadow
+# and young trees are the same green-brown texture at this scale. Look at the tiles and you will hesitate too; at 10
+# metres a pixel, an orchard and a field of wheat can look the same.
 
 # %% [markdown]
 # ## 8. Where the ViT is today
