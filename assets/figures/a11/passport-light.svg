@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" width="760" height="370" role="img" aria-label="ViT-B/16&#x27;s passport. Published October 2020 by Google Research, Brain Team, weights under Apache 2.0. Type: encoder-only Transformer for images, 86 million parameters. Input: 224 by 224 pixels cut into 196 patches of 16 by 16, plus a class token. Encoder: 12 blocks of width 768 with 12 heads and an MLP of 3,072, layer norm before each part. Positions: 197 learned vectors. Training: ImageNet-21k, 14 million images, then ImageNet-1k. Good at: classifying photos and serving as a backbone for other tasks. Not for: small datasets trained from scratch">
+<title>ViT-B/16&#x27;s passport. Published October 2020 by Google Research, Brain Team, weights under Apache 2.0. Type: encoder-only Transformer for images, 86 million parameters. Input: 224 by 224 pixels cut into 196 patches of 16 by 16, plus a class token. Encoder: 12 blocks of width 768 with 12 heads and an MLP of 3,072, layer norm before each part. Positions: 197 learned vectors. Training: ImageNet-21k, 14 million images, then ImageNet-1k. Good at: classifying photos and serving as a backbone for other tasks. Not for: small datasets trained from scratch</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="370" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">ViT-B/16: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">October 2020, Google Research, Brain Team; Apache 2.0</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">encoder-only Transformer for images, 86M parameters</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">input</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">224×224 pixels, 196 patches of 16×16, plus a class token</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">encoder</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">12 blocks, width 768, 12 heads, MLP 3,072</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">positions</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">197 learned vectors</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">training</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">ImageNet-21k (14M images), then ImageNet-1k</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">good at</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">classifying photos; a backbone for other tasks</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">not for</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">small datasets trained from scratch</text>
+</svg>
