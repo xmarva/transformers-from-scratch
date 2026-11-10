@@ -652,7 +652,11 @@ bucket_table(["none", "slow pairs only", "fast pairs only"])
 # **NTK-aware scaling** (bloc97 on Reddit). Leave the fast pairs alone and stretch the slow ones, by changing the base
 # instead of the positions:
 #
-# $$b' = b \cdot s^{\,d/(d-2)} \quad\Longrightarrow\quad \theta'_i = \theta_i \cdot s^{-2i/(d-2)}.$$
+# $$b' = b \cdot s^{\,d/(d-2)},$$
+#
+# which gives every pair a new frequency
+#
+# $$\theta'_i = \theta_i \cdot s^{-2i/(d-2)}.$$
 #
 # The fastest pair, $$i = 0$$, keeps its frequency; the slowest, $$i = d/2 - 1$$, is divided by exactly $$s$$; the
 # pairs in between are divided by a power of $$s$$ that grows with $$i$$. The odd exponent $$d/(d-2)$$ is what makes
@@ -1048,7 +1052,9 @@ table(pd.DataFrame(sizes), digits=2)
 # to divide. The online version keeps a running maximum and a running sum, and when a new maximum arrives it
 # *rescales* the sum collected so far:
 #
-# $$m_j = \max(m_{j-1}, x_j), \qquad \ell_j = \ell_{j-1}\, e^{m_{j-1} - m_j} + e^{x_j - m_j}.$$
+# $$m_j = \max(m_{j-1}, x_j),$$
+#
+# $$\ell_j = \ell_{j-1}\, e^{m_{j-1} - m_j} + e^{x_j - m_j}.$$
 #
 # After the last score, $$\ell_n$$ is exactly the sum the three-pass version computes: every term in it ends up
 # measured against the final maximum, whichever maximum it was added under. On five numbers:
