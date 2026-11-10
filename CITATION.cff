@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use these lessons or their code, please cite them as below."
+type: software
+title: "Transformers from scratch to production and Transformer architectures from BERT to diffusion"
+abstract: >-
+  Two courses as notebooks that run on the free GPUs of Kaggle and Colab. The first builds an English-to-Russian
+  translator with a Transformer written from scratch, then evaluates, tunes, packages and serves it and ships it as a
+  reproducible Docker image. The second rebuilds the architectures that followed, from BERT, GPT and T5 to modern
+  LLMs, mixture of experts, the KV cache and latent attention, long context, state space models and the Vision
+  Transformer, with the code checked against reference implementations and published weights.
+authors:
+  - given-names: Eva
+    family-names: Koroleva
+    orcid: "https://orcid.org/0009-0005-4637-4176"
+    website: "https://xmarva.github.io/"
+repository-code: "https://github.com/xmarva/transformers-from-scratch"
+url: "https://xmarva.github.io/teaching/"
+license: MIT
+keywords:
+  - transformers
+  - deep learning
+  - large language models
+  - PyTorch
+  - machine translation
+  - attention
+  - course
