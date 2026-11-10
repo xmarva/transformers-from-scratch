@@ -112,8 +112,11 @@ plt.show()
 # the input stays constant for a short time $$\Delta$$, the *step*, and solve the equation exactly over that time.
 # This is the *zero-order hold* of signal processing, and for a diagonal $$A$$ it gives, per channel,
 #
-# $$h_t = \bar a\, h_{t-1} + \bar b\, x_t, \qquad \bar a = e^{\Delta a}, \qquad
-# \bar b = \frac{e^{\Delta a} - 1}{a}\, b.$$
+# $$h_t = \bar a\, h_{t-1} + \bar b\, x_t,$$
+#
+# where
+#
+# $$\bar a = e^{\Delta a}, \qquad \bar b = \frac{e^{\Delta a} - 1}{a}\, b.$$
 #
 # $$\bar a$$ is the fraction of the state that survives one step: between 0 and 1, because $$a < 0$$. The state space
 # model has become a linear recurrence, an RNN without a nonlinearity inside the loop. That missing nonlinearity is
