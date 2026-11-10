@@ -1,0 +1,8 @@
+number = 9
+short_title = "Long context"
+cover_alt = "Lesson 9 cover, long context. TinyLlama's 32 rotary pairs drawn as dials showing how far each turned in its 2,048 training tokens, with the eleven slow pairs that never finished a turn in red"
+gpu = true
+published = true
+published_on = 2026-11-09
+description = "Why a language model breaks past the length it was trained on, and how RoPE scaling fixes it. Position interpolation, NTK scaling, YaRN and Llama 3.1's scaling written from scratch and checked against transformers, raced on TinyLlama; FlashAttention built from the online softmax; Qwen3 finding a needle in a novel up to 64k tokens."
+tags = "long-context, rope, yarn, flashattention, position-interpolation, qwen3, llm"

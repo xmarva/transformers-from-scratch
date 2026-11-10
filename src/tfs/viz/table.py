@@ -24,6 +24,8 @@ class Table:
         if isinstance(value, Integral):
             return f"{value:,}", True
         if isinstance(value, Real):
+            if value != value:  # NaN: a run that didn't happen or ran out of memory
+                return "—", True
             return f"{value:,.{self.digits}f}", True
         return escape(str(value)), False
 

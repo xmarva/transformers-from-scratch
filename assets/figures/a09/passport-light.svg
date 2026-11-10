@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 404" width="760" height="404" role="img" aria-label="Llama 3.1 8B&#x27;s passport. Published July 2024 by Meta under the Llama 3.1 Community License. Type: decoder-only, 8 billion parameters. Attention: 32 query heads sharing 8 key-value heads. Positions: rotary with base 500,000, stretched 8 times from the 8,192 tokens of pretraining by Meta&#x27;s own frequency-dependent scaling. Context: 131,072 tokens. Vocabulary: 128,256 tokens. Good at: long documents at a size one GPU can serve. Not for: tasks that need the whole window to be read reliably">
+<title>Llama 3.1 8B&#x27;s passport. Published July 2024 by Meta under the Llama 3.1 Community License. Type: decoder-only, 8 billion parameters. Attention: 32 query heads sharing 8 key-value heads. Positions: rotary with base 500,000, stretched 8 times from the 8,192 tokens of pretraining by Meta&#x27;s own frequency-dependent scaling. Context: 131,072 tokens. Vocabulary: 128,256 tokens. Good at: long documents at a size one GPU can serve. Not for: tasks that need the whole window to be read reliably</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="404" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Llama 3.1 8B: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">July 2024, Meta; Llama 3.1 Community License</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">decoder-only, 8B parameters</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">attention</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">32 query heads sharing 8 key-value heads</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">positions</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">rotary, base 500,000</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">stretch</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">llama3: ×8 from 8,192 tokens, by frequency</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">context</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">131,072 tokens</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">vocabulary</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">128,256 tokens</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">good at</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">long documents at a size one GPU can serve</text>
+<text x="14.0" y="361.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">not for</text>
+<rect x="190.0" y="342.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="361.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">trusting that every part of the window gets read</text>
+</svg>
