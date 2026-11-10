@@ -76,8 +76,13 @@ def post_slug(folder: Path) -> str:
     return f"{course_of(folder).post}-{number.lstrip('abcdefghijklmnopqrstuvwxyz')}-{name.replace('_', '-')}"
 
 
+def url_year(meta: dict) -> str:
+    # a lesson whose date moved to another year keeps the address it was first published under
+    return str(meta.get("url_year", str(meta["published_on"])[:4]))
+
+
 def post_url(folder: Path, meta: dict) -> str:
-    return f"/blog/{str(meta['published_on'])[:4]}/{post_slug(folder)}/"
+    return f"/blog/{url_year(meta)}/{post_slug(folder)}/"
 
 
 def inline_math(text: str) -> str:
@@ -276,6 +281,8 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
         "layout: post",
         f'title: "{title}"',
         f"date: {meta['published_on']} {9 + meta['number']:02d}:00:00",
+        *([f"last_updated: {meta['updated_on']}"] if "updated_on" in meta else []),
+        *([f"permalink: {post_url(folder, meta)}"] if url_year(meta) != str(meta["published_on"])[:4] else []),
         f'description: "{meta["description"]}"',
         f"tags: [{course.post}, {meta['tags']}]",
         f"categories: {categories(meta)}",
@@ -290,7 +297,9 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
     text = "\n".join(front) + "{% raw %}\n\n" + links_line(folder, meta) + "\n\n"
     text += paragraphs.shorten(citations.numbered("\n\n".join(body)))
     text += "\n\n" + neighbours(number, exported) + "\n\n{% endraw %}\n"
-    post = site / "_posts" / f"{meta['published_on']}-{post_slug(folder)}.md"
+    # the post keeps its file when its date changes, so that a lesson is never published twice
+    existing = sorted((site / "_posts").glob(f"*-{post_slug(folder)}.md"))
+    post = existing[0] if existing else site / "_posts" / f"{meta['published_on']}-{post_slug(folder)}.md"
     post.write_text(text, encoding="utf-8")
     shutil.copy(Path(__file__).with_name("tfs-course.css"), site / "assets" / "css" / "tfs-course.css")
     return post

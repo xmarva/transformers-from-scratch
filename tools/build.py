@@ -72,7 +72,8 @@ def post_link(lesson: str, meta: dict, course: Course = COURSES[0]) -> str | Non
         return None
     number, name = lesson.split("_", 1)
     slug = f"{course.post}-{number.lstrip('abcdefghijklmnopqrstuvwxyz')}-{name.replace('_', '-')}"
-    return f"{SITE}/blog/{str(meta['published_on'])[:4]}/{slug}/"
+    year = meta.get("url_year", str(meta["published_on"])[:4])  # an address outlives a moved date
+    return f"{SITE}/blog/{year}/{slug}/"
 
 
 def header_cell(lesson: str, meta: dict, target: str, ref: str, course: Course = COURSES[0]) -> nbformat.NotebookNode:
