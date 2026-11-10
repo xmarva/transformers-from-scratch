@@ -16,7 +16,7 @@
 # weights of mamba-130m: the equation it starts from, how a continuous equation becomes a layer, what the model
 # chooses to remember in a real sentence, the scan that makes a recurrence parallel, and generation with a state that
 # never grows. Then we look at what a fixed state costs, where Mamba ends up inside today's hybrid models, and train
-# one on DNA.
+# two small ones from scratch to see what selectivity buys.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a10/hero-light.png" width="760" alt="The same eight tokens read by attention and by Mamba. Attention keeps a key and a value for every token, so its cache grows by one slot per token and never shrinks. Mamba writes every token into one state of fixed size, 1,536 channels of 16 numbers per layer in mamba-130m, and the state is the same size after eight tokens or eight million">
 #
@@ -152,7 +152,7 @@ for product in [0.001, 0.01, 0.1, 0.5, 1.0, 2.0, 5.0]:
 # and lets the token pass without trace. Gu and Dao call this *selectivity*, and they show its point on a toy task,
 # *selective copying*: remember the coloured tokens scattered among noise tokens and reproduce them at the end. A
 # time-invariant model can't do it, because it can't tell a coloured token from noise; a selective one can, because
-# noise tokens get a $$\Delta$$ near zero.
+# noise tokens get a $$\Delta$$ near zero. Section 11 trains both kinds and checks.
 #
 # Selectivity has a price: the recurrence is no longer a fixed convolution, so the FFT trick of S4 is gone. Mamba
 # pays it with a scan, section 6, and with a GPU kernel written for it.
@@ -789,13 +789,17 @@ class Mixer2(nn.Module):
         self.keep = False  # the next cell reads the matrix of one head
         self.parts = None
 
+    def select(self, dt, b, c):
+        # the step, B and C of every token: what makes the layer selective (section 11)
+        return F.softplus((dt + self.dt_bias).float()), b, c  # the step in 32 bits
+
     def forward(self, x):
         batch, L, _ = x.shape
         sizes = [self.e, self.e + 2 * self.groups * self.n, self.heads]
         gate, xbc, dt = self.in_proj(x).split(sizes, dim=-1)
         xbc = F.silu(self.conv1d(xbc.transpose(1, 2))[..., :L].transpose(1, 2))
         u, b, c = xbc.split([self.e, self.groups * self.n, self.groups * self.n], dim=-1)
-        step = F.softplus((dt + self.dt_bias).float())  # (batch, L, heads), in 32 bits
+        step, b, c = self.select(dt, b, c)
         a = -torch.exp(self.A_log.float())  # one number per head
         u = u.reshape(batch, L, self.heads, self.p)
         share = self.heads // self.groups
@@ -810,14 +814,14 @@ class Mixer2(nn.Module):
 
 
 class Mamba2(nn.Module):
-    def __init__(self, c):
+    def __init__(self, c, mixer=Mixer2):
         super().__init__()
         self.embeddings = nn.Embedding(c["vocab_size"], c["hidden_size"])
         self.layers = nn.ModuleList()
         for _ in range(c["num_hidden_layers"]):
             block = nn.Module()
             block.norm = RMSNorm(c["hidden_size"], c["layer_norm_epsilon"])
-            block.mixer = Mixer2(c)
+            block.mixer = mixer(c)
             self.layers.append(block)
         self.norm_f = RMSNorm(c["hidden_size"], c["layer_norm_epsilon"])
         self.lm_head = nn.Linear(c["hidden_size"], c["vocab_size"], bias=False)
@@ -1177,293 +1181,203 @@ table(pd.DataFrame(rows), digits=2)
 # every layer for MiniMax-M2.
 
 # %% [markdown]
-# ## 11. Whose DNA is this?
+# ## 11. What selectivity buys
 #
-# Genomes are where long context is not a luxury. A gene's switches can sit tens of thousands of bases away from the
-# gene, and the alphabet is four letters, so a "token" carries two bits and a meaningful stretch is long. This is the
-# kind of data on which Mamba's linear cost matters, and HyenaDNA and Mamba itself were tested on it.
+# Section 3 claimed that a layer whose step, $$B$$ and $$C$$ depend on the token can do something a time-invariant
+# one can't: pick a few tokens out of a stream of noise and keep only those. Time to check, with *selective copying*,
+# the toy task from the Mamba paper. A sequence of 256 tokens is mostly noise; sixteen of its positions, chosen at
+# random, hold coloured tokens, one of sixteen colours each; then come sixteen markers, and at the markers the model
+# must say the coloured tokens back, in order. Guessing gets one in sixteen right.
 #
-# The task: given a stretch of DNA, say which of seven species it comes from: human, chimpanzee, orangutan,
-# marmoset, mouse, cattle or sheep. BGI released the benchmark in December 2025 under the MIT license, with training
-# and test stretches taken from *different chromosomes*, so a model can't memorise positions. Mouse and cattle are
-# easy to tell from a primate. Human and chimpanzee share about 99% of their DNA; at a thousand bases there may be
-# no difference at all to see, and a longer window has more chances to contain one. So the question is how accuracy
-# grows with context, and what each architecture can afford to read.
-#
-# The records are 32,768 bases long; we read the first few thousand of the training file, which is already shuffled
-# across species, without downloading all of it.
+# Two models are trained from scratch, two Mamba-2 layers of width 64 each, identical except for one thing. In the
+# first, the step, $$B$$ and $$C$$ come from each token, as in Mamba. In the second, they are learned constants,
+# the same for every token, which makes the state space part linear and time-invariant, the kind of layer S4 was.
+# `Mixer2` asks its `select` method for the three; the second model only replaces that method.
 
 # %%
-from huggingface_hub import HfFileSystem
-
-DNA = "datasets/BGI-HangzhouAI/Benchmark_Dataset-Primate_mammal_species_classification"
-FOLDER = "Primate_mammal_species_classification_" + ("1024" if SMOKE else "32768")
-N_TRAIN, N_TEST = (64, 32) if SMOKE else (7000, 1400)
+COLOURS, TO_COPY = 16, 16
+MARKER = COLOURS + 1  # 0 is noise, 1 to 16 are the colours
 
 
-def read_records(name, n):
-    records = []
-    with HfFileSystem().open(f"{DNA}/{FOLDER}/{name}", "r") as f:
-        for line in f:
-            records.append(json.loads(line))
-            if len(records) == n:
-                break
-    return records
+def copying_batch(n, length):
+    # TO_COPY coloured tokens at random places among `length` noise tokens, then markers
+    where = torch.rand(n, length).argsort(dim=1)[:, :TO_COPY].sort(dim=1).values
+    colours = torch.randint(1, COLOURS + 1, (n, TO_COPY))
+    ids = torch.zeros(n, length + TO_COPY, dtype=torch.long)
+    ids.scatter_(1, where, colours)
+    ids[:, length:] = MARKER
+    return ids, colours
 
 
-train_records = read_records("train.jsonl", N_TRAIN)
-test_records = read_records("test.jsonl", N_TEST)
-species = sorted({r["species_name"] for r in train_records})
-print("species:", ", ".join(species))
-print(
-    "train:", pd.Series([r["species_name"] for r in train_records]).value_counts().to_dict()
-)
-first = train_records[0]
-print(
-    f"one record: {first['species_name']}, chromosome {first['chr']},",
-    f"{len(first['seq']):,} bases",
-)
-print(first["seq"][:120], "…")
+class FixedMixer2(Mixer2):
+    """The same layer with one step, B and C learned for all tokens, as in S4."""
 
-# %% [markdown]
-# Characters are tokens: A, C, G, T and N, which marks a base the sequencers couldn't read. Each record is cut to the
-# context we want to test, its last $$L$$ bases, so that every length sees the same stretches of the same genomes
-# and only the window changes.
+    def __init__(self, c):
+        super().__init__(c)
+        self.b_fixed = nn.Parameter(torch.randn(self.groups * self.n) / self.n**0.5)
+        self.c_fixed = nn.Parameter(torch.randn(self.groups * self.n) / self.n**0.5)
 
-# %%
-LETTERS = {
-    "A": 1,
-    "C": 2,
-    "G": 3,
-    "T": 4,
-}  # anything else, N included, becomes 5; 0 is unused
+    def select(self, dt, b, c):
+        step = F.softplus(self.dt_bias.float()).expand(dt.shape)
+        return step, self.b_fixed.expand(b.shape), self.c_fixed.expand(c.shape)
 
 
-def encode_dna(records, L):
-    x = torch.full((len(records), L), 5, dtype=torch.long)
-    for i, r in enumerate(records):
-        seq = r["seq"][-L:]
-        x[i, : len(seq)] = torch.tensor([LETTERS.get(ch, 5) for ch in seq])
-    y = torch.tensor([species.index(r["species_name"]) for r in records])
-    return x, y
-
-
-# %% [markdown]
-# Three learners, the same budget of bases read in training for each length. A *k-mer* baseline first, the way
-# bioinformatics classified sequences for decades: count every word of six letters in the stretch, 4,096 counts, and
-# fit a logistic regression, one linear layer on the counts. Then a small Mamba-2 built from this lesson's class, and
-# a Transformer encoder of the same width and depth and about as many parameters. Both read the whole stretch, average
-# their outputs over positions and classify the average.
-
-# %%
-def kmer_counts(x, k=6):
-    # x: the encoded bases (n, L), 1 to 4 for A, C, G, T and 5 for N
-    bases = (x - 1).numpy()
-    windows = np.lib.stride_tricks.sliding_window_view(bases, k, axis=1)  # (n, L-k+1, k)
-    codes = (windows * 4 ** np.arange(k - 1, -1, -1)).sum(
-        -1
-    )  # a word of k bases as a number
-    valid = (windows < 4).all(-1)  # words that contain an N are skipped
-    rows = np.zeros((len(bases), 4**k), dtype=np.float32)
-    for i in range(len(bases)):
-        rows[i] = np.bincount(codes[i][valid[i]], minlength=4**k)
-    return rows / np.maximum(rows.sum(axis=1, keepdims=True), 1)
-
-
-def fit_linear(features, labels, steps=500):
-    # logistic regression: one linear layer and the cross-entropy, fitted with L-BFGS
-    x = torch.tensor(features)
-    x = (x - x.mean(dim=0)) / (x.std(dim=0) + 1e-6)
-    layer = nn.Linear(x.shape[1], len(species))
-    opt = torch.optim.LBFGS(layer.parameters(), max_iter=steps)
-
-    def closure():
-        opt.zero_grad()
-        loss = F.cross_entropy(layer(x), labels) + 1e-3 * layer.weight.pow(2).sum()
-        loss.backward()
-        return loss
-
-    opt.step(closure)
-    mean, std = torch.tensor(features).mean(dim=0), torch.tensor(features).std(dim=0) + 1e-6
-    return lambda f: layer((torch.tensor(f) - mean) / std).argmax(-1)
-
-
-# %%
-class DNAMamba(nn.Module):
-    def __init__(self, width=128, layers=4):
-        super().__init__()
-        c = dict(
-            vocab_size=6,
-            hidden_size=width,
-            num_heads=2 * width // 64,
-            head_dim=64,
-            state_size=32,
-            n_groups=1,
-            conv_kernel=4,
-            num_hidden_layers=layers,
-            layer_norm_epsilon=1e-5,
-            chunk_size=128,
-        )
-        self.body = Mamba2(c)
-        self.head = nn.Linear(width, len(species))
-
-    def forward(self, x):
-        return self.head(self.body.hidden(x).mean(dim=1))
-
-
-class DNATransformer(nn.Module):
-    def __init__(self, width=128, layers=4, longest=32768):
-        super().__init__()
-        self.embed = nn.Embedding(6, width)
-        self.position = nn.Embedding(longest, width)
-        layer = nn.TransformerEncoderLayer(
-            width,
-            4,
-            2 * width,
-            dropout=0.0,
-            batch_first=True,
-            norm_first=True,
-            activation="gelu",
-        )
-        self.body = nn.TransformerEncoder(layer, layers, enable_nested_tensor=False)
-        self.head = nn.Linear(width, len(species))
-
-    def forward(self, x):
-        h = self.embed(x) + self.position(torch.arange(x.shape[1], device=x.device))
-        return self.head(self.body(h).mean(dim=1))
-
-
-for name, model in [("Mamba-2", DNAMamba()), ("Transformer", DNATransformer())]:
-    count = sum(p.numel() for n, p in model.named_parameters() if "position" not in n)
-    print(f"{name}: {count / 1e6:.2f} M parameters (without position embeddings)")
-
-# %% [markdown]
-# Every learner sees the same number of bases in training at every length: with longer stretches, fewer of them per
-# step. Mixed precision on the GPU, as in the earlier lessons.
-
-# %%
-BASES_PER_RUN = 40_000 if SMOKE else 60_000_000
-BASES_PER_STEP = 4096 if SMOKE else 65536
-
-
-def train_dna(model, x, y):
-    L = x.shape[1]
-    batch = max(2, BASES_PER_STEP // L)
-    steps = max(1, BASES_PER_RUN // (batch * L))
-    model.to(device).train()
-    opt = torch.optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)
-    schedule = torch.optim.lr_scheduler.OneCycleLR(
-        opt, max_lr=1e-3, total_steps=steps, pct_start=0.1
+def copier(mixer):
+    c = dict(
+        vocab_size=COLOURS + 2,
+        hidden_size=64,
+        num_heads=4,
+        head_dim=32,
+        state_size=32,
+        n_groups=1,
+        conv_kernel=4,
+        num_hidden_layers=2,
+        layer_norm_epsilon=1e-5,
+        chunk_size=64,
     )
-    scaler = torch.amp.GradScaler(enabled=device == "cuda")
-    start = time.time()
-    for _ in range(steps):
-        pick = torch.randint(0, len(x), (batch,))
-        with torch.autocast(device, dtype=torch.float16, enabled=device == "cuda"):
-            loss = F.cross_entropy(model(x[pick].to(device)), y[pick].to(device))
-        opt.zero_grad()
-        scaler.scale(loss).backward()
-        scaler.unscale_(opt)
-        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        scaler.step(opt)
-        scaler.update()
-        schedule.step()
-    return time.time() - start
+    torch.manual_seed(SEED)
+    model = Mamba2(c, mixer)
+    with torch.no_grad():  # Mamba's initialisation: several time scales, small steps
+        for block in model.layers:
+            m = block.mixer
+            m.A_log.copy_(torch.log(torch.linspace(1, 16, m.heads)))
+            step = torch.logspace(-3, -1, m.heads)
+            m.dt_bias.copy_(step + torch.log(-torch.expm1(-step)))  # softplus inverse
+    return model.to(device)
 
 
-@torch.no_grad()
-def predict(model, x, batch=8):
-    model.eval()
-    out = []
-    for i in range(0, len(x), batch):
-        with torch.autocast(device, dtype=torch.float16, enabled=device == "cuda"):
-            out.append(model(x[i : i + batch].to(device)).argmax(-1).cpu())
-    return torch.cat(out)
+ids, colours = copying_batch(1, 64)
+glyph = {0: "·", MARKER: "?"}
+shown = " ".join(glyph.get(t, str(t)) for t in ids[0].tolist())
+print("one sequence, 64 noise tokens shown as dots:")
+print(shown[:94])
+print(shown[94:])
+print("the answer:", " ".join(map(str, colours[0].tolist())))
+
+# %% [markdown]
+# The model answers the way a language model does, one position ahead: its output at the last noise token names the
+# first colour, and its output at each marker the next one. Both models get the same budget: 6,000 steps of 64
+# sequences, a few minutes each on a T4.
+
+# %%
+COPY_LENGTH = 64 if SMOKE else 256
+COPY_STEPS = 40 if SMOKE else 6000
 
 
-dna_lengths = [128, 512] if SMOKE else [1024, 4096, 16384]
-dna = []
-best_predictions = None
-for L in dna_lengths:
-    x_train, y_train = encode_dna(train_records, L)
-    x_test, y_test = encode_dna(test_records, L)
-    with torch.enable_grad():
-        probe = fit_linear(kmer_counts(x_train), y_train)
+def copying_accuracy(model, length, n=512):
+    ids, colours = copying_batch(n, length)
     with torch.no_grad():
-        accuracy = (probe(kmer_counts(x_test)) == y_test).float().mean().item()
-    dna.append(
-        {"bases": L, "learner": "6-mer counts", "accuracy": accuracy, "minutes": 0.0}
-    )
-    for name, make in [("Mamba-2", DNAMamba), ("Transformer", DNATransformer)]:
-        torch.manual_seed(SEED)
-        model = make()
-        seconds = train_dna(model, x_train, y_train)
-        guess = predict(model, x_test)
-        accuracy = (guess == y_test).float().mean().item()
-        dna.append(
-            {"bases": L, "learner": name, "accuracy": accuracy, "minutes": seconds / 60}
-        )
-        if name == "Mamba-2" and L == dna_lengths[-1]:
-            best_predictions = guess
-        del model
-        if device == "cuda":
-            torch.cuda.empty_cache()
-    print(f"{L:,} bases done")
-dna = pd.DataFrame(dna)
+        guess = model(ids.to(device))[:, length - 1 : length + TO_COPY - 1].argmax(-1)
+    return (guess.cpu() == colours).float().mean().item()
 
-fig, ax = plt.subplots(figsize=(7.2, 3.4))
-for name, color in [
-    ("6-mer counts", COLORS["line"]),
-    ("Transformer", COLORS["muted"]),
-    ("Mamba-2", COLORS["att"]),
-]:
-    part = dna[dna.learner == name]
-    ax.plot(part.bases, part.accuracy, color=color, marker="o", linewidth=2, label=name)
-ax.axhline(1 / len(species), color=COLORS["line"], linestyle=":", linewidth=1)
-ax.set_xscale("log", base=2)
-ax.set_xticks(dna_lengths, [f"{n:,}" for n in dna_lengths])
-ax.set_xlabel("bases read")
-ax.set_ylabel("accuracy on held-out chromosomes")
-ax.set_title(f"Which of {len(species)} species, by length of the stretch")
+
+def train_copier(mixer):
+    model = copier(mixer)
+    opt = torch.optim.AdamW(model.parameters(), lr=3e-3, weight_decay=0.0)
+    schedule = torch.optim.lr_scheduler.OneCycleLR(
+        opt, max_lr=3e-3, total_steps=COPY_STEPS, pct_start=0.1
+    )
+    curve = []
+    for step in range(1, COPY_STEPS + 1):
+        ids, colours = copying_batch(64, COPY_LENGTH)
+        logits = model(ids.to(device))[:, COPY_LENGTH - 1 : COPY_LENGTH + TO_COPY - 1]
+        target = colours.to(device).reshape(-1)
+        loss = F.cross_entropy(logits.reshape(-1, COLOURS + 2), target)
+        opt.zero_grad()
+        loss.backward()
+        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        opt.step()
+        schedule.step()
+        if step % max(1, COPY_STEPS // 24) == 0:
+            curve.append((step, copying_accuracy(model, COPY_LENGTH)))
+    return model, curve
+
+
+copiers, curves = {}, {}
+for name, mixer in [("selective", Mixer2), ("fixed step, B and C", FixedMixer2)]:
+    start = time.time()
+    copiers[name], curves[name] = train_copier(mixer)
+    print(f"{name:20} accuracy {curves[name][-1][1]:.3f}  in {time.time() - start:.0f} s")
+
+fig, ax = plt.subplots(figsize=(6.4, 3.4))
+for name, color in [("selective", COLORS["att"]), ("fixed step, B and C", COLORS["muted"])]:
+    steps, accuracy = zip(*curves[name])
+    ax.plot(steps, accuracy, color=color, marker="o", markersize=3, label=name)
+ax.axhline(1 / COLOURS, color=COLORS["line"], linestyle=":", linewidth=1)
+guess_y = 1 / COLOURS + 0.03
+ax.text(COPY_STEPS, guess_y, "guessing", color=COLORS["muted"], ha="right", fontsize=9)
+ax.set_ylim(0, 1.02)
+ax.set_xlabel("training step")
+ax.set_ylabel("coloured tokens copied")
+ax.set_title(f"Selective copying, {COPY_LENGTH} tokens, two Mamba-2 layers")
 ax.legend(frameon=False)
 plt.show()
-accuracy = dna.pivot(index="bases", columns="learner", values="accuracy")
-minutes = dna.pivot(index="bases", columns="learner", values="minutes")
-print("accuracy on held-out chromosomes")
-display(table(accuracy.reset_index(), digits=3))
-print("minutes of training on a T4")
-display(table(minutes.reset_index(), digits=1))
 
 # %% [markdown]
-# Where the best model still errs, at the longest stretch:
+# The selective model learns the task within the budget, almost to the last token; the fixed one never leaves the
+# guessing line. The paper trained a layer of this fixed kind far longer and it reached about half, but not more:
+# whatever it does, it has to write every token into its state the same way, noise included.
+#
+# Why does one work and the other not? The selective model's own steps answer it. Here is one sequence, and for each
+# position the step $$\Delta$$ that the second layer chose, averaged over its four heads: a large step writes the
+# token into the state and lets the old contents fade, a step near zero lets the token pass as if it weren't there.
 
 # %%
-x_test, y_test = encode_dna(test_records, dna_lengths[-1])
-confusion = np.zeros((len(species), len(species)))
-for truth, guess in zip(y_test.tolist(), best_predictions.tolist()):
-    confusion[truth, guess] += 1
-confusion = confusion / confusion.sum(axis=1, keepdims=True)
-fig, ax = plt.subplots(figsize=(5.4, 4.6))
-ax.imshow(confusion, cmap=shades, vmin=0, vmax=1)
-ax.set_xticks(range(len(species)), species, rotation=60, fontsize=8)
-ax.set_yticks(range(len(species)), species, fontsize=8)
-for i in range(len(species)):
-    for j in range(len(species)):
-        if confusion[i, j] >= 0.05:
-            ink = "white" if confusion[i, j] > 0.6 else "black"
-            ax.text(
-                j,
-                i,
-                f"{confusion[i, j]:.2f}",
-                ha="center",
-                va="center",
-                fontsize=7,
-                color=ink,
-            )
-ax.set_xlabel("predicted")
-ax.set_ylabel("true")
-ax.set_title(f"Mamba-2 on {dna_lengths[-1]:,} bases")
+model = copiers["selective"]
+mixer = model.layers[1].mixer
+mixer.keep = True
+ids, colours = copying_batch(1, COPY_LENGTH)
+with torch.no_grad():
+    model(ids.to(device))
+mixer.keep = False
+chosen = mixer.parts[1][0].mean(-1).cpu().numpy()  # (positions,), the step of every token
+kind = ids[0].numpy()
+
+fig, ax = plt.subplots(figsize=(11, 2.8))
+for which, color, label in [
+    (kind == 0, COLORS["line"], "noise"),
+    ((kind > 0) & (kind <= COLOURS), COLORS["dec"], "coloured"),
+    (kind == MARKER, COLORS["data"], "marker"),
+]:
+    where = np.flatnonzero(which)
+    ax.bar(where, chosen[where], width=1.0, color=color, label=label)
+fixed = copiers["fixed step, B and C"].layers[1].mixer
+fixed_step = F.softplus(fixed.dt_bias).mean().item()
+ax.axhline(fixed_step, color=COLORS["muted"], linestyle="--", linewidth=1)
+note = "the fixed model's step, the same for every token"
+ax.text(2, fixed_step * 1.15, note, color=COLORS["muted"], fontsize=9)
+ax.set_xlabel("position in the sequence")
+ax.set_ylabel("step Δ, layer 2")
+ax.set_title("What the selective model writes down: only the coloured tokens")
+ax.legend(frameon=False, ncol=3, loc="upper left")
 plt.show()
+for name, which in [("coloured", (kind > 0) & (kind <= COLOURS)), ("noise", kind == 0)]:
+    print(f"mean step on {name} tokens: {chosen[which].mean():.4f}")
+
+# %% [markdown]
+# Nobody told the model which tokens matter. It learned to give the coloured tokens large steps and the noise steps
+# close to zero, so that the noise passes through without touching the state. The fixed model has one step for
+# everything and writes the noise in as eagerly as the colours, and sixteen colours drown in hundreds of noise tokens.
+
+# %% [markdown]
+# A state that only opens for what matters doesn't care how much noise surrounds it. The test below keeps the
+# sixteen coloured tokens and grows the noise to two, four and eight times the length the models were trained on.
+
+# %%
+rows = []
+for factor in [1, 2, 4, 8]:
+    length = COPY_LENGTH * factor
+    row = {"noise tokens": length}
+    for name, model in copiers.items():
+        row[name] = copying_accuracy(model, length, n=128)
+    rows.append(row)
+table(pd.DataFrame(rows), digits=3)
+
+# %% [markdown]
+# Trained on 256 tokens, the selective model still copies most of the colours at several times that length: the noise
+# it ignores costs it nothing. This is selectivity at its best, a few things worth keeping in a long stream. Section 9
+# showed its limit: when every word of a long list has to be kept, a state of fixed size runs out, and that is the job
+# the hybrids of section 10 hand to attention.
 
 # %% [markdown]
 # ## 12. Where state space models are today
@@ -1477,8 +1391,7 @@ plt.show()
 # AI21 tried Mamba-2 for Jamba 1.5 and kept Mamba-1, which worked better next to attention; the newest version is not
 # always the best partner.
 #
-# **Beyond text.** Long sequences with simple alphabets are the natural home: DNA, as section 11 showed, audio, and
-# time series.
+# **Beyond text.** Long sequences with simple alphabets are the natural home: DNA, audio and time series.
 #
 # Mamba's passport, the model that made state space models a language technology, and the family tree:
 #
@@ -1497,5 +1410,3 @@ plt.show()
 # - Arora, S., Eyuboglu, S., Timalsina, A., et al. (2023). [Zoology: measuring and improving recall in efficient language models](https://arxiv.org/abs/2312.04927). arXiv:2312.04927.
 # - Lieber, O., Lenz, B., Bata, H., et al. (2024). [Jamba: a hybrid Transformer–Mamba language model](https://arxiv.org/abs/2403.19887). arXiv:2403.19887.
 # - Hillis, W. D., & Steele, G. L. (1986). [Data parallel algorithms](https://doi.org/10.1145/7902.7903). *Communications of the ACM*, 29(12), 1170–1183.
-# - Nguyen, E., Poli, M., Faizi, M., et al. (2023). [HyenaDNA: long-range genomic sequence modeling at single nucleotide resolution](https://arxiv.org/abs/2306.15794). *NeurIPS 2023*.
-# - BGI-HangzhouAI (2025). [Primate and mammal species classification benchmark](https://huggingface.co/datasets/BGI-HangzhouAI/Benchmark_Dataset-Primate_mammal_species_classification), MIT license.
