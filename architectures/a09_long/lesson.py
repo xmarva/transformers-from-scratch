@@ -997,8 +997,8 @@ for method in ["none", "PI", "NTK", "dynamic NTK", "YaRN"]:
 
 heat = pd.DataFrame(passkey, index=[f"{n:,}" for n in passkey_lengths]).T
 fig, ax = plt.subplots(figsize=(6.6, 3.2))
-found = LinearSegmentedColormap.from_list("found", [COLORS["card"], COLORS["enc"]])
-ax.imshow(heat.values, cmap=found, vmin=0, vmax=1, aspect="auto")
+teal = LinearSegmentedColormap.from_list("teal", [COLORS["card"], COLORS["enc"]])
+ax.imshow(heat.values, cmap=teal, vmin=0, vmax=1, aspect="auto")
 ax.set_xticks(range(len(heat.columns)), heat.columns)
 ax.set_yticks(range(len(heat.index)), heat.index)
 for i in range(heat.shape[0]):
@@ -1358,7 +1358,7 @@ for setting in ["as trained", "YaRN 4×"]:
 
 fig, axes = plt.subplots(1, 2, figsize=(8.6, 3.2), sharey=True)
 for ax, (setting, grid) in zip(axes, found.items()):
-    ax.imshow(grid, cmap=found, vmin=0, vmax=1, aspect="auto")
+    ax.imshow(grid, cmap=teal, vmin=0, vmax=1, aspect="auto")
     ax.set_xticks(range(len(needle_lengths)), [f"{n // 1024}k" for n in needle_lengths])
     ax.set_yticks(range(len(depths)), [f"{d:.0%}" for d in depths])
     ax.set_title(f"Qwen3-4B, {setting}")
