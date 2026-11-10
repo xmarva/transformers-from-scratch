@@ -225,8 +225,8 @@ ax.imshow(tile, interpolation="nearest")
 ax.set_title(f"patch {k}: row {row}, column {col}", fontsize=10)
 ax.axis("off")
 ax = fig.add_axes([0.2, 0.25, 0.79, 0.5])
-ink = LinearSegmentedColormap.from_list("ink", [COLORS["ink"], COLORS["card"]])
-ax.imshow(patches[k][None], aspect="auto", cmap=ink, interpolation="nearest")
+greys = LinearSegmentedColormap.from_list("greys", [COLORS["ink"], COLORS["card"]])
+ax.imshow(patches[k][None], aspect="auto", cmap=greys, interpolation="nearest")
 for edge in [256, 512]:
     ax.axvline(edge - 0.5, color=COLORS["dec"], linewidth=1.5)
 ax.set_yticks([])
@@ -639,11 +639,11 @@ maps = rollout[:, 0, 1:].reshape(n, grid, grid)
 
 violet = to_rgb(COLORS["att"])
 # from clear to violet, laid over the photo
-glow = LinearSegmentedColormap.from_list("glow", [(*violet, 0.0), (*violet, 0.8)])
+glow = LinearSegmentedColormap.from_list("glow", [(*violet, 0.0), (*violet, 0.9)])
 fig, axes = plt.subplots(1, n, figsize=(13, 2.9))
 for k, photo in enumerate(photos.values()):
     heat = (maps[k] / maps[k].max()).numpy()
-    axes[k].imshow(photo.resize((SIZE, SIZE)))
+    axes[k].imshow(photo.resize((SIZE, SIZE)).convert("L"), cmap=greys, alpha=0.75)
     axes[k].imshow(
         heat, cmap=glow, extent=(0, SIZE, SIZE, 0), interpolation="bilinear"
     )
@@ -1148,8 +1148,8 @@ plt.show()
 
 # %% [markdown]
 # The mistakes are few, and many of them involve herbaceous vegetation, taken for pasture, for crops or for forest:
-# scrub, meadow and young trees are the same green-brown texture at this scale. Another kind is a tile with a road
-# across it: a river, a factory or a suburb with a highway through it becomes a highway. Look at the tiles and you
+# scrub, meadow and young trees are the same green-brown texture at this scale. Annual and permanent crops are taken
+# for each other too, and now and then a tile with a road across it is called a highway. Look at the tiles and you
 # will hesitate too; at 10 metres a pixel, an orchard and a field of wheat can look the same.
 
 # %% [markdown]
