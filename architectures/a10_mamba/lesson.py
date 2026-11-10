@@ -1356,8 +1356,10 @@ for name, which in [("coloured", (kind > 0) & (kind <= COLOURS)), ("noise", kind
 
 # %% [markdown]
 # Nobody told the model which tokens matter. It learned to give the coloured tokens large steps and the noise steps
-# close to zero, so that the noise passes through without touching the state. The fixed model has one step for
-# everything and writes the noise in as eagerly as the colours, and sixteen colours drown in hundreds of noise tokens.
+# close to zero, so that the noise passes through without touching the state. The exception is the very start, where
+# noise gets large steps too: the state holds nothing yet, writing over it costs nothing, and training never had a
+# reason to push those steps down. The fixed model has one step for everything and writes the noise in as eagerly as
+# the colours, and sixteen colours drown in hundreds of noise tokens.
 
 # %% [markdown]
 # A state that only opens for what matters doesn't care how much noise surrounds it. The test below keeps the
@@ -1374,10 +1376,10 @@ for factor in [1, 2, 4, 8]:
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# Trained on 256 tokens, the selective model still copies most of the colours at several times that length: the noise
-# it ignores costs it nothing. This is selectivity at its best, a few things worth keeping in a long stream. Section 9
-# showed its limit: when every word of a long list has to be kept, a state of fixed size runs out, and that is the job
-# the hybrids of section 10 hand to attention.
+# Trained on 256 tokens, the selective model copies almost every colour at four times that length and most of them at
+# eight: the noise it ignores costs it next to nothing. This is selectivity at its best, a few things worth keeping in
+# a long stream. Section 9 showed its limit: when every word of a long list has to be kept, a state of fixed size runs
+# out, and that is the job the hybrids of section 10 hand to attention.
 
 # %% [markdown]
 # ## 12. Where state space models are today
