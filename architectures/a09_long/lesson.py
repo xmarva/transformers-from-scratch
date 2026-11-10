@@ -50,6 +50,7 @@ import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 import torch
@@ -737,7 +738,7 @@ STRETCHES["YaRN, no temperature"] = yarn_cold
 
 
 # %% [markdown]
-# Back to the three clocks, now with YaRN's hand in green: the fast pair keeps its angle, the slow pair's hand returns
+# Back to the three clocks, now with YaRN's hand in teal: the fast pair keeps its angle, the slow pair's hand returns
 # into the arc the model knows.
 
 # %%
@@ -891,8 +892,9 @@ bucket_table(["none", "PI", "NTK", "Llama 3.1", "YaRN", "YaRN, no temperature"])
 # what the model already knew, and position interpolation pays the most: it slowed the fast pairs too, and the model's
 # sense of word order is blurred everywhere, near and far. NTK leaves the window almost as it was and holds well past
 # it, until its stretch of the slow pairs runs out, because by design only the very slowest pair is divided by the
-# full factor. YaRN holds furthest. The last row isolates its second idea, the temperature, and shows it is not a
-# detail.
+# full factor. YaRN holds furthest. Llama 3.1's rule, tuned by Meta for a model with a far larger base, holds too,
+# though not as well as YaRN on TinyLlama. The last row isolates its second idea, the temperature, and shows it is not
+# a detail.
 #
 # Why a temperature at all? The entropy of a query's attention, in nats, says how many keys it spreads over: a query
 # that looks at exactly one key has entropy 0, and one spread evenly over $$n$$ keys has $$\ln n$$. We take the last
@@ -991,7 +993,8 @@ for method in ["none", "PI", "NTK", "dynamic NTK", "YaRN"]:
 
 heat = pd.DataFrame(passkey, index=[f"{n:,}" for n in passkey_lengths]).T
 fig, ax = plt.subplots(figsize=(6.6, 3.2))
-ax.imshow(heat.values, cmap="Greens", vmin=0, vmax=1, aspect="auto")
+found = LinearSegmentedColormap.from_list("found", [COLORS["card"], COLORS["enc"]])
+ax.imshow(heat.values, cmap=found, vmin=0, vmax=1, aspect="auto")
 ax.set_xticks(range(len(heat.columns)), heat.columns)
 ax.set_yticks(range(len(heat.index)), heat.index)
 for i in range(heat.shape[0]):
@@ -1004,6 +1007,15 @@ ax.set_title(f"TinyLlama finds the passkey, {TRIALS} random depths per cell")
 plt.show()
 
 # %% [markdown]
+# No method finds the passkey at 16k without training, and the cells before that tell more than the loss did. Position
+# interpolation doesn't find it even inside the trained window: with every pair slowed eightfold, the model can't read
+# a five-digit number back. NTK with its fixed factor of 8 holds to 8k. Dynamic NTK and YaRN are stretched by exactly
+# the ratio they need, which leaves no margin, and it shows. NTK divides only the slowest pair by the full factor and
+# the slow pairs just above it by less, so at twice the window those pairs still reach angles the model never saw:
+# dynamic NTK loses the passkey as soon as it stretches at all, while NTK with a factor of 8 has the margin to cover
+# them. YaRN interpolates in full every pair that never finished a turn and finds the passkey at twice the window, but
+# loses most of it at four times.
+#
 # All of this is without training. The papers fine-tune after stretching, a thousand steps for position
 # interpolation and four hundred for YaRN, and a fine-tuned model does far better than any zero-shot row here. What
 # the race measures is how good a starting point each method gives that fine-tuning, and how much it costs a model
@@ -1177,7 +1189,8 @@ for name, backend in [
 
 # %% [markdown]
 # Now a race on TinyLlama's shape, 32 heads of 64: plain attention that writes the matrix down, our tiled loop and
-# PyTorch's kernel, timed, with the most memory each one needed.
+# PyTorch's kernel, timed, with the peak memory of the GPU during each call. The floor under all three is TinyLlama's
+# weights, still loaded from the sections before.
 
 
 # %%
@@ -1249,7 +1262,8 @@ axes[0].legend(frameon=False, fontsize=9)
 where = "a T4" if device == "cuda" else "a CPU"
 fig.suptitle(f"One layer's attention, 32 heads of 64, on {where}")
 plt.show()
-table(bench.pivot(index="tokens", columns="attention", values="peak GB"), digits=2)
+peak = bench.pivot(index="tokens", columns="attention", values="peak GB")
+table(peak.reset_index(), digits=2)
 
 # %% [markdown]
 # Plain attention's memory grows with the square of the length and runs out well before 32k tokens. The kernel's grows
@@ -1338,7 +1352,7 @@ for setting in ["as trained", "YaRN 4×"]:
 
 fig, axes = plt.subplots(1, 2, figsize=(8.6, 3.2), sharey=True)
 for ax, (setting, grid) in zip(axes, found.items()):
-    ax.imshow(grid, cmap="Greens", vmin=0, vmax=1, aspect="auto")
+    ax.imshow(grid, cmap=found, vmin=0, vmax=1, aspect="auto")
     ax.set_xticks(range(len(needle_lengths)), [f"{n // 1024}k" for n in needle_lengths])
     ax.set_yticks(range(len(depths)), [f"{d:.0%}" for d in depths])
     ax.set_title(f"Qwen3-4B, {setting}")
@@ -1347,7 +1361,10 @@ axes[0].set_ylabel("needle depth")
 plt.show()
 
 # %% [markdown]
-# Green is found, white is missed.
+# Teal is found, white is missed.
+#
+# As trained, Qwen3-4B finds the needle at every depth up to 48k tokens, past the 32k it was trained on; at 64k it
+# finds it only near the end of the text, close to the question. With YaRN it finds it everywhere.
 #
 # A needle test is the easiest long-context exam there is: one literal sentence that doesn't belong, and a question
 # that repeats its words. Benchmarks built later make it harder, with several needles, questions that paraphrase and
@@ -1504,6 +1521,19 @@ for k in [2, 4, 8]:
     print(QUESTIONS[k][0])
     for setting in ["whole book, as trained", "whole book, YaRN 4×", "one chapter"]:
         print(f"  {setting:24} {results[setting][k][:90]!r}")
+
+# %% [markdown]
+# Without the book the model knows almost nothing about it, so the right answers come from reading. With the whole
+# book and the frequencies it was trained with, more than twice its window, it still answers about half; with YaRN,
+# most; with the one chapter, all of them.
+#
+# The misses are instructive. The book loses two of its sailors, Job and Tompkins, in two different scenes, and each
+# whole-book run once gives one man's name for the other's scene: the model finds the right passage and attaches the
+# wrong name to it. For questions like these a short, relevant passage beats a long one, which is why systems that
+# answer questions about long documents usually search first and read second.
+#
+# The printed answers show one more habit: after a short prompt the model sometimes keeps talking past its answer and
+# invents the next turn of the chat. Only the first words are counted.
 
 # %% [markdown]
 # ## 10. Where each piece fits today
