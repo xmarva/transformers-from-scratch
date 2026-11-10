@@ -38,6 +38,7 @@ import math
 import time
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 import torch
@@ -439,7 +440,8 @@ relative = (
 
 show = list(range(0, len(mamba.layers), max(1, len(mamba.layers) // 6)))
 fig, ax = plt.subplots(figsize=(9.6, 3.0))
-ax.imshow(relative[show], cmap="Purples", aspect="auto", vmin=0.4, vmax=1.6)
+shades = LinearSegmentedColormap.from_list("shades", [COLORS["card"], COLORS["att"]])
+ax.imshow(relative[show], cmap=shades, aspect="auto", vmin=0.4, vmax=1.6)
 ax.set_xticks(
     range(len(tokens)), [s.strip() or "␣" for s in tokens], rotation=70, fontsize=8
 )
@@ -548,8 +550,10 @@ print("parallel against loop:", f"{gap:.1e}")
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a10/scan-light.png" width="760" alt="The Hillis–Steele scan on eight positions. In the first round every position combines with its left neighbour, in the second with the position two to its left, in the third with the position four to its left; after three rounds, the logarithm of eight, every position holds the combined effect of all the steps before it, and each round is one elementwise operation over the whole sequence">
 #
 # The parallel scan does more work than the loop, $$L \log_2 L$$ combinations instead of $$L$$, and keeps a tensor of
-# shape (batch, channels, $$L$$, $$N$$) in memory, $$N$$ times the size of the layer's activations. On a GPU it still
-# wins by a wide margin, because every round is one big elementwise operation instead of $$L$$ small ones.
+# shape (batch, channels, $$L$$, $$N$$) in memory, $$N$$ times the size of the layer's activations. Written in plain
+# PyTorch on a T4, the two come out about even: every step of the loop already runs over all 1,536 channels and 16
+# state numbers at once, so it is parallel across channels, and the scan's extra work and memory traffic eat what it
+# gains across time. The scan pays off when it never leaves the chip, which is what Mamba's own kernel does.
 
 # %%
 sizes = [256, 512] if SMOKE else [256, 1024, 4096]
@@ -568,7 +572,8 @@ for L in sizes:
         if device == "cuda":
             torch.cuda.synchronize()
         timing.append({"tokens": L, "scan": name, "ms": (time.time() - start) * 1000})
-table(pd.DataFrame(timing).pivot(index="tokens", columns="scan", values="ms"), digits=1)
+ms = pd.DataFrame(timing).pivot(index="tokens", columns="scan", values="ms")
+table(ms.reset_index(), digits=1)
 
 # %% [markdown]
 # Mamba's own kernel goes further, and its design is FlashAttention's lesson applied to a recurrence. The tensor of
@@ -909,7 +914,7 @@ for ax, matrix, title in [
     (axes[0], weights, f"Mamba-2, layer {layer2}, head {head}: |M|, rows as shares"),
     (axes[1], pythia_head, f"Pythia-160m, layer {len(attention) // 2}, head 0: softmax"),
 ]:
-    ax.imshow(np.sqrt(matrix), cmap="Purples", vmin=0)
+    ax.imshow(np.sqrt(matrix), cmap=shades, vmin=0)
     ax.set_xticks(range(L), labels, rotation=90, fontsize=6)
     ax.set_yticks(range(L), labels, fontsize=6)
     ax.set_title(title, fontsize=9)
@@ -983,6 +988,11 @@ for name in curves:
     inside = curves[name][1024:2048].mean().item()
     beyond = curves[name][-2048:].mean().item()
     print(f"{name:12} loss at 1–2k: {inside:.2f}, at the last 2k: {beyond:.2f}")
+
+# %% [markdown]
+# Mamba reads eight times past its training length with its loss barely moving: there is no position for it to get
+# wrong, only a state that keeps being updated. Pythia climbs the same wall as TinyLlama in lesson 9, from the same
+# cause, rotary pairs asked for angles they never showed. On this test the fixed state wins outright.
 
 # %% [markdown]
 # **Copying.** The second test asks for exactly what a fixed state can't promise: repeat a list of random words. A
@@ -1060,12 +1070,14 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# The shorter lists are easy for both. As the list grows, the Transformer keeps copying, because every word it needs
-# is still in its cache, one lookup away; Mamba's state has to hold the whole list at once in a fixed number of
-# numbers, and the longer the list, the less of each word survives. This is the trade at the heart of the
-# architecture: a state that doesn't grow is a state that can't hold everything. For most of language that is fine,
-# because most of what we read doesn't have to be recalled word for word. For the parts that do, a little attention
-# goes a long way, which is the idea of the next section.
+# On the shortest lists the two are close. From there Mamba falls behind fast and soon copies no list at all, while
+# Pythia still gets some of the longer lists right, because every word it needs is still in its cache, one lookup
+# away; Mamba's state has to hold the whole list at once in a fixed number of numbers, and the longer the list, the
+# less of each word survives. Neither model is a good copyist at this size, and at the longest lists both fail, but
+# the gap points the way Jelassi and colleagues found at scale. This is the trade at the heart of the architecture: a
+# state that doesn't grow is a state that can't hold everything. For most of language that is fine, because most of
+# what we read doesn't have to be recalled word for word. For the parts that do, a little attention goes a long way,
+# which is the idea of the next section.
 
 # %% [markdown]
 # ## 10. Hybrids
@@ -1415,8 +1427,12 @@ ax.set_ylabel("accuracy on held-out chromosomes")
 ax.set_title(f"Which of {len(species)} species, by length of the stretch")
 ax.legend(frameon=False)
 plt.show()
-table(dna.pivot(index="bases", columns="learner", values="accuracy"), digits=3)
-table(dna.pivot(index="bases", columns="learner", values="minutes"), digits=1)
+accuracy = dna.pivot(index="bases", columns="learner", values="accuracy")
+minutes = dna.pivot(index="bases", columns="learner", values="minutes")
+print("accuracy on held-out chromosomes")
+display(table(accuracy.reset_index(), digits=3))
+print("minutes of training on a T4")
+display(table(minutes.reset_index(), digits=1))
 
 # %% [markdown]
 # Where the best model still errs, at the longest stretch:
@@ -1428,7 +1444,7 @@ for truth, guess in zip(y_test.tolist(), best_predictions.tolist()):
     confusion[truth, guess] += 1
 confusion = confusion / confusion.sum(axis=1, keepdims=True)
 fig, ax = plt.subplots(figsize=(5.4, 4.6))
-ax.imshow(confusion, cmap="Purples", vmin=0, vmax=1)
+ax.imshow(confusion, cmap=shades, vmin=0, vmax=1)
 ax.set_xticks(range(len(species)), species, rotation=60, fontsize=8)
 ax.set_yticks(range(len(species)), species, fontsize=8)
 for i in range(len(species)):
