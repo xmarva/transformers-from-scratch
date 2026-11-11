@@ -1,4 +1,4 @@
-"""Figures and charts of the portfolio page "3D Floorplan Reconstruction" on xmarva.github.io.
+"""Figures and charts of the portfolio page "3D Floorplan Reconstruction" on blog.korolevalab.com.
 
 Everything is computed from one real plan (data/plan.png, the project's own example) by plan.py: walls, rooms,
 doors, the scale, the 3D model and a furniture layout.

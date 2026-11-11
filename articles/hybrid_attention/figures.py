@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Hybrid attention" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Hybrid attention" on blog.korolevalab.com.
 
 Facts about real models come from their config.json files on the Hugging Face Hub, kept in data/configs/ as they
 were when the post was written. Measurements come from data/speed.json (speed.py), run on a Kaggle T4, and

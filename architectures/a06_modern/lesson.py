@@ -211,7 +211,7 @@ for name in ["Mistral 7B", "Mistral Small 24B", "Llama 3.1 8B", "Qwen3 8B"]:
 # ## 2. The decoder block they share
 #
 # Under the settings, the fourteen models are variations of one machine, the one [lesson 5 of the first
-# course](https://xmarva.github.io/blog/2026/transformers-from-scratch-05-llama/) built step by step: a stack of
+# course](https://blog.korolevalab.com/blog/2026/transformers-from-scratch-05-llama/) built step by step: a stack of
 # decoder blocks with a residual connection around attention and around the feed-forward network, RMSNorm, rotary
 # positions applied to queries and keys, a gated feed-forward network, and in most of them no biases at all. Most put
 # the norm before attention and before the feed-forward network and gate with SiLU, as Llama does. OLMo 2 normalises

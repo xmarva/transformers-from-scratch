@@ -37,7 +37,7 @@ from courses import COURSES, Course, course_of, lesson_dirs  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "xmarva/transformers-from-scratch"
 RAW = f"https://raw.githubusercontent.com/{REPO}"
-SITE = "https://xmarva.github.io"  # where the lessons are published as posts
+SITE = "https://blog.korolevalab.com"  # where the lessons are published as posts
 KAGGLE_USER = "qmarva"
 TARGETS = ("kaggle", "colab")
 BUILD_TAGS = ("only-kaggle", "only-colab")

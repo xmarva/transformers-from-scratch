@@ -12,9 +12,9 @@ authors:
   - given-names: Eva
     family-names: Koroleva
     orcid: "https://orcid.org/0009-0005-4637-4176"
-    website: "https://xmarva.github.io/"
+    website: "https://blog.korolevalab.com/"
 repository-code: "https://github.com/xmarva/transformers-from-scratch"
-url: "https://xmarva.github.io/teaching/"
+url: "https://blog.korolevalab.com/teaching/"
 license: MIT
 keywords:
   - transformers

@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "LLM inference optimization" on xmarva.github.io.
+"""Figures, charts and the cover of the post "LLM inference optimization" on blog.korolevalab.com.
 
 Facts about real models are read at render time: layer and head counts from each model's config.json on the
 Hugging Face Hub (the Llama repositories are ungated mirrors with Meta's configs), parameter counts from the

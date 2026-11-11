@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Somatic Marker Hypothesis by Antonio Damasio" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Somatic Marker Hypothesis by Antonio Damasio" on blog.korolevalab.com.
 
 The cortex is fsaverage6 with Destrieux et al.'s gyri and sulci, the slice the MNI152 template with the Harvard-Oxford
 subcortical atlas (tools/figures/brain.py).

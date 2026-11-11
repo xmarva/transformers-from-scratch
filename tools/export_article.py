@@ -1,4 +1,4 @@
-"""Export an article (articles/<name>/post.md) as a post of xmarva.github.io.
+"""Export an article (articles/<name>/post.md) as a post of blog.korolevalab.com.
 
 post.md is the post as it will be published: front matter, then markdown with $...$ math and placeholders
 [[figure-name]] for the article's figures and charts (articles/<name>/figures.py). On the way to the site:
@@ -67,7 +67,7 @@ def export(name: str, site: Path, post: Path, assets: str) -> Path:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("article", help="folder name under articles/")
-    parser.add_argument("--site", type=Path, required=True, help="path to the xmarva.github.io checkout")
+    parser.add_argument("--site", type=Path, required=True, help="path to the blog.korolevalab.com checkout")
     parser.add_argument("--post", type=Path, required=True, help="the post's path inside the site")
     parser.add_argument("--assets", required=True, help="the folder of the article's pictures inside the site")
     args = parser.parse_args(argv)

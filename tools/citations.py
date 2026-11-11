@@ -1,4 +1,4 @@
-"""Numbered citations for posts exported to xmarva.github.io.
+"""Numbered citations for posts exported to blog.korolevalab.com.
 
 In the sources, a citation is a link in parentheses: "... disappear" ([Shumailov et al., 2024](https://...)). On the
 site such links become small numbers, [5], that show the reference on hover or tap and lead to it in the list at the

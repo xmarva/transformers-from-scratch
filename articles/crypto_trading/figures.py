@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "AI and LLMs in crypto trading" on xmarva.github.io.
+"""Figures, charts and the cover of the post "AI and LLMs in crypto trading" on blog.korolevalab.com.
 
 Every chart is drawn from the measurements in data/: market.json, direction.json, volatility.json,
 overfitting.json and funding.json come from the scripts of the same names, run locally on Binance's public data

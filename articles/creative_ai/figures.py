@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Can AI be creative?" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Can AI be creative?" on blog.korolevalab.com.
 
 Brains are fsaverage6 cortex coloured by Yeo et al.'s networks in Schaefer et al.'s 400-parcel atlas
 (tools/figures/brain.py). The colour diagram is computed from the CIE 2015 2-degree observer and the Stockman & Sharpe

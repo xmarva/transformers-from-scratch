@@ -1,6 +1,6 @@
 """Lesson covers, 1200x630: notebook tab, title, hook question and a motif that shows what the lesson is about.
 
-Dark background and the site's red, like xmarva.github.io. English covers must stay Latin-only (readers can't
+Dark background and the site's red, like blog.korolevalab.com. English covers must stay Latin-only (readers can't
 read Cyrillic); `check_latin` enforces it. The motif area is x in [MOTIF_X0, MOTIF_X1]; helpers report the
 right edge they reached so a lesson's cover can assert it fits.
 """

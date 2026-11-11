@@ -1,4 +1,4 @@
-"""Figures and charts of the portfolio page "Cashierless Store" on xmarva.github.io.
+"""Figures and charts of the portfolio page "Cashierless Store" on blog.korolevalab.com.
 
 All of them come from the simulation in store.py: a store with real camera geometry and shoppers walking in it,
 detected, put on the floor plan and tracked the way the project's system did, while its data stays under NDA.

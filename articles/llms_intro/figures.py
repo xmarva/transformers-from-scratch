@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "LLMs for Those Who Missed Out" on xmarva.github.io.
+"""Figures, charts and the cover of the post "LLMs for Those Who Missed Out" on blog.korolevalab.com.
 
 The charts about TinyLlama, Pythia and GPT-2 read data/measurements.json, written by measure.py on a laptop. Memory
 needs are computed from the parameter counts of the Llama 2 and Llama 3 checkpoints.
