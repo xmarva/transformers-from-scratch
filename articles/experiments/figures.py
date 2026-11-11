@@ -1,4 +1,4 @@
-"""16:9 covers for the experiments on the portfolio page of xmarva.github.io.
+"""16:9 covers for the experiments on the portfolio page of blog.korolevalab.com.
 
 Each card takes one real picture from the project (a detection result, a structure render, a segmentation, a camera
 frame, a forecast), cuts the object out or recolours it into the site's palette, and sets it on the dark background

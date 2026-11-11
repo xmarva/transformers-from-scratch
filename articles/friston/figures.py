@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post on Friston's free energy principle on xmarva.github.io.
+"""Figures, charts and the cover of the post on Friston's free energy principle on blog.korolevalab.com.
 
 The worked example is Bogacz's (2017): a creature infers the size v of a food item from light intensity u, with
 g(v) = v^2, a prior N(3, 1), sensory variance 1 and an observation u = 2. Everything in the charts is computed here.

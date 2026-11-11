@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post on brains and AI models on xmarva.github.io.
+"""Figures, charts and the cover of the post on brains and AI models on blog.korolevalab.com.
 
 Brains are fsaverage6 cortex coloured by published atlases (tools/figures/brain.py). The dopamine chart is computed
 from a temporal-difference model, the one Schultz, Dayan & Montague (1997) fitted to recordings of dopamine neurons.

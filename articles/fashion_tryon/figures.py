@@ -1,4 +1,4 @@
-"""Figures and charts of the portfolio page "AI Fashion App" on xmarva.github.io.
+"""Figures and charts of the portfolio page "AI Fashion App" on blog.korolevalab.com.
 
 The warp is computed here: a thin-plate spline (Bookstein, 1989) carries fourteen points of a flat product photo
 of a dress onto the same points of a person, the way warping-based try-on models of 2018-2021 placed a garment

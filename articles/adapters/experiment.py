@@ -1,4 +1,4 @@
-"""Measurements for the post "Adapters and PEFT" on xmarva.github.io, run on a Kaggle T4.
+"""Measurements for the post "Adapters and PEFT" on blog.korolevalab.com, run on a Kaggle T4.
 
 bert-base-uncased is fine-tuned on SST-2 (sentiment of movie-review sentences) eleven ways: the whole model, the task
 head alone, and nine parameter-efficient methods, each written out below in plain PyTorch. Every method trains the

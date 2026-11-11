@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Algebraic Foundations of Low-Rank Adaptation" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Algebraic Foundations of Low-Rank Adaptation" on blog.korolevalab.com.
 
 The charts about linear algebra are computed here, on matrices small enough to look at (2x2 maps, a random 48-column
 projection) and on a photograph: skimage.data.astronaut(), Eileen Collins, NASA, in the public domain. The charts

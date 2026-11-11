@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Is it rational to be good?" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Is it rational to be good?" on blog.korolevalab.com.
 
 Everything is computed when it is drawn: payoffs of the repeated prisoner's dilemma exactly, from the Markov chain
 of two memory-one strategies (games.py); the populations that learn by imitation from data/evolution.json

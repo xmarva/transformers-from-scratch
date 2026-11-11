@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post on consciousness for physicalists on xmarva.github.io.
+"""Figures, charts and the cover of the post on consciousness for physicalists on blog.korolevalab.com.
 
 The survey chart is from the 2020 PhilPapers Survey (Bourget & Chalmers, 2023), the patients chart from Bodien et al.
 (2024); brains are fsaverage6 cortex with Destrieux's gyri (tools/figures/brain.py).

@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Is Centaur a Model of the Mind?" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Is Centaur a Model of the Mind?" on blog.korolevalab.com.
 
 Colours: teal is what the experimenter wrote (instructions), amber is what the participant did, violet is a model,
 rose is a model without part of its input.

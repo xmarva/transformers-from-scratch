@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "How accurate is Polymarket?" on xmarva.github.io.
+"""Figures, charts and the cover of the post "How accurate is Polymarket?" on blog.korolevalab.com.
 
 Every chart is drawn from data/: analysis.json comes from analysis.py (resolved markets from Polymarket's Gamma API
 and their price histories from its CLOB API, downloaded by download.py and chosen by markets.py), cases.json from

@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Mixture of experts" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Mixture of experts" on blog.korolevalab.com.
 
 The experiments are those of train.py and routing.py (data/train.json, data/routing.json), run with three seeds on
 two T4 GPUs on Kaggle by kaggle.py; speed.py's timings, on the same GPU, are in data/speed.json. Facts about real

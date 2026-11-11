@@ -1,4 +1,4 @@
-"""Measurements for the post "LLMs for Those Who Missed Out" on xmarva.github.io, run on a laptop CPU.
+"""Measurements for the post "LLMs for Those Who Missed Out" on blog.korolevalab.com, run on a laptop CPU.
 
 Every model here was public before the post's date (April 2024): GPT-2 (OpenAI, 2019), five Pythia models
 (EleutherAI, 2023, all trained on the same data, the Pile, in the same order) and TinyLlama 1.1B (December 2023,

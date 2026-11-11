@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Adapters and PEFT" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Adapters and PEFT" on blog.korolevalab.com.
 
 The block diagrams draw one encoder layer of BERT the same way for every method and add, in colour, what the method
 adds; parameter counts are computed from bert-base-uncased's config. The charts read data/adapters.json, the results

@@ -1,4 +1,4 @@
-"""Figures and charts of the portfolio page "Medical Assistant" on xmarva.github.io.
+"""Figures and charts of the portfolio page "Medical Assistant" on blog.korolevalab.com.
 
 The data is public and saved in data/ by fetch.py: PubMed counts from NCBI E-utilities, a piece of Hetionet v1.0
 (Himmelstein et al., eLife 2017) around type 2 diabetes, and recent trials on metformin. Identifiers in the

@@ -1,4 +1,4 @@
-"""Measurements for the post "Algebraic Foundations of Low-Rank Adaptation" on xmarva.github.io, run on a Kaggle T4.
+"""Measurements for the post "Algebraic Foundations of Low-Rank Adaptation" on blog.korolevalab.com, run on a Kaggle T4.
 
 bert-base-uncased is fine-tuned on SST-2 (sentiment of movie-review sentences) with LoRA on the query and value
 projections of attention, in the setting of the adapters post: 10,000 training sentences, three epochs, AdamW with a

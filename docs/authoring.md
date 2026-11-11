@@ -101,4 +101,4 @@ The build rewrites `main` in these links to the ref it builds for, so a draft sh
 2. Push the Kaggle build (`kaggle kernels push -p notebooks/kaggle/01_tokenization`), run it, review it on Kaggle.
    Before the merge, push a draft built from the branch instead: `build.py 01 --ref <branch> --out-dir <tmp>`.
 3. Set `published = true` in `lesson.toml`, rebuild and push again to make it public.
-4. Export the executed notebook to a post for xmarva.github.io and open a PR there.
+4. Export the executed notebook to a post for blog.korolevalab.com and open a PR there.

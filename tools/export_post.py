@@ -1,4 +1,4 @@
-"""Export executed lessons as posts for the course's site, xmarva.github.io (Jekyll, al-folio).
+"""Export executed lessons as posts for the course's site, blog.korolevalab.com (Jekyll, al-folio).
 
 For every lesson it writes (the prefixes come from the lesson's course, tools/courses.py)
     _posts/<published_on>-transformers-from-scratch-NN-<name>.md   or -transformer-architectures-NN-<name>.md
@@ -44,7 +44,7 @@ import citations  # noqa: E402
 import paragraphs  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_URL = "https://xmarva.github.io"
+SITE_URL = "https://blog.korolevalab.com"
 COURSE_PAGE = "/teaching/"
 # an image tag ends at the first ">" outside its quoted attributes: alt texts may contain "<bos>"
 FIGURE = re.compile(r'<img src="https://raw\.githubusercontent\.com/[^"]+/assets/figures/([a-z]?\d\d)/([\w-]+)-light\.png"'
@@ -308,7 +308,7 @@ def export(number: str, site: Path, exported: dict[str, tuple[Path, dict]]) -> P
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("lessons", nargs="+", help="lesson numbers, e.g. 01 02")
-    parser.add_argument("--site", type=Path, required=True, help="path to the xmarva.github.io checkout")
+    parser.add_argument("--site", type=Path, required=True, help="path to the blog.korolevalab.com checkout")
     args = parser.parse_args(argv)
 
     available = lessons()

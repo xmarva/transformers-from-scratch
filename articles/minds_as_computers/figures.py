@@ -1,4 +1,4 @@
-"""Figures, charts and the cover of the post "Minds as computers" on xmarva.github.io.
+"""Figures, charts and the cover of the post "Minds as computers" on blog.korolevalab.com.
 
 Everything a figure shows is computed when it is drawn: the state graph of Alcuin's river puzzle by breadth-first
 search, the McCulloch-Pitts units' truth tables by running them, the soundness of the two inference rules by checking
