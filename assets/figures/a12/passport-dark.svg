@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" width="760" height="370" role="img" aria-label="CLIP ViT-B/32&#x27;s passport. Published January 2021 by OpenAI, weights under the MIT licence. Type: two encoders, an image tower and a text tower, about 151 million parameters, trained with a contrastive loss. Image tower: a Vision Transformer, 224 by 224 pixels in 49 patches of 32, twelve blocks of width 768. Text tower: twelve blocks of width 512 with eight heads, causal attention, at most 77 tokens, the end token&#x27;s output. Space: 512 numbers, cosine similarity scaled by a learned temperature. Training: 400 million image and text pairs collected from the internet, batches of 32,768. Good at: zero-shot classification, search, the image or text encoder of other models. Not for: counting, reading small text reliably, telling apart scenes that differ only in word order">
+<title>CLIP ViT-B/32&#x27;s passport. Published January 2021 by OpenAI, weights under the MIT licence. Type: two encoders, an image tower and a text tower, about 151 million parameters, trained with a contrastive loss. Image tower: a Vision Transformer, 224 by 224 pixels in 49 patches of 32, twelve blocks of width 768. Text tower: twelve blocks of width 512 with eight heads, causal attention, at most 77 tokens, the end token&#x27;s output. Space: 512 numbers, cosine similarity scaled by a learned temperature. Training: 400 million image and text pairs collected from the internet, batches of 32,768. Good at: zero-shot classification, search, the image or text encoder of other models. Not for: counting, reading small text reliably, telling apart scenes that differ only in word order</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="370" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">CLIP ViT-B/32: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#272144" stroke="#9C8CF5" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">January 2021, OpenAI; MIT licence</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">an image tower and a text tower, ~151M parameters, contrastive loss</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">image tower</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">ViT, 224×224, 49 patches of 32, 12 blocks of 768</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">text tower</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">12 causal blocks of 512, 8 heads, 77 tokens</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">space</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">512 numbers, cosine × a learned temperature</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">training</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">400M image–text pairs from the web, batches of 32,768</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">good at</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">zero-shot classification, search, encoder for other models</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#9AA3B2">not for</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#1A1F26" stroke="#4A5361" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#E7EAF0">counting, small text, scenes that differ in word order</text>
+</svg>

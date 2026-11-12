@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="760" height="330" role="img" aria-label="Zero-shot classification with CLIP. Each class name is put into a sentence, a photo i took in Iceland, in Japan, in Italy, in Brazil, and the text tower turns each sentence into a vector; together the vectors form the weight matrix of a classifier. A photo goes through the image tower; its vector&#x27;s dot product with each row is the score of that class, and the highest score is the answer. No photo of any of these countries was labelled for this">
+<title>Zero-shot classification with CLIP. Each class name is put into a sentence, a photo i took in Iceland, in Japan, in Italy, in Brazil, and the text tower turns each sentence into a vector; together the vectors form the weight matrix of a classifier. A photo goes through the image tower; its vector&#x27;s dot product with each row is the score of that class, and the highest score is the answer. No photo of any of these countries was labelled for this</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="330" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">A classifier made of sentences</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the rows of the weight matrix are the text tower&#x27;s vectors for one sentence per class</text>
+<rect x="20.0" y="84.0" width="185.2" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="112.6" y="101.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#8A5508" xml:space="preserve">a photo i took in Iceland.</text>
+<polyline points="226.0,98.0 252.0,98.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="256.0" y="93.0" width="120.0" height="10.0" rx="1" fill="#C27A0E"/>
+<rect x="20.0" y="128.0" width="172.0" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="106.0" y="145.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#8A5508" xml:space="preserve">a photo i took in Japan.</text>
+<polyline points="226.0,142.0 252.0,142.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="256.0" y="137.0" width="120.0" height="10.0" rx="1" fill="#C27A0E"/>
+<rect x="20.0" y="172.0" width="172.0" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="106.0" y="189.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#8A5508" xml:space="preserve">a photo i took in Italy.</text>
+<polyline points="226.0,186.0 252.0,186.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="256.0" y="181.0" width="120.0" height="10.0" rx="1" fill="#C27A0E"/>
+<rect x="20.0" y="216.0" width="178.6" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="109.3" y="233.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#8A5508" xml:space="preserve">a photo i took in Brazil.</text>
+<polyline points="226.0,230.0 252.0,230.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="256.0" y="225.0" width="120.0" height="10.0" rx="1" fill="#C27A0E"/>
+<rect x="256.0" y="266.0" width="120.0" height="28.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="316.0" y="284.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">text tower</text>
+<text x="316.0" y="312.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">one row per class</text>
+<rect x="446.0" y="112.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<rect x="459.0" y="112.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="472.0" y="112.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="485.0" y="112.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<rect x="446.0" y="125.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="459.0" y="125.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="472.0" y="125.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<rect x="485.0" y="125.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="446.0" y="138.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="459.0" y="138.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<rect x="472.0" y="138.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="485.0" y="138.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="446.0" y="151.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<rect x="459.0" y="151.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="472.0" y="151.0" width="11.0" height="11.0" rx="1" fill="#E1F3F0"/>
+<rect x="485.0" y="151.0" width="11.0" height="11.0" rx="1" fill="#0F8C7E"/>
+<polyline points="500.0,136.0 526.0,136.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="530.0" y="118.0" width="110.0" height="36.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="585.0" y="140.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">image tower</text>
+<polyline points="641.0,136.0 667.0,136.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="671.0" y="131.0" width="70.0" height="10.0" rx="1" fill="#0F8C7E"/>
+<text x="530.0" y="204.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">Iceland</text>
+<rect x="600.0" y="196.0" width="86.8" height="12.0" rx="1" fill="#D23F57"/>
+<text x="530.0" y="228.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">Japan</text>
+<rect x="600.0" y="220.0" width="29.4" height="12.0" rx="1" fill="#B9C0CB"/>
+<text x="530.0" y="252.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">Italy</text>
+<rect x="600.0" y="244.0" width="42.0" height="12.0" rx="1" fill="#B9C0CB"/>
+<text x="530.0" y="276.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">Brazil</text>
+<rect x="600.0" y="268.0" width="16.8" height="12.0" rx="1" fill="#B9C0CB"/>
+<text x="446.0" y="312.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">score of a class = image vector · its row</text>
+</svg>
