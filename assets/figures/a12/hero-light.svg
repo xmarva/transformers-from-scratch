@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 374" width="760" height="374" role="img" aria-label="CLIP in one picture. A photo goes through an image tower, a Vision Transformer, and becomes a vector; its caption goes through a text tower, a Transformer, and becomes a vector of the same length. A batch of four photos and four captions gives a four by four table of cosine similarities; the four cells on the diagonal are the pairs that belong together, and training raises them and lowers the other twelve">
+<title>CLIP in one picture. A photo goes through an image tower, a Vision Transformer, and becomes a vector; its caption goes through a text tower, a Transformer, and becomes a vector of the same length. A batch of four photos and four captions gives a four by four table of cosine similarities; the four cells on the diagonal are the pairs that belong together, and training raises them and lowers the other twelve</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="374" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">Two encoders and one space for images and text</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">each photo and each caption becomes a vector of 512 numbers; a batch is scored pair by pair</text>
+<rect x="20.0" y="92.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<rect x="31.0" y="92.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="42.0" y="92.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="53.0" y="92.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<rect x="20.0" y="103.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="31.0" y="103.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="42.0" y="103.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<rect x="53.0" y="103.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="20.0" y="114.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="31.0" y="114.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<rect x="42.0" y="114.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="53.0" y="114.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="20.0" y="125.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<rect x="31.0" y="125.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="42.0" y="125.0" width="9.0" height="9.0" rx="1" fill="#E1F3F0"/>
+<rect x="53.0" y="125.0" width="9.0" height="9.0" rx="1" fill="#0F8C7E"/>
+<polyline points="66.0,112.0 92.0,112.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="96.0" y="94.0" width="140.0" height="36.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="166.0" y="116.5" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">image tower</text>
+<polyline points="237.0,112.0 263.0,112.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="267.0" y="107.0" width="96.0" height="10.0" rx="1" fill="#0F8C7E"/>
+<text x="315.0" y="140.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">image vector, 512</text>
+<rect x="20.0" y="186.0" width="99.4" height="26.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="69.7" y="202.8" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="500" fill="#8A5508" xml:space="preserve">a fox in snow</text>
+<polyline points="132.0,199.0 158.0,199.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="162.0" y="181.0" width="120.0" height="36.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="222.0" y="203.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">text tower</text>
+<polyline points="283.0,199.0 309.0,199.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="313.0" y="194.0" width="50.0" height="10.0" rx="1" fill="#C27A0E"/>
+<text x="338.0" y="230.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">text, 512</text>
+<rect x="520.0" y="90.0" width="40.0" height="8.0" rx="1" fill="#C27A0E"/>
+<rect x="564.0" y="90.0" width="40.0" height="8.0" rx="1" fill="#C27A0E"/>
+<rect x="608.0" y="90.0" width="40.0" height="8.0" rx="1" fill="#C27A0E"/>
+<rect x="652.0" y="90.0" width="40.0" height="8.0" rx="1" fill="#C27A0E"/>
+<rect x="498.0" y="112.0" width="8.0" height="40.0" rx="1" fill="#0F8C7E"/>
+<rect x="520.0" y="112.0" width="40.0" height="40.0" rx="4" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<rect x="564.0" y="112.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="608.0" y="112.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="652.0" y="112.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="498.0" y="156.0" width="8.0" height="40.0" rx="1" fill="#0F8C7E"/>
+<rect x="520.0" y="156.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="564.0" y="156.0" width="40.0" height="40.0" rx="4" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<rect x="608.0" y="156.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="652.0" y="156.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="498.0" y="200.0" width="8.0" height="40.0" rx="1" fill="#0F8C7E"/>
+<rect x="520.0" y="200.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="564.0" y="200.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="608.0" y="200.0" width="40.0" height="40.0" rx="4" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<rect x="652.0" y="200.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="498.0" y="244.0" width="8.0" height="40.0" rx="1" fill="#0F8C7E"/>
+<rect x="520.0" y="244.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="564.0" y="244.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="608.0" y="244.0" width="40.0" height="40.0" rx="4" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<rect x="652.0" y="244.0" width="40.0" height="40.0" rx="4" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<text x="606.0" y="76.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">4 captions</text>
+<text x="498.0" y="308.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">4 photos</text>
+<polyline points="380.0,112.0 470.0,150.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="380.0,199.0 470.0,160.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="424.0" y="100.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">cosine</text>
+<text x="424.0" y="228.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">of every pair</text>
+<text x="14.0" y="334.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the diagonal holds the pairs that belong together; training raises it and lowers the rest</text>
+<text x="14.0" y="356.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">after training, a class name is just another caption, and a search query is too</text>
+</svg>

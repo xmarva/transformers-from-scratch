@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" width="760" height="352" role="img" aria-label="Two losses on the same table of pairs. On the left, CLIP&#x27;s: each row of the table is a softmax over all the captions, asking which one caption belongs to this photo, and each column is a softmax over all the photos; every row needs every column. On the right, SigLIP&#x27;s: each cell on its own is a yes-or-no question, the diagonal cells should say yes and the others no, through a sigmoid of a scaled similarity plus a bias; cells don&#x27;t depend on each other, so the table can be computed in pieces">
+<title>Two losses on the same table of pairs. On the left, CLIP&#x27;s: each row of the table is a softmax over all the captions, asking which one caption belongs to this photo, and each column is a softmax over all the photos; every row needs every column. On the right, SigLIP&#x27;s: each cell on its own is a yes-or-no question, the diagonal cells should say yes and the others no, through a sigmoid of a scaled similarity plus a bias; cells don&#x27;t depend on each other, so the table can be computed in pieces</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3CC2B0"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2667C"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
+</defs>
+<rect width="760" height="352" rx="12" fill="#1A1F26"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">The same table of pairs, two questions about it</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">CLIP asks each row and each column for one answer; SigLIP asks every cell yes or no</text>
+<rect x="40.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="84.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="128.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="172.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="40.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="84.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="128.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="172.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="40.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="84.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="128.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="172.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="40.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="84.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="128.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<rect x="172.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="396.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="440.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="460.0" y="129.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="484.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="504.0" y="129.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="528.0" y="104.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="548.0" y="129.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="396.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="416.0" y="173.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="440.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="484.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="504.0" y="173.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="528.0" y="148.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="548.0" y="173.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="396.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="416.0" y="217.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="440.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="460.0" y="217.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="484.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<rect x="528.0" y="192.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="548.0" y="217.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="396.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="416.0" y="261.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="440.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="460.0" y="261.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="484.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#20262E" stroke="#4A5361" stroke-width="1.5"/>
+<text x="504.0" y="261.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1</text>
+<rect x="528.0" y="236.0" width="40.0" height="40.0" rx="4" fill="#F2667C" stroke="#F2667C" stroke-width="1.5"/>
+<text x="40.0" y="88.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">CLIP, softmax</text>
+<rect x="36.0" y="146.0" width="180.0" height="2.0" rx="1" fill="#9C8CF5"/>
+<rect x="36.0" y="190.0" width="180.0" height="2.0" rx="1" fill="#9C8CF5"/>
+<text x="230.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">one row: which caption?</text>
+<text x="230.0" y="168.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">a softmax over 4</text>
+<rect x="126.0" y="100.0" width="2.0" height="180.0" rx="1" fill="#9C8CF5"/>
+<rect x="168.0" y="100.0" width="2.0" height="180.0" rx="1" fill="#9C8CF5"/>
+<text x="230.0" y="226.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">one column: which photo?</text>
+<text x="230.0" y="244.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">another softmax</text>
+<text x="396.0" y="88.0" text-anchor="start" font-family="IBM Plex Sans" font-size="14" font-weight="600" fill="#E7EAF0">SigLIP, sigmoid</text>
+<text x="588.0" y="150.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">each cell on its own:</text>
+<text x="588.0" y="168.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">σ(t · cos + b)</text>
+<text x="588.0" y="226.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">+1 on the diagonal,</text>
+<text x="588.0" y="244.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">−1 everywhere else</text>
+<text x="14.0" y="310.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">a softmax row needs every caption in the batch before it can be normalised</text>
+<text x="14.0" y="330.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">a sigmoid cell needs one photo and one caption, so the table can be filled in blocks</text>
+</svg>

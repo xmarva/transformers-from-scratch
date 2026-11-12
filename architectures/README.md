@@ -53,7 +53,7 @@ number in the text comes from an output of the notebook. The course shares the t
 | # | Lesson | From scratch, and the check | Practical task |
 |---|---|---|---|
 | a11 | **Vision Transformer**: ViT, DeiT, DINOv2 | patch embeddings, the class token, positions; vit-base weights; ViT against a CNN when data is scarce | land use from satellite images (EuroSAT), and what the attention looks at |
-| a12 | **CLIP and SigLIP** | the contrastive and the sigmoid losses, both towers; clip-vit-b/32 weights | zero-shot classification and image search; typographic attacks |
+| a12 | **CLIP and SigLIP** | the contrastive and the sigmoid losses, both towers, SigLIP's attention pooling; clip-vit-b/32 and siglip-base weights | zero-shot geolocation on Country211 and image search on COCO, checked against published numbers; the modality gap; typographic attacks; the two losses trained side by side |
 | a13 | **Vision-language models**: from LLaVA to Qwen-VL | the projector, visual tokens and their cost, dynamic resolution; a small LLaVA-OneVision's weights | a small VLM reading charts and receipts |
 | a14 | **Whisper**: speech recognition as an encoder–decoder | the log-mel spectrogram, task tokens, timestamps; whisper-tiny weights | word error rate in English and Russian (FLEURS), and hallucinations on silence |
 | a15 | **Diffusion Transformers**: DiT and Stable Diffusion 3 | denoising diffusion and flow matching, adaLN-Zero; MM-DiT | a small DiT trained on butterflies |

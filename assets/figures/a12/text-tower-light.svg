@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 372" width="760" height="372" role="img" aria-label="A caption through CLIP&#x27;s text tower, step by step. The caption is lower-cased and cut into byte-pair tokens between a start token and an end token; each token gets its embedding plus a learned position; twelve Transformer blocks with a causal mask let each token see only the tokens before it, so only the end token has seen the whole caption; its output vector, after a final layer norm and a linear projection, is the caption&#x27;s vector, divided by its length">
+<title>A caption through CLIP&#x27;s text tower, step by step. The caption is lower-cased and cut into byte-pair tokens between a start token and an end token; each token gets its embedding plus a learned position; twelve Transformer blocks with a causal mask let each token see only the tokens before it, so only the end token has seen the whole caption; its output vector, after a final layer norm and a linear projection, is the caption&#x27;s vector, divided by its length</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="372" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">A caption through CLIP&#x27;s text tower</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">width 512, 12 blocks of 8 heads, at most 77 tokens</text>
+<rect x="20.0" y="74.0" width="65.3" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="52.6" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">&lt;start&gt;</text>
+<rect x="90.3" y="74.0" width="26.4" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="103.5" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">a</text>
+<rect x="121.7" y="74.0" width="36.5" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="139.9" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">fox</text>
+<rect x="163.2" y="74.0" width="29.3" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="177.8" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">in</text>
+<rect x="197.4" y="74.0" width="36.5" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="215.7" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">the</text>
+<rect x="238.9" y="74.0" width="43.7" height="28.0" rx="7" fill="#FCF0DA" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="260.8" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#8A5508" xml:space="preserve">snow</text>
+<rect x="287.6" y="74.0" width="50.9" height="28.0" rx="7" fill="#C27A0E" stroke="#C27A0E" stroke-width="1.5"/>
+<text x="313.0" y="92.2" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" font-weight="500" fill="#FFFFFF" xml:space="preserve">&lt;end&gt;</text>
+<text x="20.0" y="124.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">1  lower-cased byte-pair tokens between two markers</text>
+<rect x="24.0" y="136.0" width="57.3" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="94.3" y="136.0" width="18.4" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="125.7" y="136.0" width="28.5" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="167.2" y="136.0" width="21.3" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="201.4" y="136.0" width="28.5" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="242.9" y="136.0" width="35.7" height="9.0" rx="1" fill="#FCF0DA"/>
+<rect x="291.6" y="136.0" width="42.9" height="9.0" rx="1" fill="#FCF0DA"/>
+<text x="20.0" y="166.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">2  each token&#x27;s embedding plus a learned position</text>
+<rect x="20.0" y="180.0" width="380.0" height="40.0" rx="9" fill="#E1F3F0" stroke="#0F8C7E" stroke-width="1.5"/>
+<text x="210.0" y="204.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#0B6B60" xml:space="preserve">12 blocks, causal attention</text>
+<rect x="440.0" y="82.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="95.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="95.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="108.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="108.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="466.0" y="108.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="121.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="121.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="466.0" y="121.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="479.0" y="121.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="134.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="134.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="466.0" y="134.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="479.0" y="134.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="492.0" y="134.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="466.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="479.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="492.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="505.0" y="147.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<rect x="440.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="453.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="466.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="479.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="492.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="505.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#ECE8FC"/>
+<rect x="518.0" y="160.0" width="11.0" height="11.0" rx="1" fill="#6A55D8"/>
+<text x="440.0" y="190.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">3  the causal mask: each token</text>
+<text x="440.0" y="208.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">sees itself and what came before</text>
+<polyline points="313.0,221.0 313.0,262.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="243.0" y="266.0" width="140.0" height="32.0" rx="9" fill="#D23F57" stroke="#D23F57" stroke-width="1.5"/>
+<text x="313.0" y="286.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#FFFFFF" xml:space="preserve">&lt;end&gt;&#x27;s output</text>
+<polyline points="384.0,282.0 414.0,282.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="418.0" y="266.0" width="150.0" height="32.0" rx="9" fill="#F6F7F9" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="493.0" y="286.6" text-anchor="middle" font-family="IBM Plex Sans" font-size="13" font-weight="500" fill="#1D2430" xml:space="preserve">norm, 512 → 512</text>
+<polyline points="569.0,282.0 597.0,282.0" fill="none" stroke="#5B6575" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#arrow-muted)"/>
+<rect x="601.0" y="277.0" width="70.0" height="10.0" rx="1" fill="#C27A0E"/>
+<text x="20.0" y="326.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">4  only the end token has read the whole caption: its vector is the caption&#x27;s vector</text>
+<text x="20.0" y="346.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#5B6575">5  divided by its length, it lands on a sphere, where similarity is a dot product</text>
+</svg>
