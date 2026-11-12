@@ -197,10 +197,16 @@ print(f"all the thumbnails take {size:.0f} MB of memory")
 
 # %%
 fig, axes = plt.subplots(2, 4, figsize=(12, 7))
-picks = np.linspace(0, len(geo_thumbs) - 1, 4).astype(int)
-for ax, i in zip(axes[0], picks):
+SHOW = [
+    (0, 0),
+    (53, 24),
+    (106, 18),
+    (159, 7),
+]  # (country, its k-th photo): places, no faces
+for ax, (country, k) in zip(axes[0], SHOW):
+    i = (geo_truth == country).nonzero()[k].item()
     ax.imshow(load(geo_thumbs[i]))
-    ax.set_title(COUNTRIES[geo_truth[i]], fontsize=10)
+    ax.set_title(COUNTRIES[country], fontsize=10)
     ax.axis("off")
 for ax, i in zip(axes[1], range(4)):
     ax.imshow(load(coco_thumbs[i]))
@@ -214,8 +220,8 @@ plt.show()
 # under their own licences, captions CC BY 4.0), with the first of each photo's captions.*
 #
 # The two sets ask different things of the model. A COCO caption names what is in the photo, the kind of sentence CLIP
-# saw millions of times. A Country211 photo is a holiday snapshot, a street, a field, a meal, and nothing in it says
-# where it is; the model has to infer the country from the light, the plants, the architecture, the cars.
+# saw millions of times. A Country211 photo is a holiday snapshot, a street, a field, a meal, and usually nothing in it
+# names the place; the model has to infer the country from the light, the plants, the architecture, the cars.
 
 
 # %% [markdown]
@@ -291,9 +297,8 @@ print(
 )
 
 # %% [markdown]
-# @@ (check the printed value) Our square and the processor's differ by at most one brightness level out of 255, in
-# a few pixels: both resize with the same bicubic filter, and the processor rounds its intermediate image slightly
-# differently. Nothing downstream can tell.
+# Our square and the processor's differ by one brightness level out of 255 at most, a rounding difference between two
+# pipelines that resize with the same bicubic filter. Nothing downstream can tell.
 #
 # **Step 2: patches of 32.** ViT-B/32 cuts the square into a 7×7 grid of 32-pixel patches, 49 in all, each flattened
 # into 3 × 32 × 32 = 3,072 numbers. Lesson 11's model had patches of 16 and 196 of them; four times fewer patches make
@@ -456,8 +461,9 @@ for text, value in zip(others, cosines.tolist()):
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# @@ The photo's own caption should come out on top, by a margin of a few hundredths: cosines in CLIP's space live in a
-# narrow band, a fact that will matter in section 7.
+# The photo's own caption comes out on top, well clear of the other seven. Yet its cosine is nowhere near 1, and the
+# captions of unrelated photos are not near 0 or below it either: cosines in CLIP's space live in a narrow band of small
+# positive numbers, a fact that will matter in section 7.
 
 # %% [markdown]
 # ## 3. CLIP in PyTorch
@@ -661,8 +667,8 @@ print("logit scale:", clip.logit_scale.item(), "->", clip.logit_scale.exp().item
 # with $N$ classes, the captions, of which one, $t_i$, is right; column $j$ is the same problem the other way round,
 # with the photos as classes. CLIP's loss is the cross-entropy of both, averaged:
 #
-# $$\mathcal{L} = \frac{1}{2N} \sum_{i=1}^{N} \left( -\log \frac{e^{s_{ii}}}{\sum_{j} e^{s_{ij}}}
-#   - \log \frac{e^{s_{ii}}}{\sum_{j} e^{s_{ji}}} \right).$$
+# $$\mathcal{L} = \frac{1}{2N} \sum_{i=1}^{N} \left( -\log \frac{e^{s_{ii}}}{\sum_{j} e^{s_{ij}}} -
+#   \log \frac{e^{s_{ii}}}{\sum_{j} e^{s_{ji}}} \right).$$
 #
 # The first term inside the brackets is *photo $i$, find your caption among all $N$*; the second is *caption $i$, find
 # your photo*. Each is the softmax cross-entropy of lesson 3 of the first course, with the right class on the diagonal.
@@ -709,8 +715,8 @@ short = [textwrap.shorten(t, 28, placeholder="…") for t in batch_texts]
 ax.set_xticks(range(len(short)), short, rotation=40, ha="right", fontsize=8)
 ax.set_yticks([])
 ax.grid(False)
-for i, photo in enumerate(batch_photos):  # each photo as the label of its row
-    small = photo.resize((round(80 * photo.width / photo.height), 80))
+for i, row_photo in enumerate(batch_photos):  # each photo as the label of its row
+    small = row_photo.resize((round(80 * row_photo.width / row_photo.height), 80))
     picture = OffsetImage(np.asarray(small), zoom=0.55)
     label = AnnotationBbox(
         picture, (-0.6, i), box_alignment=(1, 0.5), frameon=False, annotation_clip=False
@@ -723,10 +729,9 @@ ax.set_title(
 plt.show()
 
 # %% [markdown]
-# @@ Read it row by row (lab: every diagonal cell wins, by a few hundredths to about a tenth; all 64 cosines lie
-# between about 0.05 and 0.36; the loss is near zero at CLIP's temperature because eight unrelated COCO photos are an
-# easy batch). The cosines live in a narrow band, and that is why the temperature exists: dividing by $\tau$ stretches
-# the differences before the softmax.
+# Read it row by row: in every row the diagonal cell is the largest, and in every column too, by a few hundredths in the
+# closest rows and by more than a tenth in others. All 64 cosines sit in the same narrow band of small positive numbers,
+# and that is why the temperature exists: dividing by $\tau$ stretches the differences before the softmax.
 #
 # ### What the temperature does
 #
@@ -747,14 +752,17 @@ axes[0].set_ylabel("probability of each caption")
 plt.show()
 
 # %% [markdown]
-# At $\tau = 1$ the softmax barely notices the differences between cosines that span a few tenths; every caption gets
-# about an eighth. At CLIP's final temperature the same cosines become a confident choice. A learned temperature lets
-# the model decide how sharp its judgements should be instead of us guessing; a fixed one that is too warm leaves the
-# loss stuck near $\log N$ however good the vectors get.
+# At $\tau = 1$ the softmax barely notices differences of a tenth or two between cosines; every caption gets about an
+# eighth. At CLIP's final temperature the same cosines become a confident choice. A learned temperature lets the model
+# decide how sharp its judgements should be instead of us guessing; a fixed one that is too warm leaves the loss stuck
+# near $\log N$ however good the vectors get.
 #
-# @@ (number of hard negatives, batch size remark) In a batch of 8 most wrong captions are easy to reject. OpenAI
-# trained with batches of 32,768 pairs, so every photo had 32,767 negatives, some of them nearly right; the batch size
-# is part of the loss's design, a point SigLIP will return to.
+# Our batch also shows why the loss needs many examples at once. Its eight photos have nothing in common, a shoe rack, a
+# traffic light, a sandwich, an elephant, so every wrong caption is easy to reject, and the loss printed above is
+# already close to zero: a batch like this teaches the model almost nothing. OpenAI trained with batches of 32,768
+# pairs, so every photo met 32,767 wrong captions, and among so many some are nearly right, another dog on another sofa.
+# Those hard negatives are where the learning happens, which makes the batch size part of the loss's design, a point
+# SigLIP will return to.
 
 # %% [markdown]
 # ## 5. Where was this photo taken?
@@ -828,8 +836,8 @@ def accuracy(scores, truth):
 # %% [markdown]
 # How the sentence is worded matters. A bare country name is a short, odd caption; *a photo i took in Italy.* is what
 # people write under a holiday photo, the kind of text CLIP saw next to pictures. The paper went further and averaged
-# the vectors of several differently worded sentences per class; for Country211 it used the five we loaded in section
-# 1. We try a bare name, two single sentences, and the five averaged.
+# the vectors of several differently worded sentences per class; for Country211 it used the five we loaded at the
+# start. We try a bare name, two single sentences, and the five averaged.
 
 # %%
 TEMPLATES = {
@@ -847,9 +855,15 @@ print("chance:", round(1 / len(COUNTRIES), 4))
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# @@ interpretation of the prompt table: compare the averaged row with the paper's 17.8% (Table 11) and with the 17.2%
-# that [OpenCLIP's benchmark](https://github.com/mlfoundations/open_clip/blob/main/docs/openclip_classification_results.csv)
-# measured for the same checkpoint; the bare name and the single sentences.
+# Every step towards a natural caption helps. A bare country name is the weakest classifier, *a photo of Italy.* is a
+# little better, the holiday sentence better still, and the average of five phrasings beats any single one of them. The
+# last row is the paper's recipe, and it lands where it should: [OpenCLIP's
+# benchmark](https://github.com/mlfoundations/open_clip/blob/main/docs/openclip_classification_results.csv) measured
+# 17.2% for this checkpoint with the same five sentences, and the paper reports 17.8% (Table 11).
+#
+# About one photo in six goes to the right country out of 211, where a random guess would be right once in 211 tries,
+# and the right country is among the model's first five guesses for about two photos in five. Nobody showed CLIP a
+# labelled photo of any of these countries.
 #
 # Which countries does it know? The twenty it places best, with the paper's five sentences:
 
@@ -873,7 +887,10 @@ never = sum(per_country[k] == 0 for k in present)
 print(f"countries where not one photo is placed correctly: {never} of {len(present)}")
 
 # %% [markdown]
-# @@ interpretation of the best countries and the count of zeros.
+# The top of the list is not the countries with the most tourists. Bhutan, the Falkland Islands, the Faroe Islands, the
+# Vatican, Svalbard, Antarctica: small places with a look of their own, a style of building, a landscape, a climate that
+# are found nowhere else. CLIP places more than half of Bhutan's photos correctly. At the other end only two countries
+# get no photo right at all; most sit somewhere in between.
 #
 # The mistakes are as telling. The most frequent ones, and the countries the model names most often; every country has
 # 100 photos, so a country named far more than 100 times is a favourite answer, not a well-known place:
@@ -892,7 +909,13 @@ rows = [{"country": c, "photos placed there": k} for c, k in named.most_common(8
 table(pd.DataFrame(rows), digits=0)
 
 # %% [markdown]
-# @@ interpretation of the confusions and the favourite answers.
+# Most of the frequent mistakes are the ones a person would make. Jersey and Guernsey are neighbouring Channel Islands;
+# South Georgia looks like the Falklands or like Antarctica; Namibia passes for Botswana, Sudan for South Sudan, Myanmar
+# for Laos. A few are harder to explain, Panama for Gabon above all.
+#
+# The favourite answers are a different matter. Palau, Angola, the Cayman Islands and Mauritania each receive three to
+# four times as many photos as they have. When nothing in a photo points to one country, the classifier doesn't spread
+# its guesses evenly; it falls back on a handful of names, a bias of the model rather than knowledge of the place.
 
 # %% [markdown]
 # ## 6. Search by description
@@ -932,7 +955,13 @@ plt.show()
 # %% [markdown]
 # *Photos: COCO, images from Flickr under their own licences.*
 #
-# @@ comment on the search results, the counting query.
+# The first three queries find what they ask for: five cats with laptops, five buses, most of them red, most of them
+# double-deckers, five surfers on five waves. The scores are close to each other, all around 0.3, the narrow band again;
+# a search engine needs only their order.
+#
+# The last query fails, and in an instructive way. The results are full of dogs and cats, but none shows three dogs and
+# one cat, and the last one has three cats. CLIP matched the words and ignored the numbers. Its paper lists counting the
+# objects in an image among the tasks it does worst.
 #
 # For a number rather than an impression, use COCO's own captions as queries. Each of the 25,010 captions has exactly
 # one right photo among the 5,000, its own, and *recall at k* is the share of captions whose photo comes within the
@@ -981,7 +1010,12 @@ table(pd.DataFrame(search_rows), digits=3)
 # %% [markdown]
 # [OpenCLIP's benchmark](https://github.com/mlfoundations/open_clip/blob/main/docs/openclip_retrieval_results.csv)
 # ran the same checkpoint on the same 5,000 photos and reports a recall of 30.4%, 55.9% and 66.9% at 1, 5 and 10 for
-# caption → photo, and 50.1%, 75.0% and 83.5% for photo → caption. @@ compare with ours.
+# caption → photo, and 50.1%, 75.0% and 83.5% for photo → caption. Ours agree to within a point, which says that the
+# towers, the preprocessing and the evaluation are all right.
+#
+# Read the numbers as a user of the search would. For a caption, the right photo out of 5,000 is the very first result
+# almost a third of the time, and among the first ten about two times in three. The other direction scores higher
+# because a photo has five chances: any of its five captions counts.
 
 # %% [markdown]
 # ## 7. One space, two halves
@@ -1015,9 +1049,9 @@ rows = [
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# @@ Two random photos are closer to each other than a photo is to its own caption. The vectors of each modality
-# fill a narrow cone of their own, and the two cones point in different directions. A projection of 1,000 photos and
-# their 1,000 captions onto the two directions of largest spread shows it:
+# Two random photos are closer to each other than a photo is to its own caption, and so are two random captions. The
+# vectors of each modality fill a narrow cone of their own, and the two cones point in different directions. A
+# projection of 1,000 photos and their 1,000 captions onto the two directions of largest spread shows it:
 
 # %%
 both = torch.cat([pair_photos[:1000], pair_texts[:1000]])
@@ -1047,17 +1081,20 @@ ax.grid(False)
 plt.show()
 
 # %% [markdown]
-# @@ The two clouds don't overlap; the grey lines join ten photos to their captions, and every one of them crosses
-# the gap. Liang and colleagues named this the *modality gap* in 2022 and traced it to two causes. A freshly
-# initialised network already maps all its inputs into a narrow cone, and the two towers start in two different cones;
-# the contrastive loss with a low temperature then has no reason to close the distance between the cones, because a
-# constant offset between all photos and all captions changes no ranking within a row of the table.
+# The two clouds don't overlap; the grey lines join ten photos to their captions, and every one of them crosses the gap.
+# Liang and colleagues named this the *modality gap* in 2022 and traced it to three causes. A freshly initialised
+# network already maps all its inputs into a narrow cone; two towers with different random weights start in two
+# different cones; and the contrastive loss then preserves the distance between the cones instead of closing it. They
+# measured the gap as the distance between the centres of the two clouds, 0.82 for CLIP on COCO, and found that at
+# CLIP's temperature of 1/100 this very distance gives the lowest loss: shifting the clouds towards each other raises
+# it.
 #
-# The last point can be checked. Move every caption by the difference between the two centres, so that the clouds sit
-# on top of each other, and search again:
+# So the gap is part of what the model learned, not empty space between two halves. Let's check: move every caption by
+# the difference between the two centres, so that the clouds sit on top of each other, and search again.
 
 # %%
 offset = pair_photos.mean(dim=0) - pair_texts.mean(dim=0)
+print("distance between the two centres:", round(offset.norm().item(), 3))
 moved = F.normalize(clip_captions + offset, dim=-1)
 search_rows.append(
     {
@@ -1069,7 +1106,12 @@ search_rows.append(
 table(pd.DataFrame(search_rows), digits=3)
 
 # %% [markdown]
-# @@ interpretation of the shift.
+# Our distance between the centres is the paper's, measured on other COCO photos. And closing the gap makes search
+# worse, not better: the right photo comes first for far fewer captions, and its median rank falls several places.
+#
+# The arithmetic says why. Adding the same vector $c$ to every caption adds $u \cdot c$ to the score of every photo $u$,
+# and that term isn't the same for all photos: the photos that lean towards the centre of their own cloud gain on the
+# others, whatever the caption says. The rankings were learned with the gap in place, and they depend on it.
 
 # %% [markdown]
 # ## 8. A word on the photo
@@ -1168,11 +1210,22 @@ plt.show()
 # %% [markdown]
 # *Photos: Country211 (OpenAI, from YFCC100M, Creative Commons licences).*
 #
-# @@ interpretation of the typographic attack and the control.
+# A word a twenty-fifth of the photo's height moves about one photo in five to Japan; a word a seventh of its height
+# moves more than half of them. The control shows what the attack is not. PHOTO in the same white box also costs some
+# correct answers, because the box hides part of the scene, but it sends none of them to Japan. It is the meaning of the
+# word that does the work. The four examples show the range: the night-time building goes to Japan with high confidence,
+# the Colombian street and Svalbard keep their country with less certainty than before, and the Rwandan town goes to
+# Sierra Leone, unsettled by the box without being convinced by the word.
+#
+# This is what the introduction meant by a bug that can't be patched. On the internet the words in a picture are very
+# often the best clue to what it shows, and a model trained to match pictures with their captions learns to read them
+# and to trust them, because trusting them lowers its loss. Goh and colleagues found single neurons in CLIP that respond
+# to a concept whether it appears as a picture or as written text. Reading is one of CLIP's skills, and the attack is
+# that skill turned against it.
 
 
 # %% [markdown]
-# ## 9. SigLIP: a yes or a no for every pair
+# ## 9. SigLIP asks every pair for a yes or a no
 #
 # CLIP's loss has a property that matters at scale: a row of the table can't be normalised until every caption of the
 # batch has been compared with that photo. With a batch of 32,768 spread over hundreds of accelerators, every device
@@ -1213,7 +1266,10 @@ print(
 print("the same with b = 0:", round(sigmoid_loss(cosine, 10.0, 0.0).item(), 3))
 
 # %% [markdown]
-# @@ comment on the two values.
+# At $b = -10$ almost all of the loss comes from the eight right pairs. Every cell starts at "no", so the 56 wrong cells
+# cost next to nothing, and the gradient points at what there is to learn, saying yes to the pairs that match. At $b =
+# 0$ the loss is larger, and most of it comes from the 56 wrong cells: with CLIP's small positive cosines every one of
+# them leans towards "yes". In a batch of thousands the wrong cells would outnumber the right ones by thousands to one.
 #
 # Because the cells are independent, the table can be computed in blocks: each device keeps its photos, the captions
 # move from device to device, and each block's loss is added as soon as it exists. The paper calls this the *chunked*
@@ -1232,6 +1288,8 @@ siglip = AutoModel.from_pretrained(SIGLIP).to(device).eval()
 siglip_processor = AutoProcessor.from_pretrained(SIGLIP)
 print("t =", round(siglip.logit_scale.exp().item(), 2))
 print("b =", round(siglip.logit_bias.item(), 2))
+threshold = -siglip.logit_bias.item() / siglip.logit_scale.exp().item()
+print("a pair says yes above a cosine of", round(threshold, 3))
 print(
     "text tower:",
     siglip.config.text_config.num_hidden_layers,
@@ -1246,7 +1304,10 @@ print(
 )
 
 # %% [markdown]
-# @@ comment on the trained t and b.
+# Training moved both a long way from their starting values, the scale from 10 to more than a hundred, the bias further
+# below −10. What decides the answer is their ratio: a pair says yes when $t\, u \cdot v + b > 0$, that is above the
+# cosine printed last. It is a low bar, and it fits what we saw in CLIP: in these spaces even the right pairs have small
+# cosines.
 #
 # **No class token.** SigLIP's image tower doesn't prepend a class token. After the blocks, one learned vector, the
 # *probe*, attends to all 196 patch outputs as a single query; the result goes through a layer norm and an MLP with a
@@ -1302,18 +1363,23 @@ print(
 
 # %%
 side = int(math.sqrt(attention.shape[-1]))
-fig, axes = plt.subplots(1, 5, figsize=(12, 2.8))
+fig, axes = plt.subplots(1, 5, figsize=(12, 3))
 axes[0].imshow(photo.resize((SIG_SIZE, SIG_SIZE)))
 axes[0].set_title("the photo", fontsize=10)
 for ax, h in zip(axes[1:], [0, 3, 6, 9]):
     ax.imshow(attention[0, h, 0].reshape(side, side).cpu(), cmap=heat)
-    ax.set_title(f"head {h}: where the probe looks", fontsize=10)
+    ax.set_title(f"head {h}", fontsize=10)
 for ax in axes:
     ax.axis("off")
+fig.suptitle("where the probe looks, four of its twelve heads", x=0.56, fontsize=11)
 plt.show()
 
 # %% [markdown]
-# @@ comment on the probe's attention maps.
+# The probe doesn't look where a person would. Several heads put their largest weight on one and the same patch at the
+# right edge of the photo, among the leaves, far from the elephant and its riders; head 0 also spreads over the
+# elephant's head, and head 9 scatters its weight across the frame. As in lesson 11, a single layer of attention tells
+# little: after twelve blocks every patch's vector has mixed with all the others, so a patch of leaves at the top of the
+# tower no longer holds only leaves. The pooled vector is what the twelve heads assemble together.
 #
 # **The text tower and its padding.** SigLIP's text tower also takes the output at the last position, but it was
 # trained on captions always padded to 64 tokens, so "the last position" is a padding token, and the model learned to
@@ -1365,7 +1431,11 @@ rows = [
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# @@ comment on the padding gotcha.
+# The same caption padded two ways gives two vectors whose cosine is about one half, as if they were two different
+# sentences. Search with the shorter padding collapses: the right photo comes first for a small fraction of the captions
+# instead of nearly half, and its median rank drops from the top two to several dozen places down. Nothing raises an
+# error; the model simply reads its summary from the wrong position. When a SigLIP checkpoint seems to work badly, the
+# padding is the first thing to check.
 #
 # ### CLIP and SigLIP on the same tasks
 #
@@ -1400,11 +1470,18 @@ table(pd.DataFrame(search_rows), digits=3)
 
 # %% [markdown]
 # OpenCLIP's benchmark of this SigLIP checkpoint reports 15.9% on Country211, and a recall of 47.8%, 72.4% and 81.0%
-# for caption → photo on COCO, 65.7%, 85.4% and 91.3% for photo → caption. @@ interpretation of the comparison.
+# for caption → photo on COCO, 65.7%, 85.4% and 91.3% for photo → caption. Ours agree with these to within a point
+# again.
 #
-# **A yes that means yes.** A softmax score only says which caption wins within a batch; SigLIP's sigmoid scores each
-# pair on its own, so $\sigma(t\, u \cdot v + b)$ can be read as the model's answer to *do these two belong together?*
-# Here it is for every COCO photo with its own first caption and with someone else's:
+# The two tasks rank the models differently. In search SigLIP is far ahead: for nearly half of the captions the right
+# photo comes first, against almost a third for CLIP. In geolocation CLIP is slightly ahead, and not because it had seen
+# the photos. Country211 was built from YFCC100M, part of which is in OpenAI's training data, but the paper checked: the
+# overlap raised the score by only 0.2 points. The rest of the difference lies in the two training sets, OpenAI's
+# collection and Google's WebLI, neither of which has been published.
+#
+# **A score for a single pair.** A softmax score only says which caption wins within a batch; SigLIP's sigmoid scores
+# each pair on its own, so $\sigma(t\, u \cdot v + b)$ can be read as the model's answer to *do these two belong
+# together?* Here it is for every COCO photo with its own first caption and with someone else's:
 
 # %%
 t = siglip.logit_scale.exp().item()
@@ -1426,7 +1503,13 @@ rows = [
 table(pd.DataFrame(rows), digits=3)
 
 # %% [markdown]
-# @@ comment on the yes scores. And the word on the photo, for SigLIP:
+# For a random caption the answer is no, almost without exception. For the photo's own caption it is yes only about half
+# of the time: the threshold printed earlier sits in the middle of where the true pairs fall. The model was trained to
+# tell matching pairs from the rest, not to be sure of each one, so many true pairs end up just below the line. The
+# score is still useful on its own, which a softmax over a batch is not: a high yes almost always means a match, even
+# with nothing to compare it to.
+#
+# And the word on the photo, for SigLIP:
 
 # %%
 siglip_predicted = (siglip_geo_photos @ siglip_geo.T).argmax(dim=-1)
@@ -1436,7 +1519,10 @@ table(
 )
 
 # %% [markdown]
-# @@ interpretation of SigLIP's typographic attack.
+# SigLIP reads even more willingly than CLIP. The smallest word moves about half of its correct answers to Japan, where
+# CLIP lost one in five, and the largest moves most of them; PHOTO, again, moves none. Its finer grid of patches
+# probably sees small letters better, which helps it read signs and labels in ordinary photos, and the same skill makes
+# it easier to fool.
 
 
 # %% [markdown]
@@ -1631,7 +1717,14 @@ ax.legend(frameon=False)
 plt.show()
 
 # %% [markdown]
-# @@ interpretation of the experiment.
+# The sigmoid wins at every batch size up to 256, by two to three points of recall, far more than the spread between
+# seeds; at 1,024 the two meet, with the softmax a hair ahead. That is the SigLIP paper's claim in miniature: the
+# sigmoid is better when the batch is small, and the advantage fades as the batch grows.
+#
+# Both losses gain from larger batches, although a larger batch means fewer steps: more negatives per step make each
+# step more informative, the lesson of section 4. And neither comes near CLIP's line. Two linear layers on top of
+# encoders that never met can't do what two towers trained together on 400 million pairs do; they only show which loss
+# uses a small batch better.
 
 
 # %% [markdown]
