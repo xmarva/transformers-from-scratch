@@ -189,6 +189,7 @@ owner = torch.tensor(
     [i for i, cs in enumerate(coco_captions) for _ in cs]
 )  # caption -> photo
 first = torch.tensor([0] + np.cumsum([len(cs) for cs in coco_captions])[:-1].tolist())
+BATCH = [26, 51, 27, 37, 50, 10, 23, 1]  # the eight photos the lesson comes back to
 print(
     f"{len(coco_thumbs)} photos, {len(captions)} captions, in {time.time() - start:.0f} s"
 )
@@ -208,7 +209,7 @@ for ax, (country, k) in zip(axes[0], SHOW):
     ax.imshow(load(geo_thumbs[i]))
     ax.set_title(COUNTRIES[country], fontsize=10)
     ax.axis("off")
-for ax, i in zip(axes[1], range(4)):
+for ax, i in zip(axes[1], BATCH[:4]):
     ax.imshow(load(coco_thumbs[i]))
     ax.set_title(textwrap.fill(coco_captions[i][0], 34), fontsize=8, loc="left")
     ax.axis("off")
@@ -251,7 +252,7 @@ print(
 )
 print("common space:", clip_hf.config.projection_dim, "numbers")
 
-EXAMPLE = 5
+EXAMPLE = BATCH[0]
 photo = load(coco_thumbs[EXAMPLE])
 caption = coco_captions[EXAMPLE][0]
 print("the caption:", caption)
@@ -381,8 +382,13 @@ token_chips(
     mark_spaces=False,
     max_width=700,
 )
+print(len(ids), "tokens, the start and end markers included")
 
 # %% [markdown]
+# Every word of this caption is a single piece, *frisbee* included, although its id is close to the end of the
+# vocabulary: the pieces were added in order of frequency, and *frisbee* was one of the last words common enough in web
+# text to earn a piece of its own. The apostrophe stays with the *s* of *it's*, and the capital *A* became *a*.
+#
 # **Step 2: embeddings and positions.** Each id picks a row of a 49,408 × 512 table, and a learned position vector is
 # added, as in GPT-2.
 
@@ -445,10 +451,10 @@ print("the caption's vector:", tuple(text_vector.shape))
 #
 # Both vectors are divided by their length, which puts them on a sphere of radius one in 512 dimensions; their dot
 # product is then the cosine of the angle between them. Here is the photo against its own caption and against the first
-# captions of seven other COCO photos, the first eight of the test set:
+# captions of seven other COCO photos, the batch of eight we'll use again in sections 3 and 4:
 
 # %%
-others = [coco_captions[i][0] for i in range(8)]
+others = [coco_captions[i][0] for i in BATCH]
 with torch.no_grad():
     batch = tokenizer(others, padding=True, truncation=True, return_tensors="pt")
     other_vectors = clip_hf.text_projection(clip_hf.text_model(**batch).pooler_output)
@@ -633,7 +639,7 @@ clip = clip.to(device).eval()
 clip_hf = clip_hf.to(device)
 
 # %%
-check = [load(thumb) for thumb in coco_thumbs[:8]]
+check = [load(coco_thumbs[i]) for i in BATCH]
 with torch.no_grad():
     pixels = torch.stack([clip_pixels(photo) for photo in check]).to(device)
     batch = tokenizer(others, padding=True, truncation=True, return_tensors="pt").to(
@@ -678,7 +684,7 @@ print("logit scale:", clip.logit_scale.item(), "->", clip.logit_scale.exp().item
 # Here are the same eight photos with their first captions, the table CLIP computes for them, and the loss:
 
 # %%
-batch_ids = list(range(8))
+batch_ids = BATCH
 batch_photos = [load(coco_thumbs[i]) for i in batch_ids]
 batch_texts = [coco_captions[i][0] for i in batch_ids]
 with torch.no_grad():
@@ -729,9 +735,11 @@ ax.set_title(
 plt.show()
 
 # %% [markdown]
-# Read it row by row: in every row the diagonal cell is the largest, and in every column too, by a few hundredths in the
-# closest rows and by more than a tenth in others. All 64 cosines sit in the same narrow band of small positive numbers,
-# and that is why the temperature exists: dividing by $\tau$ stretches the differences before the softmax.
+# Read it row by row: in every row the diagonal cell is the largest, and in every column too, in most of them by a tenth
+# or more. The closest call is the last row, where the traffic light photo gives the clock tower's caption nearly as
+# high a cosine as its own: two dark shapes against a pale sky. All 64 cosines sit in the same narrow band of small
+# positive numbers, and that is why the temperature exists: dividing by $\tau$ stretches the differences before the
+# softmax.
 #
 # ### What the temperature does
 #
@@ -757,12 +765,12 @@ plt.show()
 # decide how sharp its judgements should be instead of us guessing; a fixed one that is too warm leaves the loss stuck
 # near $\log N$ however good the vectors get.
 #
-# Our batch also shows why the loss needs many examples at once. Its eight photos have nothing in common, a shoe rack, a
-# traffic light, a sandwich, an elephant, so every wrong caption is easy to reject, and the loss printed above is
-# already close to zero: a batch like this teaches the model almost nothing. OpenAI trained with batches of 32,768
-# pairs, so every photo met 32,767 wrong captions, and among so many some are nearly right, another dog on another sofa.
-# Those hard negatives are where the learning happens, which makes the batch size part of the loss's design, a point
-# SigLIP will return to.
+# Our batch also shows why the loss needs many examples at once. Its eight photos have little in common, a dog, a tram,
+# a bowl of soup, a yacht, so almost every wrong caption is easy to reject, and the loss printed above is close to zero:
+# a batch like this teaches the model almost nothing. Its one hard case, the clock tower's caption under the traffic
+# light, is the kind of example the model learns from. OpenAI trained with batches of 32,768 pairs, so every photo met
+# 32,767 wrong captions, and among so many some are nearly right, another dog with another toy. Those hard negatives are
+# where the learning happens, which makes the batch size part of the loss's design, a point SigLIP will return to.
 
 # %% [markdown]
 # ## 5. Where was this photo taken?
@@ -927,9 +935,9 @@ table(pd.DataFrame(rows), digits=0)
 # %%
 QUERIES = [
     "a cat sleeping on a laptop",
-    "a red double-decker bus",
-    "a surfer riding a wave",
-    "three dogs and one cat",
+    "a giraffe eating leaves from a tree",
+    "an elephant drinking water",
+    "three zebras and one giraffe",
 ]
 query_vectors = clip_texts(QUERIES)
 best = (query_vectors @ clip_coco_photos.T).topk(5, dim=-1)
@@ -955,13 +963,12 @@ plt.show()
 # %% [markdown]
 # *Photos: COCO, images from Flickr under their own licences.*
 #
-# The first three queries find what they ask for: five cats with laptops, five buses, most of them red, most of them
-# double-deckers, five surfers on five waves. The scores are close to each other, all around 0.3, the narrow band again;
-# a search engine needs only their order.
+# The first three queries find what they ask for: cats with laptops, giraffes among trees, elephants in or by the water.
+# The scores are close to each other, all around 0.3, the narrow band again; a search engine needs only their order.
 #
-# The last query fails, and in an instructive way. The results are full of dogs and cats, but none shows three dogs and
-# one cat, and the last one has three cats. CLIP matched the words and ignored the numbers. Its paper lists counting the
-# objects in an image among the tasks it does worst.
+# The last query fails, and in an instructive way. It asks for two kinds of animals in given numbers, and the results
+# have one kind in whatever number: zebras, and not a single giraffe. CLIP matched the strongest word and lost the rest.
+# Its paper lists counting the objects in an image among the tasks it does worst.
 #
 # For a number rather than an impression, use COCO's own captions as queries. Each of the 25,010 captions has exactly
 # one right photo among the 5,000, its own, and *recall at k* is the share of captions whose photo comes within the
@@ -1375,11 +1382,11 @@ fig.suptitle("where the probe looks, four of its twelve heads", x=0.56, fontsize
 plt.show()
 
 # %% [markdown]
-# The probe doesn't look where a person would. Several heads put their largest weight on one and the same patch at the
-# right edge of the photo, among the leaves, far from the elephant and its riders; head 0 also spreads over the
-# elephant's head, and head 9 scatters its weight across the frame. As in lesson 11, a single layer of attention tells
-# little: after twelve blocks every patch's vector has mixed with all the others, so a patch of leaves at the top of the
-# tower no longer holds only leaves. The pooled vector is what the twelve heads assemble together.
+# The probe doesn't look where a person would. Head 0 spreads over the dog's head and the frisbee, but heads 3 and 6 put
+# their largest weight on one and the same patch of bricks at the right edge of the photo, far from the dog, and head 9
+# scatters its weight along the edges of the frame. As in lesson 11, a single layer of attention tells little: after
+# twelve blocks every patch's vector has mixed with all the others, so a patch of bricks at the top of the tower no
+# longer holds only bricks. The pooled vector is what the twelve heads assemble together.
 #
 # **The text tower and its padding.** SigLIP's text tower also takes the output at the last position, but it was
 # trained on captions always padded to 64 tokens, so "the last position" is a padding token, and the model learned to
@@ -1700,11 +1707,12 @@ for loss_name, color in [("softmax", COLORS["enc"]), ("sigmoid", COLORS["dec"])]
     ax.plot(by_batch.index, by_batch.values, marker="o", color=color, label=loss_name)
     ax.scatter(mine["batch"], mine["recall@5"], color=color, s=12, alpha=0.4)
 ax.axhline(clip_t2i["recall@5"], color=COLORS["muted"], linestyle="--", linewidth=1)
-ax.text(
-    BATCHES[0],
-    clip_t2i["recall@5"],
-    " CLIP ViT-B/32 on the same test",
-    va="bottom",
+ax.annotate(
+    "CLIP ViT-B/32 on the same test",
+    (BATCHES[0], clip_t2i["recall@5"]),
+    xytext=(0, -6),
+    textcoords="offset points",
+    va="top",
     fontsize=9,
     color=COLORS["muted"],
 )
