@@ -298,8 +298,8 @@ print(
 )
 
 # %% [markdown]
-# Our square and the processor's differ by one brightness level out of 255 at most, a rounding difference between two
-# pipelines that resize with the same bicubic filter. Nothing downstream can tell.
+# Our square and the processor's differ by at most two brightness levels out of 255, a rounding difference between
+# two pipelines that resize with the same bicubic filter. Nothing downstream can tell.
 #
 # **Step 2: patches of 32.** ViT-B/32 cuts the square into a 7×7 grid of 32-pixel patches, 49 in all, each flattened
 # into 3 × 32 × 32 = 3,072 numbers. Lesson 11's model had patches of 16 and 196 of them; four times fewer patches make
