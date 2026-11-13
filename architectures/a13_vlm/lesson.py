@@ -475,10 +475,18 @@ print(
 print("truth: ", rec["total"])
 
 # %% [markdown]
-# @@ (the logits match exactly or to float rounding; the answer and the token count: most of the sequence is the image,
-# a dozen or so tokens are the question)
+# Both differences are zero. The projector is two matrix products, and the image tokens we assembled by hand, tile by
+# tile, row by row, newline by newline, are exactly the ones the model makes for itself: there is nothing else between
+# the encoder and the language model.
 #
-# → @@ (one sentence with the share of the sequence that is image)
+# The answer deserves a second look. The receipt says *60.000*, which in Indonesia means sixty thousand rupiah, with a dot
+# between the thousands. The model answered *60.00*. It read the digits and wrote them back as a price with cents, the
+# format that dominates the text it learned from, and lost a factor of a thousand on the way. Later we'll compare answers
+# digit by digit, which forgives the separator, *60,000* or *60.000*, but not a lost zero. Reading a number and knowing
+# the convention it's written in are two different skills.
+#
+# → Of the tokens the language model reads here, all but a couple of dozen are the image. The question is a footnote
+# to the picture, and every one of those image tokens is paid for in every layer.
 
 # %% [markdown]
 # ## 4. What an image token looks like to the language model
@@ -1015,6 +1023,8 @@ for kind, color in (("receipts", COLORS["enc"]), ("charts", COLORS["data"])):
     part = budgets[budgets.kind == kind]
     ax.plot(part["tokens"], 100 * part["accuracy"], marker="o", color=color, label=kind)
 ax.set_xscale("log", base=2)
+ax.set_xticks(BUDGETS[:-1], [f"{b:,}" for b in BUDGETS[:-1]], minor=False)
+ax.minorticks_off()
 ax.set_xlabel("image tokens actually used (log scale)")
 ax.set_ylabel("% answered exactly")
 ax.set_title("Qwen2-VL 2B reading receipts and charts under a token budget")
@@ -1030,20 +1040,19 @@ print("our receipt, answer by budget:", examples, "| truth:", typical["total"])
 # → @@ (takeaway with the budget beyond which more tokens stop helping)
 
 # %%
-crop_rec = typical
-fig, axes = plt.subplots(1, 3, figsize=(11, 4.2))
+W, H = typical["image"].size
+x0, y0, x1, y1 = typical["box"]
+line = y1 - y0  # one printed line, from CORD's box of the total
+region = (0, max(0, round(y0 - 3.2 * line)), W, min(H, round(y1 + 4.6 * line)))
+fig, axes = plt.subplots(3, 1, figsize=(9, 7.4))
 for ax, b in zip(axes, [64, 256, 1024]):
-    h, w = smart_resize(
-        crop_rec["image"].height,
-        crop_rec["image"].width,
-        b * 28 * 28,
-        min(b, 16) * 28 * 28,
-    )
-    small = crop_rec["image"].resize((w, h), Image.BICUBIC)
-    ax.imshow(small.resize(crop_rec["image"].size, Image.NEAREST))
-    ax.set_title(f"budget {b}: {w}×{h} px, {(h // 28) * (w // 28)} tokens", fontsize=9)
+    h, w = smart_resize(H, W, b * 28 * 28, min(b, 16) * 28 * 28)
+    seen = typical["image"].resize((w, h), Image.BICUBIC).resize((W, H), Image.NEAREST)
+    ax.imshow(seen.crop(region))
+    tokens = (h // 28) * (w // 28)
+    ax.set_title(f"budget {b}: the receipt at {w}×{h} px, {tokens} tokens", loc="left")
     ax.axis("off")
-plt.suptitle("What the encoder sees of the same receipt", fontsize=11)
+plt.suptitle("The lines around the total, as the encoder sees them", fontsize=11)
 plt.tight_layout()
 plt.show()
 
@@ -1229,6 +1238,8 @@ for ax, kind in zip(axes, ("receipts", "charts")):
             label=label,
         )
     ax.set_xscale("log", base=2)
+    ax.set_xticks(KEEPS, [f"{k:.0%}" for k in KEEPS])
+    ax.minorticks_off()
     ax.set_xlabel("share of image tokens kept after layer 2")
     ax.set_title(kind)
 axes[0].set_ylabel("% answered exactly")
