@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 370" width="760" height="370" role="img" aria-label="LLaVA-OneVision 0.5B&#x27;s passport. Published August 2024 by the LLaVA team; the Hugging Face port is under Apache 2.0. A vision encoder, a two-layer MLP projector and a decoder language model, about 0.9 billion parameters. Vision: SigLIP so400m, 384-pixel tiles of 729 tokens each. Language: Qwen2 0.5B with 24 blocks. Images: AnyRes, a thumbnail plus a grid of tiles with a newline per row. Training in stages: projector alignment, single images, then a one-vision mixture. Good at describing photos and short answers on small devices. Not for dense documents, counting or facts it cannot see">
+<title>LLaVA-OneVision 0.5B&#x27;s passport. Published August 2024 by the LLaVA team; the Hugging Face port is under Apache 2.0. A vision encoder, a two-layer MLP projector and a decoder language model, about 0.9 billion parameters. Vision: SigLIP so400m, 384-pixel tiles of 729 tokens each. Language: Qwen2 0.5B with 24 blocks. Images: AnyRes, a thumbnail plus a grid of tiles with a newline per row. Training in stages: projector alignment, single images, then a one-vision mixture. Good at describing photos and short answers on small devices. Not for dense documents, counting or facts it cannot see</title>
+<defs>
+<marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B6575"/></marker>
+<marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A0E"/></marker>
+<marker id="arrow-enc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F8C7E"/></marker>
+<marker id="arrow-dec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D23F57"/></marker>
+<marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6A55D8"/></marker>
+</defs>
+<rect width="760" height="370" rx="12" fill="#FFFFFF"/>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#1D2430">LLaVA-OneVision 0.5B: the passport</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#5B6575">the same card ends every lesson of the course</text>
+<text x="14.0" y="89.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">published</text>
+<rect x="190.0" y="70.0" width="556.0" height="28.0" rx="9" fill="#ECE8FC" stroke="#6A55D8" stroke-width="1.5"/>
+<text x="200.0" y="89.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">August 2024, LLaVA team; Apache 2.0 (the Hugging Face port)</text>
+<text x="14.0" y="123.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">type</text>
+<rect x="190.0" y="104.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="123.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">vision encoder + 2-layer MLP projector + decoder LLM, ~0.9B parameters</text>
+<text x="14.0" y="157.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">vision</text>
+<rect x="190.0" y="138.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="157.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">SigLIP so400m, 384 px tiles, 729 tokens each, 26 blocks</text>
+<text x="14.0" y="191.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">language</text>
+<rect x="190.0" y="172.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="191.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">Qwen2-0.5B, 24 blocks of 896, 2 KV heads</text>
+<text x="14.0" y="225.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">images</text>
+<rect x="190.0" y="206.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="225.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">AnyRes: thumbnail + up to 36 grids of tiles, newline per row</text>
+<text x="14.0" y="259.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">training</text>
+<rect x="190.0" y="240.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="259.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">projector alignment, then single-image, then one-vision mixtures</text>
+<text x="14.0" y="293.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">good at</text>
+<rect x="190.0" y="274.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="293.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">describing photos, short answers, small-device demos</text>
+<text x="14.0" y="327.0" text-anchor="start" font-family="IBM Plex Mono" font-size="12" font-weight="400" fill="#5B6575">not for</text>
+<rect x="190.0" y="308.0" width="556.0" height="28.0" rx="9" fill="#FFFFFF" stroke="#B9C0CB" stroke-width="1.5"/>
+<text x="200.0" y="327.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#1D2430">dense documents, counting, facts it cannot see</text>
+</svg>

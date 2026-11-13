@@ -54,7 +54,7 @@ number in the text comes from an output of the notebook. The course shares the t
 |---|---|---|---|
 | a11 | **Vision Transformer**: ViT, DeiT, DINOv2 | patch embeddings, the class token, positions; vit-base weights; ViT against a CNN when data is scarce | land use from satellite images (EuroSAT), and what the attention looks at |
 | a12 | **CLIP and SigLIP** | the contrastive and the sigmoid losses, both towers, SigLIP's attention pooling; clip-vit-b/32 and siglip-base weights | zero-shot geolocation on Country211 and image search on COCO, checked against published numbers; the modality gap; typographic attacks; the two losses trained side by side |
-| a13 | **Vision-language models**: from LLaVA to Qwen-VL | the projector, visual tokens and their cost, dynamic resolution; a small LLaVA-OneVision's weights | a small VLM reading charts and receipts |
+| a13 | **Vision-language models**: from LLaVA to Qwen2-VL | AnyRes tiles, the projector and the splice, checked against LLaVA-OneVision 0.5B's logits; image tokens through the logit lens; Qwen2-VL's dynamic resolution and M-RoPE by hand | Qwen2-VL 2B reading CORD receipts and drawn charts under token budgets; the price of a picture in six models; FastV's pruning against a random choice and a smaller image |
 | a14 | **Whisper**: speech recognition as an encoder–decoder | the log-mel spectrogram, task tokens, timestamps; whisper-tiny weights | word error rate in English and Russian (FLEURS), and hallucinations on silence |
 | a15 | **Diffusion Transformers**: DiT and Stable Diffusion 3 | denoising diffusion and flow matching, adaLN-Zero; MM-DiT | a small DiT trained on butterflies |
 
