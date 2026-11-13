@@ -1,0 +1,7 @@
+number = 13
+short_title = "Vision-language"
+cover_alt = "Lesson 13 cover, vision-language models. A photo drawn as a grid of patches, three of them in red, and below it the same red patches as tokens in a sentence, between the words What is and a question mark"
+gpu = true
+published = false
+description = "How vision-language models read images: LLaVA's tiles, projector and splice written from scratch and checked against LLaVA-OneVision, the cost of a picture in tokens across models, Qwen2-VL's dynamic resolution and three-dimensional positions, receipts and charts read under shrinking token budgets, and image tokens dropped inside the model."
+tags = "vision-language-models, llava, qwen2-vl, multimodal, ocr, document-ai, computer-vision"
