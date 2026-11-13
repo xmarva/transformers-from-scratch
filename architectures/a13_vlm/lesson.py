@@ -115,7 +115,20 @@ for index, row in pd.read_parquet(CORD).iterrows():
         continue  # five receipts have no labelled total
     words = [w["text"] for line in truth["valid_line"] for w in line["words"]]
     image = Image.open(io.BytesIO(row["image"]["bytes"])).convert("RGB")
-    receipts.append(dict(id=index, image=image, total=total, words=words))
+    labelled = truth["meta"]["image_size"]  # the boxes are in these pixels
+    sx, sy = image.width / labelled["width"], image.height / labelled["height"]
+    corners = [  # every corner of every word on the line with the total
+        (w["quad"][f"x{k}"] * sx, w["quad"][f"y{k}"] * sy)
+        for line in truth["valid_line"]
+        if line["category"] == "total.total_price"
+        for w in line["words"]
+        for k in range(1, 5)
+    ]
+    box = None
+    if corners:
+        xs, ys = zip(*corners)
+        box = (min(xs), min(ys), max(xs), max(ys))
+    receipts.append(dict(id=index, image=image, total=total, words=words, box=box))
 if SMOKE:
     receipts = receipts[:6]
 sizes = [r["image"].size for r in receipts]
@@ -673,33 +686,57 @@ plt.show()
 # images because it resizes the long side and compresses with pixel shuffle.)
 #
 # A fixed price has its own cost. LLaVA-1.5's processor, as the Hugging Face port configures it, scales the image so that
-# its short side is 336 pixels and cuts out the square in the middle. Here is what that leaves of our receipt.
+# its short side is 336 pixels and cuts out the square in the middle: of a photo of any shape, the model sees only the
+# central square. CORD tells us where each receipt's total is printed, so we can count how often it falls outside.
+
 
 # %%
+def crop_square(image):
+    """The middle square that a short-side resize and a centre crop keep: x, y, side."""
+    w, h = image.size
+    side = min(w, h)
+    return (w - side) / 2, (h - side) / 2, side
+
+
+def total_seen(rec):
+    left, top, side = crop_square(rec["image"])
+    x0, y0, x1, y1 = rec["box"]
+    return left <= x0 and x1 <= left + side and top <= y0 and y1 <= top + side
+
+
+boxed = [r for r in receipts if r["box"]]
+lost = [r for r in boxed if not total_seen(r)]
+print(
+    f"totals wholly or partly outside the square: {len(lost)} of {len(boxed)} receipts"
+)
+
+
+def overshoot(rec):  # how far the total sticks out of the square, in pixels
+    left, top, side = crop_square(rec["image"])
+    x0, y0, x1, y1 = rec["box"]
+    return max(left - x0, top - y0, x1 - left - side, y1 - top - side)
+
+
+shown = max(lost, key=overshoot) if lost else typical
 llava15 = AutoProcessor.from_pretrained(PROCESSORS["LLaVA-1.5"]).image_processor
-seen = llava15(typical["image"], return_tensors="pt")["pixel_values"][0]
+seen = llava15(shown["image"], return_tensors="pt")["pixel_values"][0]
 mean = torch.tensor(llava15.image_mean)[:, None, None]
 std = torch.tensor(llava15.image_std)[:, None, None]
 seen = (seen * std + mean).clamp(0, 1).permute(1, 2, 0)
-w, h = typical["image"].size
-side_kept = min(
-    w, h
-)  # the short side to 336, then the middle square: a min(w, h) square
+w, h = shown["image"].size
+left, top, side = crop_square(shown["image"])
+x0, y0, x1, y1 = shown["box"]
 fig, axes = plt.subplots(
     1, 2, figsize=(8, 4.6), gridspec_kw={"width_ratios": [w / h, 1]}
 )
-axes[0].imshow(typical["image"])
+axes[0].imshow(shown["image"])
 axes[0].add_patch(
-    plt.Rectangle(
-        ((w - side_kept) / 2, (h - side_kept) / 2),
-        side_kept,
-        side_kept,
-        fill=False,
-        ec=COLORS["dec"],
-        lw=2,
-    )
+    plt.Rectangle((left, top), side, side, fill=False, ec=COLORS["dec"], lw=2)
 )
-axes[0].set_title(f"the receipt, {w}×{h} px", fontsize=10)
+axes[0].add_patch(
+    plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, ec=COLORS["enc"], lw=2)
+)
+axes[0].set_title(f"the receipt, {w}×{h} px, total {shown['total']}", fontsize=10)
 axes[1].imshow(seen)
 axes[1].set_title(
     f"what LLaVA-1.5 gets: {seen.shape[1]}×{seen.shape[0]} px", fontsize=10
@@ -708,7 +745,6 @@ for ax in axes:
     ax.axis("off")
 plt.tight_layout()
 plt.show()
-print(f"share of the receipt that reaches the model: {side_kept / max(w, h):.0%}")
 
 # %% [markdown]
 # *Receipt: CORD (Naver Clova), CC BY 4.0.*
@@ -744,8 +780,8 @@ for h, w in SIZES:
 # ## 6. Qwen2-VL: an image that keeps its shape
 #
 # Qwen2-VL took the other road ([Wang et al., 2024](https://arxiv.org/abs/2409.12191)). Instead of cutting an image
-# into tiles for an encoder that only knows squares, it trained its own Vision Transformer, 675 million parameters, to
-# take an image of any shape directly. Two ideas make that work, and we'll rebuild both.
+# into tiles for an encoder that only knows squares, it trained a Vision Transformer of 675 million parameters to take an
+# image of any shape as it is. Two ideas make that work, and we'll rebuild both.
 #
 # **The image keeps its shape.** The processor rounds each side to a multiple of 28 pixels, then scales the whole image
 # so that its area stays between two limits, `min_pixels` and `max_pixels`. The encoder cuts it into patches of 14
@@ -791,12 +827,10 @@ def smart_resize(height, width, max_pixels, min_pixels=56 * 56, factor=28):
 def qwen_inputs(image, text, budget):
     """Inputs for one image and a question, at most `budget` image tokens."""
     images = qv_processor.image_processor
-    images.max_pixels, images.min_pixels = budget * 28 * 28, min(budget, 16) * 28 * 28
-    if isinstance(getattr(images, "size", None), dict):
-        images.size = {
-            "shortest_edge": images.min_pixels,
-            "longest_edge": images.max_pixels,
-        }
+    images.size = {
+        "shortest_edge": min(budget, 16) * 28 * 28,
+        "longest_edge": budget * 28 * 28,
+    }
     talk = [
         {"role": "user", "content": [{"type": "image"}, {"type": "text", "text": text}]}
     ]
@@ -850,7 +884,7 @@ print(
     f"with the default limits, {default_min:,} to {default_max:,} pixels, the receipts"
 )
 print(
-    f"would cost {cost[0]} to {cost[-1]} tokens each, {cost[len(cost) // 2]} the median"
+    f"would cost {cost[0]:,} to {cost[-1]:,} tokens each, {cost[len(cost) // 2]:,} median"
 )
 
 # %% [markdown]
@@ -1231,11 +1265,18 @@ def kept_grid(inputs, rule, keep, layer_k=2):
 
 
 RULES = [("fastv", "FastV"), ("last", "the last token"), ("random", "random")]
-fig, axes = plt.subplots(2, 3, figsize=(11, 8.6))
-for row, (item, text) in enumerate(
-    ((charts[0], chart_question(charts[0])), (typical, question))
-):
-    inputs = qwen_inputs(item["image"], text, 1024)
+shown = [
+    (charts[0], qwen_inputs(charts[0]["image"], chart_question(charts[0]), 1024)),
+    (typical, qwen_inputs(typical["image"], question, 1024)),
+]
+shapes = [inputs["image_grid_thw"][0].tolist() for _, inputs in shown]
+fig, axes = plt.subplots(
+    2,
+    3,
+    figsize=(11, 8.4),
+    gridspec_kw={"height_ratios": [h / w for _, h, w in shapes]},
+)
+for row, (item, inputs) in enumerate(shown):
     _, gh, gw = inputs["image_grid_thw"][0].tolist()
     picture = item["image"].resize((gw * 14, gh * 14), Image.BICUBIC)
     for ax, (rule, name) in zip(axes[row], RULES):
@@ -1290,24 +1331,53 @@ display(table(pd.DataFrame(pairs), digits=2))
 # %% [markdown]
 # ## 9. Where vision-language models are today
 #
-# **Qwen's line.** Qwen2.5-VL added window attention to the encoder, so that large images cost it less, and positions
-# tied to absolute time for video ([Bai et al., 2025](https://arxiv.org/abs/2502.13923)); Qwen3-VL followed in 2025
-# ([Qwen Team, 2025](https://arxiv.org/abs/2511.21631)). Their technical reports are the best public descriptions of
-# how a strong reading model is trained.
+# **Qwen's line.** Qwen2.5-VL kept the dynamic resolution and made it cheaper: all but four of the encoder's 32 blocks
+# attend only within windows of 112×112 pixels, and the time positions of video frames follow the clock rather than the
+# frame count ([Bai et al., 2025](https://arxiv.org/abs/2502.13923)). Qwen3-VL, in the autumn of 2025, moved to patches
+# of 16 pixels, so that one token covers 32×32; interleaved the three groups of M-RoPE across the rotary frequencies, so
+# that time, rows and columns each get fast and slow ones instead of a block each; and fed features from three depths of
+# the encoder into the first layers of the language model, which its authors call DeepStack ([Qwen Team,
+# 2025](https://arxiv.org/abs/2511.21631)). Then the separate line ended. Since Qwen3.5, released in February 2026,
+# Qwen's main models are trained on images and text together from the start, and there is no Qwen3.5-VL to download
+# ([Qwen3.5 model card](https://huggingface.co/Qwen/Qwen3.5-0.8B)).
 #
-# **Other open families.** InternVL tiles like LLaVA but compresses each tile four times by *pixel shuffle*, folding
-# 2×2 neighbouring vectors into one ([Chen et al., 2024](https://arxiv.org/abs/2404.16821)); SmolVLM pushes the same
-# idea to models of 256 million parameters ([Marafioti et al., 2025](https://arxiv.org/abs/2504.05299)); Gemma 3 gives
-# every image a fixed 256 tokens from a SigLIP encoder ([Gemma Team, 2025](https://arxiv.org/abs/2503.19786)). Allen
-# AI's Molmo was trained on PixMo, image descriptions collected from people speaking about the images rather than
-# generated by a proprietary model, and released with the data ([Deitke et al.,
-# 2024](https://arxiv.org/abs/2409.17146)).
+# **Other open families.** InternVL tiles like LLaVA, with tiles of 448 pixels, but folds every 2×2 block of neighbouring
+# vectors into one by *pixel shuffle*, so that a tile costs 256 tokens instead of 1,024 ([Chen et al.,
+# 2024](https://arxiv.org/abs/2404.16821)). SmolVLM folds 4×4 blocks, 64 tokens for a 512-pixel tile, and its smallest
+# model, 256 million parameters, runs in under a gigabyte of memory ([Marafioti et al.,
+# 2025](https://arxiv.org/abs/2504.05299)). Gemma 3 went back to a fixed price: every image is resized to 896×896 and
+# pooled to 256 tokens, and an option called Pan & Scan cuts a large or elongated image into crops when the detail
+# matters ([Gemma Team, 2025](https://arxiv.org/abs/2503.19786)).
 #
-# **What they are measured on.** Reading benchmarks such as [ChartQA](https://huggingface.co/datasets/HuggingFaceM4/ChartQA)
-# ([Masry et al., 2022](https://arxiv.org/abs/2203.10244)) and [DocVQA](https://www.docvqa.org/) ([Mathew et al.,
-# 2021](https://arxiv.org/abs/2007.00398)) ask exactly the kind of question this lesson asked; POPE asks a model whether
-# an object is in a photo and found that early models said yes to objects that were not there, the *hallucination*
-# problem of vision-language models ([Li et al., 2023](https://arxiv.org/abs/2305.10355)).
+# **Where the data comes from.** LLaVA's conversations were written by GPT-4 from text descriptions of COCO photos.
+# ShareGPT4V had GPT-4V describe 100 thousand images in detail and trained a captioner on those descriptions to write
+# 1.2 million more ([Chen et al., 2023](https://arxiv.org/abs/2311.12793);
+# [Lin-Chen/ShareGPT4V](https://huggingface.co/datasets/Lin-Chen/ShareGPT4V)). Later mixtures are collections of
+# collections: The Cauldron gathers 50 vision-language datasets for Hugging Face's Idefics2 ([Laurençon et al.,
+# 2024](https://arxiv.org/abs/2405.02246); [HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron)),
+# and LLaVA-OneVision's training mixture is public as
+# [LLaVA-OneVision-Data](https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data). Much of what open models learned
+# was written by closed ones. Allen AI's Molmo was built to avoid that: for its PixMo data, people described images
+# aloud for a minute or so, a language-only model turned the transcripts into captions, and no vision-language model
+# wrote any of it ([Deitke et al., 2024](https://arxiv.org/abs/2409.17146);
+# [allenai/pixmo-cap](https://huggingface.co/datasets/allenai/pixmo-cap)).
+#
+# **What they are measured on.** Reading benchmarks ask the kind of question this lesson asked.
+# [ChartQA](https://huggingface.co/datasets/HuggingFaceM4/ChartQA) has 20,882 charts from Statista, Pew, Our World in
+# Data and the OECD with 9,608 questions written by people and 23,111 generated from chart summaries ([Masry et al.,
+# 2022](https://arxiv.org/abs/2203.10244)). [DocVQA](https://www.docvqa.org/datasets/docvqa) has 50,000 questions on
+# 12,767 scanned documents from the UCSF Industry Documents Library ([Mathew et al.,
+# 2021](https://arxiv.org/abs/2007.00398)). [TextVQA](https://huggingface.co/datasets/facebook/textvqa) asks about the
+# text in 28 thousand photos from Open Images ([Singh et al., 2019](https://arxiv.org/abs/1904.08920)).
+# [POPE](https://github.com/RUCAIBox/POPE) asks a model whether an object is in a COCO photo, and found that early models
+# said yes to objects that were not there, the *hallucination* problem of vision-language models ([Li et al.,
+# 2023](https://arxiv.org/abs/2305.10355)).
+#
+# **Licences.** Check them before you build on a model. Qwen2-VL 2B, Qwen3-VL 2B, the Hugging Face port of
+# LLaVA-OneVision and SmolVLM are under Apache 2.0. Qwen2.5-VL 3B is under Qwen's research licence, for non-commercial
+# use only. The licence of Llama 3.2 does not grant the rights to its multimodal models to people and companies based in
+# the European Union. The training sets carry their own terms: each subset of a mixture keeps its licence,
+# LLaVA-OneVision-Data is for research and education only, and ShareGPT4V's captions are non-commercial.
 #
 # LLaVA-OneVision 0.5B's passport, and the family tree with this lesson's branch:
 #
@@ -1340,5 +1410,9 @@ display(table(pd.DataFrame(pairs), digits=2))
 # - Masry, A., Long, D. X., Tan, J. Q., Joty, S., & Hoque, E. (2022). [ChartQA: a benchmark for question answering about charts with visual and logical reasoning](https://arxiv.org/abs/2203.10244). *Findings of ACL 2022*.
 # - Mathew, M., Karatzas, D., & Jawahar, C. V. (2021). [DocVQA: a dataset for VQA on document images](https://arxiv.org/abs/2007.00398). *WACV 2021*.
 # - Li, Y., Du, Y., Zhou, K., et al. (2023). [Evaluating object hallucination in large vision-language models](https://arxiv.org/abs/2305.10355). *EMNLP 2023*.
+# - Chen, L., Li, J., Dong, X., et al. (2023). [ShareGPT4V: improving large multi-modal models with better captions](https://arxiv.org/abs/2311.12793). *arXiv*. Data: [Lin-Chen/ShareGPT4V](https://huggingface.co/datasets/Lin-Chen/ShareGPT4V), CC BY-NC 4.0.
+# - Laurençon, H., Tronchon, L., Cord, M., & Sanh, V. (2024). [What matters when building vision-language models?](https://arxiv.org/abs/2405.02246) *arXiv*. Data: [HuggingFaceM4/the_cauldron](https://huggingface.co/datasets/HuggingFaceM4/the_cauldron).
+# - Singh, A., Natarajan, V., Shah, M., et al. (2019). [Towards VQA models that can read](https://arxiv.org/abs/1904.08920). *CVPR 2019*. Data: [facebook/textvqa](https://huggingface.co/datasets/facebook/textvqa).
+# - Qwen Team (2026). [Qwen3.5 model card](https://huggingface.co/Qwen/Qwen3.5-0.8B). *Hugging Face*.
 # - Park, S., Shin, S., Lee, B., et al. (2019). [CORD: a consolidated receipt dataset for post-OCR parsing](https://openreview.net/forum?id=SJl3z659UH). *Document Intelligence Workshop at NeurIPS 2019*. Data: [naver-clova-ix/cord-v2](https://huggingface.co/datasets/naver-clova-ix/cord-v2), CC BY 4.0.
-# - Datasets of the LLaVA line: [LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain), [LLaVA-Instruct-150K](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K), [LLaVA-OneVision-Data](https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data).
+# - Datasets of the LLaVA line: [LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain), [LLaVA-Instruct-150K](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K), [LLaVA-OneVision-Data](https://huggingface.co/datasets/lmms-lab/LLaVA-OneVision-Data). PixMo: [allenai/pixmo-cap](https://huggingface.co/datasets/allenai/pixmo-cap), ODC-BY 1.0.
