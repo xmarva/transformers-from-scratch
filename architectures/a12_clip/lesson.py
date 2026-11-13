@@ -1,27 +1,32 @@
 # %% [markdown]
 # # Lesson 12. CLIP and SigLIP put images and text in one space
 #
-# Type "a fox in the snow" into the search box of the photo app on your phone, and it finds your foxes, although
-# nobody ever labelled a single picture in your library. When Stable Diffusion draws from a prompt, the prompt is read
-# by a text encoder taken from a model called CLIP. When LLaVA describes a photo, it looks at it through CLIP's image
-# encoder; Google's PaliGemma and Gemma 3 look through its successor, SigLIP. These two models are the bridge between
+# Type "a fox in the snow" into the search box of the photo app on your phone, and it finds your foxes, although nobody
+# ever labelled a single picture in your library. When Stable Diffusion draws from a prompt, the prompt is read by a
+# text encoder taken from a model called CLIP ([Rombach et al., 2022](https://arxiv.org/abs/2112.10752)). When LLaVA
+# describes a photo, it looks at it through CLIP's image encoder ([Liu et al., 2024](https://arxiv.org/abs/2310.03744));
+# Google's PaliGemma ([Beyer et al., 2024](https://arxiv.org/abs/2407.07726)) and Gemma 3 ([Gemma Team,
+# 2025](https://arxiv.org/abs/2503.19786)) look through its successor, SigLIP. These two models are the bridge between
 # pictures and words in much of what you use today.
 #
-# CLIP came out of OpenAI in January 2021, and its idea fits in a sentence. Take two encoders, one for images and one
-# for text, and train them so that a photo and its caption end up as nearby vectors, and a photo and somebody else's
-# caption end up far apart. The training set was 400 million images with the text that accompanied them on the web,
-# alt texts, titles, captions, collected without anybody labelling anything. Its largest version classified ImageNet
-# as well as a ResNet-50 trained on ImageNet's 1.28 million labelled images, without seeing one of them: the class
-# names were simply turned into captions, and each photo went to the caption it was closest to.
+# CLIP came out of OpenAI in January 2021 ([Radford et al., 2021](https://arxiv.org/abs/2103.00020)), and its idea fits
+# in a sentence. Take two encoders, one for images and one for text, and train them so that a photo and its caption end
+# up as nearby vectors, and a photo and somebody else's caption end up far apart. The training set was 400 million
+# images with the text that accompanied them on the web, alt texts, titles, captions, collected without anybody
+# labelling anything. Its largest version classified ImageNet as well as a ResNet-50 trained on ImageNet's 1.28 million
+# labelled images, without seeing one of them: the class names were simply turned into captions, and each photo went to
+# the caption it was closest to.
 #
-# It also learned to read. Two months after the release, OpenAI's interpretability team stuck a paper note with the
-# word "iPod" on a Granny Smith apple, and CLIP declared it an iPod. You'll repeat that experiment in section 8, with
-# the name of a country written on holiday photos, and see why it isn't a bug that can be patched.
+# It also learned to read. Two months after the release, OpenAI's interpretability team stuck a paper note with the word
+# "iPod" on a Granny Smith apple, and CLIP declared it an iPod ([Goh et al.,
+# 2021](https://distill.pub/2021/multimodal-neurons/)). You'll repeat that experiment in section 8, with the name of a
+# country written on holiday photos, and see why it isn't a bug that can be patched.
 #
-# SigLIP, from Google in 2023, changed the part that matters most, the loss. CLIP asks every photo to pick its caption
-# out of the whole batch, a softmax over thousands of candidates. SigLIP asks every pair a separate yes-or-no question,
-# a sigmoid, and that small change lets it train well on less hardware and with smaller batches. Its image tower has
-# since become the eye of many open vision-language models.
+# SigLIP, from Google in 2023 ([Zhai et al., 2023](https://arxiv.org/abs/2303.15343)), changed the part that matters
+# most, the loss. CLIP asks every photo to pick its caption out of the whole batch, a softmax over thousands of
+# candidates. SigLIP asks every pair a separate yes-or-no question, a sigmoid, and that small change lets it train well
+# on less hardware and with smaller batches. Its image tower has since become the eye of many open vision-language
+# models.
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a12/hero-light.png" width="760" alt="CLIP in one picture. A photo goes through an image tower, a Vision Transformer, and becomes a vector; its caption goes through a text tower, a Transformer, and becomes a vector of the same length. A batch of four photos and four captions gives a four by four table of cosine similarities; the four cells on the diagonal are the pairs that belong together, and training raises them and lowers the other twelve">
 #
@@ -84,17 +89,22 @@ diverging = LinearSegmentedColormap.from_list(
 # %% [markdown]
 # ## 1. Two test sets from CLIP's paper
 #
-# CLIP's paper measured the model on 27 datasets, and two of them make this lesson. *Country211* was built by OpenAI
-# for the paper to test geolocation: photos from YFCC100M, a public collection of a hundred million Flickr photos
-# under Creative Commons licences, with the GPS position where each was taken; for each of 211 countries, 100 photos
-# to test on. *COCO*, from Microsoft, is a set of everyday scenes, each photo described by five people who were asked
-# to write one sentence each; 5,000 of its photos are the standard test of searching photos by text.
+# CLIP's paper measured the model on 27 datasets, and two of them make this lesson.
+# [*Country211*](https://github.com/openai/CLIP/blob/main/data/country211.md) was built by OpenAI for the paper to test
+# geolocation: photos from [YFCC100M](https://multimediacommons.wordpress.com/yfcc100m-core-dataset/), a public
+# collection of a hundred million Flickr photos ([Thomee et al., 2016](https://arxiv.org/abs/1503.01817)) under Creative
+# Commons licences, with the GPS position where each was taken; for each of 211 countries, 100 photos to test on.
+# [*COCO*](https://cocodataset.org/), from Microsoft ([Lin et al., 2014](https://arxiv.org/abs/1405.0312)), is a set of
+# everyday scenes, each photo described by five people who were asked to write one sentence each; 5,000 of its photos
+# are the standard test of searching photos by text ([Karpathy & Fei-Fei, 2015](https://arxiv.org/abs/1412.2306)).
 #
-# Both live on the Hugging Face Hub in the format of CLIP's evaluation code, WebDataset: a tar archive in which the
-# files of one example share a name, `s0000123.jpg` with `s0000123.cls`, the country's number, or with
-# `s0000123.txt`, the five captions. A tar archive is a plain sequence of files, one after another, so it can be read
-# as it arrives from the network, without saving it. We keep each photo as a small JPEG, 256 pixels on its shorter
-# side, a little more than either model will look at.
+# Both live on the Hugging Face Hub, as [Country211](https://huggingface.co/datasets/clip-benchmark/wds_country211) and
+# [COCO captions](https://huggingface.co/datasets/clip-benchmark/wds_mscoco_captions), in the format of LAION's
+# [CLIP_benchmark](https://github.com/LAION-AI/CLIP_benchmark) evaluation code,
+# [WebDataset](https://github.com/webdataset/webdataset): a tar archive in which the files of one example share a name,
+# `s0000123.jpg` with `s0000123.cls`, the country's number, or with `s0000123.txt`, the five captions. A tar archive is
+# a plain sequence of files, one after another, so it can be read as it arrives from the network, without saving it. We
+# keep each photo as a small JPEG, 256 pixels on its shorter side, a little more than either model will look at.
 
 # %%
 HUB = "https://huggingface.co/datasets/clip-benchmark/"
@@ -402,11 +412,12 @@ print("token table:", tuple(token_table.shape))
 print("the caption as a sequence:", tuple(text_sequence.shape))
 
 # %% [markdown]
-# **Step 3: twelve blocks with a causal mask.** This is the surprising part. CLIP's text tower is an *encoder*, it
-# never generates anything, and yet each token attends only to itself and the tokens before it, as in GPT. The paper
-# gives the reason: the mask kept open the option of starting the text tower from a pre-trained language model, or of
-# training it to predict text as well, an exploration it left for future work. The mask adds minus infinity above
-# the diagonal of every attention score matrix, so those weights become zero after the softmax:
+# **Step 3: twelve blocks with a causal mask.** This is the surprising part. CLIP's text tower is an *encoder*, it never
+# generates anything, and yet each token attends only to itself and the tokens before it, as in GPT. The paper gives the
+# reason ([Radford et al., 2021](https://arxiv.org/abs/2103.00020)): the mask kept open the option of starting the text
+# tower from a pre-trained language model, or of training it to predict text as well, an exploration it left for future
+# work. The mask adds minus infinity above the diagonal of every attention score matrix, so those weights become zero
+# after the softmax:
 
 # %%
 causal = torch.full((n, n), float("-inf")).triu(1)
@@ -680,8 +691,8 @@ print("logit scale:", clip.logit_scale.item(), "->", clip.logit_scale.exp().item
 #
 # The first term inside the brackets is *photo $i$, find your caption among all $N$*; the second is *caption $i$, find
 # your photo*. Each is the softmax cross-entropy of lesson 3 of the first course, with the right class on the diagonal.
-# This family of losses is called *contrastive*, and this particular one *InfoNCE*: the other pairs of the batch serve
-# as negative examples for free.
+# This family of losses is called *contrastive*, and this particular one *InfoNCE* ([van den Oord et al.,
+# 2018](https://arxiv.org/abs/1807.03748)): the other pairs of the batch serve as negative examples for free.
 #
 # Here are the same eight photos with their first captions, the table CLIP computes for them, and the loss:
 
@@ -771,9 +782,10 @@ plt.show()
 # Our batch also shows why the loss needs many examples at once. Its eight photos have little in common, a dog, a tram,
 # a bowl of soup, a yacht, so almost every wrong caption is easy to reject, and the loss printed above is close to zero:
 # a batch like this teaches the model almost nothing. Its one hard case, the clock tower's caption under the traffic
-# light, is the kind of example the model learns from. OpenAI trained with batches of 32,768 pairs, so every photo met
-# 32,767 wrong captions, and among so many some are nearly right, another dog with another toy. Those hard negatives are
-# where the learning happens, which makes the batch size part of the loss's design, a point SigLIP will return to.
+# light, is the kind of example the model learns from. OpenAI trained with batches of 32,768 pairs ([Radford et al.,
+# 2021](https://arxiv.org/abs/2103.00020)), so every photo met 32,767 wrong captions, and among so many some are nearly
+# right, another dog with another toy. Those hard negatives are where the learning happens, which makes the batch size
+# part of the loss's design, a point SigLIP will return to.
 
 # %% [markdown]
 # ## 5. Where was this photo taken?
@@ -786,7 +798,8 @@ plt.show()
 #
 # Our classes are the 211 countries of Country211. ImageNet was the headline test of CLIP's paper; a country is harder
 # and more interesting, because no single object gives it away. A guess at random is right once in 211 times, and the
-# paper reports 17.8% for this very model, ViT-B/32, which gives us something to check our code against.
+# paper reports 17.8% for this very model, ViT-B/32 ([Radford et al., 2021](https://arxiv.org/abs/2103.00020)), which
+# gives us something to check our code against.
 #
 # First, every photo of both sets through the image tower, once; the vectors serve the rest of the lesson.
 
@@ -971,7 +984,8 @@ plt.show()
 #
 # The last query fails, and in an instructive way. It asks for two kinds of animals in given numbers, and the results
 # have one kind in whatever number: zebras, and not a single giraffe. CLIP matched the strongest word and lost the rest.
-# Its paper lists counting the objects in an image among the tasks it does worst.
+# Its paper lists counting the objects in an image among the tasks it does worst ([Radford et al.,
+# 2021](https://arxiv.org/abs/2103.00020)).
 #
 # For a number rather than an impression, use COCO's own captions as queries. Each of the 25,010 captions has exactly
 # one right photo among the 5,000, its own, and *recall at k* is the share of captions whose photo comes within the
@@ -1092,12 +1106,12 @@ plt.show()
 
 # %% [markdown]
 # The two clouds don't overlap; the grey lines join ten photos to their captions, and every one of them crosses the gap.
-# Liang and colleagues named this the *modality gap* in 2022 and traced it to three causes. A freshly initialised
-# network already maps all its inputs into a narrow cone; two towers with different random weights start in two
-# different cones; and the contrastive loss then preserves the distance between the cones instead of closing it. They
-# measured the gap as the distance between the centres of the two clouds, 0.82 for CLIP on COCO, and found that at
-# CLIP's temperature of 1/100 this very distance gives the lowest loss: shifting the clouds towards each other raises
-# it.
+# Liang and colleagues named this the *modality gap* in 2022 ([Liang et al., 2022](https://arxiv.org/abs/2203.02053))
+# and traced it to three causes. A freshly initialised network already maps all its inputs into a narrow cone; two
+# towers with different random weights start in two different cones; and the contrastive loss then preserves the
+# distance between the cones instead of closing it. They measured the gap as the distance between the centres of the two
+# clouds, 0.82 for CLIP on COCO, and found that at CLIP's temperature of 1/100 this very distance gives the lowest loss:
+# shifting the clouds towards each other raises it.
 #
 # So the gap is part of what the model learned, not empty space between two halves. Let's check: move every caption by
 # the difference between the two centres, so that the clouds sit on top of each other, and search again.
@@ -1231,8 +1245,9 @@ plt.show()
 # This is what the introduction meant by a bug that can't be patched. On the internet the words in a picture are very
 # often the best clue to what it shows, and a model trained to match pictures with their captions learns to read them
 # and to trust them, because trusting them lowers its loss. Goh and colleagues found single neurons in CLIP that respond
-# to a concept whether it appears as a picture or as written text. Reading is one of CLIP's skills, and the attack is
-# that skill turned against it.
+# to a concept whether it appears as a picture or as written text ([Goh et al.,
+# 2021](https://distill.pub/2021/multimodal-neurons/)). Reading is one of CLIP's skills, and the attack is that skill
+# turned against it.
 
 
 # %% [markdown]
@@ -1243,9 +1258,9 @@ plt.show()
 # has to collect every other device's vectors before computing anything, and the batch size, which the loss depends
 # on, is bounded by the memory for that $N \times N$ table.
 #
-# In 2023 Zhai, Mustafa, Kolesnikov and Beyer at Google replaced the softmax with a sigmoid. Each cell of the table
-# becomes its own binary question, *do this photo and this caption belong together?*, with the answer $z_{ij} = 1$ on
-# the diagonal and $z_{ij} = -1$ elsewhere:
+# In 2023 Zhai, Mustafa, Kolesnikov and Beyer at Google replaced the softmax with a sigmoid ([Zhai et al.,
+# 2023](https://arxiv.org/abs/2303.15343)). Each cell of the table becomes its own binary question, *do this photo and
+# this caption belong together?*, with the answer $z_{ij} = 1$ on the diagonal and $z_{ij} = -1$ elsewhere:
 #
 # $$\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{j=1}^{N} \log \sigma\!\left( z_{ij} \,(t \, u_i \cdot v_j + b)\right),$$
 #
@@ -1322,8 +1337,9 @@ print(
 #
 # **No class token.** SigLIP's image tower doesn't prepend a class token. After the blocks, one learned vector, the
 # *probe*, attends to all 196 patch outputs as a single query; the result goes through a layer norm and an MLP with a
-# residual connection. Google's Vision Transformer papers call it *multihead attention pooling*, MAP. It is attention
-# with a sequence of queries of length one, and we can compute it by hand from the checkpoint's weights:
+# residual connection. Google's Vision Transformer papers call it *multihead attention pooling*, MAP ([Zhai et al.,
+# 2022](https://arxiv.org/abs/2106.04560)). It is attention with a sequence of queries of length one, and we can compute
+# it by hand from the checkpoint's weights:
 #
 # <img src="https://raw.githubusercontent.com/xmarva/transformers-from-scratch/main/assets/figures/a12/pooling-light.png" width="760" alt="Two ways to get one vector out of a Vision Transformer. CLIP's image tower, like lesson 11's ViT, puts a class token in front of the patches and takes its output. SigLIP has no class token: after the blocks a single learned query, the probe, attends to all the patch outputs, and its result, through a layer norm and an MLP with a residual connection, is the image's vector">
 
@@ -1451,8 +1467,9 @@ table(pd.DataFrame(rows), digits=3)
 # ### CLIP and SigLIP on the same tasks
 #
 # The two models aren't a controlled comparison: SigLIP's image tower uses patches of 16 instead of 32, so it sees four
-# times as many patches, and it was trained on Google's WebLI dataset, not on OpenAI's. With that caveat, here they
-# are on geolocation, with the paper's five sentences, and on both directions of search:
+# times as many patches, and it was trained on Google's WebLI dataset ([Chen et al.,
+# 2023](https://arxiv.org/abs/2209.06794)), not on OpenAI's. With that caveat, here they are on geolocation, with the
+# paper's five sentences, and on both directions of search:
 
 # %%
 siglip_geo = country_classifier(PAPER_TEMPLATES, encode=siglip_texts)
@@ -1486,10 +1503,11 @@ table(pd.DataFrame(search_rows), digits=3)
 #
 # The two tasks rank the models differently. In search SigLIP is far ahead: for nearly half of the captions the right
 # photo comes first, against almost a third for CLIP. In geolocation CLIP is slightly ahead, and not because it had seen
-# the photos. Country211 was built from YFCC100M, part of which is in OpenAI's training data, and the paper checked:
-# 21.5% of Country211's test photos turned up among the training images, yet they raised the score by only 0.2 points,
-# because the text next to them rarely said where they were taken. The rest of the difference most likely lies in the
-# two training sets, OpenAI's collection and Google's WebLI, neither of which has been published.
+# the photos. Country211 was built from YFCC100M, part of which is in OpenAI's training data, and the paper checked
+# ([Radford et al., 2021](https://arxiv.org/abs/2103.00020)): 21.5% of Country211's test photos turned up among the
+# training images, yet they raised the score by only 0.2 points, because the text next to them rarely said where they
+# were taken. The rest of the difference most likely lies in the two training sets, OpenAI's collection and Google's
+# WebLI, neither of which has been published.
 #
 # **A score for a single pair.** A softmax score only says which caption wins within a batch; SigLIP's sigmoid scores
 # each pair on its own, so $\sigma(t\, u \cdot v + b)$ can be read as the model's answer to *do these two belong
@@ -1540,18 +1558,19 @@ table(
 # %% [markdown]
 # ## 10. The two losses, trained side by side
 #
-# The SigLIP paper's central claim is about batch size: the sigmoid loss is better than the softmax at small batches
-# and as good at large ones. Training a CLIP from scratch takes far more than a notebook has, but the claim can be
-# tested in miniature, in the spirit of Google's *LiT*, which keeps a pretrained image tower frozen. We go further and
-# freeze both towers, training only what joins them.
+# The SigLIP paper's central claim is about batch size: the sigmoid loss is better than the softmax at small batches and
+# as good at large ones. Training a CLIP from scratch takes far more than a notebook has, but the claim can be tested in
+# miniature, in the spirit of Google's *LiT* ([Zhai et al., 2022](https://arxiv.org/abs/2111.07991)), which keeps a
+# pretrained image tower frozen. We go further and freeze both towers, training only what joins them.
 #
-# Our towers come from earlier lessons: DINOv2-small, the self-supervised ViT of lesson 11, for the photos, and
-# all-MiniLM-L6-v2, the sentence encoder of lesson 3, for the captions. Neither has ever seen the other's kind of
-# input. The training pairs come from two of the fourteen shards of COCO's training set, none of whose photos is among
-# the 5,000 we test on; the photos go from the stream straight into DINOv2, and only their vectors are kept. Then we
-# train two linear projections into a common space of 256 numbers, with either loss, on batches from 16 to 1,024
-# pairs, three seeds each. The test is the search of section 6: 25,010 captions, each looking for its photo among the
-# 5,000.
+# Our towers come from earlier lessons: [DINOv2-small](https://huggingface.co/facebook/dinov2-small), the
+# self-supervised ViT of lesson 11 ([Oquab et al., 2024](https://arxiv.org/abs/2304.07193)), for the photos, and
+# [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2), the sentence encoder of lesson 3,
+# for the captions. Neither has ever seen the other's kind of input. The training pairs come from two of the fourteen
+# shards of COCO's training set, none of whose photos is among the 5,000 we test on; the photos go from the stream
+# straight into DINOv2, and only their vectors are kept. Then we train two linear projections into a common space of 256
+# numbers, with either loss, on batches from 16 to 1,024 pairs, three seeds each. The test is the search of section 6:
+# 25,010 captions, each looking for its photo among the 5,000.
 
 # %%
 dino = AutoModel.from_pretrained("facebook/dinov2-small").to(device).eval()
@@ -1743,22 +1762,26 @@ plt.show()
 # %% [markdown]
 # ## 11. Where CLIP and SigLIP are today
 #
-# **Inside image generators.** Stable Diffusion 1 conditions its denoiser on the outputs of CLIP ViT-L/14's text
-# tower, frozen; later versions use larger CLIP models and add other text encoders next to them. A prompt is read by
-# a model that learned language from alt texts, which is probably part of why prompts work best as a list of visual
-# descriptions.
+# **Inside image generators.** Stable Diffusion 1 conditions its denoiser on the outputs of CLIP ViT-L/14's text tower,
+# frozen ([Rombach et al., 2022](https://arxiv.org/abs/2112.10752)); later versions use larger CLIP models and add other
+# text encoders next to them. A prompt is read by a model that learned language from alt texts, which is probably part
+# of why prompts work best as a list of visual descriptions.
 #
-# **Inside vision-language models.** LLaVA 1.5 sees through CLIP ViT-L/14 at 336 pixels; PaliGemma and Gemma 3 see
-# through SigLIP's So400m tower. These models keep the patch vectors, not just the pooled one, and pass them to a
-# language model, which is lesson 13.
+# **Inside vision-language models.** LLaVA 1.5 sees through CLIP ViT-L/14 at 336 pixels ([Liu et al.,
+# 2024](https://arxiv.org/abs/2310.03744)); PaliGemma ([Beyer et al., 2024](https://arxiv.org/abs/2407.07726)) and Gemma
+# 3 ([Gemma Team, 2025](https://arxiv.org/abs/2503.19786)) see through SigLIP's So400m tower. These models keep the
+# patch vectors, not just the pooled one, and pass them to a language model, which is lesson 13.
 #
-# **SigLIP 2.** In February 2025 Google released a second generation: multilingual, trained with extra objectives
-# (captioning, self-distillation, masked prediction) on top of the sigmoid loss, and with a variant that keeps a
-# photo's aspect ratio. Its checkpoints have become a common eye for new open models.
+# **SigLIP 2.** In February 2025 Google released a second generation ([Tschannen et al.,
+# 2025](https://arxiv.org/abs/2502.14786)): multilingual, trained with extra objectives (captioning, self-distillation,
+# masked prediction) on top of the sigmoid loss, and with a variant that keeps a photo's aspect ratio. Its checkpoints
+# have become a common eye for new open models.
 #
-# **Open replications and data.** OpenCLIP retrained CLIP on LAION's open datasets, and later work found that
-# how the image–text pairs are chosen matters as much as the loss or the architecture: MetaCLIP rebuilt CLIP's data
-# recipe from the paper's description, and DataComp turned dataset curation into a benchmark of its own.
+# **Open replications and data.** OpenCLIP retrained CLIP on LAION's open datasets ([Cherti et al.,
+# 2023](https://arxiv.org/abs/2212.07143); [Schuhmann et al., 2022](https://arxiv.org/abs/2210.08402)), and later work
+# found that how the image–text pairs are chosen matters as much as the loss or the architecture: MetaCLIP rebuilt
+# CLIP's data recipe from the paper's description ([Xu et al., 2024](https://arxiv.org/abs/2309.16671)), and DataComp
+# turned dataset curation into a benchmark of its own ([Gadre et al., 2023](https://arxiv.org/abs/2304.14108)).
 #
 # CLIP ViT-B/32's passport, and the family tree with this lesson's branch:
 #
@@ -1787,4 +1810,7 @@ plt.show()
 # - Karpathy, A., & Fei-Fei, L. (2015). [Deep visual-semantic alignments for generating image descriptions](https://arxiv.org/abs/1412.2306). *CVPR 2015*. The 5,000-photo test split of COCO used in section 6.
 # - Thomee, B., Shamma, D. A., Friedland, G., et al. (2016). [YFCC100M: the new data in multimedia research](https://arxiv.org/abs/1503.01817). *Communications of the ACM*, 59(2). The source of Country211's photos.
 # - Ilharco, G., Wortsman, M., Wightman, R., et al. (2021). [OpenCLIP](https://github.com/mlfoundations/open_clip). *Zenodo*, doi:10.5281/zenodo.5143773. Benchmark results quoted in sections 5, 6 and 9.
+# - Zhai, X., Kolesnikov, A., Houlsby, N., & Beyer, L. (2022). [Scaling vision transformers](https://arxiv.org/abs/2106.04560). *CVPR 2022*. Multihead attention pooling.
+# - Chen, X., Wang, X., Changpinyo, S., et al. (2023). [PaLI: a jointly-scaled multilingual language-image model](https://arxiv.org/abs/2209.06794). *ICLR 2023*. The WebLI dataset.
+# - Schuhmann, C., Beaumont, R., Vencu, R., et al. (2022). [LAION-5B: an open large-scale dataset for training next generation image-text models](https://arxiv.org/abs/2210.08402). *NeurIPS 2022 Datasets and Benchmarks*.
 # - LAION (2022). [CLIP_benchmark](https://github.com/LAION-AI/CLIP_benchmark). The WebDataset copies of Country211 and COCO on the Hugging Face Hub.
