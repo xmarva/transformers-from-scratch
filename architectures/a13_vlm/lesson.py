@@ -6,12 +6,12 @@
 # still reads the receipt. Something turned the photo into a form it could read, and that something is the subject of
 # this lesson.
 #
-# Five years ago, connecting images to a language model meant building a new architecture around both. In April 2023 a
-# paper from Wisconsin and Microsoft showed that it takes much less: a vision encoder that already exists, a language
-# model that already exists, and between them a small network trained in a few hours that turns image features into
-# vectors the language model accepts as if they were words ([Liu et al., 2023](https://arxiv.org/abs/2304.08485)). The
-# model was LLaVA, and most open vision-language models since are variations on its recipe, Qwen2-VL, InternVL, Gemma 3,
-# SmolVLM among them.
+# Until 2023 the strong vision-language models were big projects: new layers grown inside a language model and trained
+# on hundreds of millions of web pages and pictures. In April 2023 a paper from Wisconsin and Microsoft turned the job
+# into a recipe a university lab could repeat in a day: a vision encoder that already exists, a language model that
+# already exists, and between them a small network that turns image features into vectors the language model accepts as
+# if they were words ([Liu et al., 2023](https://arxiv.org/abs/2304.08485)). The model was LLaVA, and most open
+# vision-language models since are variations on its recipe, Qwen2-VL, InternVL, Gemma 3 and SmolVLM among them.
 #
 # The variations are almost all about one number. A picture becomes hundreds or thousands of tokens, and every token
 # costs the language model the same compute and memory as a word. A receipt read at full detail can cost more tokens
@@ -27,7 +27,7 @@
 #
 # <div class="stats">
 # <div class="stat"><span class="stat-value">576</span><span class="stat-label">tokens per image in LLaVA-1.5, whatever its size</span></div>
-# <div class="stat"><span class="stat-value">729</span><span class="stat-label">tokens per 384-pixel tile in LLaVA-OneVision, up to ten tiles' worth</span></div>
+# <div class="stat"><span class="stat-value">8,721</span><span class="stat-label">tokens LLaVA-OneVision spends on one receipt photo of the most common size</span></div>
 # <div class="stat"><span class="stat-value">28 px</span><span class="stat-label">the side of the square one token covers in Qwen2-VL</span></div>
 # </div>
 # </aside>
@@ -41,12 +41,13 @@
 #    newline tokens and the splice into the prompt, written from scratch and matched against the model's own logits.
 # 3. Look at the image tokens from the language model's side: what they resemble, and what they turn into layer by
 #    layer.
-# 4. Price a picture: how many tokens six models spend on the same image at three sizes, and what that costs.
+# 4. Price a picture: how many tokens six models spend on the same image at four sizes, what that costs, and what a
+#    model with a fixed price sees of a receipt.
 # 5. Rebuild Qwen2-VL's two ideas, an image that keeps its shape and positions in three dimensions, and check them
 #    against the model.
 # 6. Read receipts and charts with Qwen2-VL under budgets from 64 to 2,048 tokens.
-# 7. Drop image tokens inside the model, as FastV does, and test whether the ones it keeps are better than a random
-#    choice.
+# 7. Drop image tokens inside the model, as FastV does, test whether the ones it keeps are better than a random choice,
+#    and compare pruning a large image with simply sending a smaller one.
 #
 # **What you need**: a GPU. On Kaggle, *Settings → Accelerator → GPU*; on Colab, *Runtime → Change runtime type → T4
 # GPU*. The notebook downloads LLaVA-OneVision 0.5B (1.8 GB), Qwen2-VL 2B (4.4 GB) and the CORD test set (234 MB).
@@ -60,6 +61,7 @@ import math
 import random
 import re
 import time
+from collections import Counter
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -120,6 +122,9 @@ sizes = [r["image"].size for r in receipts]
 print(len(receipts), "receipts with a total")
 print("width from", min(w for w, h in sizes), "to", max(w for w, h in sizes), "pixels")
 print("height from", min(h for w, h in sizes), "to", max(h for w, h in sizes), "pixels")
+common, how_many = Counter(sizes).most_common(1)[0]
+typical = next(r for r in receipts if r["image"].size == common)  # our running example
+print(f"the most common size: {common[0]}×{common[1]}, {how_many} receipts")
 
 # %% [markdown]
 # The second kind we make ourselves: bar charts with between five and ten bars, each bar's value written above it in a
@@ -214,18 +219,23 @@ plt.show()
 # is the detail that survives the squeeze.
 #
 # **A projector.** LLaVA did the simplest thing: every patch vector from the encoder goes through a linear map to the
-# language model's width and enters the sequence as a token ([Liu et al., 2023](https://arxiv.org/abs/2304.08485)).
-# Training happened in two short stages. First only the projector learned, on 595 thousand captioned images filtered
-# from the CC3M dataset, to put image features where the language model expects words. Then projector and language
-# model learned together on 158 thousand conversations about COCO photos that GPT-4 had written from their captions and
-# object boxes, without seeing the images
-# ([LLaVA-Instruct-150K](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K)).
+# language model's width and enters the sequence as a token ([Liu et al., 2023](https://arxiv.org/abs/2304.08485)). The
+# idea itself was not new. Frozen had trained an image encoder to feed a language model that stayed frozen
+# ([Tsimpoukelli et al., 2021](https://arxiv.org/abs/2106.13884)), and the autumn before LLaVA, Merullo and colleagues
+# showed that one linear map is enough to pass what an image encoder sees to a frozen language model ([Merullo et al.,
+# 2022](https://arxiv.org/abs/2209.15162)). LLaVA's contribution was what to train the map on. First only the projector
+# learned, on 595 thousand captioned images filtered from the CC3M dataset, to put image features where the language
+# model expects words. Then projector and language model learned together on 158 thousand conversations about COCO
+# photos that GPT-4 had written from their captions and object boxes, without seeing the images
+# ([LLaVA-Instruct-150K](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K)). Captions teach a model to
+# name what it sees; the conversations taught it to answer questions about it, and that made it an assistant.
 #
 # Six months later LLaVA-1.5 replaced the linear map with a two-layer MLP, fed the encoder images of 336 pixels, and
 # trained on 558 thousand captioned images ([LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain))
-# and then a 665-thousand-example mix of conversations and academic tasks; the whole training took about a day on one
-# machine with eight A100s ([Liu et al., 2024](https://arxiv.org/abs/2310.03744)). It matched or beat models trained on
-# far more data, and the projector won.
+# and then on a mix of 665 thousand examples: the conversations, academic tasks such as visual question answering and
+# reading text in photos, and about 40 thousand text-only conversations so that the language model would not forget how
+# to talk. The whole training took about a day on one machine with eight A100s ([Liu et al.,
+# 2024](https://arxiv.org/abs/2310.03744)). It matched or beat models trained on far more data, and the projector won.
 #
 # > **Key point.** The projector is cheap to train because the hard parts already exist. The encoder knows what is in
 # > the image, the language model knows how to talk about it, and the projector only has to translate between two
@@ -507,6 +517,8 @@ table(pd.DataFrame(rows_space), digits=2)
 #
 # We count, layer by layer, the share of image tokens whose logit-lens word is one of the receipt's own words of three
 # letters or more (CORD gives every word). The chance level is the share of the whole vocabulary made of those words.
+# To keep the sequences within a T4's memory, each receipt is scaled down to fit in 864 pixels, which still leaves it
+# five thousand image tokens or so.
 
 # %%
 ov = ov.half()  # long sequences of hidden states: half precision is plenty for a lens
@@ -516,9 +528,9 @@ vocab_text = [
 ]
 lens_rows = []
 for rec_lens in receipts[: 2 if SMOKE else 10]:
-    inputs = ov_processor(
-        images=rec_lens["image"], text=ov_prompt, return_tensors="pt"
-    ).to(device)
+    small = rec_lens["image"].copy()
+    small.thumbnail((864, 864))  # keeps the shape, fits both sides in 864 pixels
+    inputs = ov_processor(images=small, text=ov_prompt, return_tensors="pt").to(device)
     inputs["pixel_values"] = inputs["pixel_values"].half()
     words = {w.lower().strip(".,:;()") for w in rec_lens["words"]}
     words = {
@@ -528,14 +540,18 @@ for rec_lens in receipts[: 2 if SMOKE else 10]:
     }
     chance = sum(1 for v in vocab_text if len(v) >= 3 and v in words) / len(vocab_text)
     with torch.no_grad():
-        states = ov(**inputs, output_hidden_states=True).hidden_states
+        out = ov.model(**inputs, output_hidden_states=True)
+        states = (*out.hidden_states[:-1], out.last_hidden_state)  # the last one normed
         where = (inputs["input_ids"][0] == image_token).nonzero().flatten()
         for layer, state in enumerate(states):
-            top = (
-                ov.lm_head(ov.model.language_model.norm(state[0, where]))
-                .argmax(-1)
-                .tolist()
-            )
+            x = state[0, where]
+            if (
+                layer < len(states) - 1
+            ):  # the lens: the final norm, then the output head
+                x = ov.model.language_model.norm(x)
+            top = [  # in chunks: 152 thousand logits per token add up
+                t for c in x.split(1024) for t in ov.lm_head(c).argmax(-1).tolist()
+            ]
             found = [
                 vocab_text[t]
                 for t in top
@@ -550,7 +566,7 @@ for rec_lens in receipts[: 2 if SMOKE else 10]:
                     found=sorted(set(found)),
                 )
             )
-    del states
+    del out, states
     torch.cuda.empty_cache()
 lens = pd.DataFrame(lens_rows)
 by_layer = lens.groupby("layer")[["share", "chance"]].mean().reset_index()
@@ -573,7 +589,7 @@ ax.plot(
 )
 ax.set_xlabel("layer of the language model (0: the input)")
 ax.set_ylabel("% of image tokens")
-ax.set_title("Words from the receipt appear at its image tokens in the later layers")
+ax.set_title("The logit lens at a receipt's image tokens, layer by layer")
 ax.legend(frameon=False, fontsize=9)
 plt.show()
 peak = by_layer.loc[by_layer["share"].idxmax()]
@@ -599,8 +615,8 @@ print(
 #
 # Every image token costs what a word costs: a row in every attention matrix, a slot in every layer's KV cache, its share
 # of the compute in every block. So the first question to ask of any vision-language model is how many tokens it spends
-# on an image. The processors know; we only need to ask them, with blank images of three sizes, from a small photo to a
-# scanned page.
+# on an image. The processors know; we only need to ask them, with blank images of four sizes: a small square photo, a
+# screenshot, a large photo, and a receipt of the most common size in CORD.
 
 # %%
 PROCESSORS = {
@@ -611,7 +627,7 @@ PROCESSORS = {
     "Qwen2.5-VL": "Qwen/Qwen2.5-VL-3B-Instruct",
     "SmolVLM": "HuggingFaceTB/SmolVLM-256M-Instruct",
 }
-SIZES = [(448, 448), (768, 1024), (1536, 2048)]
+SIZES = [(448, 448), (768, 1024), (1536, 2048), common[::-1]]  # (height, width)
 counts = []
 for name, repo in PROCESSORS.items():
     processor = ov_processor if repo == OV else AutoProcessor.from_pretrained(repo)
@@ -635,16 +651,15 @@ for name, repo in PROCESSORS.items():
 counts = pd.DataFrame(counts)
 display(table(counts, digits=0))
 
-fig, ax = plt.subplots(figsize=(8.5, 3.8))
+fig, ax = plt.subplots(figsize=(9, 3.8))
 x = np.arange(len(counts))
 for k, (h, w) in enumerate(SIZES):
-    shade = [COLORS["enc_tint"], "#8CCFC4", COLORS["enc"]][k]
     ax.bar(
-        x + (k - 1) * 0.27,
+        x + (k - 1.5) * 0.21,
         counts[f"{w}×{h}"],
-        width=0.25,
-        color=shade,
-        label=f"{w}×{h} px",
+        width=0.19,
+        color=heat(0.3 + 0.7 * k / (len(SIZES) - 1)),
+        label=f"{w}×{h} px" + (" (a receipt)" if (h, w) == common[::-1] else ""),
     )
 ax.set_xticks(x, counts["model"], fontsize=9)
 ax.set_ylabel("image tokens")
@@ -656,6 +671,50 @@ plt.show()
 # @@ (read the table: LLaVA-1.5 fixed; LLaVA-NeXT and OneVision tile, OneVision the most expensive at every size; Qwen
 # grows with the area, cheap for small images and the priciest-but-one for a page; SmolVLM's count even falls for larger
 # images because it resizes the long side and compresses with pixel shuffle.)
+#
+# A fixed price has its own cost. LLaVA-1.5's processor, as the Hugging Face port configures it, scales the image so that
+# its short side is 336 pixels and cuts out the square in the middle. Here is what that leaves of our receipt.
+
+# %%
+llava15 = AutoProcessor.from_pretrained(PROCESSORS["LLaVA-1.5"]).image_processor
+seen = llava15(typical["image"], return_tensors="pt")["pixel_values"][0]
+mean = torch.tensor(llava15.image_mean)[:, None, None]
+std = torch.tensor(llava15.image_std)[:, None, None]
+seen = (seen * std + mean).clamp(0, 1).permute(1, 2, 0)
+w, h = typical["image"].size
+side_kept = min(
+    w, h
+)  # the short side to 336, then the middle square: a min(w, h) square
+fig, axes = plt.subplots(
+    1, 2, figsize=(8, 4.6), gridspec_kw={"width_ratios": [w / h, 1]}
+)
+axes[0].imshow(typical["image"])
+axes[0].add_patch(
+    plt.Rectangle(
+        ((w - side_kept) / 2, (h - side_kept) / 2),
+        side_kept,
+        side_kept,
+        fill=False,
+        ec=COLORS["dec"],
+        lw=2,
+    )
+)
+axes[0].set_title(f"the receipt, {w}×{h} px", fontsize=10)
+axes[1].imshow(seen)
+axes[1].set_title(
+    f"what LLaVA-1.5 gets: {seen.shape[1]}×{seen.shape[0]} px", fontsize=10
+)
+for ax in axes:
+    ax.axis("off")
+plt.tight_layout()
+plt.show()
+print(f"share of the receipt that reaches the model: {side_kept / max(w, h):.0%}")
+
+# %% [markdown]
+# *Receipt: CORD (Naver Clova), CC BY 4.0.*
+#
+# @@ (what is cut: the top and the bottom of a tall receipt, the shop's name and the end where the total usually is. The
+# original LLaVA-1.5 padded images to a square instead; the port crops. A fixed price either crops or squeezes.)
 #
 # What does a token cost? In memory, the KV cache of lesson 8: every token keeps a key and a value in every layer. For
 # Qwen2-VL 2B's language model that is:
@@ -694,11 +753,16 @@ for h, w in SIZES:
 # token covers 28×28 pixels. The number of tokens is the area divided by 28², and the area is something we choose.
 
 # %%
+del ov  # LLaVA-OneVision's part is over: free the GPU for Qwen2-VL
+torch.cuda.empty_cache()
 qv_processor = AutoProcessor.from_pretrained(QV)
 qv = Qwen2VLForConditionalGeneration.from_pretrained(
     QV, dtype=torch.float16, attn_implementation="sdpa"
 )
 qv = qv.to(device).eval()
+limits = qv_processor.image_processor  # the defaults, before qwen_inputs changes them
+default_min = getattr(limits, "min_pixels", None) or limits.size["shortest_edge"]
+default_max = getattr(limits, "max_pixels", None) or limits.size["longest_edge"]
 eos = qv.generation_config.eos_token_id
 stop_ids = set(eos if isinstance(eos, list) else [eos])
 stop_ids.add(qv_processor.tokenizer.convert_tokens_to_ids("<|im_end|>"))
@@ -741,14 +805,17 @@ def qwen_inputs(image, text, budget):
 
 
 budget = 1024
-q_inputs = qwen_inputs(rec["image"], question, budget)
+q_inputs = qwen_inputs(typical["image"], question, budget)
 t, gh, gw = q_inputs["image_grid_thw"][0].tolist()
 ours_h, ours_w = smart_resize(
-    rec["image"].height, rec["image"].width, budget * 28 * 28, min(budget, 16) * 28 * 28
+    typical["image"].height,
+    typical["image"].width,
+    budget * 28 * 28,
+    min(budget, 16) * 28 * 28,
 )
 print(
     "the receipt:",
-    rec["image"].size,
+    typical["image"].size,
     "→ ours:",
     (ours_w, ours_h),
     "| processor:",
@@ -771,6 +838,19 @@ print(
     "pixel_values:",
     tuple(q_inputs["pixel_values"].shape),
     "(patches, 3 channels × 2 frames × 14 × 14)",
+)
+cost = sorted(
+    (h // 28) * (w // 28)
+    for h, w in (
+        smart_resize(r["image"].height, r["image"].width, default_max, default_min)
+        for r in receipts
+    )
+)
+print(
+    f"with the default limits, {default_min:,} to {default_max:,} pixels, the receipts"
+)
+print(
+    f"would cost {cost[0]} to {cost[-1]} tokens each, {cost[len(cost) // 2]} the median"
 )
 
 # %% [markdown]
@@ -882,7 +962,7 @@ for budget in BUDGETS:
             seconds.append(time.time() - start)
             right += digits(said) == digits(truth)
             tokens.append(int((inputs["input_ids"] == qv.config.image_token_id).sum()))
-            if item is receipts[0] and kind == "receipts":
+            if item is typical:
                 examples.append((budget, said))
         budget_rows.append(
             dict(
@@ -906,9 +986,7 @@ ax.set_ylabel("% answered exactly")
 ax.set_title("Qwen2-VL 2B reading receipts and charts under a token budget")
 ax.legend(frameon=False)
 plt.show()
-print(
-    "the first receipt, answer by budget:", examples, "| truth:", receipts[0]["total"]
-)
+print("our receipt, answer by budget:", examples, "| truth:", typical["total"])
 
 # %% [markdown]
 # @@ (interpret: the curves; where receipts saturate; charts saturate earlier because their font is fixed relative to a
@@ -918,7 +996,7 @@ print(
 # → @@ (takeaway with the budget beyond which more tokens stop helping)
 
 # %%
-crop_rec = receipts[0]
+crop_rec = typical
 fig, axes = plt.subplots(1, 3, figsize=(11, 4.2))
 for ax, b in zip(axes, [64, 256, 1024]):
     h, w = smart_resize(
@@ -983,20 +1061,39 @@ def attention_at(layer, hidden, positions, rotary):
     return torch.softmax(scores, -1)[0].mean(0)
 
 
+def embed(inputs):
+    """Prompt embeddings with the image spliced in, the 3D positions, the image mask."""
+    ids = inputs["input_ids"]
+    hidden = qv.get_input_embeddings()(ids).clone()
+    image = qv.model.get_image_features(
+        inputs["pixel_values"], inputs["image_grid_thw"]
+    ).pooler_output
+    is_image = ids[0] == qv.config.image_token_id
+    hidden[0, is_image] = torch.cat(list(image), 0).to(hidden.dtype)
+    return hidden, rope_index(inputs), is_image
+
+
+def choose(rule, n_keep, where, layer, hidden, positions, seed=0):
+    """The image tokens a rule keeps at this layer, as positions in the sequence."""
+    if rule == "random":
+        order = torch.randperm(
+            len(where), generator=torch.Generator().manual_seed(seed)
+        )
+        return where[order[:n_keep].to(where.device)]
+    att = attention_at(layer, hidden, positions, qv.model.language_model.rotary_emb)
+    if rule == "fastv":  # received from all the tokens that can see it, on average
+        received = att.sum(0) / torch.arange(att.shape[0], 0, -1, device=att.device)
+    else:  # "last": received from the prompt's last token only
+        received = att[-1]
+    return where[received[where].topk(n_keep).indices]
+
+
 def generate_pruned(
     inputs, keep=1.0, rule="fastv", layer_k=2, max_new_tokens=14, seed=0
 ):
     lm = qv.model.language_model
-    ids = inputs["input_ids"]
-    image_token = qv.config.image_token_id
     with torch.no_grad():
-        hidden = qv.get_input_embeddings()(ids).clone()
-        image = qv.model.get_image_features(
-            inputs["pixel_values"], inputs["image_grid_thw"]
-        ).pooler_output
-        hidden[ids == image_token] = torch.cat(list(image), 0).to(hidden.dtype)
-        positions = rope_index(inputs)
-        is_image = ids[0] == image_token
+        hidden, positions, is_image = embed(inputs)
         cache = (
             DynamicCache(config=lm.config)
             if "config" in DynamicCache.__init__.__code__.co_varnames
@@ -1006,22 +1103,7 @@ def generate_pruned(
             if index == layer_k and keep < 1.0:
                 where = is_image.nonzero().flatten()
                 n_keep = max(1, round(len(where) * keep))
-                if rule == "random":
-                    order = torch.randperm(
-                        len(where), generator=torch.Generator().manual_seed(seed)
-                    )
-                    chosen = where[order[:n_keep].to(where.device)]
-                else:
-                    att = attention_at(layer, hidden, positions, lm.rotary_emb)
-                    if (
-                        rule == "fastv"
-                    ):  # received from all the tokens that can see it, on average
-                        received = att.sum(0) / torch.arange(
-                            att.shape[0], 0, -1, device=att.device
-                        )
-                    else:  # "last": received from the prompt's last token only
-                        received = att[-1]
-                    chosen = where[received[where].topk(n_keep).indices]
+                chosen = choose(rule, n_keep, where, layer, hidden, positions, seed)
                 kept = ~is_image.clone()
                 kept[chosen] = True
                 hidden, positions = hidden[:, kept], positions[:, :, kept]
@@ -1055,7 +1137,7 @@ def generate_pruned(
     return qv_processor.tokenizer.decode(out, skip_special_tokens=True)
 
 
-check = qwen_inputs(rec["image"], question, 1024)
+check = qwen_inputs(typical["image"], question, 1024)
 print("our loop:          ", generate_pruned(check))
 print("Qwen2-VL's generate:", answer(check))
 
@@ -1071,14 +1153,15 @@ for kind, items in (("receipts", receipts), ("charts", charts)):
         for keep in KEEPS:
             if keep == 1.0 and rule != "fastv":
                 continue  # nothing dropped: the same for every rule
-            right, seconds = 0, []
+            right, seconds, tokens = 0, [], []
             for j, item in enumerate(items):
                 text = question if kind == "receipts" else chart_question(item)
                 truth = item["total"] if kind == "receipts" else item["value"]
+                inputs = qwen_inputs(item["image"], text, 1024)
+                n_image = int((inputs["input_ids"] == qv.config.image_token_id).sum())
+                tokens.append(max(1, round(n_image * keep)))
                 start = time.time()
-                said = generate_pruned(
-                    qwen_inputs(item["image"], text, 1024), keep=keep, rule=rule, seed=j
-                )
+                said = generate_pruned(inputs, keep=keep, rule=rule, seed=j)
                 seconds.append(time.time() - start)
                 right += digits(said) == digits(truth)
             prune_rows.append(
@@ -1086,6 +1169,7 @@ for kind, items in (("receipts", receipts), ("charts", charts)):
                     kind=kind,
                     rule="all kept" if keep == 1.0 else rule,
                     keep=keep,
+                    tokens=np.mean(tokens),
                     accuracy=right / len(items),
                     seconds=np.mean(seconds),
                 )
@@ -1118,6 +1202,82 @@ axes[1].legend(frameon=False, fontsize=9)
 plt.suptitle("Which image tokens can a reading model lose?", fontsize=12)
 plt.tight_layout()
 plt.show()
+
+# %% [markdown]
+# @@ (interpret the curves)
+#
+# To see why, look at which tokens each rule keeps. Here are a chart and our receipt with a quarter of their image
+# tokens kept; the dropped ones are faded.
+
+
+# %%
+def kept_grid(inputs, rule, keep, layer_k=2):
+    """Which image tokens a rule keeps, as a grid of the image's shape."""
+    lm = qv.model.language_model
+    with torch.no_grad():
+        hidden, positions, is_image = embed(inputs)
+        for layer in lm.layers[:layer_k]:
+            cos, sin = lm.rotary_emb(hidden, positions)
+            hidden = layer(
+                hidden, position_ids=positions, position_embeddings=(cos, sin)
+            )
+        where = is_image.nonzero().flatten()
+        n_keep = max(1, round(len(where) * keep))
+        chosen = choose(rule, n_keep, where, lm.layers[layer_k], hidden, positions)
+    mask = torch.zeros_like(is_image)
+    mask[chosen] = True
+    _, gh, gw = inputs["image_grid_thw"][0].tolist()
+    return mask[where].view(gh // 2, gw // 2).cpu().numpy()
+
+
+RULES = [("fastv", "FastV"), ("last", "the last token"), ("random", "random")]
+fig, axes = plt.subplots(2, 3, figsize=(11, 8.6))
+for row, (item, text) in enumerate(
+    ((charts[0], chart_question(charts[0])), (typical, question))
+):
+    inputs = qwen_inputs(item["image"], text, 1024)
+    _, gh, gw = inputs["image_grid_thw"][0].tolist()
+    picture = item["image"].resize((gw * 14, gh * 14), Image.BICUBIC)
+    for ax, (rule, name) in zip(axes[row], RULES):
+        mask = kept_grid(inputs, rule, 0.25)
+        veil = np.zeros((*mask.shape, 4))
+        veil[~mask] = [1, 1, 1, 0.8]  # dropped tokens: faded
+        ax.imshow(picture)
+        ax.imshow(veil, extent=(0, gw * 14, gh * 14, 0), interpolation="nearest")
+        ax.set_title(f"{name} keeps {int(mask.sum())} of {mask.size}", fontsize=10)
+        ax.axis("off")
+plt.suptitle(
+    "A quarter of the image tokens, chosen at layer 2 by each rule", fontsize=12
+)
+plt.tight_layout()
+plt.show()
+
+# %% [markdown]
+# *Receipt: CORD (Naver Clova), CC BY 4.0. Chart: drawn in this notebook.*
+#
+# @@ (what each rule keeps)
+#
+# There is a simpler way to spend fewer tokens on an image, and we already measured it: send a smaller image. The
+# table puts each pruned run next to the budget run from section 7 that used the nearest number of image tokens.
+
+# %%
+pairs = []
+for kind in ("receipts", "charts"):
+    sized = budgets[budgets.kind == kind]
+    for _, run in pruned[(pruned.kind == kind) & (pruned.rule == "fastv")].iterrows():
+        if run["keep"] == 1.0:
+            continue
+        near = sized.iloc[(sized["tokens"] - run["tokens"]).abs().argmin()]
+        pairs.append(
+            {
+                "images": kind,
+                "FastV: tokens kept": run["tokens"],
+                "FastV: accuracy": run["accuracy"],
+                "smaller image: tokens": near["tokens"],
+                "smaller image: accuracy": near["accuracy"],
+            }
+        )
+display(table(pd.DataFrame(pairs), digits=2))
 
 # %% [markdown]
 # @@ (interpret against FastV's claim and against random: which rule holds up, which collapses, and why the last
@@ -1161,6 +1321,8 @@ plt.show()
 # - Liu, H., Li, C., Li, Y., & Lee, Y. J. (2024). [Improved baselines with visual instruction tuning](https://arxiv.org/abs/2310.03744). *CVPR 2024*.
 # - Liu, H., Li, C., Li, Y., et al. (2024). [LLaVA-NeXT: improved reasoning, OCR, and world knowledge](https://llava-vl.github.io/blog/2024-01-30-llava-next/). Blog post.
 # - Li, B., Zhang, Y., Guo, D., et al. (2024). [LLaVA-OneVision: easy visual task transfer](https://arxiv.org/abs/2408.03326). *arXiv*.
+# - Tsimpoukelli, M., Menick, J., Cabi, S., Eslami, S. M. A., Vinyals, O., & Hill, F. (2021). [Multimodal few-shot learning with frozen language models](https://arxiv.org/abs/2106.13884). *NeurIPS 2021*.
+# - Merullo, J., Castricato, L., Eickhoff, C., & Pavlick, E. (2022). [Linearly mapping from image to text space](https://arxiv.org/abs/2209.15162). *ICLR 2023*.
 # - Alayrac, J.-B., Donahue, J., Luc, P., et al. (2022). [Flamingo: a visual language model for few-shot learning](https://arxiv.org/abs/2204.14198). *NeurIPS 2022*.
 # - Li, J., Li, D., Savarese, S., & Hoi, S. (2023). [BLIP-2: bootstrapping language-image pre-training with frozen image encoders and large language models](https://arxiv.org/abs/2301.12597). *ICML 2023*.
 # - Bai, J., Bai, S., Yang, S., et al. (2023). [Qwen-VL: a versatile vision-language model for understanding, localization, text reading, and beyond](https://arxiv.org/abs/2308.12966). *arXiv*.
