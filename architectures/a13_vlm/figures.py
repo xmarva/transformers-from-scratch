@@ -307,13 +307,14 @@ def mrope() -> Figure:
 # ---------------------------------------------------------------- FastV-style pruning
 
 def pruning() -> Figure:
-    alt = ("Pruning visual tokens inside the language model. All tokens pass through the first two layers. At layer "
-           "two, the attention that the last prompt token pays to each image token ranks them; only the most-attended "
-           "image tokens continue into the later layers, together with all the text tokens. The later layers do less "
-           "work, and the question is how much the answer suffers")
+    alt = ("Pruning visual tokens inside the language model, as FastV does. All tokens pass through the first two "
+           "layers. At layer two the image tokens are ranked by the attention they receive from the other tokens; only "
+           "the most-attended ones, drawn dark, continue into the later layers, together with all the text tokens, and "
+           "the rest, drawn light, are dropped. The later layers do less work, and the question is how much the answer "
+           "suffers. A control drops the same number of image tokens at random")
     fig = Figure(760, 336, alt=alt)
-    fig.text(14, 28, "Drop the image tokens the model ignores, after two layers", kind="title")
-    fig.text(14, 50, "FastV's idea: rank image tokens by the attention they receive, keep the top share", kind="note")
+    fig.text(14, 28, "FastV drops image tokens after the second layer", kind="title")
+    fig.text(14, 50, "rank the image tokens by the attention they receive at layer 2, keep the top share", kind="note")
     n_img, n_txt = 10, 4
     keep = {0, 2, 5, 6, 9}
     x0 = 120
@@ -323,14 +324,18 @@ def pruning() -> Figure:
         for k in range(n_img + n_txt):
             y = 96 + k * 13
             img = k < n_img
-            alive = (not img) or layer < 2 or k in keep
-            if alive:
-                fig.rect(x, y, 80, 9, role="enc" if img else "data", tint=img and k % 2 == 1)
+            if not img:
+                fig.rect(x, y, 80, 9, role="data")
+            elif layer < 2:  # every image token, the ones about to be dropped light
+                fig.rect(x, y, 80, 9, role="enc", tint=k not in keep)
+            elif k in keep:
+                fig.rect(x, y, 80, 9, role="enc")
     fig.text(20, 96 + n_img * 13 / 2, "image", kind="small")
     fig.text(20, 96 + (n_img + n_txt / 2) * 13, "text", kind="small")
     fig.line((x0 + 2 * 120 - 20, 90), (x0 + 2 * 120 - 20, 96 + (n_img + n_txt) * 13), dash=True)
     fig.text(x0 + 2 * 120 - 20, 96 + (n_img + n_txt) * 13 + 20, "rank and drop", kind="small", anchor="middle")
-    fig.text(14, 322, "a control drops the same number of image tokens at random", kind="note")
+    fig.text(14, 322, "dark: kept, the most attended; light: dropped. A control drops as many at random",
+             kind="note")
     return fig
 
 

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" width="760" height="336" role="img" aria-label="Pruning visual tokens inside the language model. All tokens pass through the first two layers. At layer two, the attention that the last prompt token pays to each image token ranks them; only the most-attended image tokens continue into the later layers, together with all the text tokens. The later layers do less work, and the question is how much the answer suffers">
-<title>Pruning visual tokens inside the language model. All tokens pass through the first two layers. At layer two, the attention that the last prompt token pays to each image token ranks them; only the most-attended image tokens continue into the later layers, together with all the text tokens. The later layers do less work, and the question is how much the answer suffers</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 336" width="760" height="336" role="img" aria-label="Pruning visual tokens inside the language model, as FastV does. All tokens pass through the first two layers. At layer two the image tokens are ranked by the attention they receive from the other tokens; only the most-attended ones, drawn dark, continue into the later layers, together with all the text tokens, and the rest, drawn light, are dropped. The later layers do less work, and the question is how much the answer suffers. A control drops the same number of image tokens at random">
+<title>Pruning visual tokens inside the language model, as FastV does. All tokens pass through the first two layers. At layer two the image tokens are ranked by the attention they receive from the other tokens; only the most-attended ones, drawn dark, continue into the later layers, together with all the text tokens, and the rest, drawn light, are dropped. The later layers do less work, and the question is how much the answer suffers. A control drops the same number of image tokens at random</title>
 <defs>
 <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9AA3B2"/></marker>
 <marker id="arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F0B04A"/></marker>
@@ -8,19 +8,19 @@
 <marker id="arrow-att" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9C8CF5"/></marker>
 </defs>
 <rect width="760" height="336" rx="12" fill="#1A1F26"/>
-<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">Drop the image tokens the model ignores, after two layers</text>
-<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">FastV&#x27;s idea: rank image tokens by the attention they receive, keep the top share</text>
+<text x="14.0" y="28.0" text-anchor="start" font-family="IBM Plex Sans" font-size="16" font-weight="600" fill="#E7EAF0">FastV drops image tokens after the second layer</text>
+<text x="14.0" y="50.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">rank the image tokens by the attention they receive at layer 2, keep the top share</text>
 <text x="160.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">layer 1</text>
 <rect x="120.0" y="96.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="120.0" y="109.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
 <rect x="120.0" y="122.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="120.0" y="135.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
-<rect x="120.0" y="148.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="120.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="120.0" y="148.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="120.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="120.0" y="174.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="120.0" y="187.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
-<rect x="120.0" y="200.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="120.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="120.0" y="200.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="120.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="120.0" y="226.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="120.0" y="239.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="120.0" y="252.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
@@ -30,12 +30,12 @@
 <rect x="240.0" y="109.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
 <rect x="240.0" y="122.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="240.0" y="135.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
-<rect x="240.0" y="148.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="240.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="240.0" y="148.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="240.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="240.0" y="174.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="240.0" y="187.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
-<rect x="240.0" y="200.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="240.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="240.0" y="200.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="240.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="240.0" y="226.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="240.0" y="239.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="240.0" y="252.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
@@ -43,9 +43,9 @@
 <text x="400.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">layer 3</text>
 <rect x="360.0" y="96.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="360.0" y="122.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="360.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="360.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="360.0" y="174.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="360.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="360.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="360.0" y="226.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="360.0" y="239.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="360.0" y="252.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
@@ -53,9 +53,9 @@
 <text x="520.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">layer 4</text>
 <rect x="480.0" y="96.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="480.0" y="122.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="480.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="480.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="480.0" y="174.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="480.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="480.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="480.0" y="226.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="480.0" y="239.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="480.0" y="252.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
@@ -63,9 +63,9 @@
 <text x="640.0" y="84.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">…</text>
 <rect x="600.0" y="96.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="600.0" y="122.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="600.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="600.0" y="161.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="600.0" y="174.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
-<rect x="600.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#12302C"/>
+<rect x="600.0" y="213.0" width="80.0" height="9.0" rx="1" fill="#3CC2B0"/>
 <rect x="600.0" y="226.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="600.0" y="239.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
 <rect x="600.0" y="252.0" width="80.0" height="9.0" rx="1" fill="#F0B04A"/>
@@ -74,5 +74,5 @@
 <text x="20.0" y="252.0" text-anchor="start" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">text</text>
 <polyline points="340.0,90.0 340.0,278.0" fill="none" stroke="#9AA3B2" stroke-width="1.6" stroke-dasharray="5 4" stroke-linecap="round" stroke-linejoin="round"/>
 <text x="340.0" y="298.0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" font-weight="400" fill="#9AA3B2">rank and drop</text>
-<text x="14.0" y="322.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">a control drops the same number of image tokens at random</text>
+<text x="14.0" y="322.0" text-anchor="start" font-family="IBM Plex Sans" font-size="13" font-weight="400" fill="#9AA3B2">dark: kept, the most attended; light: dropped. A control drops as many at random</text>
 </svg>
