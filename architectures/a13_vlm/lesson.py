@@ -1405,8 +1405,8 @@ display(table(pd.DataFrame(pairs), digits=2))
 # it drops may be the only one that matters. The smaller image is also cheaper, since it saves the encoder's work too.
 #
 # > **Trap.** A method that drops tokens has to beat two baselines, not one: a random choice of the same size, and the
-# > same model given a smaller image. On reading, FastV beat the first only while it kept at least half the tokens, and
-# > never beat the second.
+# > same model given a smaller image. FastV beat the first by a few points on receipts and on charts only while it kept
+# > half the tokens. It never beat the second.
 
 # %% [markdown]
 # ## 9. Where vision-language models are today
